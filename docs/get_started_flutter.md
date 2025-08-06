@@ -106,6 +106,7 @@ puro flutter run
 ## 📚 Related Docs
 
 - 👉 [Melos Setup Guide](melos_guide.md)
+- 👉 [Setup SSH Key](setup_ssh_key.md)
 
 ---
 
