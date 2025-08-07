@@ -23,8 +23,8 @@ Place this file in the root of your repository:
 ```yaml
 name: e_commerce
 packages:
-  - .
-  - packages/**
+  - ./e_commerce_app
+  - ../packages/**
 ```
 
 You can also define custom scripts and versioning rules here.
@@ -78,7 +78,6 @@ melos exec --depends-on="core" -- flutter analyze
 
 ---
 
-
 ## 🧹 6. Clean Workspace
 
 To clean all `.dart_tool`, `build`, or `pubspec.lock` files:
@@ -93,3 +92,5 @@ melos clean
 
 - Melos Docs: [https://melos.invertase.dev](https://melos.invertase.dev)
 - Invertase Blog: [https://invertase.io/blog/melos](https://invertase.io/blog/melos)
+
+---
