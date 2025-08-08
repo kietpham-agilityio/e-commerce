@@ -151,7 +151,6 @@ If you see the app on your simulator/emulator – you're all set! 🎉
 
 ## 📚 Extra Resources
 
-- [Setup SSH Key](setup_ssh_key.md)
 - [Melos Setup Guide](melos_guide.md)
 - [Flutter Install Guide](https://docs.flutter.dev/get-started/install)
 
