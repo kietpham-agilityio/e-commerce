@@ -1,148 +1,143 @@
 # 🚀 Get Started with Flutter Project
 
-Welcome to the project! Follow these steps to set up your development environment.
+Welcome to the project! This guide will walk you through setting up your development environment step-by-step.
 
 ---
 
-## 📦 Required Dependencies
+## 📦 Step 1: Install Required Software
 
-Before running the app, make sure you install the following dependencies globally:
+Before running the app, please install the following tools on your computer.
 
-- [Flutter SDK](https://docs.flutter.dev/) 3.29.2
-- [Dart](https://docs.flutter.dev/) 3.7.2
-- [Xcode](https://developer.apple.com/documentation/xcode-release-notes/xcode-16_2-release-notes) 16.2
-- [Android Studio](https://androidstudio.googleblog.com/2025/03/android-studio-meerkat-202431-patch-1.html) 
-- [Melos](https://melos.invertase.dev/) 6.3.2
-- [Java](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) 17.0.12
-- [Cocoapods](https://formulae.brew.sh/formula/cocoapods) 1.16.2
+| Tool                 | Version                  | What it does                         |
+| -------------------- | ------------------------ | ------------------------------------ |
+| Flutter SDK          | 3.29.2                   | Main framework for building the app  |
+| Dart                 | 3.7.2                    | Programming language used by Flutter |
+| Xcode (Mac only)     | 16.2                     | Required to build iOS apps           |
+| Android Studio       | Meerkat 2024.3.1 Patch 1 | Used to build Android apps           |
+| Melos                | 6.3.2                    | Manages multi-package Flutter apps   |
+| Java                 | 17.0.12                  | Required for Android builds          |
+| Cocoapods (Mac only) | 1.16.2                   | Manages iOS dependencies             |
 
----
-
-
-## Flutter Version Management (Using Puro)
-
-### Flutter and Dart versions of the project
-
-- Flutter SDK: **_3.29.2_**
-- Dart: **_3.7.2_**
-
-### Puro
-
-[Puro](https://puro.dev/) is a powerful tool for installing and upgrading Flutter versions
-
-1. The command line corresponding to the operating system.
-
-   - Mac:
-     ```
-     curl -o- https://puro.dev/install.sh | PURO_VERSION="1.4.11" bash
-     ```
-   - Linux:
-     ```
-     curl -o- https://puro.dev/install.sh | PURO_VERSION="1.4.11" bash
-     ```
-   - Windows:
-     ```
-     Invoke-WebRequest -Uri "https://puro.dev/builds/1.4.11/windows-x64/puro.exe" -OutFile "$env:temp\puro.exe"; &"$env:temp\puro.exe" install-puro --promote
-     ```
-
-2. Install the package Puro
-   ```
-   dart pub global activate puro 1.4.11
-   puro create e_commerce 3.29.2
-   puro use e_commerce
-   ```
-
-You need to use `puro flutter ...` everywhere instead of just `flutter ...` when working with the project.
+> 💡 If you're not sure how to install these, follow the [Flutter installation guide](https://docs.flutter.dev/get-started/install).
 
 ---
 
+## 🔧 Step 2: Install Flutter with Puro (Flutter Version Manager)
 
-## 🔑 Clone the Repository via SSH
+We use [Puro](https://puro.dev) to manage the Flutter version.
+
+### 🔹 2.1 Install Puro
+
+Choose your operating system below:
+
+- **Mac or Linux**:
+  ```bash
+  curl -o- https://puro.dev/install.sh | PURO_VERSION="1.4.11" bash
+  ```
+
+- **Windows** (open PowerShell as Administrator):
+  ```powershell
+  Invoke-WebRequest -Uri "https://puro.dev/builds/1.4.11/windows-x64/puro.exe" -OutFile "$env:temp\\puro.exe"; &"$env:temp\\puro.exe" install-puro --promote
+  ```
+
+### 🔹 2.2 Create and Use Flutter Version
 
 ```bash
-clone git@github.com:kietpham-agilityio/e-commerce.git
+dart pub global activate puro 1.4.11
+puro create e_commerce 3.29.2
+puro use e_commerce
 ```
 
-> If `sshkey` is not setup, see [setup_ssh_key](setup_ssh_key.md)
+> 💡 You must run commands starting with `puro flutter` instead of just `flutter` when working on this project.
 
 ---
 
-## 🖥️ Using SourceTree (optional)
+## 🔑 Step 3: Clone the Project from GitHub
 
-If you prefer using a GUI like **SourceTree**:
+### 3.1 Make sure SSH is set up
 
-1. Open SourceTree
-2. Click "Clone from URL"
-3. Paste your SSH URL: `git@github.com:kietpham-agilityio/e-commerce.git`
-4. Select destination folder and click "Clone"
-5. Make sure SourceTree is using SSH, not HTTPS
-![Sourcetree](../assets/clone_project_by_sourcetree.png)
+If not, follow this guide: [Setup SSH Key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
 
----
+### 3.2 Clone the project
 
-## 🧑‍💻 Editor Setup
+```bash
+git clone git@github.com:kietpham-agilityio/e-commerce.git
+```
 
-### ✅ VS Code Setup (Recommended)
-
-1. Download and install [VS Code](https://code.visualstudio.com/)
-
-2. Install the following extensions:
-   - ✅ Flutter (by Dart-Code)
-   - ✅ Dart (by Dart-Code)
-   - 💡 Error Lens *(optional – highlight errors inline)*
-   - 💡 GitLens *(optional – enhanced Git support)*
-
-3. Enable format on save:
-   - Open Settings → search for `format on save` → check ✅
-
-4. Enable organize imports on save:
-   - Open Settings → search for `organize imports` → check ✅
-
-5. Recommended `.vscode/settings.json` for project:
-   ```json
-   {
-     "editor.formatOnSave": true,
-     "editor.codeActionsOnSave": {
-       "source.organizeImports": true
-     },
-     "dart.lineLength": 100,
-     "dart.analysisExcludedFolders": [
-       "**/build/**",
-       "**/.dart_tool/**"
-     ]
-   }
-   ```
-
-### 🛠 Android Studio Setup
-
-1. Download and install [Android Studio](https://developer.android.com/studio)
-
-2. Open Android Studio → Settings → Plugins:
-   - Install: **Flutter Plugin**
-   - Install: **Dart Plugin**
-   - Restart Android Studio if prompted
-
-3. Setup Android SDK:
-   - Go to `Preferences` → `Appearance & Behavior` → `System Settings` → `Android SDK`
-   - Install SDK version **34** or higher
-   - Make sure `Android SDK Command-line Tools` is also installed
-
-4. Enable Emulator (optional):
-   - From **Device Manager**, create an Android Virtual Device (AVD)
-   - Choose a Pixel device and a system image with **API 34+**
-
-5. Set up Flutter SDK path:
-   - Open a Flutter project or go to Preferences → Languages & Frameworks → Flutter
-   - Set SDK path to:
-     ```
-     ~/.puro/versions/e_commerce
-     ```
+> 📝 This will download the project files to your computer.
 
 ---
 
-## 🧪 Running the Project
+## 🛠 Step 4: Set Up Code Editor
 
-In the project root, run:
+### ✅ Option 1: Visual Studio Code (Recommended)
+
+1. [Download VS Code](https://code.visualstudio.com/) and install.
+2. Open VS Code.
+3. Go to Extensions (click square icon on the left).
+4. Search and install:
+   - `Flutter`
+   - `Dart`
+   - `Error Lens` *(optional)*
+   - `GitLens` *(optional)*
+
+#### Enable Auto Formatting
+
+- Open Settings (`Ctrl + ,`)
+- Search: **Format on Save** → check ✅
+- Search: **Organize Imports** → check ✅
+
+#### Recommended Project Settings
+
+Create `.vscode/settings.json` in the project root:
+
+```json
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "dart.lineLength": 100,
+  "dart.analysisExcludedFolders": [
+    "**/build/**",
+    "**/.dart_tool/**"
+  ]
+}
+```
+
+### 🛠 Option 2: Android Studio
+
+1. [Download Android Studio](https://developer.android.com/studio) and install.
+2. Open Android Studio.
+3. Go to Preferences → Plugins:
+   - Install `Flutter Plugin`
+   - Install `Dart Plugin`
+4. Restart Android Studio.
+
+#### Setup Android SDK
+
+- Go to: Preferences → Appearance & Behavior → System Settings → Android SDK
+- Install SDK Version **34+**
+- Also install: **Android SDK Command-line Tools**
+
+#### Optional: Use Android Emulator
+
+1. Open "Device Manager"
+2. Create a new Virtual Device (choose Pixel + API 34+ image)
+
+#### Set Flutter SDK Path
+
+- Go to Preferences → Languages & Frameworks → Flutter
+- Set the path to:
+  ```
+  ~/.puro/versions/e_commerce
+  ```
+
+---
+
+## 🧪 Step 5: Run the Project
+
+Open Terminal in the project folder and run these commands:
 
 ```bash
 puro flutter pub get
@@ -150,15 +145,16 @@ melos bootstrap
 puro flutter run
 ```
 
-> If `melos` is not setup, see [Melos Setup](melos_guide.md)
+If you see the app on your simulator/emulator – you're all set! 🎉
 
 ---
 
-## 📚 Related Docs
+## 📚 Extra Resources
 
-- 👉 [Melos Setup Guide](melos_guide.md)
-- 👉 [Setup SSH Key](setup_ssh_key.md)
+- [Setup SSH Key](setup_ssh_key.md)
+- [Melos Setup Guide](melos_guide.md)
+- [Flutter Install Guide](https://docs.flutter.dev/get-started/install)
 
 ---
 
-Happy coding! 💻✨
+🙌 You're ready to code – good luck!
