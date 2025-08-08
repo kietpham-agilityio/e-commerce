@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ec_design/ec_design.dart';
 
 void main() {
   runApp(const MyApp());
@@ -53,6 +54,15 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(EcDesignIcons.icArrowLeft, size: 30, color: Colors.blue),
+                const SizedBox(width: 20),
+                Icon(EcDesignIcons.icArrowRight, size: 30, color: Colors.green),
+              ],
             ),
           ],
         ),
