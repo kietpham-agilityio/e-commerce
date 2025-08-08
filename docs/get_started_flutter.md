@@ -80,15 +80,6 @@ If you prefer using a GUI like **SourceTree**:
 
 ---
 
-<!-- ## 🧑‍💻 Recommended Editor Setup (VS Code)
-
-1. Install [VS Code](https://code.visualstudio.com/)
-2. Install the following extensions:
-   - Flutter
-   - Dart
-   - Error Lens (optional)
-   - GitLens (optional) -->
-
 ## 🧑‍💻 Editor Setup
 
 ### ✅ VS Code Setup (Recommended)
