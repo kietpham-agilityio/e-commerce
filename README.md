@@ -3,14 +3,57 @@
 A new Flutter project.
 
 ## Getting Started
+- [get started flutter](docs/get_started_flutter.md)
 
-This project is a starting point for a Flutter application.
+## Workflow in a repository
 
-A few resources to get you started if this is your first Flutter project:
+The workflow includes the following:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- [Branching in a repository]() TBD
+- [Commits]() TBD
+- [Pull requests]() TBD
+- [Change log]() TBD
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Architecture and project structure
+
+The overview of the architecture and structure can be found here:
+
+- [Project structure]() TBD
+
+## Analytics
+
+Enabled:
+
+- [flutter_lints](https://pub.dev/packages/flutter_lints)
+
+## Localization
+
+The overview of the localization can be found here:
+
+- [Localization]() TBD
+
+The basic rules and tips for working with localization are described in [guide](). TBD
+
+More information on working with localization can be found [here](https://docs.flutter.dev/accessibility-and-localization/internationalization).
+
+## Theming
+
+The basic rules and tips for working with theming are described in the [guide](). TBD
+
+## Icons launcher
+
+The overview of the localization can be found here:
+
+- [Icons launcher]() TBD
+
+The basic rules and tips for working with icon generation are described in the [guide](). TBD
+
+## Native splash screen
+
+The Basic guide for creating a native splash screen is [here](). TBD
+
+## Testing
+
+The overview of the testing can be found here:
+
+- [Theming]() TBD
