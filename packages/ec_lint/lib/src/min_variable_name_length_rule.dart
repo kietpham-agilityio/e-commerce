@@ -12,7 +12,6 @@ class MinVariableNameLengthRule extends DartLintRule {
     name: 'min_variable_name_length',
     problemMessage: 'Variable name should be at least $_minLength characters.',
     correctionMessage: 'Rename the variable to have ≥ $_minLength characters.',
-    url: 'https://example.com/docs/lints/min_variable_name_length',
   );
 
   @override
@@ -27,7 +26,6 @@ class MinVariableNameLengthRule extends DartLintRule {
       final visibleName = identifier.replaceFirst(RegExp('^_+'), '');
       if (_allowedShortNames.contains(visibleName)) return;
       if (visibleName.length < _minLength) {
-        // Highlight the variable name token if available; otherwise the whole declaration
         reporter.atToken(node.name, code);
       }
     });
