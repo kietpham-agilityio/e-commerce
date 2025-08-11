@@ -18,7 +18,7 @@ The workflow includes the following:
 
 The overview of the architecture and structure can be found here:
 
-- [Project structure](docs/app_structure.md)
+- [Project structure]() TBD
 
 ## Analytics
 
