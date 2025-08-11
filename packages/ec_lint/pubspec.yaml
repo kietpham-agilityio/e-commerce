@@ -1,0 +1,14 @@
+name: ec_lint
+description: Custom lint rules for the e_commerce monorepo.
+
+publish_to: "none"
+
+version: 0.0.1
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  analyzer: ^7.6.0
+  custom_lint_builder: ^0.8.0
+
