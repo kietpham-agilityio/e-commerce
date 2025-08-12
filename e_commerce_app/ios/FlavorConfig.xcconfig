@@ -1,0 +1,13 @@
+// FlavorConfig.xcconfig
+// Default configuration for all flavors
+
+// App Display Name - will be overridden by specific flavor configs
+APP_DISPLAY_NAME = E-Commerce
+
+// Bundle Identifier - will be overridden by specific flavor configs
+PRODUCT_BUNDLE_IDENTIFIER = com.example.e_commerce_app
+
+// Other common settings
+DEVELOPMENT_TEAM = 
+CODE_SIGN_IDENTITY = 
+PROVISIONING_PROFILE =

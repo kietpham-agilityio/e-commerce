@@ -1,0 +1,13 @@
+// Dev.xcconfig
+// Development flavor configuration
+
+#include "FlavorConfig.xcconfig"
+
+// Override default values for development
+APP_DISPLAY_NAME = E-Commerce Dev
+PRODUCT_BUNDLE_IDENTIFIER = com.example.e_commerce_app.dev
+
+// Development-specific settings
+ENABLE_LOGGING = 1
+ENABLE_ANALYTICS = 0
+ENABLE_CRASHLYTICS = 0

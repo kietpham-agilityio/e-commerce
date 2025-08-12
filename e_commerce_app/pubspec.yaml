@@ -90,3 +90,21 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+# Flavor configurations
+flavors:
+  dev:
+    app_name: "E-Commerce Dev"
+    main: "lib/main_dev.dart"
+    flavor: "dev"
+  staging:
+    app_name: "E-Commerce Staging"
+    main: "lib/main_stag.dart"
+    flavor: "staging"
+  production:
+    app_name: "E-Commerce"
+    main: "lib/main_prod.dart"
+    flavor: "production"
+
+# Default flavor when no --flavor is specified
+default-flavor: "dev"
