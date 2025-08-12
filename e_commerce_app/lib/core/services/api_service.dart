@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:ec_secrets/ec_secrets.dart';
+import 'package:ec_flavor/ec_flavor.dart';
 
 /// Example API service that uses flavor configuration
 class ApiService {

@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'app_flavor.dart';
+import 'ec_flavor.dart';
 import 'flavor_config.dart';
 import 'flavor_environment.dart';
 
@@ -8,47 +8,47 @@ class FlavorUtils {
   FlavorUtils._();
 
   /// Get a user-friendly description of the current environment
-  static String getEnvironmentDescription(AppFlavor flavor) {
+  static String getEnvironmentDescription(EcFlavor flavor) {
     switch (flavor) {
-      case AppFlavor.dev:
+      case EcFlavor.dev:
         return 'Development Environment - For testing and development purposes';
-      case AppFlavor.staging:
+      case EcFlavor.staging:
         return 'Staging Environment - For pre-production testing';
-      case AppFlavor.production:
+      case EcFlavor.production:
         return 'Production Environment - Live application';
     }
   }
 
   /// Get color scheme for different flavors (useful for UI theming)
-  static String getFlavorColor(AppFlavor flavor) {
+  static String getFlavorColor(EcFlavor flavor) {
     switch (flavor) {
-      case AppFlavor.dev:
+      case EcFlavor.dev:
         return '#FF6B6B'; // Red for development
-      case AppFlavor.staging:
+      case EcFlavor.staging:
         return '#4ECDC4'; // Teal for staging
-      case AppFlavor.production:
+      case EcFlavor.production:
         return '#45B7D1'; // Blue for production
     }
   }
 
   /// Check if debug features should be enabled
-  static bool shouldEnableDebugFeatures(AppFlavor flavor) {
+  static bool shouldEnableDebugFeatures(EcFlavor flavor) {
     return flavor.isDev || flavor.isStaging;
   }
 
   /// Check if performance monitoring should be enabled
-  static bool shouldEnablePerformanceMonitoring(AppFlavor flavor) {
+  static bool shouldEnablePerformanceMonitoring(EcFlavor flavor) {
     return flavor.isStaging || flavor.isProduction;
   }
 
   /// Get appropriate log level for the flavor
-  static String getLogLevel(AppFlavor flavor) {
+  static String getLogLevel(EcFlavor flavor) {
     switch (flavor) {
-      case AppFlavor.dev:
+      case EcFlavor.dev:
         return 'VERBOSE';
-      case AppFlavor.staging:
+      case EcFlavor.staging:
         return 'INFO';
-      case AppFlavor.production:
+      case EcFlavor.production:
         return 'WARNING';
     }
   }
@@ -151,7 +151,7 @@ class FlavorUtils {
   }
 
   /// Get configuration summary for debugging
-  static Map<String, dynamic> getConfigurationSummary(AppFlavor flavor) {
+  static Map<String, dynamic> getConfigurationSummary(EcFlavor flavor) {
     final config = FlavorConfig.getConfig(flavor);
     final validationErrors = validateConfiguration(config);
     
@@ -184,7 +184,7 @@ class FlavorUtils {
   }
 
   /// Print configuration summary to console (debug mode only)
-  static void printConfigurationSummary(AppFlavor flavor) {
+  static void printConfigurationSummary(EcFlavor flavor) {
     if (kDebugMode) {
       final summary = getConfigurationSummary(flavor);
       print('=== Flavor Configuration Summary ===');

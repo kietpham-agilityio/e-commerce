@@ -1,15 +1,15 @@
 import 'dart:developer';
 
+import 'package:ec_flavor/ec_flavor.dart';
 import 'package:flutter/material.dart';
 import 'package:ec_design/ec_design.dart';
-import 'package:ec_secrets/ec_secrets.dart';
 
 void main() {
   // Initialize flavor manager for staging environment
-  FlavorManager.initialize(AppFlavor.staging);
+  FlavorManager.initialize(EcFlavor.staging);
 
   // Print configuration summary for debugging
-  FlavorUtils.printConfigurationSummary(AppFlavor.staging);
+  FlavorUtils.printConfigurationSummary(EcFlavor.staging);
 
   runApp(const MyApp());
 }

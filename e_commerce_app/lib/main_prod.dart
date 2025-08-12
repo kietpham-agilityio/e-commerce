@@ -1,15 +1,15 @@
 import 'dart:developer';
 
+import 'package:ec_flavor/ec_flavor.dart';
 import 'package:flutter/material.dart';
 import 'package:ec_design/ec_design.dart';
-import 'package:ec_secrets/ec_secrets.dart';
 
 void main() {
   // Initialize flavor manager for production environment
-  FlavorManager.initialize(AppFlavor.production);
+  FlavorManager.initialize(EcFlavor.production);
 
   // Print configuration summary for debugging
-  FlavorUtils.printConfigurationSummary(AppFlavor.production);
+  FlavorUtils.printConfigurationSummary(EcFlavor.production);
 
   runApp(const MyApp());
 }

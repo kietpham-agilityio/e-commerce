@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'app_flavor.dart';
+import 'ec_flavor.dart';
 import 'flavor_config.dart';
 import 'flavor_environment.dart';
 
@@ -7,11 +7,11 @@ import 'flavor_environment.dart';
 class FlavorManager {
   FlavorManager._();
 
-  static AppFlavor? _currentFlavor;
+  static EcFlavor? _currentFlavor;
   static FlavorEnvironment? _currentConfig;
 
   /// Initialize the flavor manager with a specific flavor
-  static void initialize(AppFlavor flavor) {
+  static void initialize(EcFlavor flavor) {
     _currentFlavor = flavor;
     _currentConfig = FlavorConfig.getConfig(flavor);
     
@@ -23,7 +23,7 @@ class FlavorManager {
   }
 
   /// Get the current flavor
-  static AppFlavor get currentFlavor {
+  static EcFlavor get currentFlavor {
     if (_currentFlavor == null) {
       throw StateError('FlavorManager not initialized. Call initialize() first.');
     }
@@ -62,12 +62,12 @@ class FlavorManager {
   }
 
   /// Get configuration for a specific flavor
-  static FlavorEnvironment getConfig(AppFlavor flavor) {
+  static FlavorEnvironment getConfig(EcFlavor flavor) {
     return FlavorConfig.getConfig(flavor);
   }
 
   /// Get all available configurations
-  static Map<AppFlavor, FlavorEnvironment> getAllConfigs() {
+  static Map<EcFlavor, FlavorEnvironment> getAllConfigs() {
     return FlavorConfig.getAllConfigs();
   }
 

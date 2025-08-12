@@ -1,5 +1,5 @@
 /// Enum representing different application flavors
-enum AppFlavor {
+enum EcFlavor {
   /// Development environment
   dev('dev', 'Development'),
   
@@ -9,7 +9,7 @@ enum AppFlavor {
   /// Production environment
   production('production', 'Production');
 
-  const AppFlavor(this.value, this.displayName);
+  const EcFlavor(this.value, this.displayName);
 
   /// String value of the flavor
   final String value;
@@ -18,21 +18,21 @@ enum AppFlavor {
   final String displayName;
 
   /// Get flavor from string value
-  static AppFlavor fromString(String value) {
-    return AppFlavor.values.firstWhere(
+  static EcFlavor fromString(String value) {
+    return EcFlavor.values.firstWhere(
       (flavor) => flavor.value == value,
-      orElse: () => AppFlavor.dev,
+      orElse: () => EcFlavor.dev,
     );
   }
 
   /// Check if this is development flavor
-  bool get isDev => this == AppFlavor.dev;
+  bool get isDev => this == EcFlavor.dev;
   
   /// Check if this is staging flavor
-  bool get isStaging => this == AppFlavor.staging;
+  bool get isStaging => this == EcFlavor.staging;
   
   /// Check if this is production flavor
-  bool get isProduction => this == AppFlavor.production;
+  bool get isProduction => this == EcFlavor.production;
 
   @override
   String toString() => value;
