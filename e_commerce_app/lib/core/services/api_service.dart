@@ -1,23 +1,30 @@
 import 'dart:developer';
-
 import 'package:ec_flavor/ec_flavor.dart';
 
-/// Example API service that uses flavor configuration
+/// API service that uses flavor configuration and dependency injection
 class ApiService {
-  ApiService._();
+  final String baseUrl;
+  final Duration timeout;
+  final int maxRetries;
 
-  /// Get the base URL for API calls based on current flavor
-  static String get baseUrl => FlavorManager.apiBaseUrl;
+  /// Constructor with dependency injection
+  ApiService({
+    required this.baseUrl,
+    required this.timeout,
+    required this.maxRetries,
+  });
 
-  /// Get timeout duration based on current flavor
-  static Duration get timeout =>
-      Duration(seconds: FlavorManager.currentConfig.timeoutSeconds);
+  /// Get the base URL for API calls
+  String get apiBaseUrl => baseUrl;
 
-  /// Get max retry attempts based on current flavor
-  static int get maxRetries => FlavorManager.currentConfig.maxRetries;
+  /// Get timeout duration
+  Duration get apiTimeout => timeout;
+
+  /// Get max retry attempts
+  int get apiMaxRetries => maxRetries;
 
   /// Make a GET request with flavor-specific configuration
-  static Future<Map<String, dynamic>> get(String endpoint) async {
+  Future<Map<String, dynamic>> get(String endpoint) async {
     final url = '$baseUrl$endpoint';
 
     // Log the request if logging is enabled
@@ -50,7 +57,7 @@ class ApiService {
   }
 
   /// Make a POST request with flavor-specific configuration
-  static Future<Map<String, dynamic>> post(
+  Future<Map<String, dynamic>?> post(
     String endpoint,
     Map<String, dynamic> data,
   ) async {
@@ -86,7 +93,7 @@ class ApiService {
   }
 
   /// Get API configuration summary for debugging
-  static Map<String, dynamic> getApiConfig() {
+  Map<String, dynamic> getApiConfig() {
     return {
       'baseUrl': baseUrl,
       'timeout': '${timeout.inSeconds}s',
@@ -98,12 +105,65 @@ class ApiService {
   }
 
   /// Check if API is available (useful for offline detection)
-  static Future<bool> isApiAvailable() async {
+  Future<bool> isApiAvailable() async {
     try {
       await get('/health');
       return true;
     } catch (e) {
       return false;
     }
+  }
+
+  /// Make a request with retry logic
+  Future<Map<String, dynamic>> getWithRetry(String endpoint) async {
+    int attempts = 0;
+    
+    while (attempts < maxRetries) {
+      try {
+        attempts++;
+        return await get(endpoint);
+      } catch (e) {
+        if (attempts >= maxRetries) {
+          rethrow;
+        }
+        
+        if (FlavorManager.isFeatureEnabled('logging')) {
+          log('Attempt $attempts failed, retrying... Error: $e');
+        }
+        
+        // Wait before retry (exponential backoff)
+        await Future.delayed(Duration(milliseconds: 100 * attempts));
+      }
+    }
+    
+    throw Exception('Max retries exceeded');
+  }
+
+  /// Make a POST request with retry logic
+  Future<Map<String, dynamic>?> postWithRetry(
+    String endpoint,
+    Map<String, dynamic> data,
+  ) async {
+    int attempts = 0;
+    
+    while (attempts < maxRetries) {
+      try {
+        attempts++;
+        return await post(endpoint, data);
+      } catch (e) {
+        if (attempts >= maxRetries) {
+          rethrow;
+        }
+        
+        if (FlavorManager.isFeatureEnabled('logging')) {
+          log('Attempt $attempts failed, retrying... Error: $e');
+        }
+        
+        // Wait before retry (exponential backoff)
+        await Future.delayed(Duration(milliseconds: 100 * attempts));
+      }
+    }
+    
+    throw Exception('Max retries exceeded');
   }
 }

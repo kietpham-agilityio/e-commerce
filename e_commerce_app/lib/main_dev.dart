@@ -2,16 +2,21 @@ import 'dart:developer';
 
 import 'package:ec_flavor/ec_flavor.dart';
 import 'package:flutter/material.dart';
-import 'package:ec_design/ec_design.dart';
+import 'core/services/ec_locator.dart';
+import 'core/services/api_service.dart';
 
-void main() {
-  // Initialize flavor manager for development environment
-  FlavorManager.initialize(EcFlavor.dev);
-
-  // log configuration summary for debugging
-  FlavorUtils.printConfigurationSummary(EcFlavor.dev);
-
-  runApp(const MyApp());
+void main() async {
+  // Ensure Flutter is initialized
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  try {
+    // Initialize dependency injection and all application services
+    await EcLocator.initialize();
+    runApp(const MyApp());
+  } catch (e) {
+    // Exit app if initialization fails
+    rethrow;
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -20,7 +25,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: FlavorManager.appName,
+      title: EcLocator.getCurrentConfig().appName,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         appBarTheme: AppBarTheme(
@@ -60,9 +65,42 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     // Log the action if logging is enabled
-    if (FlavorManager.isFeatureEnabled('logging')) {
+    if (EcLocator.isFeatureEnabled('logging')) {
       log('Counter incremented to: $_counter');
     }
+  }
+
+  void _showDebugInfo() {
+    final apiService = EcLocator.get<ApiService>();
+    final config = EcLocator.getCurrentConfig();
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Debug Information'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Environment: ${config.appName}'),
+            Text('API Base URL: ${config.apiBaseUrl}'),
+            Text('Logging: ${config.enableLogging}'),
+            Text('Analytics: ${config.enableAnalytics}'),
+            Text('Crashlytics: ${config.enableCrashlytics}'),
+            Text('Timeout: ${config.timeoutSeconds}s'),
+            Text('Max Retries: ${config.maxRetries}'),
+            const SizedBox(height: 16),
+            Text('API Config: ${apiService.getApiConfig()}'),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -73,9 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
         actions: [
           // Show debug info button only in development/staging
-          if (FlavorUtils.shouldEnableDebugFeatures(
-            FlavorManager.currentFlavor,
-          ))
+          if (EcLocator.isFeatureEnabled('logging'))
             IconButton(icon: const Icon(Icons.info), onPressed: _showDebugInfo),
         ],
       ),
@@ -94,38 +130,36 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 children: [
                   Text(
-                    'Environment: ${FlavorManager.currentFlavor.displayName}',
+                    'Environment: ${EcLocator.getCurrentConfig().appName}',
                     style: TextStyle(
                       color: _getFlavorColor(),
                       fontWeight: FontWeight.bold,
+                      fontSize: 18,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 8),
                   Text(
-                    'API: ${FlavorManager.apiBaseUrl}',
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                  Text(
-                    'Version: ${FlavorManager.appVersion}',
-                    style: const TextStyle(fontSize: 12),
+                    'Version: ${EcLocator.getCurrentConfig().appVersion}',
+                    style: TextStyle(
+                      color: _getFlavorColor(),
+                      fontSize: 14,
+                    ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
-            const Text('You have pushed the button this many times:'),
+            const SizedBox(height: 32),
+            const Text(
+              'You have pushed the button this many times:',
+            ),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(EcDesignIcons.icArrowLeft, size: 30, color: Colors.blue),
-                const SizedBox(width: 20),
-                Icon(EcDesignIcons.icArrowRight, size: 30, color: Colors.green),
-              ],
+            const SizedBox(height: 32),
+            ElevatedButton(
+              onPressed: _testApiService,
+              child: const Text('Test API Service'),
             ),
           ],
         ),
@@ -143,33 +177,44 @@ class _MyHomePageState extends State<MyHomePage> {
     return Color(int.parse(colorHex.replaceAll('#', '0xFF')));
   }
 
-  void _showDebugInfo() {
-    final debugInfo = FlavorManager.debugInfo;
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            title: const Text('Debug Information'),
-            content: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children:
-                    debugInfo.entries.map((entry) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4),
-                        child: Text('${entry.key}: ${entry.value}'),
-                      );
-                    }).toList(),
-              ),
+  Future<void> _testApiService() async {
+    try {
+      final apiService = EcLocator.get<ApiService>();
+      
+      // Test API availability
+      final isAvailable = await apiService.isApiAvailable();
+      
+      if (isAvailable) {
+        // Test GET request
+        final response = await apiService.get('/test');
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('API Test Success: ${response['data']}'),
+              backgroundColor: Colors.green,
             ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Close'),
-              ),
-            ],
+          );
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('API is not available'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('API Test Failed: $e'),
+            backgroundColor: Colors.red,
           ),
-    );
+        );
+      }
+    }
   }
 }

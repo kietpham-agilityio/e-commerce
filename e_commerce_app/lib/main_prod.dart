@@ -2,16 +2,21 @@ import 'dart:developer';
 
 import 'package:ec_flavor/ec_flavor.dart';
 import 'package:flutter/material.dart';
-import 'package:ec_design/ec_design.dart';
+import 'core/services/ec_locator.dart';
+import 'core/services/api_service.dart';
 
-void main() {
-  // Initialize flavor manager for production environment
-  FlavorManager.initialize(EcFlavor.production);
-
-  // Print configuration summary for debugging
-  FlavorUtils.printConfigurationSummary(EcFlavor.production);
-
-  runApp(const MyApp());
+void main() async {
+  // Ensure Flutter is initialized
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  try {
+    // Initialize dependency injection and all application services
+    await EcLocator.initialize();
+    runApp(const MyApp());
+  } catch (e) {
+    // Exit app if initialization fails
+    rethrow;
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -20,7 +25,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: FlavorManager.appName,
+      title: EcLocator.getCurrentConfig().appName,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         appBarTheme: AppBarTheme(
@@ -60,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     // Log the action if logging is enabled
-    if (FlavorManager.isFeatureEnabled('logging')) {
+    if (EcLocator.isFeatureEnabled('logging')) {
       log('Counter incremented to: $_counter');
     }
   }
@@ -88,38 +93,36 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 children: [
                   Text(
-                    'Environment: ${FlavorManager.currentFlavor.displayName}',
+                    'Environment: ${EcLocator.getCurrentConfig().appName}',
                     style: TextStyle(
                       color: _getFlavorColor(),
                       fontWeight: FontWeight.bold,
+                      fontSize: 18,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 8),
                   Text(
-                    'API: ${FlavorManager.apiBaseUrl}',
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                  Text(
-                    'Version: ${FlavorManager.appVersion}',
-                    style: const TextStyle(fontSize: 12),
+                    'Version: ${EcLocator.getCurrentConfig().appVersion}',
+                    style: TextStyle(
+                      color: _getFlavorColor(),
+                      fontSize: 14,
+                    ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
-            const Text('You have pushed the button this many times:'),
+            const SizedBox(height: 32),
+            const Text(
+              'You have pushed the button this many times:',
+            ),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(EcDesignIcons.icArrowLeft, size: 30, color: Colors.blue),
-                const SizedBox(width: 20),
-                Icon(EcDesignIcons.icArrowRight, size: 30, color: Colors.green),
-              ],
+            const SizedBox(height: 32),
+            ElevatedButton(
+              onPressed: _testApiService,
+              child: const Text('Test API Service'),
             ),
           ],
         ),
@@ -135,5 +138,46 @@ class _MyHomePageState extends State<MyHomePage> {
   Color _getFlavorColor() {
     final colorHex = FlavorUtils.getFlavorColor(FlavorManager.currentFlavor);
     return Color(int.parse(colorHex.replaceAll('#', '0xFF')));
+  }
+
+  Future<void> _testApiService() async {
+    try {
+      final apiService = EcLocator.get<ApiService>();
+      
+      // Test API availability
+      final isAvailable = await apiService.isApiAvailable();
+      
+      if (isAvailable) {
+        // Test GET request
+        final response = await apiService.get('/test');
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('API Test Success: ${response['data']}'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('API is not available'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('API Test Failed: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 }

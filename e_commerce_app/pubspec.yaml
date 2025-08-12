@@ -35,6 +35,12 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
 
+  # Dependency injection
+  get_it: ^7.6.7
+
+  # Environment management
+  flutter_dotenv: ^5.2.1
+
   ec_design:
     path: ../packages/ec_design
   ec_flavor:
