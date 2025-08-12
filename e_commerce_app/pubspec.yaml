@@ -37,6 +37,8 @@ dependencies:
 
   ec_design:
     path: ../packages/ec_design
+  ec_secrets:
+    path: ../packages/ec_secrets
 
 dev_dependencies:
   flutter_test:
