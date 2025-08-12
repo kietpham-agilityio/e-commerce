@@ -1,7 +1,4 @@
 {
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
     {
@@ -42,6 +39,75 @@
       "flutterMode": "release"
     },
     {
+      "name": "e_commerce_app (dev)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_dev.dart",
+      "args": ["--flavor", "dev"],
+      "env": {
+        "FLAVOR": "dev"
+      }
+    },
+    {
+      "name": "e_commerce_app (staging)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_stag.dart",
+      "args": ["--flavor", "staging"],
+      "env": {
+        "FLAVOR": "staging"
+      }
+    },
+    {
+      "name": "e_commerce_app (production)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_prod.dart",
+      "args": ["--flavor", "production"],
+      "env": {
+        "FLAVOR": "production"
+      }
+    },
+    {
+      "name": "e_commerce_app (dev - profile mode)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "program": "lib/main_dev.dart",
+      "args": ["--flavor", "dev"],
+      "env": {
+        "FLAVOR": "dev"
+      }
+    },
+    {
+      "name": "e_commerce_app (staging - profile mode)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "program": "lib/main_stag.dart",
+      "args": ["--flavor", "staging"],
+      "env": {
+        "FLAVOR": "staging"
+      }
+    },
+    {
+      "name": "e_commerce_app (production - profile mode)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "program": "lib/main_prod.dart",
+      "args": ["--flavor", "production"],
+      "env": {
+        "FLAVOR": "production"
+      }
+    },
+    {
       "name": "ec_design",
       "cwd": "packages/ec_design",
       "request": "launch",
@@ -49,14 +115,14 @@
     },
     {
       "name": "ec_design (profile mode)",
-      "cwd": "packages/ec_design",
+      "cwd": "e_commerce_app",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile"
     },
     {
       "name": "ec_design (release mode)",
-      "cwd": "packages/ec_design",
+      "cwd": "e_commerce_app",
       "request": "launch",
       "type": "dart",
       "flutterMode": "release"
