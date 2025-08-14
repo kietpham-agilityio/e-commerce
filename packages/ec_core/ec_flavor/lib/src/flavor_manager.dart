@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'ec_flavor.dart';
 import 'flavor_config.dart';
 import 'flavor_environment.dart';
+import 'flavor_detector.dart';
 
 /// Manages the current application flavor and provides easy access to configuration
 class FlavorManager {
@@ -20,6 +21,20 @@ class FlavorManager {
       print('API Base URL: ${_currentConfig?.apiBaseUrl}');
       print('Logging enabled: ${_currentConfig?.enableLogging}');
     }
+  }
+
+  /// Initialize the flavor manager with automatic flavor detection
+  /// This is the recommended method for most applications
+  static Future<EcFlavor> initializeWithAutoDetection() async {
+    final detectedFlavor = await FlavorDetector.autoDetectAndLoad();
+    initialize(detectedFlavor);
+    return detectedFlavor;
+  }
+
+  /// Initialize the flavor manager with a specific flavor and load environment
+  static Future<void> initializeWithEnvironment(EcFlavor flavor) async {
+    await FlavorDetector.loadEnvironmentConfig(flavor);
+    initialize(flavor);
   }
 
   /// Get the current flavor
@@ -95,4 +110,10 @@ class FlavorManager {
       'maxRetries': _currentConfig!.maxRetries,
     };
   }
+
+  /// Get flavor detection information
+  static Map<String, dynamic> get detectionInfo => FlavorDetector.getDetectionInfo();
+
+  /// Check if the flavor manager is initialized
+  static bool get isInitialized => _currentFlavor != null;
 }

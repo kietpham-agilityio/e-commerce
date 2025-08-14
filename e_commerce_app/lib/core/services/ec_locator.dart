@@ -1,9 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:ec_flavor/ec_flavor.dart';
-import 'flavor_service_locator.dart';
+import 'api_service.dart';
 
 /// Main service locator for the e-commerce application
 /// This class provides centralized access to all application services
+/// and handles flavor management through EcFlavor
 class EcLocator {
   static final GetIt _getIt = GetIt.instance;
   static bool _isInitialized = false;
@@ -16,8 +17,8 @@ class EcLocator {
     }
 
     try {
-      // Initialize flavor services first
-      await FlavorServiceLocator.initialize();
+      // Initialize flavor management first using EcFlavor
+      await _initializeFlavor();
       
       // Register core application services
       _registerCoreServices();
@@ -34,6 +35,59 @@ class EcLocator {
       _isInitialized = true;
     } catch (e) {
       rethrow;
+    }
+  }
+
+  /// Initialize flavor management using EcFlavor
+  static Future<void> _initializeFlavor() async {
+    try {
+      // Use EcFlavor's automatic detection and initialization
+      final detectedFlavor = await FlavorManager.initializeWithAutoDetection();
+      
+      // Register flavor-specific services
+      _registerFlavorServices(detectedFlavor);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Register flavor-specific services
+  static void _registerFlavorServices(EcFlavor flavor) {
+    // Register flavor-specific API service
+    _registerApiService(flavor);
+    
+    // Register other flavor-specific services
+    _registerOtherServices(flavor);
+  }
+
+  /// Register API service with flavor-specific configuration
+  static void _registerApiService(EcFlavor flavor) {
+    // Get flavor configuration
+    final config = FlavorConfig.getConfig(flavor);
+    
+    // Register API service with flavor-specific configuration
+    _getIt.registerLazySingleton<ApiService>(() => ApiService(
+      baseUrl: config.apiBaseUrl,
+      timeout: Duration(seconds: config.timeoutSeconds),
+      maxRetries: config.maxRetries,
+    ));
+  }
+
+  /// Register other flavor-specific services
+  static void _registerOtherServices(EcFlavor flavor) {
+    // Register logging service based on flavor configuration
+    if (FlavorConfig.getConfig(flavor).enableLogging) {
+      _getIt.registerLazySingleton<LoggingService>(() => LoggingService());
+    }
+    
+    // Register analytics service based on flavor configuration
+    if (FlavorConfig.getConfig(flavor).enableAnalytics) {
+      _getIt.registerLazySingleton<AnalyticsService>(() => AnalyticsService());
+    }
+    
+    // Register crashlytics service based on flavor configuration
+    if (FlavorConfig.getConfig(flavor).enableCrashlytics) {
+      _getIt.registerLazySingleton<CrashlyticsService>(() => CrashlyticsService());
     }
   }
 
@@ -107,16 +161,25 @@ class EcLocator {
 
   /// Get the current flavor configuration
   static FlavorEnvironment getCurrentConfig() {
-    return FlavorServiceLocator.getCurrentConfig();
+    if (!FlavorManager.isInitialized) {
+      throw StateError('Flavor not initialized. Call initialize() first.');
+    }
+    return FlavorManager.currentConfig;
   }
 
   /// Check if a feature is enabled
   static bool isFeatureEnabled(String feature) {
-    return FlavorServiceLocator.isFeatureEnabled(feature);
+    if (!FlavorManager.isInitialized) {
+      throw StateError('Flavor not initialized. Call initialize() first.');
+    }
+    return FlavorManager.isFeatureEnabled(feature);
   }
 
   /// Get the current flavor
   static EcFlavor getCurrentFlavor() {
+    if (!FlavorManager.isInitialized) {
+      throw StateError('Flavor not initialized. Call initialize() first.');
+    }
     return FlavorManager.currentFlavor;
   }
 
@@ -124,6 +187,7 @@ class EcLocator {
   static void reset() {
     _getIt.reset();
     _isInitialized = false;
+    FlavorManager.reset();
   }
 
   /// Check if the locator is initialized
@@ -331,4 +395,41 @@ class PaymentService {
     // Placeholder implementation
     return {};
   }
+}
+
+/// Logging service for development and debugging
+class LoggingService {
+  void log(String message) {
+    // Placeholder implementation
+    print('LOG: $message');
+  }
+}
+
+/// Analytics service for tracking user behavior
+class AnalyticsService {
+  void track(String event) {
+    // Placeholder implementation
+    print('ANALYTICS: $event');
+  }
+}
+
+/// Crashlytics service for error reporting
+class CrashlyticsService {
+  void recordError(dynamic error) {
+    // Placeholder implementation
+    print('CRASHLYTICS: $error');
+  }
+}
+
+/// Extension methods for easier service access
+extension EcLocatorExtension on Object {
+  T getService<T extends Object>() => EcLocator.get<T>();
+  
+  bool hasService<T extends Object>() => EcLocator.isRegistered<T>();
+  
+  FlavorEnvironment get currentFlavorConfig => EcLocator.getCurrentConfig();
+  
+  bool isFeatureEnabled(String feature) => EcLocator.isFeatureEnabled(feature);
+  
+  EcFlavor get currentFlavor => EcLocator.getCurrentFlavor();
 }

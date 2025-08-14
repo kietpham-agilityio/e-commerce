@@ -1,260 +1,299 @@
-# EcLocator - Main Service Locator
+# E-Commerce Service Locator Guide
 
 ## Overview
 
-The `EcLocator` is the main service locator for the entire e-commerce application. It serves as a centralized hub that integrates the `FlavorServiceLocator` and provides access to all application services through a unified interface.
+The `EcLocator` is the main service locator for the entire e-commerce application. It serves as a centralized hub that integrates with `EcFlavor` for flavor management and provides access to all application services through a unified interface.
 
 ## Architecture
 
 ```
-EcLocator (Main Service Locator)
-├── FlavorServiceLocator (Flavor-specific services)
-│   ├── ApiService
-│   ├── LoggingService
-│   ├── AnalyticsService
-│   └── CrashlyticsService
-├── Core Services
-│   ├── AppConfigService
-│   ├── AppStateService
-│   └── NavigationService
-├── Feature Services
-│   ├── FeatureFlagService
-│   ├── ConfigurationService
-│   └── ThemeService
-├── API Services
-│   ├── HttpClientService
-│   ├── AuthService
-│   └── NetworkService
-└── Business Services
-    ├── UserService
-    ├── ProductService
-    ├── OrderService
-    ├── CartService
-    └── PaymentService
+EcLocator (Main service locator)
+├── EcFlavor Integration (Flavor detection & management)
+├── Core Services (App config, state, navigation)
+├── Feature Services (Feature flags, configuration, theming)
+├── API Services (HTTP client, auth, network)
+└── Business Services (User, product, order, cart, payment)
 ```
 
 ## Key Features
 
-### 1. **Unified Service Management**
-- Single point of access to all application services
-- Consistent service registration and retrieval patterns
-- Centralized dependency injection management
+- **Centralized Service Management**: Single point of access for all application services
+- **EcFlavor Integration**: Leverages EcFlavor package for environment-specific configurations
+- **Dependency Injection**: Uses GetIt for efficient service registration and retrieval
+- **Lazy Loading**: Services are created only when first accessed
+- **Error Handling**: Comprehensive error handling with meaningful error messages
+- **Testing Support**: Easy service reset for unit testing
 
-### 2. **Flavor Integration**
-- Automatically initializes `FlavorServiceLocator`
-- Provides flavor-aware service access
-- Maintains environment-specific configurations
+## Initialization
 
-### 3. **Simplified Initialization**
-- Single `EcLocator.initialize()` call sets up everything
-- No manual `FlavorManager.initialize()` required
-- Clean error handling with proper failure propagation
-
-### 4. **Extensible Architecture**
-- Easy to add new services
-- Modular service registration
-- Clear separation of concerns
-
-### 5. **Future-Ready Services**
-- Placeholder implementations for upcoming features
-- Structured service categories
-- Consistent service interfaces
-
-## Service Categories
-
-### Core Services
-Services that are always available and essential for app operation.
-
-- **AppConfigService**: Application configuration and metadata
-- **AppStateService**: Global application state management
-- **NavigationService**: App routing and navigation
-
-### Feature Services
-Services for feature flags, configuration, and theming.
-
-- **FeatureFlagService**: Feature toggle management
-- **ConfigurationService**: App settings and preferences
-- **ThemeService**: UI theming and appearance
-
-### API Services
-Network and communication services.
-
-- **HttpClientService**: HTTP request handling
-- **AuthService**: Authentication and authorization
-- **NetworkService**: Network connectivity monitoring
-
-### Business Services
-Domain-specific business logic services.
-
-- **UserService**: User management and profiles
-- **ProductService**: Product catalog and management
-- **OrderService**: Order processing and management
-- **CartService**: Shopping cart functionality
-- **PaymentService**: Payment processing
-
-## Usage
-
-### Initialization
+### Basic Initialization
 
 ```dart
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  try {
-    // Initialize all application services
-    await EcLocator.initialize();
-    runApp(const MyApp());
-  } catch (e) {
-    // Exit app if initialization fails
-    rethrow;
+  // Initialize all services (including flavor management)
+  await EcLocator.initialize();
+  
+  runApp(MyApp());
+}
+```
+
+### Initialization Process
+
+The `EcLocator.initialize()` method performs the following steps:
+
+1. **Flavor Management**: Uses EcFlavor's automatic detection and initialization
+2. **Service Registration**: Registers all application services
+3. **Flavor Services**: Registers flavor-specific services based on configuration
+
+## Service Registration
+
+### Core Services
+
+```dart
+// Automatically registered during initialization
+final appConfig = EcLocator.get<AppConfigService>();
+final appState = EcLocator.get<AppStateService>();
+final navigation = EcLocator.get<NavigationService>();
+```
+
+### Feature Services
+
+```dart
+// Feature flag management
+final featureFlags = EcLocator.get<FeatureFlagService>();
+final isEnabled = featureFlags.isFeatureEnabled('dark_mode');
+
+// Configuration management
+final config = EcLocator.get<ConfigurationService>();
+final apiUrl = config.getString('api_url');
+
+// Theme management
+final theme = EcLocator.get<ThemeService>();
+final currentTheme = theme.currentTheme;
+```
+
+### API Services
+
+```dart
+// HTTP client
+final httpClient = EcLocator.get<HttpClientService>();
+final response = await httpClient.get('/api/products');
+
+// Authentication
+final auth = EcLocator.get<AuthService>();
+final isLoggedIn = auth.isAuthenticated;
+
+// Network connectivity
+final network = EcLocator.get<NetworkService>();
+final isConnected = network.isConnected;
+```
+
+### Business Services
+
+```dart
+// User management
+final userService = EcLocator.get<UserService>();
+final currentUser = await userService.getCurrentUser();
+
+// Product management
+final productService = EcLocator.get<ProductService>();
+final products = await productService.getProducts();
+
+// Order management
+final orderService = EcLocator.get<OrderService>();
+final orders = await orderService.getOrders();
+
+// Shopping cart
+final cartService = EcLocator.get<CartService>();
+final cartItems = cartService.items;
+
+// Payment processing
+final paymentService = EcLocator.get<PaymentService>();
+final success = await paymentService.processPayment(paymentData);
+```
+
+## Flavor Management
+
+### Automatic Flavor Detection
+
+The system automatically detects the current build flavor using EcFlavor's built-in detection:
+
+```dart
+// EcLocator automatically uses EcFlavor for flavor management
+await EcLocator.initialize();
+
+// Get current flavor
+final flavor = EcLocator.getCurrentFlavor();
+
+// Get flavor configuration
+final config = EcLocator.getCurrentConfig();
+
+// Check feature availability
+final isFeatureEnabled = EcLocator.isFeatureEnabled('analytics');
+```
+
+### Flavor-Specific Services
+
+The locator automatically registers flavor-specific services based on the current configuration:
+
+- **Development**: Full logging, debugging, and development tools
+- **Staging**: Limited logging, analytics enabled, crashlytics enabled
+- **Production**: Minimal logging, analytics enabled, crashlytics enabled
+
+## Error Handling
+
+### Service Not Found
+
+```dart
+try {
+  final service = EcLocator.get<NonExistentService>();
+} catch (e) {
+  if (e is StateError) {
+    print('Service not registered: ${e.message}');
   }
 }
 ```
 
-### Service Access
+### Not Initialized
 
 ```dart
-// Get any registered service
-final userService = EcLocator.get<UserService>();
-final productService = EcLocator.get<ProductService>();
-
-// Check if a service is registered
-if (EcLocator.isRegistered<PaymentService>()) {
-  final paymentService = EcLocator.get<PaymentService>();
-  // Use payment service
+try {
+  final service = EcLocator.get<AppConfigService>();
+} catch (e) {
+  if (e is StateError && e.message.contains('not initialized')) {
+    print('Call EcLocator.initialize() first');
+  }
 }
 ```
 
-### Flavor-Specific Access
+## Extension Methods
+
+The `EcLocatorExtension` provides convenient access methods:
 
 ```dart
-// Get current flavor configuration
-final config = EcLocator.getCurrentConfig();
-final appName = config.appName;
-final apiUrl = config.apiBaseUrl;
+// Get service directly
+final userService = this.getService<UserService>();
 
-// Check feature flags
-if (EcLocator.isFeatureEnabled('logging')) {
-  // Enable logging features
+// Check service availability
+if (this.hasService<PaymentService>()) {
+  final payment = this.getService<PaymentService>();
 }
 
-// Get current flavor
-final flavor = EcLocator.getCurrentFlavor();
-final flavorName = flavor.displayName;
+// Access flavor information
+final config = this.currentFlavorConfig;
+final flavor = this.currentFlavor;
+final isEnabled = this.isFeatureEnabled('feature_name');
 ```
-
-### Service Registration
-
-The `EcLocator` automatically registers all services during initialization:
-
-1. **Flavor Services**: Via `FlavorServiceLocator.initialize()`
-2. **Core Services**: Essential app services
-3. **Feature Services**: Feature management services
-4. **API Services**: Network and communication services
-5. **Business Services**: Domain-specific services
-
-## Service Implementation Status
-
-### ✅ Implemented
-- `FlavorServiceLocator` integration
-- Service registration framework
-- Basic service interfaces
-
-### 🔄 Placeholder (To Be Implemented)
-- All business logic services
-- Feature flag management
-- Configuration management
-- Theme management
-- Network services
-- Authentication services
-
-### 📋 Implementation Notes
-
-When implementing the placeholder services:
-
-1. **Replace placeholder classes** with real implementations
-2. **Maintain the same interface** for backward compatibility
-3. **Add proper error handling** and logging
-4. **Implement proper testing** for each service
-5. **Follow dependency injection patterns** established by the framework
-
-## Error Handling
-
-The `EcLocator` includes comprehensive error handling:
-
-- **Initialization errors** are caught and propagated
-- **Service not found** errors provide clear error messages
-- **State validation** before service access
-- **Clean error propagation** without masking failures
 
 ## Testing
 
+### Service Reset
+
 ```dart
-// Reset services for testing
+// Reset all services (useful for testing)
 EcLocator.reset();
 
-// Re-initialize with test configuration
+// Re-initialize for next test
 await EcLocator.initialize();
-
-// Test service access
-final testService = EcLocator.get<TestService>();
 ```
 
-## Migration from FlavorServiceLocator
+### Mock Services
 
-### Before (Direct FlavorServiceLocator usage)
 ```dart
-import 'core/services/flavor_service_locator.dart';
+// Register mock services for testing
+GetIt.instance.registerLazySingleton<ApiService>(() => MockApiService());
 
-// Initialize
-await FlavorServiceLocator.initialize();
+// Run tests
+// ...
 
-// Access services
-final config = FlavorServiceLocator.getCurrentConfig();
-final apiService = FlavorServiceLocator.get<ApiService>();
+// Reset to original services
+EcLocator.reset();
+await EcLocator.initialize();
+```
+
+## Best Practices
+
+### 1. Initialization Order
+- Always call `EcLocator.initialize()` before accessing any services
+- Initialize in `main()` or app startup
+- Handle initialization errors gracefully
+
+### 2. Service Access
+- Use `EcLocator.get<T>()` for service retrieval
+- Check service availability with `EcLocator.isRegistered<T>()`
+- Handle missing services gracefully
+
+### 3. Flavor Management
+- EcFlavor handles all flavor detection automatically
+- Use feature flags for flavor-specific features
+- Test with different flavors during development
+
+### 4. Error Handling
+- Always wrap service access in try-catch blocks
+- Provide meaningful error messages to users
+- Log errors for debugging
+
+### 5. Testing
+- Reset services between tests
+- Mock external dependencies
+- Test with different flavor configurations
+
+## Migration from Direct Service Usage
+
+### Before (Direct service creation)
+
+```dart
+// Old way - direct service creation
+final apiService = ApiService(
+  baseUrl: 'https://api.example.com',
+  timeout: Duration(seconds: 30),
+);
+
+// Old way - manual flavor detection
+final flavor = Platform.environment['FLAVOR'] ?? 'dev';
+final config = FlavorConfig.getConfig(flavor);
 ```
 
 ### After (Using EcLocator)
-```dart
-import 'core/services/ec_locator.dart';
 
-// Initialize (includes FlavorServiceLocator automatically)
+```dart
+// New way - centralized service access
 await EcLocator.initialize();
 
-// Access services (same interface)
-final config = EcLocator.getCurrentConfig();
 final apiService = EcLocator.get<ApiService>();
-
-// Plus access to additional services
-final userService = EcLocator.get<UserService>();
-final themeService = EcLocator.get<ThemeService>();
+final config = EcLocator.getCurrentConfig();
 ```
 
-### Key Benefits of Migration
-- **Single initialization call** - No need to manage multiple service locators
-- **Automatic flavor setup** - FlavorManager is initialized automatically
-- **Unified service access** - All services accessible through one interface
-- **Cleaner error handling** - Single point of failure with proper error propagation
+## Troubleshooting
 
-## Benefits
+### Common Issues
 
-1. **Centralized Management**: Single point for all service operations
-2. **Consistent Interface**: Uniform service access patterns
-3. **Easy Extension**: Simple to add new services
-4. **Better Testing**: Centralized service mocking and testing
-5. **Future-Proof**: Structured for upcoming feature implementations
-6. **Maintainable**: Clear separation of service categories
-7. **Scalable**: Easy to add new service types and implementations
+1. **Service Not Found**
+   - Ensure the service is registered in the appropriate registration method
+   - Check that the service class exists and is properly imported
 
-## Next Steps
+2. **Initialization Errors**
+   - Verify that all required dependencies are available
+   - Check EcFlavor configuration files
+   - Ensure proper error handling in initialization
 
-1. **Implement Business Services**: Start with core e-commerce functionality
-2. **Add Feature Flags**: Implement proper feature toggle management
-3. **Enhance Configuration**: Add dynamic configuration management
-4. **Improve Error Handling**: Add more sophisticated error handling
-5. **Add Monitoring**: Implement service health monitoring
-6. **Performance Optimization**: Add service caching and optimization
+3. **Flavor Detection Issues**
+   - EcFlavor handles detection automatically
+   - Verify environment variables are set correctly
+   - Check flavor-specific files exist
 
-## Conclusion
+4. **Performance Issues**
+   - Services are lazy-loaded by default
+   - Use `reset()` sparingly in production
+   - Monitor service creation and disposal
 
-The `EcLocator` provides a robust foundation for the e-commerce application's service architecture. It seamlessly integrates with the existing flavor management system while providing a clear path for future service implementations. The placeholder services ensure that the architecture is ready for real implementations without breaking the current functionality.
+## Support
+
+For issues with the service locator:
+1. Check this documentation
+2. Review the service registration methods
+3. Verify EcFlavor configuration
+4. Check error logs for specific issues
+5. Contact the development team for complex problems

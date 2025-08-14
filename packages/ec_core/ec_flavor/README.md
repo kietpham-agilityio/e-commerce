@@ -1,618 +1,405 @@
-# ec_flavor Package - Developer Guide
+# EcFlavor - Flavor Management Package
 
-This guide explains how to reuse, customize, and maintain the `ec_flavor` package for your Flutter applications, following the [Flutter official flavors documentation](https://docs.flutter.dev/deployment/flavors).
+A comprehensive flavor management package for Flutter applications that provides automatic flavor detection, environment configuration, and flavor-specific service management.
 
-## 📦 Package Overview
+## Features
 
-The `ec_flavor` package provides a robust environment management system for Flutter applications with multiple build flavors (development, staging, production). It automatically detects the current environment and loads appropriate configurations, working seamlessly with Flutter's built-in flavor system.
+- **Automatic Flavor Detection**: Multiple detection methods for reliable flavor identification
+- **Environment Configuration**: Automatic loading of flavor-specific environment files
+- **Flavor Management**: Centralized flavor state management with validation
+- **Service Integration**: Easy integration with dependency injection systems
+- **Debug Support**: Comprehensive debugging information and logging
 
-## 🏗️ Package Structure
+## Quick Start
 
-```text
-ec_flavor/
-├── lib/
-│   ├── ec_flavor.dart              # Main package export
-│   └── src/
-│       ├── ec_flavor.dart          # EcFlavor enum
-│       ├── flavor_config.dart      # Environment configuration
-│       ├── flavor_environment.dart # Environment model
-│       ├── flavor_manager.dart     # Flavor management logic
-│       └── flavor_utils.dart       # Utility functions
-├── env.dev                         # Development environment template
-├── env.staging                     # Staging environment template
-├── env.prod                        # Production environment template
-├── env_template                    # All environments reference
-├── setup_env.sh                    # Environment setup script
-└── .gitignore                      # Git ignore rules
-```
-
-## 🚀 Quick Start - Reusing the Package
-
-### 1. Add to Your Project
-
-```yaml
-# pubspec.yaml
-dependencies:
-  ec_flavor:
-    path: ../path/to/ec_flavor
-  flutter_dotenv: ^5.2.1
-```
-
-### 2. Initialize in Your App
+### Basic Usage
 
 ```dart
 import 'package:ec_flavor/ec_flavor.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize flavor manager
-  FlavorManager.initialize(EcFlavor.dev);
-
-  runApp(const MyApp());
+  
+  // Auto-detect and initialize flavor
+  final flavor = await FlavorManager.initializeWithAutoDetection();
+  
+  print('Current flavor: ${flavor.displayName}');
+  print('API URL: ${FlavorManager.apiBaseUrl}');
+  
+  runApp(MyApp());
 }
 ```
 
-### 3. Use Environment Configuration
+### Manual Initialization
 
 ```dart
-// Get current flavor
-final flavor = FlavorManager.currentFlavor;
+// Initialize with specific flavor
+FlavorManager.initialize(EcFlavor.staging);
 
-// Get environment configuration
-final config = FlavorManager.currentConfig;
-
-// Check feature flags
-if (FlavorManager.isFeatureEnabled('logging')) {
-  // Enable logging
-}
+// Initialize with environment loading
+await FlavorManager.initializeWithEnvironment(EcFlavor.production);
 ```
 
-## 🔧 Flutter Flavors Setup
+## Architecture
 
-This package works with Flutter's built-in flavor system. Follow the official Flutter documentation to set up flavors for your platform:
+### Core Components
 
-### Android Flavors
-
-Follow the [Flutter Android Flavors Guide](https://docs.flutter.dev/deployment/flavors):
-
-#### 1. Configure build.gradle.kts
-
-```kotlin
-// android/app/build.gradle.kts
-android {
-    // ... existing configuration
-
-    flavorDimensions += "default"
-    productFlavors {
-        create("dev") {
-            dimension = "default"
-            applicationIdSuffix = ".dev"
-        }
-        create("staging") {
-            dimension = "default"
-            applicationIdSuffix = ".staging"
-        }
-        create("production") {
-            dimension = "default"
-            applicationIdSuffix = ".production"
-        }
-    }
-}
+```
+EcFlavor Package
+├── EcFlavor (Enum)
+├── FlavorManager (State Management)
+├── FlavorDetector (Detection & Environment)
+├── FlavorConfig (Configuration)
+└── FlavorEnvironment (Environment Data)
 ```
 
-#### 2. Create Flavor-Specific Resources
+### Flavor Detection Methods
 
-Create distinct app names and icons for each flavor:
+The package uses multiple detection methods in order of reliability:
 
-```kotlin
-// android/app/build.gradle.kts
-android {
-    flavorDimensions += "default"
-    productFlavors {
-        create("dev") {
-            dimension = "default"
-            applicationIdSuffix = ".dev"
-            resValue(
-                type = "string",
-                name = "app_name",
-                value = "My App Dev"
-            )
-        }
-        create("staging") {
-            dimension = "default"
-            applicationIdSuffix = ".staging"
-            resValue(
-                type = "string",
-                name = "app_name",
-                value = "My App Staging"
-            )
-        }
-        create("production") {
-            dimension = "default"
-            applicationIdSuffix = ".production"
-            resValue(
-                type = "string",
-                name = "app_name",
-                value = "My App"
-            )
-        }
-    }
-}
-```
+1. **Build Arguments**: Check for `FLAVOR` environment variable
+2. **Environment Variables**: Check for flavor-specific environment variables
+3. **File Detection**: Check for existence of flavor-specific files
+4. **Default Fallback**: Default to development if no flavor is detected
 
-#### 3. Update AndroidManifest.xml
+## API Reference
 
-```xml
-<!-- android/app/src/main/AndroidManifest.xml -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <application
-        android:label="@string/app_name"
-        android:icon="@mipmap/ic_launcher"
-        ... />
-</manifest>
-```
-
-### iOS Flavors
-
-Follow the [Flutter iOS Flavors Guide](https://docs.flutter.dev/deployment/flavors-ios):
-
-#### 1. Create Build Configurations
-
-In Xcode, create build configurations for each flavor:
-
-- `Debug-Dev`
-- `Debug-Staging`
-- `Debug-Production`
-- `Release-Dev`
-- `Release-Staging`
-- `Release-Production`
-
-#### 2. Configure Info.plist
-
-Create flavor-specific `Info.plist` files or use build settings to customize:
-
-- App display name
-- Bundle identifier
-- App icons
-- Other iOS-specific configurations
-
-#### 3. Set Up Xcode Schemes
-
-Create separate schemes for each flavor to easily switch between configurations.
-
-## 🎯 Launch Flavors
-
-After setting up flavors, launch your app with specific flavors:
-
-### Flutter CLI Commands
-
-```bash
-# Run with specific flavor
-flutter run --flavor dev
-flutter run --flavor staging
-flutter run --flavor production
-
-# Build with specific flavor
-flutter build apk --flavor dev
-flutter build apk --flavor staging
-flutter build apk --flavor production
-
-# iOS builds
-flutter build ios --flavor dev
-flutter build ios --flavor staging
-flutter build ios --flavor production
-```
-
-### VS Code Launch Configurations
-
-Configure `.vscode/launch.json` for easy debugging:
-
-```json
-{
-  "name": "Dev Flavor",
-  "request": "launch",
-  "type": "dart",
-  "program": "lib/main_dev.dart",
-  "args": ["--flavor", "dev"]
-},
-{
-  "name": "Staging Flavor",
-  "request": "launch",
-  "type": "dart",
-  "program": "lib/main_stag.dart",
-  "args": ["--flavor", "staging"]
-},
-{
-  "name": "Production Flavor",
-  "request": "launch",
-  "type": "dart",
-  "program": "lib/main_prod.dart",
-  "args": ["--flavor", "production"]
-}
-```
-
-## 🔧 Customization Guide
-
-### Adding New Environment Variables
-
-#### 1. Update FlavorEnvironment Model
+### EcFlavor Enum
 
 ```dart
-// lib/src/flavor_environment.dart
-class FlavorEnvironment {
-  const FlavorEnvironment({
-    required this.apiBaseUrl,
-    required this.appName,
-    required this.appVersion,
-    required this.enableLogging,
-    required this.enableAnalytics,
-    required this.enableCrashlytics,
-    required this.timeoutSeconds,
-    required this.maxRetries,
-    // Add your new variables here
-    required this.databaseUrl,
-    required this.apiKey,
-  });
-
-  final String apiBaseUrl;
-  final String appName;
-  final String appVersion;
-  final bool enableLogging;
-  final bool enableAnalytics;
-  final bool enableCrashlytics;
-  final int timeoutSeconds;
-  final int maxRetries;
-  // Add your new variables here
-  final String databaseUrl;
-  final String apiKey;
-}
-```
-
-#### 2. Update Environment Files
-
-```bash
-# env.dev
-API_BASE_URL=https://api-dev.example.com
-APP_NAME=My App Dev
-APP_VERSION=1.0.0-dev
-ENABLE_LOGGING=true
-ENABLE_ANALYTICS=false
-ENABLE_CRASHLYTICS=false
-TIMEOUT_SECONDS=60
-MAX_RETRIES=5
-# Add your new variables
-DATABASE_URL=postgresql://dev:password@localhost:5432/dev_db
-API_KEY=dev_api_key_123
-```
-
-#### 3. Update FlavorConfig
-
-```dart
-// lib/src/flavor_config.dart
-static FlavorEnvironment get dev => FlavorEnvironment(
-  apiBaseUrl: dotenv.env['API_BASE_URL'] ?? 'https://api-dev.example.com',
-  appName: dotenv.env['APP_NAME'] ?? 'My App Dev',
-  appVersion: dotenv.env['APP_VERSION'] ?? '1.0.0-dev',
-  enableLogging: _parseBool(dotenv.env['ENABLE_LOGGING'] ?? 'true'),
-  enableAnalytics: _parseBool(dotenv.env['ENABLE_ANALYTICS'] ?? 'false'),
-  enableCrashlytics: _parseBool(dotenv.env['ENABLE_CRASHLYTICS'] ?? 'false'),
-  timeoutSeconds: int.tryParse(dotenv.env['TIMEOUT_SECONDS'] ?? '60') ?? 60,
-  maxRetries: int.tryParse(dotenv.env['MAX_RETRIES'] ?? '5') ?? 5,
-  // Add your new variables
-  databaseUrl: dotenv.env['DATABASE_URL'] ?? 'postgresql://localhost:5432/dev_db',
-  apiKey: dotenv.env['API_KEY'] ?? 'dev_key',
-);
-```
-
-### Adding New Flavors
-
-#### 1. Extend EcFlavor Enum
-
-```dart
-// lib/src/ec_flavor.dart
 enum EcFlavor {
   dev('dev', 'Development'),
   staging('staging', 'Staging'),
-  production('production', 'Production'),
-  // Add your new flavor
-  testing('testing', 'Testing');
-
+  production('production', 'Production');
+  
   const EcFlavor(this.value, this.displayName);
+  
   final String value;
   final String displayName;
 }
 ```
 
-#### 2. Create Environment File
+**Properties:**
+- `value`: String identifier for the flavor
+- `displayName`: Human-readable name
+- `isDev`, `isStaging`, `isProduction`: Boolean checks
+
+**Methods:**
+- `fromString(String value)`: Convert string to flavor enum
+- `toString()`: Convert flavor to string
+
+### FlavorManager
+
+**Initialization Methods:**
+```dart
+// Basic initialization
+static void initialize(EcFlavor flavor)
+
+// Auto-detection initialization (recommended)
+static Future<EcFlavor> initializeWithAutoDetection()
+
+// Environment-aware initialization
+static Future<void> initializeWithEnvironment(EcFlavor flavor)
+```
+
+**Access Methods:**
+```dart
+// Current flavor
+static EcFlavor get currentFlavor
+
+// Current configuration
+static FlavorEnvironment get currentConfig
+
+// Boolean checks
+static bool get isDev
+static bool get isStaging
+static bool get isProduction
+
+// Configuration access
+static String get apiBaseUrl
+static String get appName
+static String get appVersion
+
+// Feature flags
+static bool isFeatureEnabled(String feature)
+
+// Debug information
+static Map<String, dynamic> get debugInfo
+static Map<String, dynamic> get detectionInfo
+
+// State check
+static bool get isInitialized
+```
+
+**Utility Methods:**
+```dart
+// Get config for specific flavor
+static FlavorEnvironment getConfig(EcFlavor flavor)
+
+// Get all configurations
+static Map<EcFlavor, FlavorEnvironment> getAllConfigs()
+
+// Reset for testing
+static void reset()
+```
+
+### FlavorDetector
+
+**Detection Methods:**
+```dart
+// Auto-detect current flavor
+static EcFlavor detectFlavor()
+
+// Load environment for specific flavor
+static Future<void> loadEnvironmentConfig(EcFlavor flavor)
+
+// Auto-detect and load environment
+static Future<EcFlavor> autoDetectAndLoad()
+
+// Get detection debug info
+static Map<String, dynamic> getDetectionInfo()
+```
+
+**Environment Methods:**
+```dart
+// Get environment file path
+static String getEnvironmentFilePath(EcFlavor flavor)
+```
+
+## Configuration
+
+### Environment Files
+
+The package automatically looks for environment files in the following locations:
+
+- **Development**: `../packages/ec_core/ec_flavor/env.dev`
+- **Staging**: `../packages/ec_core/ec_flavor/env.staging`
+- **Production**: `../packages/ec_core/ec_flavor/env.prod`
+
+### Environment Variables
+
+Set the `FLAVOR` environment variable when building:
 
 ```bash
-# env.testing
-API_BASE_URL=https://api-test.example.com
-APP_NAME=My App Testing
-APP_VERSION=1.0.0-test
-ENABLE_LOGGING=true
-ENABLE_ANALYTICS=true
-ENABLE_CRASHLYTICS=false
-TIMEOUT_SECONDS=30
-MAX_RETRIES=3
-DATABASE_URL=postgresql://test:password@localhost:5432/test_db
-API_KEY=test_api_key_456
+# Development
+export FLAVOR=dev && flutter build apk --flavor dev
+
+# Staging
+export FLAVOR=staging && flutter build apk --flavor staging
+
+# Production
+export FLAVOR=prod && flutter build apk --flavor prod
 ```
 
-#### 3. Update FlavorConfig
+## Integration Examples
+
+### With EcLocator
 
 ```dart
-// lib/src/flavor_config.dart
-static FlavorEnvironment get testing => FlavorEnvironment(
-  // ... your configuration
-);
-```
+import 'package:ec_flavor/ec_flavor.dart';
+import 'package:ec_design/ec_design.dart';
 
-#### 4. Update Platform-Specific Configurations
-
-**Android (build.gradle.kts):**
-
-```kotlin
-create("testing") {
-    dimension = "default"
-    applicationIdSuffix = ".testing"
-    resValue(
-        type = "string",
-        name = "app_name",
-        value = "My App Testing"
-    )
+class EcLocator {
+  static Future<void> initialize() async {
+    // Use EcFlavor's automatic detection
+    final detectedFlavor = await FlavorManager.initializeWithAutoDetection();
+    
+    // Register flavor-specific services
+    _registerFlavorServices(detectedFlavor);
+    
+    // Register other services...
+  }
 }
 ```
 
-**iOS (Xcode):**
-
-- Create `Debug-Testing` and `Release-Testing` build configurations
-- Add testing scheme
-- Configure testing-specific Info.plist values
-
-#### 5. Update Setup Script
-
-```bash
-# setup_env.sh
-case $ENV in
-  dev|development)
-    SOURCE_FILE="env.dev"
-    ;;
-  staging)
-    SOURCE_FILE="env.staging"
-    ;;
-  prod|production)
-    SOURCE_FILE="env.prod"
-    ;;
-  # Add your new flavor
-  testing)
-    SOURCE_FILE="env.testing"
-    ;;
-  *)
-    echo "Unknown environment: $ENV"
-    echo "Available environments: dev, staging, prod, testing"
-    exit 1
-    ;;
-esac
-```
-
-## 🛠️ Maintenance Tasks
-
-### Regular Maintenance
-
-#### 1. Update Dependencies
-
-```bash
-# Check for updates
-flutter pub outdated
-
-# Update dependencies
-flutter pub upgrade
-
-# Update specific packages
-flutter pub upgrade flutter_dotenv
-```
-
-#### 2. Environment File Validation
-
-Create a validation script to ensure all environment files have required variables:
-
-```bash
-#!/bin/bash
-# validate_env.sh
-
-REQUIRED_VARS=("API_BASE_URL" "APP_NAME" "APP_VERSION" "ENABLE_LOGGING")
-
-for env_file in env.*; do
-  echo "Validating $env_file..."
-  for var in "${REQUIRED_VARS[@]}"; do
-    if ! grep -q "^$var=" "$env_file"; then
-      echo "❌ Missing $var in $env_file"
-      exit 1
-    fi
-  done
-  echo "✅ $env_file is valid"
-done
-```
-
-#### 3. Security Audits
-
-```bash
-# Check for sensitive data in environment files
-grep -r "password\|secret\|key" env.* | grep -v "API_KEY"
-
-# Check for hardcoded URLs
-grep -r "http://" env.*
-```
-
-### Testing Your Changes
-
-#### 1. Unit Tests
+### With GetIt
 
 ```dart
-// test/flavor_config_test.dart
+import 'package:get_it/get_it.dart';
+import 'package:ec_flavor/ec_flavor.dart';
+
+void setupLocator() async {
+  final getIt = GetIt.instance;
+  
+  // Initialize flavor first
+  await FlavorManager.initializeWithAutoDetection();
+  
+  // Register services based on flavor
+  if (FlavorManager.isFeatureEnabled('logging')) {
+    getIt.registerLazySingleton<LoggingService>(() => LoggingService());
+  }
+  
+  // Register other services...
+}
+```
+
+### With Provider
+
+```dart
+import 'package:provider/provider.dart';
+import 'package:ec_flavor/ec_flavor.dart';
+
+class FlavorProvider extends ChangeNotifier {
+  EcFlavor _flavor = EcFlavor.dev;
+  FlavorEnvironment _config;
+  
+  FlavorProvider() {
+    _initializeFlavor();
+  }
+  
+  Future<void> _initializeFlavor() async {
+    _flavor = await FlavorManager.initializeWithAutoDetection();
+    _config = FlavorManager.currentConfig;
+    notifyListeners();
+  }
+  
+  EcFlavor get flavor => _flavor;
+  FlavorEnvironment get config => _config;
+}
+```
+
+## Testing
+
+### Reset Between Tests
+
+```dart
 void main() {
-  group('FlavorConfig Tests', () {
-    test('dev environment loads correctly', () {
-      // Test your configuration
-      final config = FlavorConfig.dev;
-      expect(config.appName, isNotEmpty);
-      expect(config.apiBaseUrl, isNotEmpty);
-    });
+  setUp(() {
+    FlavorManager.reset();
+  });
+  
+  tearDown(() {
+    FlavorManager.reset();
+  });
+  
+  test('should detect development flavor', () async {
+    final flavor = await FlavorManager.initializeWithAutoDetection();
+    expect(flavor, equals(EcFlavor.dev));
   });
 }
 ```
 
-#### 2. Integration Tests
+### Mock Flavor Configuration
 
 ```dart
-// test/flavor_manager_test.dart
+class MockFlavorEnvironment extends Mock implements FlavorEnvironment {
+  @override
+  String get apiBaseUrl => 'https://mock-api.example.com';
+  
+  @override
+  bool get enableLogging => true;
+}
+
 void main() {
-  group('FlavorManager Integration Tests', () {
-    test('initializes with correct flavor', () {
-      FlavorManager.initialize(EcFlavor.dev);
-      expect(FlavorManager.currentFlavor, EcFlavor.dev);
-    });
+  test('should use mock configuration', () {
+    // Register mock config
+    // ... mock setup
+    
+    FlavorManager.initialize(EcFlavor.dev);
+    expect(FlavorManager.apiBaseUrl, equals('https://mock-api.example.com'));
   });
 }
 ```
 
-#### 3. Platform-Specific Testing
+## Debugging
 
-Test each flavor on both platforms:
+### Get Debug Information
 
-```bash
-# Android testing
-flutter test --flavor dev
-flutter test --flavor staging
-flutter test --flavor production
+```dart
+// Current flavor info
+final flavorInfo = FlavorManager.debugInfo;
+print('Flavor: ${flavorInfo['currentFlavor']}');
+print('API URL: ${flavorInfo['apiBaseUrl']}');
 
-# iOS testing (requires Xcode)
-flutter test --flavor dev
-flutter test --flavor staging
-flutter test --flavor production
+// Detection info
+final detectionInfo = FlavorManager.detectionInfo;
+print('Detected: ${detectionInfo['detectedFlavor']}');
+print('Has env var: ${detectionInfo['hasFlavorEnv']}');
 ```
 
-## 📋 Best Practices
+### Debug Mode Logging
 
-### 1. Environment Variable Naming
+The package automatically logs debug information when running in debug mode:
 
-- Use UPPER_SNAKE_CASE for environment variables
-- Prefix with package/app name for uniqueness: `MY_APP_API_URL`
-- Use descriptive names: `DATABASE_CONNECTION_TIMEOUT` not `DB_TO`
+```
+FlavorManager initialized with: Development
+API Base URL: https://dev-api.example.com
+Logging enabled: true
+```
 
-### 2. Default Values
+## Best Practices
 
-- Always provide sensible defaults in `FlavorConfig`
-- Use `??` operator for fallbacks
-- Document default values in comments
+### 1. Initialization
+- Use `initializeWithAutoDetection()` for most applications
+- Initialize flavor before setting up other services
+- Handle initialization errors gracefully
 
-### 3. Security
+### 2. Configuration
+- Keep environment files in the expected locations
+- Use meaningful environment variable names
+- Provide fallback values in FlavorConfig
 
-- Never commit `.env` files to version control
-- Use `.gitignore` to exclude environment files
-- Rotate API keys and secrets regularly
-- Use environment-specific secrets
+### 3. Testing
+- Reset FlavorManager between tests
+- Mock FlavorEnvironment for consistent testing
+- Test with different flavor configurations
 
-### 4. Platform Consistency
+### 4. Error Handling
+- Check `FlavorManager.isInitialized` before use
+- Wrap flavor access in try-catch blocks
+- Provide meaningful error messages
 
-- Keep flavor names consistent between Android and iOS
-- Use the same environment variable names across platforms
-- Test all flavors on both platforms before release
-
-### 5. Documentation
-
-- Update this README when adding new features
-- Document all environment variables
-- Provide examples for common use cases
-- Include troubleshooting guides
-
-## 🔍 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
-#### 1. Environment File Not Found
+1. **Flavor Not Detected**
+   - Check environment variables are set correctly
+   - Verify flavor-specific files exist
+   - Use `getDetectionInfo()` for debugging
 
-```bash
-# Check file exists
-ls -la env.*
+2. **Environment Not Loaded**
+   - Check file paths are correct
+   - Verify file permissions
+   - Check for syntax errors in environment files
 
-# Check file permissions
-chmod 644 env.*
+3. **Configuration Not Available**
+   - Ensure FlavorManager is initialized
+   - Check FlavorConfig provides defaults
+   - Verify flavor enum values match configuration
 
-# Verify file path in FlavorConfig
-```
+### Debug Steps
 
-#### 2. Variables Not Loading
+1. **Check Detection Info**
+   ```dart
+   final info = FlavorManager.detectionInfo;
+   print(info);
+   ```
 
-```dart
-// Debug environment loading
-print('Environment variables: ${dotenv.env}');
-print('API URL: ${dotenv.env['API_BASE_URL']}');
-```
+2. **Verify Initialization**
+   ```dart
+   if (FlavorManager.isInitialized) {
+     print('Flavor: ${FlavorManager.currentFlavor.displayName}');
+   } else {
+     print('Flavor not initialized');
+   }
+   ```
 
-#### 3. Flavor Detection Issues
+3. **Check Configuration**
+   ```dart
+   try {
+     final config = FlavorManager.currentConfig;
+     print('Config loaded: ${config.appName}');
+   } catch (e) {
+     print('Config error: $e');
+   }
+   ```
 
-```dart
-// Check current flavor
-print('Current flavor: ${FlavorManager.currentFlavor}');
-print('Flavor value: ${FlavorManager.currentFlavor.value}');
-```
+## Support
 
-#### 4. Platform-Specific Issues
-
-**Android:**
-
-- Verify `build.gradle.kts` configuration
-- Check flavor dimensions and product flavors
-- Ensure `applicationIdSuffix` is unique
-
-**iOS:**
-
-- Verify Xcode build configurations
-- Check scheme configurations
-- Ensure Info.plist values are set correctly
-
-### Debug Mode
-
-Enable debug logging in your app:
-
-```dart
-if (FlavorManager.isFeatureEnabled('logging')) {
-  print('Flavor: ${FlavorManager.currentFlavor.displayName}');
-  print('Config: ${FlavorManager.currentConfig}');
-}
-```
-
-## 📚 Additional Resources
-
-- [Flutter Environment Variables](https://docs.flutter.dev/deployment/environment-variables)
-- [Flutter Android Flavors Guide](https://docs.flutter.dev/deployment/flavors)
-- [Flutter iOS Flavors Guide](https://docs.flutter.dev/deployment/flavors-ios)
-- [flutter_dotenv Package](https://pub.dev/packages/flutter_dotenv)
-
-## 🤝 Contributing
-
-When contributing to this package:
-
-1. **Follow the existing code style**
-2. **Add tests for new features**
-3. **Update documentation**
-4. **Test with multiple environments**
-5. **Validate environment files**
-6. **Test on both Android and iOS**
-
-## 📞 Support
-
-For issues or questions:
-
-1. Check this README first
-2. Review the [Flutter official flavors documentation](https://docs.flutter.dev/deployment/flavors)
-3. Review existing issues
-4. Create a new issue with:
-   - Flutter version
-   - Package version
-   - Platform (Android/iOS)
-   - Error messages
-   - Steps to reproduce
+For issues with the EcFlavor package:
+1. Check this documentation
+2. Review the detection methods
+3. Verify environment configuration
+4. Check debug information
+5. Contact the development team for complex problems
