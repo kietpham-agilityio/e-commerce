@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'app_palette.dart';
 
-class WzColors {
+class CaColors {
   static ColorScheme light = ColorScheme(
     brightness: Brightness.light,
     primary: EcPalette.red[1]!,
