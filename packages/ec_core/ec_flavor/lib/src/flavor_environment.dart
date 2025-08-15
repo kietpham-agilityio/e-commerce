@@ -1,3 +1,5 @@
+import 'role_config.dart';
+
 /// Environment-specific configuration for different flavors
 class FlavorEnvironment {
   const FlavorEnvironment({
@@ -9,6 +11,7 @@ class FlavorEnvironment {
     required this.enableCrashlytics,
     this.timeoutSeconds = 30,
     this.maxRetries = 3,
+    this.roleConfigs = const {},
   });
 
   /// Base URL for API calls
@@ -34,6 +37,9 @@ class FlavorEnvironment {
   
   /// Maximum retry attempts
   final int maxRetries;
+  
+  /// Role-specific configurations
+  final Map<String, RoleConfig> roleConfigs;
 
   /// Create a copy with updated values
   FlavorEnvironment copyWith({
@@ -45,6 +51,7 @@ class FlavorEnvironment {
     bool? enableCrashlytics,
     int? timeoutSeconds,
     int? maxRetries,
+    Map<String, RoleConfig>? roleConfigs,
   }) {
     return FlavorEnvironment(
       apiBaseUrl: apiBaseUrl ?? this.apiBaseUrl,
@@ -55,6 +62,7 @@ class FlavorEnvironment {
       enableCrashlytics: enableCrashlytics ?? this.enableCrashlytics,
       timeoutSeconds: timeoutSeconds ?? this.timeoutSeconds,
       maxRetries: maxRetries ?? this.maxRetries,
+      roleConfigs: roleConfigs ?? this.roleConfigs,
     );
   }
 
@@ -68,6 +76,7 @@ class FlavorEnvironment {
         'enableAnalytics: $enableAnalytics, '
         'enableCrashlytics: $enableCrashlytics, '
         'timeoutSeconds: $timeoutSeconds, '
-        'maxRetries: $maxRetries)';
+        'maxRetries: $maxRetries, '
+        'roleConfigs: $roleConfigs)';
   }
 }

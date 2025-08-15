@@ -4,3 +4,8 @@ export 'src/flavor_environment.dart';
 export 'src/flavor_manager.dart';
 export 'src/flavor_utils.dart';
 export 'src/flavor_detector.dart';
+export 'src/user_role.dart';
+export 'src/role_config.dart';
+export 'src/role_manager.dart';
+export 'src/flavor_role_manager.dart';
+export 'src/role_utils.dart';
