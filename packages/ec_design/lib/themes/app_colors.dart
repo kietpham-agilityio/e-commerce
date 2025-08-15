@@ -9,58 +9,58 @@ class EcColors {
   static ColorScheme light(ECThemeType app) => switch (app) {
         ECThemeType.user => ColorScheme(
             brightness: Brightness.light,
-            primary: EcLightPalette.ecRed[500]!,
-            onPrimary: EcLightPalette.ecWhite[500]!,
-            secondary: EcLightPalette.ecBlack[900]!,
-            onSecondary: EcLightPalette.ecWhite,
-            error: EcLightPalette.ecRed[700]!,
-            onError: EcLightPalette.ecWhite[500]!,
-            surface: EcLightPalette.ecGrey[500]!,
-            onSurface: EcLightPalette.ecWhite[500]!,
-            outline: EcLightPalette.ecGrey[500],
-            primaryContainer: EcLightPalette.ecWhite[500]!,
+            primary: EcLightPalette.ecRed.shade500,
+            onPrimary: EcLightPalette.ecWhite.shade500,
+            secondary: EcLightPalette.ecBlack.shade900,
+            onSecondary: EcLightPalette.ecWhite.shade500,
+            error: EcLightPalette.ecRed.shade700,
+            onError: EcLightPalette.ecWhite.shade500,
+            surface: EcLightPalette.ecGrey.shade500,
+            onSurface: EcLightPalette.ecWhite.shade500,
+            outline: EcLightPalette.ecGrey.shade500,
+            primaryContainer: EcLightPalette.ecWhite.shade500,
           ),
         ECThemeType.admin => ColorScheme(
             brightness: Brightness.light,
-            primary: EcLightPalette.ecOrange[500]!,
-            onPrimary: EcLightPalette.ecWhite[500]!,
-            secondary: EcLightPalette.ecBlack[900]!,
-            onSecondary: EcLightPalette.ecWhite,
-            error: EcLightPalette.ecRed[700]!,
-            onError: EcLightPalette.ecWhite[500]!,
-            surface: EcLightPalette.ecGrey[500]!,
-            onSurface: EcLightPalette.ecWhite[500]!,
-            outline: EcLightPalette.ecGrey[500],
-            primaryContainer: EcLightPalette.ecWhite[500]!,
+            primary: EcLightPalette.ecOrange.shade500,
+            onPrimary: EcLightPalette.ecWhite.shade500,
+            secondary: EcLightPalette.ecBlack.shade900,
+            onSecondary: EcLightPalette.ecWhite.shade500,
+            error: EcLightPalette.ecRed.shade700,
+            onError: EcLightPalette.ecWhite.shade500,
+            surface: EcLightPalette.ecGrey.shade500,
+            onSurface: EcLightPalette.ecWhite.shade500,
+            outline: EcLightPalette.ecGrey.shade500,
+            primaryContainer: EcLightPalette.ecWhite.shade500,
           ),
       };
 
   static ColorScheme dark(ECThemeType app) => switch (app) {
         ECThemeType.user => ColorScheme(
             brightness: Brightness.dark,
-            primary: EcDarkPalette.ecRed[500]!,
-            onPrimary: EcDarkPalette.ecWhite[900]!,
-            secondary: EcDarkPalette.ecBlack[50]!,
-            onSecondary: EcDarkPalette.ecWhite[900]!,
-            error: EcDarkPalette.ecRed[200]!,
-            onError: EcDarkPalette.ecWhite[900]!,
-            surface: EcDarkPalette.ecGrey[50]!,
-            onSurface: EcDarkPalette.ecWhite[900]!,
-            outline: EcDarkPalette.ecGrey[500]!,
-            primaryContainer: EcDarkPalette.ecWhite[100]!,
+            primary: EcDarkPalette.ecRed.shade500,
+            onPrimary: EcDarkPalette.ecWhite.shade900,
+            secondary: EcDarkPalette.ecBlack.shade50,
+            onSecondary: EcDarkPalette.ecWhite.shade900,
+            error: EcDarkPalette.ecRed.shade200,
+            onError: EcDarkPalette.ecWhite.shade900,
+            surface: EcDarkPalette.ecGrey.shade50,
+            onSurface: EcDarkPalette.ecWhite.shade900,
+            outline: EcDarkPalette.ecGrey.shade500,
+            primaryContainer: EcDarkPalette.ecWhite.shade100,
           ),
         ECThemeType.admin => ColorScheme(
             brightness: Brightness.dark,
-            primary: EcDarkPalette.ecOrange[500]!,
-            onPrimary: EcDarkPalette.ecWhite[900]!,
-            secondary: EcDarkPalette.ecBlack[50]!,
-            onSecondary: EcDarkPalette.ecWhite[900]!,
-            error: EcDarkPalette.ecRed[200]!,
-            onError: EcDarkPalette.ecWhite[900]!,
-            surface: EcDarkPalette.ecGrey[50]!,
-            onSurface: EcDarkPalette.ecWhite[900]!,
-            outline: EcDarkPalette.ecGrey[500]!,
-            primaryContainer: EcDarkPalette.ecWhite[100]!,
+            primary: EcDarkPalette.ecOrange.shade500,
+            onPrimary: EcDarkPalette.ecWhite.shade900,
+            secondary: EcDarkPalette.ecBlack.shade50,
+            onSecondary: EcDarkPalette.ecWhite.shade900,
+            error: EcDarkPalette.ecRed.shade200,
+            onError: EcDarkPalette.ecWhite.shade900,
+            surface: EcDarkPalette.ecGrey.shade50,
+            onSurface: EcDarkPalette.ecWhite.shade900,
+            outline: EcDarkPalette.ecGrey.shade500,
+            primaryContainer: EcDarkPalette.ecWhite.shade100,
           ),
       };
 }
@@ -70,12 +70,12 @@ extension CustomShadows on ColorScheme {
     switch (app) {
       case ECThemeType.user:
         return brightness == Brightness.light
-            ? EcLightPalette.ecRed[700]!
-            : EcDarkPalette.ecRed[400]!;
+            ? EcLightPalette.ecRed.shade700
+            : EcDarkPalette.ecRed.shade400;
       case ECThemeType.admin:
         return brightness == Brightness.light
-            ? EcLightPalette.ecOrange[700]!
-            : EcDarkPalette.ecOrange[400]!;
+            ? EcLightPalette.ecOrange.shade700
+            : EcDarkPalette.ecOrange.shade400;
     }
   }
 
@@ -83,12 +83,12 @@ extension CustomShadows on ColorScheme {
     switch (app) {
       case ECThemeType.user:
         return brightness == Brightness.light
-            ? EcLightPalette.ecWhite[900]!
-            : EcDarkPalette.ecWhite[900]!;
+            ? EcLightPalette.ecWhite.shade900
+            : EcDarkPalette.ecWhite.shade900;
       case ECThemeType.admin:
         return brightness == Brightness.light
-            ? EcLightPalette.ecWhite[900]!
-            : EcDarkPalette.ecWhite[900]!;
+            ? EcLightPalette.ecWhite.shade900
+            : EcDarkPalette.ecWhite.shade900;
     }
   }
 }
