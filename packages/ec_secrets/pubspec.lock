@@ -41,28 +41,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.19.1"
-  cupertino_icons:
-    dependency: "direct main"
-    description:
-      name: cupertino_icons
-      sha256: ba631d1c7f7bef6b729a622b7b752645a2d076dba9976925b8f25725a30e1ee6
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.8"
-  ec_design:
-    dependency: "direct main"
-    description:
-      path: "../packages/ec_design"
-      relative: true
-    source: path
-    version: "0.0.1"
-  ec_flavor:
-    dependency: "direct main"
-    description:
-      path: "../packages/ec_core/ec_flavor"
-      relative: true
-    source: path
-    version: "0.0.1"
   fake_async:
     dependency: transitive
     description:
@@ -76,16 +54,8 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_dotenv:
-    dependency: "direct main"
-    description:
-      name: flutter_dotenv
-      sha256: b7c7be5cd9f6ef7a78429cabd2774d3c4af50e79cb2b7593e3d5d763ef95c61b
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.2.1"
   flutter_flavor:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_flavor
       sha256: "611e2279cb250c2cb2565757e28545527f963692614a4b0671fa2e1e985c8c71"
@@ -105,14 +75,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  get_it:
-    dependency: "direct main"
-    description:
-      name: get_it
-      sha256: d85128a5dae4ea777324730dc65edd9c9f43155c109d5cc0a69cab74139fbac1
-      url: "https://pub.dev"
-    source: hosted
-    version: "7.7.0"
   leak_tracker:
     dependency: transitive
     description:

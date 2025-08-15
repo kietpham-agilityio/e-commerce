@@ -1,0 +1,13 @@
+// Production.xcconfig
+// Production flavor configuration
+
+#include "FlavorConfig.xcconfig"
+
+// Override default values for production
+APP_DISPLAY_NAME = E-Commerce
+PRODUCT_BUNDLE_IDENTIFIER = com.example.e_commerce_app
+
+// Production-specific settings
+ENABLE_LOGGING = 0
+ENABLE_ANALYTICS = 1
+ENABLE_CRASHLYTICS = 1

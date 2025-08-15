@@ -1,0 +1,13 @@
+// Staging.xcconfig
+// Staging flavor configuration
+
+#include "FlavorConfig.xcconfig"
+
+// Override default values for staging
+APP_DISPLAY_NAME = E-Commerce Staging
+PRODUCT_BUNDLE_IDENTIFIER = com.example.e_commerce_app.staging
+
+// Staging-specific settings
+ENABLE_LOGGING = 1
+ENABLE_ANALYTICS = 1
+ENABLE_CRASHLYTICS = 0

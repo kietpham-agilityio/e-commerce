@@ -4,6 +4,8 @@ A new Flutter project.
 
 ## Getting Started
 - [get started flutter](docs/get_started_flutter.md)
+- [dependency injection guide](docs/dependency_injection_guide.md)
+- [ec locator guide](docs/ec_locator_guide.md)
 
 ## Workflow in a repository
 
