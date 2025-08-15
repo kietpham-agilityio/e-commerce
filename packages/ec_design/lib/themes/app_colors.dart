@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'app_dark_palette.dart';
-import 'app_light_palette.dart';
+import 'dark_palette.dart';
+import 'light_palette.dart';
 
-enum App { user, admin }
+enum AppType { user, admin }
 
 class EcColors {
-  static ColorScheme light(App app) => switch (app) {
-        App.user => ColorScheme(
+  static ColorScheme light(AppType app) => switch (app) {
+        AppType.user => ColorScheme(
             brightness: Brightness.light,
             primary: EcLightPalette.ecRed[500]!,
             onPrimary: EcLightPalette.ecWhite[500]!,
@@ -20,7 +20,7 @@ class EcColors {
             outline: EcLightPalette.ecGrey[500],
             primaryContainer: EcLightPalette.ecWhite[500]!,
           ),
-        App.admin => ColorScheme(
+        AppType.admin => ColorScheme(
             brightness: Brightness.light,
             primary: EcLightPalette.ecOrange[500]!,
             onPrimary: EcLightPalette.ecWhite[500]!,
@@ -35,8 +35,8 @@ class EcColors {
           ),
       };
 
-  static ColorScheme dark(App app) => switch (app) {
-        App.user => ColorScheme(
+  static ColorScheme dark(AppType app) => switch (app) {
+        AppType.user => ColorScheme(
             brightness: Brightness.dark,
             primary: EcDarkPalette.ecRed[500]!,
             onPrimary: EcDarkPalette.ecWhite[900]!,
@@ -49,7 +49,7 @@ class EcColors {
             outline: EcDarkPalette.ecGrey[500]!,
             primaryContainer: EcDarkPalette.ecWhite[100]!,
           ),
-        App.admin => ColorScheme(
+        AppType.admin => ColorScheme(
             brightness: Brightness.dark,
             primary: EcDarkPalette.ecOrange[500]!,
             onPrimary: EcDarkPalette.ecWhite[900]!,
@@ -66,26 +66,26 @@ class EcColors {
 }
 
 extension CustomShadows on ColorScheme {
-  Color shadowPrimary(App app) {
+  Color shadowPrimary(AppType app) {
     switch (app) {
-      case App.user:
+      case AppType.user:
         return brightness == Brightness.light
             ? EcLightPalette.ecRed[700]!
             : EcDarkPalette.ecRed[400]!;
-      case App.admin:
+      case AppType.admin:
         return brightness == Brightness.light
             ? EcLightPalette.ecOrange[700]!
             : EcDarkPalette.ecOrange[400]!;
     }
   }
 
-  Color shadowPrimaryContainer(App app) {
+  Color shadowPrimaryContainer(AppType app) {
     switch (app) {
-      case App.user:
+      case AppType.user:
         return brightness == Brightness.light
             ? EcLightPalette.ecWhite[900]!
             : EcDarkPalette.ecWhite[900]!;
-      case App.admin:
+      case AppType.admin:
         return brightness == Brightness.light
             ? EcLightPalette.ecWhite[900]!
             : EcDarkPalette.ecWhite[900]!;
