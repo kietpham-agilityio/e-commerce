@@ -9,7 +9,7 @@ class EcColors {
   static ColorScheme light(ECThemeType app) => switch (app) {
         ECThemeType.user => const ColorScheme(
             brightness: Brightness.light,
-            primary: EcLightPalette.ecUserPrimary,
+            primary: EcLightPalette.ecRed,
             onPrimary: EcLightPalette.ecWhite,
             secondary: EcLightPalette.ecBlack,
             onSecondary: EcLightPalette.ecWhite,
@@ -22,7 +22,7 @@ class EcColors {
           ),
         ECThemeType.admin => const ColorScheme(
             brightness: Brightness.light,
-            primary: EcLightPalette.ecAdminPrimary,
+            primary: EcLightPalette.ecOrange,
             onPrimary: EcLightPalette.ecWhite,
             secondary: EcLightPalette.ecBlack,
             onSecondary: EcLightPalette.ecWhite,
@@ -38,7 +38,7 @@ class EcColors {
   static ColorScheme dark(ECThemeType app) => switch (app) {
         ECThemeType.user => const ColorScheme(
             brightness: Brightness.dark,
-            primary: EcDarkPalette.ecUserPrimary,
+            primary: EcDarkPalette.ecRed,
             onPrimary: EcDarkPalette.ecWhite,
             secondary: EcDarkPalette.ecBlack,
             onSecondary: EcDarkPalette.ecWhite,
@@ -51,7 +51,7 @@ class EcColors {
           ),
         ECThemeType.admin => const ColorScheme(
             brightness: Brightness.dark,
-            primary: EcDarkPalette.ecAdminPrimary,
+            primary: EcDarkPalette.ecOrange,
             onPrimary: EcDarkPalette.ecWhite,
             secondary: EcDarkPalette.ecBlack,
             onSecondary: EcDarkPalette.ecWhite,
@@ -63,32 +63,4 @@ class EcColors {
             primaryContainer: EcDarkPalette.ecWhite,
           ),
       };
-}
-
-extension CustomShadows on ColorScheme {
-  Color shadowPrimary(ECThemeType app) {
-    switch (app) {
-      case ECThemeType.user:
-        return brightness == Brightness.light
-            ? EcLightPalette.ecUserPrimary.shade700
-            : EcDarkPalette.ecError.shade400;
-      case ECThemeType.admin:
-        return brightness == Brightness.light
-            ? EcLightPalette.ecAdminPrimary.shade700
-            : EcDarkPalette.ecAdminPrimary.shade400;
-    }
-  }
-
-  Color shadowPrimaryContainer(ECThemeType app) {
-    switch (app) {
-      case ECThemeType.user:
-        return brightness == Brightness.light
-            ? EcLightPalette.ecWhite.shade900
-            : EcDarkPalette.ecWhite.shade900;
-      case ECThemeType.admin:
-        return brightness == Brightness.light
-            ? EcLightPalette.ecWhite.shade900
-            : EcDarkPalette.ecWhite.shade900;
-    }
-  }
 }

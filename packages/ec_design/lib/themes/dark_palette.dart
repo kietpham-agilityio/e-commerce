@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class EcDarkPalette {
-  static const MaterialColor ecUserPrimary = MaterialColor(
+  static const MaterialColor ecRed = MaterialColor(
     0xFFe2594e,
     <int, Color>{
       50: Color(0xFF5c140e),
@@ -17,7 +17,7 @@ class EcDarkPalette {
     },
   );
 
-  static const MaterialColor ecAdminPrimary = MaterialColor(
+  static const MaterialColor ecOrange = MaterialColor(
     0xFFf59733,
     {
       50: Color(0xFF663500),
