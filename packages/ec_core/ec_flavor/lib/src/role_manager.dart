@@ -1,7 +1,7 @@
 import 'user_role.dart';
 import 'role_config.dart';
 
-/// Manages user roles and their configurations
+/// Simple role manager for user permissions and access control
 class RoleManager {
   RoleManager._();
 
@@ -128,5 +128,24 @@ class RoleManager {
       return UserRole.all;
     }
     return [UserRole.user];
+  }
+
+  /// Get current configuration summary
+  static Map<String, dynamic> getCurrentConfigSummary() {
+    return {
+      'role': _currentRole.value,
+      'roleDisplayName': _currentRole.displayName,
+      'rolePermissions': {
+        'canAccessAdminPanel': currentRoleConfig.canAccessAdminPanel,
+        'canManageUsers': currentRoleConfig.canManageUsers,
+        'canViewAnalytics': currentRoleConfig.canViewAnalytics,
+        'canManageProducts': currentRoleConfig.canManageProducts,
+        'canViewReports': currentRoleConfig.canViewReports,
+        'hasAdminPrivileges': currentRoleConfig.hasAdminPrivileges,
+        'hasManagementPrivileges': currentRoleConfig.hasManagementPrivileges,
+        'maxApiCallsPerMinute': currentRoleConfig.maxApiCallsPerMinute,
+      },
+      'featureFlags': currentRoleConfig.featureFlags,
+    };
   }
 }

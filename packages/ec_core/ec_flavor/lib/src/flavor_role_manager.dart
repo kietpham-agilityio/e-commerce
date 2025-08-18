@@ -1,130 +1,140 @@
-import 'package:ec_flavor/ec_flavor.dart';
+import 'user_role.dart';
+import 'role_config.dart';
 
-/// Manages both flavor and role configurations together
-class FlavorRoleManager {
-  FlavorRoleManager._();
+/// Simple role manager for user permissions and access control
+class RoleManager {
+  RoleManager._();
 
-  static EcFlavor _currentFlavor = EcFlavor.dev;
   static UserRole _currentRole = UserRole.user;
+  static final Map<UserRole, RoleConfig> _roleConfigs = _initializeRoleConfigs();
 
-  /// Get the current flavor
-  static EcFlavor get currentFlavor => _currentFlavor;
-
-  /// Get the current role
+  /// Get the current user role
   static UserRole get currentRole => _currentRole;
 
-  /// Get the current flavor environment
-  static FlavorEnvironment get currentFlavorEnvironment =>
-      FlavorConfig.getConfig(_currentFlavor);
-
   /// Get the current role configuration
-  static RoleConfig get currentRoleConfig =>
-      FlavorConfig.getRoleConfig(_currentFlavor, _currentRole.value) ??
-      RoleManager.getRoleConfig(_currentRole);
+  static RoleConfig get currentRoleConfig => _roleConfigs[_currentRole]!;
 
-  /// Set the current flavor
-  static void setFlavor(EcFlavor flavor) {
-    _currentFlavor = flavor;
-  }
-
-  /// Set the current role
+  /// Set the current user role
   static void setRole(UserRole role) {
     _currentRole = role;
-    RoleManager.setRole(role);
   }
 
-  /// Set both flavor and role
-  static void setFlavorAndRole(EcFlavor flavor, UserRole role) {
-    _currentFlavor = flavor;
-    _currentRole = role;
-    RoleManager.setRole(role);
+  /// Get configuration for a specific role
+  static RoleConfig getRoleConfig(UserRole role) {
+    return _roleConfigs[role]!;
   }
 
-  /// Check if a feature is enabled for current flavor and role
-  static bool isFeatureEnabled(String feature) {
-    return FlavorConfig.isFeatureEnabledForRole(
-      _currentFlavor,
-      feature,
-      _currentRole.value,
-    );
+  /// Get all available role configurations
+  static Map<UserRole, RoleConfig> get allRoleConfigs => Map.unmodifiable(_roleConfigs);
+
+  /// Check if current role has a specific permission
+  static bool hasPermission(String permission) {
+    return currentRoleConfig.isFeatureEnabled(permission);
   }
 
-  /// Check if a feature is enabled for a specific flavor and role
-  static bool isFeatureEnabledForFlavorAndRole(
-    EcFlavor flavor,
-    String feature,
-    UserRole role,
-  ) {
-    return FlavorConfig.isFeatureEnabledForRole(flavor, feature, role.value);
-  }
-
-  /// Get role configuration for current flavor and role
-  static RoleConfig? getCurrentRoleConfig() {
-    return FlavorConfig.getRoleConfig(_currentFlavor, _currentRole.value);
-  }
-
-  /// Get role configuration for a specific flavor and role
-  static RoleConfig? getRoleConfig(EcFlavor flavor, UserRole role) {
-    return FlavorConfig.getRoleConfig(flavor, role.value);
-  }
-
-  /// Get all role configurations for current flavor
-  static Map<String, RoleConfig> getAllCurrentRoleConfigs() {
-    return FlavorConfig.getAllRoleConfigs(_currentFlavor);
-  }
-
-  /// Get all role configurations for a specific flavor
-  static Map<String, RoleConfig> getAllRoleConfigs(EcFlavor flavor) {
-    return FlavorConfig.getAllRoleConfigs(flavor);
-  }
-
-  /// Check if current role has admin privileges in current flavor
-  static bool get hasAdminPrivileges => currentRoleConfig.hasAdminPrivileges;
-
-  /// Check if current role has management privileges in current flavor
-  static bool get hasManagementPrivileges =>
-      currentRoleConfig.hasManagementPrivileges;
-
-  /// Check if current role can access admin panel in current flavor
+  /// Check if current role can access admin panel
   static bool get canAccessAdminPanel => currentRoleConfig.canAccessAdminPanel;
 
-  /// Check if current role can manage users in current flavor
+  /// Check if current role can manage users
   static bool get canManageUsers => currentRoleConfig.canManageUsers;
 
-  /// Check if current role can view analytics in current flavor
+  /// Check if current role can view analytics
   static bool get canViewAnalytics => currentRoleConfig.canViewAnalytics;
 
-  /// Check if current role can manage products in current flavor
+  /// Check if current role can manage products
   static bool get canManageProducts => currentRoleConfig.canManageProducts;
 
-  /// Check if current role can view reports in current flavor
+  /// Check if current role can view reports
   static bool get canViewReports => currentRoleConfig.canViewReports;
 
-  /// Get maximum API calls per minute for current role in current flavor
+  /// Check if current role has admin privileges
+  static bool get hasAdminPrivileges => currentRoleConfig.hasAdminPrivileges;
+
+  /// Check if current role has management privileges
+  static bool get hasManagementPrivileges => currentRoleConfig.hasManagementPrivileges;
+
+  /// Get maximum API calls per minute for current role
   static int get maxApiCallsPerMinute => currentRoleConfig.maxApiCallsPerMinute;
 
-  /// Reset to default flavor and role
-  static void resetToDefaults() {
-    _currentFlavor = EcFlavor.dev;
+  /// Initialize role configurations with default values
+  static Map<UserRole, RoleConfig> _initializeRoleConfigs() {
+    return {
+      UserRole.admin: const RoleConfig(
+        role: UserRole.admin,
+        canAccessAdminPanel: true,
+        canManageUsers: true,
+        canViewAnalytics: true,
+        canManageProducts: true,
+        canViewReports: true,
+        maxApiCallsPerMinute: 1000,
+        featureFlags: {
+          'advanced_analytics': true,
+          'user_management': true,
+          'product_management': true,
+          'report_generation': true,
+          'system_settings': true,
+          'backup_restore': true,
+          'audit_logs': true,
+        },
+      ),
+      UserRole.user: const RoleConfig(
+        role: UserRole.user,
+        canAccessAdminPanel: false,
+        canManageUsers: false,
+        canViewAnalytics: false,
+        canManageProducts: false,
+        canViewReports: false,
+        maxApiCallsPerMinute: 100,
+        featureFlags: {
+          'basic_shopping': true,
+          'order_history': true,
+          'profile_management': true,
+          'wishlist': true,
+          'reviews': true,
+          'notifications': true,
+        },
+      ),
+    };
+  }
+
+  /// Reset to default user role
+  static void resetToDefault() {
     _currentRole = UserRole.user;
-    RoleManager.resetToDefault();
+  }
+
+  /// Check if a role transition is allowed
+  static bool canTransitionTo(UserRole newRole) {
+    // Admin can transition to any role
+    if (_currentRole == UserRole.admin) return true;
+    
+    // Users can only transition to user role (no escalation)
+    if (newRole == UserRole.admin) return false;
+    
+    return true;
+  }
+
+  /// Safely transition to a new role
+  static bool transitionToRole(UserRole newRole) {
+    if (canTransitionTo(newRole)) {
+      _currentRole = newRole;
+      return true;
+    }
+    return false;
+  }
+
+  /// Get all roles that the current role can transition to
+  static List<UserRole> getAvailableTransitions() {
+    if (_currentRole == UserRole.admin) {
+      return UserRole.all;
+    }
+    return [UserRole.user];
   }
 
   /// Get current configuration summary
   static Map<String, dynamic> getCurrentConfigSummary() {
     return {
-      'flavor': _currentFlavor.value,
-      'flavorDisplayName': _currentFlavor.displayName,
       'role': _currentRole.value,
       'roleDisplayName': _currentRole.displayName,
-      'apiBaseUrl': currentFlavorEnvironment.apiBaseUrl,
-      'appName': currentFlavorEnvironment.appName,
-      'appVersion': currentFlavorEnvironment.appVersion,
-      'enableLogging': currentFlavorEnvironment.enableLogging,
-      'enableAnalytics': currentFlavorEnvironment.enableAnalytics,
-      'enableCrashlytics': currentFlavorEnvironment.enableCrashlytics,
-      'timeoutSeconds': currentFlavorEnvironment.timeoutSeconds,
-      'maxRetries': currentFlavorEnvironment.maxRetries,
       'rolePermissions': {
         'canAccessAdminPanel': currentRoleConfig.canAccessAdminPanel,
         'canManageUsers': currentRoleConfig.canManageUsers,

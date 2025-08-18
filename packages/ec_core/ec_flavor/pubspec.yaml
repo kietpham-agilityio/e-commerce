@@ -1,5 +1,5 @@
 name: ec_flavor
-description: "The flutter package for managing flavors in the e-commerce application."
+description: "The flutter package for managing user roles and permissions in the e-commerce application."
 version: 0.0.1
 
 environment:
@@ -10,16 +10,13 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_flavor: ^3.1.4
-  flutter_dotenv: ^5.2.1
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
 
-# For information on the generic Dart part of "pubspec.yaml""../ec_favor"this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
+# For information on the generic Dart part of this file, see
+# the following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
 flutter:

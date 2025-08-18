@@ -1,7 +1,5 @@
 import 'user_role.dart';
 import 'role_config.dart';
-import 'ec_flavor.dart';
-import 'flavor_config.dart';
 
 /// Utility functions for role-based operations
 class RoleUtils {
@@ -57,41 +55,6 @@ class RoleUtils {
     final sorted = List<UserRole>.from(roles);
     sorted.sort(compareRoles);
     return sorted;
-  }
-
-  /// Get roles with specific permission
-  static List<UserRole> getRolesWithPermission(
-    EcFlavor flavor,
-    String permission,
-  ) {
-    final roles = <UserRole>[];
-
-    for (final role in UserRole.all) {
-      if (FlavorConfig.isFeatureEnabledForRole(
-        flavor,
-        permission,
-        role.value,
-      )) {
-        roles.add(role);
-      }
-    }
-
-    return roles;
-  }
-
-  /// Get roles that can access admin panel
-  static List<UserRole> getAdminRoles(EcFlavor flavor) {
-    return getRolesWithPermission(flavor, 'admin_panel_access');
-  }
-
-  /// Get roles that can manage users
-  static List<UserRole> getUserManagementRoles(EcFlavor flavor) {
-    return getRolesWithPermission(flavor, 'user_management');
-  }
-
-  /// Get roles that can view analytics
-  static List<UserRole> getAnalyticsRoles(EcFlavor flavor) {
-    return getRolesWithPermission(flavor, 'analytics');
   }
 
   /// Check if role has elevated privileges

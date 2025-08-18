@@ -19,6 +19,10 @@ android {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.e_commerce_app"
@@ -35,38 +39,11 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
-    }
-
-    // Flavor configurations
-    flavorDimensions += "default"
-    productFlavors {
-        create("dev") {
-            dimension = "default"
-            applicationIdSuffix = ".dev"
-            resValue(
-                type = "string",
-                name = "app_name",
-                value = "E-Commerce Dev"
-            )
-        }
-        create("staging") {
-            dimension = "default"
-            applicationIdSuffix = ".staging"
-            resValue(
-                type = "string",
-                name = "app_name",
-                value = "E-Commerce Staging"
-            )
-        }
-        create("production") {
-            dimension = "default"
-            applicationIdSuffix = ".production"
-            resValue(
-                type = "string",
-                name = "app_name",
-                value = "E-Commerce"
-            )
+        debug {
+            isDebuggable = true
         }
     }
 }

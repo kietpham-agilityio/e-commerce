@@ -1,13 +1,20 @@
-// FlavorConfig.xcconfig
-// Default configuration for all flavors
+// Common Flavor Configuration
+// This file contains common settings that can be imported by specific environment configs
 
-// App Display Name - will be overridden by specific flavor configs
-APP_DISPLAY_NAME = E-Commerce
+// Common build settings
+IPHONEOS_DEPLOYMENT_TARGET = 12.0
+TARGETED_DEVICE_FAMILY = 1,2
+SUPPORTED_PLATFORMS = iphoneos iphonesimulator
 
-// Bundle Identifier - will be overridden by specific flavor configs
-PRODUCT_BUNDLE_IDENTIFIER = com.example.e_commerce_app
+// Common app settings
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon
+ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage
+CLANG_ENABLE_MODULES = YES
+SWIFT_OBJC_BRIDGING_HEADER = Runner/Runner-Bridging-Header.h
+SWIFT_VERSION = 5.0
 
-// Other common settings
-DEVELOPMENT_TEAM = 
-CODE_SIGN_IDENTITY = 
-PROVISIONING_PROFILE =
+// Common permissions and capabilities
+NSCameraUsageDescription = This app needs camera access to scan barcodes and take product photos
+NSPhotoLibraryUsageDescription = This app needs photo library access to select product images
+NSLocationWhenInUseUsageDescription = This app needs location access to show nearby stores
+NSMicrophoneUsageDescription = This app needs microphone access for voice search
