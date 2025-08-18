@@ -1,99 +1,115 @@
 import 'package:flutter/material.dart';
 
 class EcDarkPalette {
-  static const MaterialColor ecRed = MaterialColor(
-    0xFFDB3022,
+  static const MaterialColor ecUserPrimary = MaterialColor(
+    0xFFe2594e,
     <int, Color>{
-      50: Color(0xFF8C1818),
-      100: Color(0xFFB71C1C),
-      200: Color(0xFFF01F0E),
-      300: Color(0xFFD32626),
-      400: Color(0xFFDB3022),
-      500: Color(0xFFDB3022), // primary
-      600: Color(0xFFFF6E65), // shadow
-      700: Color(0xFFFF8A82), // error highlight
-      800: Color(0xFFFFACA6),
-      900: Color(0xFFFFCDC9),
+      50: Color(0xFF5c140e),
+      100: Color(0xFF781a13),
+      200: Color(0xFF9b2218),
+      300: Color(0xFFc72c1f),
+      400: Color(0xFFdb3022),
+      500: Color(0xFFe2594e),
+      600: Color(0xFFe7746b),
+      700: Color(0xFFeea099),
+      800: Color(0xFFf4bfba),
+      900: Color(0xFFfbeae9),
     },
   );
 
-  static const MaterialColor ecOrange = MaterialColor(
-    0xFFF27D00,
+  static const MaterialColor ecAdminPrimary = MaterialColor(
+    0xFFf59733,
     {
-      50: Color(0xFF7C4000),
-      100: Color(0xFF994F00),
-      200: Color(0xFFB75F00),
-      300: Color(0xFFD46E00),
-      400: Color(0xFFF27D00),
-      500: Color(0xFFF27D00),
-      600: Color(0xFFFF9E2E),
-      700: Color(0xFFFFB35C),
-      800: Color(0xFFFFC98A),
-      900: Color(0xFFFFDEB8),
+      50: Color(0xFF663500),
+      100: Color(0xFF854500),
+      200: Color(0xFFac5900),
+      300: Color(0xFFdc7200),
+      400: Color(0xFFf27d00),
+      500: Color(0xFFf59733),
+      600: Color(0xFFf6a854),
+      700: Color(0xFFf9c38a),
+      800: Color(0xFFfbd7b0),
+      900: Color(0xFFfef2e6),
+    },
+  );
+
+  static const MaterialColor ecError = MaterialColor(
+    0xFFf34c3e,
+    {
+      50: Color(0xFF650d06),
+      100: Color(0xFF841108),
+      200: Color(0xFFaa160a),
+      300: Color(0xFFda1c0d),
+      400: Color(0xFFf01f0e),
+      500: Color(0xFFf34c3e),
+      600: Color(0xFFf5695e),
+      700: Color(0xFFf89890),
+      800: Color(0xFFfabab4),
+      900: Color(0xFFfee9e7),
     },
   );
 
   static const MaterialColor ecWhite = MaterialColor(
-    0xFF121212, // Dark base background
+    0xFFFFFFFF,
     <int, Color>{
-      50: Color(0xFF121212),
-      100: Color(0xFF1E1E1E),
-      200: Color(0xFF2C2C2C),
-      300: Color(0xFF383838),
-      400: Color(0xFF424242), // background
-      500: Color(0xFFB3B3B3),
-      600: Color(0xFFCFCFCF),
-      700: Color(0xFFE5E5E5),
-      800: Color(0xFFF5F5F5),
+      50: Color(0xFF6b6b6b),
+      100: Color(0xFF8c8c8c),
+      200: Color(0xFFb5b5b5),
+      300: Color(0xFFe8e8e8),
+      400: Color(0xFFFFFFFF),
+      500: Color(0xFFFFFFFF),
+      600: Color(0xFFFFFFFF),
+      700: Color(0xFFFFFFFF),
+      800: Color(0xFFFFFFFF),
       900: Color(0xFFFFFFFF),
     },
   );
 
   static const MaterialColor ecGreen = MaterialColor(
-    0xFF2AA952,
+    0xFF55ba75,
     <int, Color>{
-      50: Color(0xFF145A28),
-      100: Color(0xFF1B7538),
-      200: Color(0xFF208A42),
-      300: Color(0xFF249F4C),
-      400: Color(0xFF2AA952),
-      500: Color(0xFF2AA952),
-      600: Color(0xFF7FE890),
-      700: Color(0xFF9FEBAE),
-      800: Color(0xFFBFF0C9),
-      900: Color(0xFFDFF4E4),
+      50: Color(0xFF124722),
+      100: Color(0xFF175d2d),
+      200: Color(0xFF1e783a),
+      300: Color(0xFF269a4b),
+      400: Color(0xFF2aa952),
+      500: Color(0xFF55ba75),
+      600: Color(0xFF70c58b),
+      700: Color(0xFF9dd7af),
+      800: Color(0xFFbde4c9),
+      900: Color(0xFFeaf6ee),
     },
   );
 
   static const MaterialColor ecGrey = MaterialColor(
-    0xFFB3B3B3,
+    0xFFafafaf,
     <int, Color>{
-      50: Color(0xFF1C1C1C),
-      100: Color(0xFF2C2C2C),
-      200: Color(0xFF3D3D3D),
-      300: Color(0xFF4E4E4E),
-      400: Color(0xFF5F5F5F),
-      500: Color(0xFFB3B3B3), // default
-      600: Color(0xFFCCCCCC),
-      700: Color(0xFFDADADA),
-      800: Color(0xFFE8E8E8),
+      50: Color(0xFF414141),
+      100: Color(0xFF555555),
+      200: Color(0xFF6e6e6e),
+      300: Color(0xFF8d8d8d),
+      400: Color(0xFF9B9B9B),
+      500: Color(0xFFafafaf),
+      600: Color(0xFFbcbcbc),
+      700: Color(0xFFd1d1d1),
+      800: Color(0xFFE0E0E0),
       900: Color(0xFFF5F5F5),
     },
   );
 
   static const MaterialColor ecBlack = MaterialColor(
-    0xFF000000, // default
+    0xFF4e4e4e, // default
     <int, Color>{
-      50: Color(0xFF000000),
-      100: Color(0xFF0A0A0A),
-      200: Color(0xFF121212),
-      300: Color(0xFF1E1E1E),
-      400: Color(0xFF2C2C2C),
-      500: Color(0xFF383838),
-      600: Color(0xFF424242),
-      700: Color(0xFF5C5C5C),
-      800: Color(0xFF7D7D7D),
-      900: Color(0xFF9E9E9E),
+      50: Color(0xFF0e0e0e),
+      100: Color(0xFF131313),
+      200: Color(0xFF181818),
+      300: Color(0xFF1f1f1f),
+      400: Color(0xFF222222),
+      500: Color(0xFF4e4e4e),
+      600: Color(0xFF6b6b6b),
+      700: Color(0xFF999999),
+      800: Color(0xFFbababa),
+      900: Color(0xFFe9e9e9),
     },
   );
 }

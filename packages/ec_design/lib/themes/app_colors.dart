@@ -7,26 +7,26 @@ enum ECThemeType { user, admin }
 
 class EcColors {
   static ColorScheme light(ECThemeType app) => switch (app) {
-        ECThemeType.user => ColorScheme(
+        ECThemeType.user => const ColorScheme(
             brightness: Brightness.light,
-            primary: EcLightPalette.ecRed,
+            primary: EcLightPalette.ecUserPrimary,
             onPrimary: EcLightPalette.ecWhite,
             secondary: EcLightPalette.ecBlack,
             onSecondary: EcLightPalette.ecWhite,
-            error: EcLightPalette.ecRed.shade700,
+            error: EcLightPalette.ecError,
             onError: EcLightPalette.ecWhite,
             surface: EcLightPalette.ecGrey,
             onSurface: EcLightPalette.ecWhite,
             outline: EcLightPalette.ecGrey,
             primaryContainer: EcLightPalette.ecWhite,
           ),
-        ECThemeType.admin => ColorScheme(
+        ECThemeType.admin => const ColorScheme(
             brightness: Brightness.light,
-            primary: EcLightPalette.ecOrange,
+            primary: EcLightPalette.ecAdminPrimary,
             onPrimary: EcLightPalette.ecWhite,
             secondary: EcLightPalette.ecBlack,
             onSecondary: EcLightPalette.ecWhite,
-            error: EcLightPalette.ecRed.shade700,
+            error: EcLightPalette.ecError,
             onError: EcLightPalette.ecWhite,
             surface: EcLightPalette.ecGrey,
             onSurface: EcLightPalette.ecWhite,
@@ -36,29 +36,29 @@ class EcColors {
       };
 
   static ColorScheme dark(ECThemeType app) => switch (app) {
-        ECThemeType.user => ColorScheme(
+        ECThemeType.user => const ColorScheme(
             brightness: Brightness.dark,
-            primary: EcDarkPalette.ecRed,
-            onPrimary: EcDarkPalette.ecWhite.shade900,
+            primary: EcDarkPalette.ecUserPrimary,
+            onPrimary: EcDarkPalette.ecWhite,
             secondary: EcDarkPalette.ecBlack,
-            onSecondary: EcDarkPalette.ecWhite.shade900,
-            error: EcDarkPalette.ecRed.shade200,
-            onError: EcDarkPalette.ecWhite.shade900,
-            surface: EcDarkPalette.ecGrey.shade50,
-            onSurface: EcDarkPalette.ecWhite.shade900,
+            onSecondary: EcDarkPalette.ecWhite,
+            error: EcDarkPalette.ecError,
+            onError: EcDarkPalette.ecWhite,
+            surface: EcDarkPalette.ecGrey,
+            onSurface: EcDarkPalette.ecWhite,
             outline: EcDarkPalette.ecGrey,
-            primaryContainer: EcDarkPalette.ecWhite.shade100,
+            primaryContainer: EcDarkPalette.ecWhite,
           ),
-        ECThemeType.admin => ColorScheme(
+        ECThemeType.admin => const ColorScheme(
             brightness: Brightness.dark,
-            primary: EcDarkPalette.ecOrange,
-            onPrimary: EcDarkPalette.ecWhite.shade900,
+            primary: EcDarkPalette.ecAdminPrimary,
+            onPrimary: EcDarkPalette.ecWhite,
             secondary: EcDarkPalette.ecBlack,
-            onSecondary: EcDarkPalette.ecWhite.shade900,
-            error: EcDarkPalette.ecRed.shade200,
-            onError: EcDarkPalette.ecWhite.shade900,
-            surface: EcDarkPalette.ecGrey.shade50,
-            onSurface: EcDarkPalette.ecWhite.shade900,
+            onSecondary: EcDarkPalette.ecWhite,
+            error: EcDarkPalette.ecError,
+            onError: EcDarkPalette.ecWhite,
+            surface: EcDarkPalette.ecGrey,
+            onSurface: EcDarkPalette.ecWhite,
             outline: EcDarkPalette.ecGrey,
             primaryContainer: EcDarkPalette.ecWhite,
           ),
@@ -70,12 +70,12 @@ extension CustomShadows on ColorScheme {
     switch (app) {
       case ECThemeType.user:
         return brightness == Brightness.light
-            ? EcLightPalette.ecRed.shade700
-            : EcDarkPalette.ecRed.shade400;
+            ? EcLightPalette.ecUserPrimary.shade700
+            : EcDarkPalette.ecError.shade400;
       case ECThemeType.admin:
         return brightness == Brightness.light
-            ? EcLightPalette.ecOrange.shade700
-            : EcDarkPalette.ecOrange.shade400;
+            ? EcLightPalette.ecAdminPrimary.shade700
+            : EcDarkPalette.ecAdminPrimary.shade400;
     }
   }
 
