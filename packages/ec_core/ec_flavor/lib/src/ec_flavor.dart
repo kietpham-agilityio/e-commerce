@@ -1,6 +1,3 @@
-// Removed unused import since we're not using FlutterFlavor classes anymore
-// import 'package:flutter_flavor/flutter_flavor.dart';
-
 /// Enum defining different flavors for the E-Commerce application
 enum EcFlavor {
   /// Admin flavor with admin-specific configurations
@@ -10,7 +7,7 @@ enum EcFlavor {
     apiBaseUrl: 'https://admin-api.ecommerce.com',
     environment: 'production',
   ),
-  
+
   /// User flavor with user-specific configurations
   user(
     bundleId: 'com.example.ecommerce.user',
@@ -29,31 +26,31 @@ enum EcFlavor {
 
   /// Bundle identifier for the app
   final String bundleId;
-  
+
   /// Application name
   final String appName;
-  
+
   /// Base URL for API calls
   final String apiBaseUrl;
-  
+
   /// Environment name (dev, staging, production)
   final String environment;
 
   /// Check if current flavor is admin
   bool get isAdmin => this == EcFlavor.admin;
-  
+
   /// Check if current flavor is user
   bool get isUser => this == EcFlavor.user;
-  
+
   /// Check if current flavor is development environment
   bool get isDevelopment => environment == 'dev';
-  
+
   /// Check if current flavor is staging environment
   bool get isStaging => environment == 'staging';
-  
+
   /// Check if current flavor is production environment
   bool get isProduction => environment == 'production';
-  
+
   /// Get the current flavor from environment or build configuration
   /// This method tries to detect the current flavor from build-time environment variables
   /// or falls back to the default user flavor
@@ -70,7 +67,7 @@ enum EcFlavor {
       return EcFlavor.user;
     }
   }
-  
+
   /// Get flavor by name
   static EcFlavor fromString(String name) {
     return EcFlavor.values.firstWhere(
@@ -78,10 +75,10 @@ enum EcFlavor {
       orElse: () => EcFlavor.user,
     );
   }
-  
+
   /// Get all available flavors
   static List<EcFlavor> get all => EcFlavor.values;
-  
+
   /// Get flavor display name
   String get displayName {
     switch (this) {
@@ -91,7 +88,7 @@ enum EcFlavor {
         return 'User';
     }
   }
-  
+
   /// Get flavor description
   String get description {
     switch (this) {
@@ -101,7 +98,7 @@ enum EcFlavor {
         return 'Standard user version with essential features';
     }
   }
-  
+
   /// Get flavor icon name
   String get iconName {
     switch (this) {
@@ -111,7 +108,7 @@ enum EcFlavor {
         return 'user_icon';
     }
   }
-  
+
   /// Get flavor color scheme
   String get colorScheme {
     switch (this) {

@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # Removed flutter_flavor dependency since we're not using it anymore
 
 dev_dependencies:
   flutter_test:
