@@ -1,0 +1,21 @@
+name: ec_flavor
+description: "Flavor configuration package for E-Commerce app (works independently without flutter_flavor)"
+version: 1.0.0+1
+publish_to: "none"
+
+environment:
+  sdk: ^3.7.2
+  flutter: ">=3.16.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # Removed flutter_flavor dependency since we're not using it anymore
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

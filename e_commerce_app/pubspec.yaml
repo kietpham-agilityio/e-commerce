@@ -38,6 +38,9 @@ dependencies:
   ec_design:
     path: ../packages/ec_design
 
+  ec_flavor:
+    path: ../packages/ec_core/ec_flavor
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
