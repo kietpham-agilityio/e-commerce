@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ec_flavor/ec_flavor.dart';
+import 'package:ec_core/ec_core.dart';
 
 void main() {
   runApp(const MyApp());

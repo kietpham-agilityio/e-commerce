@@ -2,44 +2,68 @@
   // Use IntelliSense to learn about possible attributes.
   // Hover to view descriptions of existing attributes.
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "e-commerce",
-      "request": "launch",
-      "type": "dart"
-    },
-    {
-      "name": "e-commerce (profile mode)",
-      "request": "launch",
-      "type": "dart",
-      "flutterMode": "profile"
-    },
-    {
-      "name": "e-commerce (release mode)",
-      "request": "launch",
-      "type": "dart",
-      "flutterMode": "release"
-    },
-    {
-      "name": "e_commerce_app",
-      "cwd": "e_commerce_app",
-      "request": "launch",
-      "type": "dart"
-    },
-    {
-      "name": "e_commerce_app (profile mode)",
+      "name": "e-commerce (user flavor - iOS)",
       "cwd": "e_commerce_app",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "profile"
+      "args": ["--dart-define=FLAVOR=user"]
     },
     {
-      "name": "e_commerce_app (release mode)",
+      "name": "e-commerce (admin flavor - iOS)",
       "cwd": "e_commerce_app",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "release"
+      "args": ["--dart-define=FLAVOR=admin"]
+    },
+    {
+      "name": "e-commerce (user flavor - Android)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--flavor", "user"]
+    },
+    {
+      "name": "e-commerce (admin flavor - Android)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--flavor", "admin"]
+    },
+    {
+      "name": "e-commerce (user flavor - profile mode)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "args": ["--dart-define=FLAVOR=user"]
+    },
+    {
+      "name": "e-commerce (admin flavor - profile mode)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "args": ["--dart-define=FLAVOR=admin"]
+    },
+    {
+      "name": "e-commerce (user flavor - release mode)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "args": ["--dart-define=FLAVOR=user"]
+    },
+    {
+      "name": "e-commerce (admin flavor - release mode)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "args": ["--dart-define=FLAVOR=admin"]
     },
     {
       "name": "ec_design",

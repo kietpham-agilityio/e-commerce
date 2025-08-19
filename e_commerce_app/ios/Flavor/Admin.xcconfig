@@ -1,0 +1,6 @@
+#include "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"
+#include "Generated.xcconfig"
+
+PRODUCT_BUNDLE_IDENTIFIER = com.example.ecommerce.admin
+PRODUCT_NAME = E-Commerce Admin
+INFOPLIST_FILE = Flavor/Admin/Info.plist

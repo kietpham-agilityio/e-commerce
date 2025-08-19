@@ -1,5 +1,5 @@
-name: ec_flavor
-description: "Flavor configuration package for E-Commerce app (works independently without flutter_flavor)"
+name: ec_core
+description: "Core packages for E-Commerce application"
 version: 1.0.0+1
 publish_to: "none"
 
