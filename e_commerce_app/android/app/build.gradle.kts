@@ -10,6 +10,10 @@ android {
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -36,13 +40,17 @@ android {
         create("admin") {
             dimension = "type"
             applicationId = "com.example.ecommerce.admin"
+            versionNameSuffix = "-admin"
             resValue("string", "app_name", "E-Commerce Admin")
+            buildConfigField("String", "FLAVOR", "\"admin\"")
         }
         
         create("user") {
             dimension = "type"
             applicationId = "com.example.ecommerce.user"
+            versionNameSuffix = "-user"
             resValue("string", "app_name", "E-Commerce")
+            buildConfigField("String", "FLAVOR", "\"user\"")
         }
     }
 

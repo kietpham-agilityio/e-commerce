@@ -24,14 +24,16 @@
       "cwd": "e_commerce_app",
       "request": "launch",
       "type": "dart",
-      "args": ["--flavor", "user"]
+      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"],
+      "flutterMode": "debug"
     },
     {
       "name": "e-commerce (admin flavor - Android)",
       "cwd": "e_commerce_app",
       "request": "launch",
       "type": "dart",
-      "args": ["--flavor", "admin"]
+      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"],
+      "flutterMode": "debug"
     },
     {
       "name": "e-commerce (user flavor - profile mode)",

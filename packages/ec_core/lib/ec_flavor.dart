@@ -55,11 +55,8 @@ enum EcFlavor {
   /// This method tries to detect the current flavor from build-time environment variables
   /// or falls back to the default user flavor
   static EcFlavor get current {
-    // Try to get flavor from environment or use a default approach
-    // Since FlutterFlavor.instance.name might not be available at compile time,
-    // we'll use a different approach
     try {
-      // Check if we can access the flavor through environment variables
+      // Get flavor from environment variable (works for both iOS and Android with --dart-define)
       const flavorName = String.fromEnvironment('FLAVOR', defaultValue: 'user');
       return EcFlavor.fromString(flavorName);
     } catch (e) {
