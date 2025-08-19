@@ -13,7 +13,52 @@ This guide explains **what each color in `EcColors` is for** and **how to use th
 - **Usage**: Do not reference palette colours directly in widgets. Use `EcColors` via `Theme.of(context).colorScheme` which automatically resolves the correct colour for the current `ECThemeType` (e.g., user/admin) and device mode (light/dark).
 - **Source of truth**: Define both light and dark themes based on the Design System tokens. See the Design System on Figma: [E‑commerce Application](https://www.figma.com/design/xbkKEr5wsis24LAc02n8mt/E-commerce-Application?node-id=23097-326&t=dZssbUD68nV0oyxm-4).
 
-## 1. ColorScheme in `EcColors`
+
+## 1. Do & Don't
+
+**Do**
+- ✅ Reference `Theme.of(context).colorScheme` everywhere.
+- ✅ Pair `on*` with its corresponding background (`primary` ⇄ `onPrimary`, etc.).
+- ✅ Keep contrast high for readability.
+
+**Don't**
+- ❌ Hardcode `Colors.white` or `Colors.black` for text. Use `onSurface`, `onPrimary`, `onSecondary`.
+- ❌ Use `primary` as page background.
+- ❌ Use `error` as a decorative accent.
+
+---
+
+## 2. Quick reference table
+
+| Role        | Typical use                                 | Foreground pair |
+| ----------- | ------------------------------------------- | --------------- |
+| `primary`   | Main CTA buttons, active states, highlights | `onPrimary`     |
+| `secondary` | Secondary actions, chips, badges, accents   | `onSecondary`   |
+| `surface`   | Scaffold, cards, sheets, dialogs, app bars  | `onSurface`     |
+| `error`     | Validation/error text, destructive actions  | `onError`       |
+
+---
+
+## 3. Snippet: ready-to-use helpers
+
+```dart
+extension ThemeContext on BuildContext {
+  ThemeData get themeData => Theme.of(this);
+  ColorScheme get colorScheme => themeData.colorScheme;
+  TextTheme get textTheme => themeData.textTheme;
+}
+
+// Usage:
+FilledButton(
+  style: FilledButton.styleFrom(
+    backgroundColor: context.colorScheme.primary,
+    foregroundColor: context.colorScheme.onPrimary,
+  ),
+  onPressed: () {},
+  child: const Text('Pay now'),
+);
+
+## 4. ColorScheme in `EcColors`
 
 `EcColors` defines two schemes:
 
@@ -91,7 +136,7 @@ MaterialApp(
 
 ---
 
-## 2. What each color is for (with examples)
+## 5. What each color is for (with examples)
 
 ### `primary` — your main brand/action color
 - **Use for:** primary actions, filled buttons, active states, focused inputs, prominent chips, selected icons.
@@ -245,7 +290,7 @@ SnackBar(
 
 ---
 
-## 3. Common patterns
+## 6. Common patterns
 
 ### AppBar
 ```dart
@@ -285,47 +330,3 @@ Card(
 - Destructive action → `foreground/background: error` with `onError` for content
 
 ---
-
-## 4. Do & Don't
-
-**Do**
-- ✅ Reference `Theme.of(context).colorScheme` everywhere.
-- ✅ Pair `on*` with its corresponding background (`primary` ⇄ `onPrimary`, etc.).
-- ✅ Keep contrast high for readability.
-
-**Don't**
-- ❌ Hardcode `Colors.white` or `Colors.black` for text. Use `onSurface`, `onPrimary`, `onSecondary`.
-- ❌ Use `primary` as page background.
-- ❌ Use `error` as a decorative accent.
-
----
-
-## 5. Quick reference table
-
-| Role        | Typical use                                 | Foreground pair |
-| ----------- | ------------------------------------------- | --------------- |
-| `primary`   | Main CTA buttons, active states, highlights | `onPrimary`     |
-| `secondary` | Secondary actions, chips, badges, accents   | `onSecondary`   |
-| `surface`   | Scaffold, cards, sheets, dialogs, app bars  | `onSurface`     |
-| `error`     | Validation/error text, destructive actions  | `onError`       |
-
----
-
-## 6. Snippet: ready-to-use helpers
-
-```dart
-extension ThemeContext on BuildContext {
-  ThemeData get themeData => Theme.of(this);
-  ColorScheme get colorScheme => themeData.colorScheme;
-  TextTheme get textTheme => themeData.textTheme;
-}
-
-// Usage:
-FilledButton(
-  style: FilledButton.styleFrom(
-    backgroundColor: context.colorScheme.primary,
-    foregroundColor: context.colorScheme.onPrimary,
-  ),
-  onPressed: () {},
-  child: const Text('Pay now'),
-);
