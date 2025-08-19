@@ -6,6 +6,13 @@ This guide explains **what each color in `EcColors` is for** and **how to use th
 
 ---
 
+## EcTheme
+
+- **Palettes**: Colors are defined in `packages/ec_design/lib/themes/light_palette.dart` and `packages/ec_design/lib/themes/dark_palette.dart`. The app-level schemes that pick the right palette per theme type live in `packages/ec_design/lib/themes/app_colors.dart`.
+- **Ten shades per colour**: Each colour provides ten shades (50 → 900). The shade marked at index 500 is the **primary** for that colour.
+- **Usage**: Do not reference palette colours directly in widgets. Use `EcColors` via `Theme.of(context).colorScheme` which automatically resolves the correct colour for the current `ECThemeType` (e.g., user/admin) and device mode (light/dark).
+- **Source of truth**: Define both light and dark themes based on the Design System tokens. See the Design System on Figma: [E‑commerce Application](https://www.figma.com/design/xbkKEr5wsis24LAc02n8mt/E-commerce-Application?node-id=23097-326&t=dZssbUD68nV0oyxm-4).
+
 ## 1. ColorScheme in `EcColors`
 
 `EcColors` defines two schemes:
@@ -81,9 +88,6 @@ MaterialApp(
   themeMode: ThemeMode.system,
 );
 ```
-
-## Color Palette Reference
-For detailed color specifications and design tokens, refer to the [Figma Design System](https://www.figma.com/design/xbkKEr5wsis24LAc02n8mt/E-commerce-Application?node-id=23097-326&t=dZssbUD68nV0oyxm-4).
 
 ---
 
