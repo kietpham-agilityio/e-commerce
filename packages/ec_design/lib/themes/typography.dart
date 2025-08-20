@@ -9,18 +9,17 @@ class EcTypography {
 
   // Font families
   static const String _fontFamily = 'Metropolis';
-  
+
   // Default colors
   static const Color _defaultTextColor = Colors.black87;
   static const Color _defaultSecondaryTextColor = Colors.black54;
 
   // Font weights - Metropolis font weights
-  static const FontWeight light = FontWeight.w300;      // Metropolis-Light.otf
-  static const FontWeight regular = FontWeight.w400;    // Metropolis-Regular.otf
-  static const FontWeight medium = FontWeight.w500;     // Metropolis-Medium.otf (normal/default)
-  static const FontWeight semiBold = FontWeight.w600;   // Metropolis-SemiBold.otf
-  static const FontWeight bold = FontWeight.w700;       // Metropolis-Bold.otf
-  static const FontWeight extraBold = FontWeight.w800;  // Metropolis-ExtraBold.otf
+  static const FontWeight regular = FontWeight.w400; // Metropolis-Regular.otf
+  static const FontWeight medium =
+      FontWeight.w500; // Metropolis-Medium.otf (normal/default)
+  static const FontWeight semiBold = FontWeight.w600; // Metropolis-SemiBold.otf
+  static const FontWeight bold = FontWeight.w700; // Metropolis-Bold.otf
 
   // Font sizes
   static const double xs = 10.0;
@@ -243,6 +242,4 @@ class EcTypography {
   static TextStyle withHeight(TextStyle style, double height) {
     return style.copyWith(height: height);
   }
-
 }
-

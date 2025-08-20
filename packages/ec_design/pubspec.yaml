@@ -43,14 +43,10 @@ flutter:
           weight: 500
         - asset: assets/fonts/Metropolis-Regular.otf
           weight: 400
-        - asset: assets/fonts/Metropolis-Light.otf
-          weight: 300
         - asset: assets/fonts/Metropolis-Bold.otf
           weight: 700
         - asset: assets/fonts/Metropolis-SemiBold.otf
           weight: 600
-        - asset: assets/fonts/Metropolis-ExtraBold.otf
-          weight: 800
     - family: e_commerce_icon
       fonts:
         - asset: assets/icons/e_commerce_icon.ttf
