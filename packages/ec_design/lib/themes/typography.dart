@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'app_colors.dart';
 
 /// Typography scale for the e-commerce design system
 ///
@@ -10,9 +11,9 @@ class EcTypography {
   // Font families
   static const String _fontFamily = 'Metropolis';
 
-  // Default colors
-  static const Color _defaultTextColor = Colors.black87;
-  static const Color _defaultSecondaryTextColor = Colors.black54;
+  // Default colors - using EcColors
+  static Color get _defaultTextColor => EcColors.light(ECThemeType.user).secondary;
+  static Color get _defaultSecondaryTextColor => EcColors.light(ECThemeType.user).outline;
 
   // Font weights - Metropolis font weights
   static const FontWeight regular = FontWeight.w400; // Metropolis-Regular.otf
@@ -241,5 +242,53 @@ class EcTypography {
   /// Get typography with custom line height
   static TextStyle withHeight(TextStyle style, double height) {
     return style.copyWith(height: height);
+  }
+  
+  /// Get typography with custom letter spacing
+  static TextStyle withLetterSpacing(TextStyle style, double spacing) {
+    return style.copyWith(letterSpacing: spacing);
+  }
+  
+  // Theme-aware typography methods using EcColors
+  static TextStyle getDisplayLarge(ECThemeType themeType, bool isDark) {
+    final colors = isDark 
+        ? EcColors.dark(themeType) 
+        : EcColors.light(themeType);
+    return TextStyle(
+      fontFamily: _fontFamily,
+      fontSize: massive,
+      fontWeight: bold,
+      height: tightHeight,
+      letterSpacing: tightSpacing,
+      color: colors.secondary,
+    );
+  }
+  
+  static TextStyle getBodyMedium(ECThemeType themeType, bool isDark) {
+    final colors = isDark 
+        ? EcColors.dark(themeType) 
+        : EcColors.light(themeType);
+    return TextStyle(
+      fontFamily: _fontFamily,
+      fontSize: base,
+      fontWeight: regular,
+      height: relaxedHeight,
+      letterSpacing: normalSpacing,
+      color: colors.secondary,
+    );
+  }
+  
+  static TextStyle getCaption(ECThemeType themeType, bool isDark) {
+    final colors = isDark 
+        ? EcColors.dark(themeType) 
+        : EcColors.light(themeType);
+    return TextStyle(
+      fontFamily: _fontFamily,
+      fontSize: xs,
+      fontWeight: regular,
+      height: normalHeight,
+      letterSpacing: wideSpacing,
+      color: colors.outline,
+    );
   }
 }
