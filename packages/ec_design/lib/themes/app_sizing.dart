@@ -7,6 +7,21 @@ class AppSizing {
 
   final ECThemeType type;
 
+  double get smallIcon => switch (type) {
+        ECThemeType.admin => AdminSizing.smallIcon,
+        ECThemeType.user => UserSizing.smallIcon,
+      };
+
+  double get icon => switch (type) {
+        ECThemeType.admin => AdminSizing.icon,
+        ECThemeType.user => UserSizing.icon,
+      };
+
+  double get bigIcon => switch (type) {
+        ECThemeType.admin => AdminSizing.bigIcon,
+        ECThemeType.user => UserSizing.bigIcon,
+      };
+
   double get switcher => switch (type) {
         ECThemeType.admin => AdminSizing.switcher,
         ECThemeType.user => UserSizing.switcher,
