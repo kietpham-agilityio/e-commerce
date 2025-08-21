@@ -13,7 +13,7 @@ class EcDesignTheme {
     return ThemeData(
       colorScheme: EcColors.light(ECThemeType.user),
       useMaterial3: true,
-      fontFamily: 'Metropolis',
+      fontFamily: EcTypography.fontFamily,
       textTheme: _buildTextTheme(ECThemeType.user, false),
     );
   }
@@ -23,7 +23,7 @@ class EcDesignTheme {
     return ThemeData(
       colorScheme: EcColors.dark(ECThemeType.user),
       useMaterial3: true,
-      fontFamily: 'Metropolis',
+      fontFamily: EcTypography.fontFamily,
       textTheme: _buildTextTheme(ECThemeType.user, true),
     );
   }
