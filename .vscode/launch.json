@@ -1,0 +1,91 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "e-commerce (user flavor - iOS)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--dart-define=FLAVOR=user"]
+    },
+    {
+      "name": "e-commerce (admin flavor - iOS)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--dart-define=FLAVOR=admin"]
+    },
+    {
+      "name": "e-commerce (user flavor - Android)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"],
+      "flutterMode": "debug"
+    },
+    {
+      "name": "e-commerce (admin flavor - Android)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"],
+      "flutterMode": "debug"
+    },
+    {
+      "name": "e-commerce (user flavor - profile mode)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "args": ["--dart-define=FLAVOR=user"]
+    },
+    {
+      "name": "e-commerce (admin flavor - profile mode)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "args": ["--dart-define=FLAVOR=admin"]
+    },
+    {
+      "name": "e-commerce (user flavor - release mode)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "args": ["--dart-define=FLAVOR=user"]
+    },
+    {
+      "name": "e-commerce (admin flavor - release mode)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "args": ["--dart-define=FLAVOR=admin"]
+    },
+    {
+      "name": "ec_design",
+      "cwd": "packages/ec_design",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "ec_design (profile mode)",
+      "cwd": "packages/ec_design",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "ec_design (release mode)",
+      "cwd": "packages/ec_design",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release"
+    }
+  ]
+}
