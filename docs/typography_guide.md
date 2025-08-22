@@ -25,6 +25,10 @@ A comprehensive typography system built around the **Metropolis** font family th
 - **Label**: `labelLarge`, `labelMedium`, `labelSmall` (form labels)
 - **Special**: `caption`, `overline`, `button` (specific UI elements)
 
+---
+
+## 🚀 Quick Start & Usage Guidelines
+
 ### **Quick Usage**
 
 ```dart
@@ -38,11 +42,50 @@ Text('Page Title', style: Theme.of(context).textTheme.headlineLarge)
 Text('Custom Text', style: EcTypography.bodyMedium.copyWith(color: Colors.blue))
 ```
 
-### **Font Scale**
+### **Do's ✅**
 
-- **Base**: 14px (default body text)
-- **Range**: 10px (xs) to 48px (massive)
-- **Weights**: Regular (400), Medium (500), SemiBold (600), Bold (700)
+- ✅ Use `EcTypography` styles directly for custom text styling
+- ✅ Read from `Theme.of(context).textTheme` for standard Material Design text styles
+- ✅ Use the theme-aware methods for dynamic color adaptation
+- ✅ Maintain consistent typography hierarchy across your app
+- ✅ Use the established typography scale for consistency
+- ✅ Integrate typography with your color scheme automatically
+
+### **Don'ts ❌**
+
+- ❌ Don't hardcode font sizes, weights, or families
+- ❌ Don't create custom `TextStyle` objects that bypass the design system
+- ❌ Don't mix different typography systems in the same app
+- ❌ Don't ignore the established typography hierarchy
+- ❌ Don't override typography styles without considering the design system
+
+### **Best Practices**
+
+#### 1. **Consistency First**
+
+Always use the established typography scale. Don't create variations unless absolutely necessary.
+
+#### 2. **Hierarchy Matters**
+
+Use the appropriate style for the content's importance:
+
+- **Display**: Hero content, main headlines
+- **Headline**: Page titles, major sections
+- **Title**: Card titles, list headers
+- **Body**: Main content, descriptions
+- **Label**: Form labels, UI elements
+
+#### 3. **Color Integration**
+
+Typography automatically integrates with your color scheme:
+
+- Primary text uses `colors.secondary`
+- Secondary text uses `colors.outline`
+- Custom colors can override these defaults
+
+#### 4. **Responsive Design**
+
+The typography system is designed to work across different screen sizes and densities.
 
 ---
 
@@ -263,22 +306,7 @@ static TextTheme _buildTextTheme(ECThemeType themeType, bool isDark) {
 }
 ```
 
-### **5. Usage Guidelines**
-
-#### Do's ✅
-
-- ✅ Use `EcTypography` styles directly for custom text styling
-- ✅ Read from `Theme.of(context).textTheme` for standard Material Design text styles
-- ✅ Use the theme-aware methods for dynamic color adaptation
-- ✅ Maintain consistent typography hierarchy across your app
-
-#### Don'ts ❌
-
-- ❌ Don't hardcode font sizes, weights, or families
-- ❌ Don't create custom `TextStyle` objects that bypass the design system
-- ❌ Don't mix different typography systems in the same app
-
-### **6. Usage Examples**
+### **5. Usage Examples**
 
 #### Direct Typography Usage
 
@@ -346,35 +374,7 @@ Text(
 )
 ```
 
-### **7. Best Practices**
-
-#### 1. **Consistency First**
-
-Always use the established typography scale. Don't create variations unless absolutely necessary.
-
-#### 2. **Hierarchy Matters**
-
-Use the appropriate style for the content's importance:
-
-- **Display**: Hero content, main headlines
-- **Headline**: Page titles, major sections
-- **Title**: Card titles, list headers
-- **Body**: Main content, descriptions
-- **Label**: Form labels, UI elements
-
-#### 3. **Color Integration**
-
-Typography automatically integrates with your color scheme:
-
-- Primary text uses `colors.secondary`
-- Secondary text uses `colors.outline`
-- Custom colors can override these defaults
-
-#### 4. **Responsive Design**
-
-The typography system is designed to work across different screen sizes and densities.
-
-### **8. Customization**
+### **6. Customization**
 
 #### Adding New Styles
 
@@ -407,7 +407,7 @@ EcTypography.withWeight(EcTypography.titleLarge, FontWeight.bold)
 EcTypography.withSize(EcTypography.bodySmall, 16.0)
 ```
 
-### **9. Troubleshooting**
+### **7. Troubleshooting**
 
 #### Common Issues
 
@@ -426,7 +426,7 @@ EcTypography.withSize(EcTypography.bodySmall, 16.0)
 - Use theme-aware methods for dynamic color adaptation
 - Ensure your color scheme is properly configured
 
-### **10. Integration with Design System**
+### **8. Integration with Design System**
 
 The `EcTypography` system is part of your larger design system and integrates with:
 
