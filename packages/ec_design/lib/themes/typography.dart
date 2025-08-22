@@ -9,7 +9,7 @@ class EcTypography {
   EcTypography._();
 
   // Font families
-  static const String _fontFamily = 'Metropolis';
+  static const String fontFamily = 'Metropolis';
 
   // Default colors - using EcColors
   static Color get _defaultTextColor => EcColors.light(ECThemeType.user).secondary;
@@ -46,7 +46,7 @@ class EcTypography {
 
   /// Display large text style - for hero titles
   static TextStyle get displayLarge => TextStyle(
-    fontFamily: _fontFamily,
+    fontFamily: fontFamily,
     fontSize: massive,
     fontWeight: bold,
     height: tightHeight,
@@ -56,7 +56,7 @@ class EcTypography {
 
   /// Display medium text style - for section headers
   static TextStyle get displayMedium => TextStyle(
-    fontFamily: _fontFamily,
+    fontFamily: fontFamily,
     fontSize: giant,
     fontWeight: bold,
     height: tightHeight,
@@ -66,7 +66,7 @@ class EcTypography {
 
   /// Display small text style - for subsection headers
   static TextStyle get displaySmall => TextStyle(
-    fontFamily: _fontFamily,
+    fontFamily: fontFamily,
     fontSize: huge,
     fontWeight: semiBold,
     height: tightHeight,
@@ -76,7 +76,7 @@ class EcTypography {
 
   /// Headline large text style - for main page titles
   static TextStyle get headlineLarge => TextStyle(
-    fontFamily: _fontFamily,
+    fontFamily: fontFamily,
     fontSize: xxxl,
     fontWeight: semiBold,
     height: tightHeight,
@@ -86,7 +86,7 @@ class EcTypography {
 
   /// Headline medium text style - for page titles
   static TextStyle get headlineMedium => TextStyle(
-    fontFamily: _fontFamily,
+    fontFamily: fontFamily,
     fontSize: xxl,
     fontWeight: semiBold,
     height: tightHeight,
@@ -96,7 +96,7 @@ class EcTypography {
 
   /// Headline small text style - for section titles
   static TextStyle get headlineSmall => TextStyle(
-    fontFamily: _fontFamily,
+    fontFamily: fontFamily,
     fontSize: xl,
     fontWeight: semiBold,
     height: tightHeight,
@@ -106,7 +106,7 @@ class EcTypography {
 
   /// Title large text style - for card titles
   static TextStyle get titleLarge => TextStyle(
-    fontFamily: _fontFamily,
+    fontFamily: fontFamily,
     fontSize: lg,
     fontWeight: medium,
     height: normalHeight,
@@ -116,7 +116,7 @@ class EcTypography {
 
   /// Title medium text style - for list item titles
   static TextStyle get titleMedium => TextStyle(
-    fontFamily: _fontFamily,
+    fontFamily: fontFamily,
     fontSize: base,
     fontWeight: medium,
     height: normalHeight,
@@ -126,7 +126,7 @@ class EcTypography {
 
   /// Title small text style - for small titles
   static TextStyle get titleSmall => TextStyle(
-    fontFamily: _fontFamily,
+    fontFamily: fontFamily,
     fontSize: sm,
     fontWeight: medium,
     height: normalHeight,
@@ -136,7 +136,7 @@ class EcTypography {
 
   /// Body large text style - for main content
   static TextStyle get bodyLarge => TextStyle(
-    fontFamily: _fontFamily,
+    fontFamily: fontFamily,
     fontSize: lg,
     fontWeight: regular,
     height: relaxedHeight,
@@ -146,7 +146,7 @@ class EcTypography {
 
   /// Body medium text style - for regular content
   static TextStyle get bodyMedium => TextStyle(
-    fontFamily: _fontFamily,
+    fontFamily: fontFamily,
     fontSize: base,
     fontWeight: regular,
     height: relaxedHeight,
@@ -156,7 +156,7 @@ class EcTypography {
 
   /// Body small text style - for secondary content
   static TextStyle get bodySmall => TextStyle(
-    fontFamily: _fontFamily,
+    fontFamily: fontFamily,
     fontSize: sm,
     fontWeight: regular,
     height: relaxedHeight,
@@ -166,7 +166,7 @@ class EcTypography {
 
   /// Label large text style - for form labels
   static TextStyle get labelLarge => TextStyle(
-    fontFamily: _fontFamily,
+    fontFamily: fontFamily,
     fontSize: base,
     fontWeight: medium,
     height: normalHeight,
@@ -176,7 +176,7 @@ class EcTypography {
 
   /// Label medium text style - for small labels
   static TextStyle get labelMedium => TextStyle(
-    fontFamily: _fontFamily,
+    fontFamily: fontFamily,
     fontSize: base,
     fontWeight: medium,
     height: normalHeight,
@@ -186,7 +186,7 @@ class EcTypography {
 
   /// Label small text style - for tiny labels
   static TextStyle get labelSmall => TextStyle(
-    fontFamily: _fontFamily,
+    fontFamily: fontFamily,
     fontSize: xs,
     fontWeight: medium,
     height: normalHeight,
@@ -196,7 +196,7 @@ class EcTypography {
 
   /// Caption text style - for captions and metadata
   static TextStyle get caption => TextStyle(
-    fontFamily: _fontFamily,
+    fontFamily: fontFamily,
     fontSize: xs,
     fontWeight: regular,
     height: normalHeight,
@@ -206,7 +206,7 @@ class EcTypography {
 
   /// Overline text style - for overlines and small text
   static TextStyle get overline => TextStyle(
-    fontFamily: _fontFamily,
+    fontFamily: fontFamily,
     fontSize: xs,
     fontWeight: medium,
     height: normalHeight,
@@ -216,7 +216,7 @@ class EcTypography {
 
   /// Button text style - for button labels
   static TextStyle get button => TextStyle(
-    fontFamily: _fontFamily,
+    fontFamily: fontFamily,
     fontSize: base,
     fontWeight: medium,
     height: normalHeight,
@@ -255,7 +255,7 @@ class EcTypography {
         ? EcColors.dark(themeType) 
         : EcColors.light(themeType);
     return TextStyle(
-      fontFamily: _fontFamily,
+      fontFamily: fontFamily,
       fontSize: massive,
       fontWeight: bold,
       height: tightHeight,
@@ -269,7 +269,7 @@ class EcTypography {
         ? EcColors.dark(themeType) 
         : EcColors.light(themeType);
     return TextStyle(
-      fontFamily: _fontFamily,
+      fontFamily: fontFamily,
       fontSize: base,
       fontWeight: regular,
       height: relaxedHeight,
@@ -283,7 +283,7 @@ class EcTypography {
         ? EcColors.dark(themeType) 
         : EcColors.light(themeType);
     return TextStyle(
-      fontFamily: _fontFamily,
+      fontFamily: fontFamily,
       fontSize: xs,
       fontWeight: regular,
       height: normalHeight,
