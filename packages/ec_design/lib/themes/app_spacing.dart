@@ -9,12 +9,6 @@ import 'spacing/user_spacing.dart';
 /// abstracting away the underlying theme-specific definitions. Use this class to ensure
 /// consistent spacing and to keep widgets theme-agnostic.
 ///
-/// Example usage:
-/// ```dart
-/// final spacing = AppSpacing(ECThemeType.admin);
-/// EdgeInsets.all(spacing.md);
-/// ```
-///
 /// Spacing tokens follow a consistent scale:
 /// - xxxs, xxs, xs, sm, md, lg, xl, xxl, xxxl, huge, massive, giant
 ///
