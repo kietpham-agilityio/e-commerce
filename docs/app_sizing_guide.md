@@ -17,6 +17,19 @@ Note: All values represent heights. Widths depend on layout unless the widget is
 
 ---
 
+## Naming conventions for tokens
+
+- Use clear, descriptive names reflecting component and size: `button`, `buttonSmall`, `icon`, `bigIcon`, `textFieldOrdinary`.
+- Prefer suffixes like `Small`, `Big`, `Ordinary` when meaningful. Keep names consistent across Admin/User.
+- Avoid ambiguous names (e.g., `large` without context). If it’s a height for a specific widget, include the widget name.
+
+Examples:
+
+- ✅ Good: `iconButtonSmall`, `textFieldSmall`, `appBar`, `searchBar`.
+- ❌ Avoid: `size1`, `largeHeight`.
+
+---
+
 ## Adding a new sizing token
 
 1. Open both `AdminSizing` and `UserSizing` files.
@@ -68,19 +81,6 @@ class AppSizing {
 - Admin tokens: `packages/ec_design/lib/themes/sizing/admin_sizing.dart`
 - User tokens: `packages/ec_design/lib/themes/sizing/user_sizing.dart`
 - Facade: `packages/ec_design/lib/themes/app_sizing.dart`
-
----
-
-## Naming conventions for tokens
-
-- Use clear, descriptive names reflecting component and size: `button`, `buttonSmall`, `icon`, `bigIcon`, `textFieldOrdinary`.
-- Prefer suffixes like `Small`, `Big`, `Ordinary` when meaningful. Keep names consistent across Admin/User.
-- Avoid ambiguous names (e.g., `large` without context). If it’s a height for a specific widget, include the widget name.
-
-Examples:
-
-- ✅ Good: `iconButtonSmall`, `textFieldSmall`, `appBar`, `searchBar`.
-- ❌ Avoid: `size1`, `largeHeight`.
 
 ---
 
