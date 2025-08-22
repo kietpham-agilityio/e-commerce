@@ -53,25 +53,6 @@ class AppSizing {
 
 ---
 
-## Using `AppSizing` in UI
-
-Create an `AppSizing` instance for the current theme and read the getters:
-
-```dart
-final sizing = AppSizing(ECThemeType.admin);
-
-SizedBox(height: sizing.searchBar);
-ElevatedButton(
-  style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(sizing.button)),
-  onPressed: () {},
-  child: const Text('Submit'),
-);
-```
-
-Recommendation: Provide `AppSizing` via theme/context or DI so widgets remain theme-agnostic without manual instantiation.
-
----
-
 ## Best practices
 
 - Keep token names identical across `AdminSizing` and `UserSizing`.
