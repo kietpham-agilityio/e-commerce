@@ -1,4 +1,5 @@
 export 'icons.dart';
+export 'typography_examples.dart';
 
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
@@ -294,44 +295,33 @@ class EcDesignTheme {
   // ===== THEME BUILDING FUNCTIONS =====
 
   /// Builds the text theme based on EcTypography system
+  /// Provides different typography styles for each ECThemeType
   static TextTheme _buildTextTheme(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
-
     return TextTheme(
-      // Display styles
-      displayLarge: EcTypography.displayLarge.copyWith(color: colors.secondary),
-      displayMedium: EcTypography.displayMedium.copyWith(
-        color: colors.secondary,
-      ),
-      displaySmall: EcTypography.displaySmall.copyWith(color: colors.secondary),
+      // Display styles - different for user vs admin themes
+      displayLarge: EcTypography.getDisplayLarge(themeType, isDark),
+      displayMedium: EcTypography.getDisplayMedium(themeType, isDark),
+      displaySmall: EcTypography.getDisplaySmall(themeType, isDark),
 
-      // Headline styles
-      headlineLarge: EcTypography.headlineLarge.copyWith(
-        color: colors.secondary,
-      ),
-      headlineMedium: EcTypography.headlineMedium.copyWith(
-        color: colors.secondary,
-      ),
-      headlineSmall: EcTypography.headlineSmall.copyWith(
-        color: colors.secondary,
-      ),
+      // Headline styles - different for user vs admin themes
+      headlineLarge: EcTypography.getHeadlineLarge(themeType, isDark),
+      headlineMedium: EcTypography.getHeadlineMedium(themeType, isDark),
+      headlineSmall: EcTypography.getHeadlineSmall(themeType, isDark),
 
-      // Title styles
-      titleLarge: EcTypography.titleLarge.copyWith(color: colors.secondary),
-      titleMedium: EcTypography.titleMedium.copyWith(color: colors.secondary),
-      titleSmall: EcTypography.titleSmall.copyWith(color: colors.secondary),
+      // Title styles - different for user vs admin themes
+      titleLarge: EcTypography.getTitleLarge(themeType, isDark),
+      titleMedium: EcTypography.getTitleMedium(themeType, isDark),
+      titleSmall: EcTypography.getTitleSmall(themeType, isDark),
 
-      // Body styles
-      bodyLarge: EcTypography.bodyLarge.copyWith(color: colors.secondary),
-      bodyMedium: EcTypography.bodyMedium.copyWith(color: colors.secondary),
-      bodySmall: EcTypography.bodySmall.copyWith(color: colors.outline),
+      // Body styles - different for user vs admin themes
+      bodyLarge: EcTypography.getBodyLarge(themeType, isDark),
+      bodyMedium: EcTypography.getBodyMedium(themeType, isDark),
+      bodySmall: EcTypography.getBodySmall(themeType, isDark),
 
-      // Label styles
-      labelLarge: EcTypography.labelLarge.copyWith(color: colors.secondary),
-      labelMedium: EcTypography.labelMedium.copyWith(color: colors.secondary),
-      labelSmall: EcTypography.labelSmall.copyWith(color: colors.secondary),
+      // Label styles - different for user vs admin themes
+      labelLarge: EcTypography.getLabelLarge(themeType, isDark),
+      labelMedium: EcTypography.getLabelMedium(themeType, isDark),
+      labelSmall: EcTypography.getLabelSmall(themeType, isDark),
     );
   }
 

@@ -375,66 +375,6 @@ class EcLabelSmallText extends BaseEcText {
   TextStyle get baseStyle => EcTypography.labelSmall;
 }
 
-/// Caption text widget - for captions and metadata
-class EcCaptionText extends BaseEcText {
-  const EcCaptionText(
-    super.text, {
-    super.key,
-    super.textAlign,
-    super.overflow,
-    super.maxLines,
-    super.softWrap,
-    super.textDirection,
-    super.color,
-    super.fontWeight,
-    super.height,
-    super.letterSpacing,
-  });
-
-  @override
-  TextStyle get baseStyle => EcTypography.caption;
-}
-
-/// Overline text widget - for overlines and small text
-class EcOverlineText extends BaseEcText {
-  const EcOverlineText(
-    super.text, {
-    super.key,
-    super.textAlign,
-    super.overflow,
-    super.maxLines,
-    super.softWrap,
-    super.textDirection,
-    super.color,
-    super.fontWeight,
-    super.height,
-    super.letterSpacing,
-  });
-
-  @override
-  TextStyle get baseStyle => EcTypography.overline;
-}
-
-/// Button text widget - for button labels
-class EcButtonText extends BaseEcText {
-  const EcButtonText(
-    super.text, {
-    super.key,
-    super.textAlign,
-    super.overflow,
-    super.maxLines,
-    super.softWrap,
-    super.textDirection,
-    super.color,
-    super.fontWeight,
-    super.height,
-    super.letterSpacing,
-  });
-
-  @override
-  TextStyle get baseStyle => EcTypography.button;
-}
-
 /// Legacy EcText class for backward compatibility
 /// @deprecated Use specific text widgets like EcHeadlineLargeText, EcBodyMediumText, etc.
 @Deprecated(
