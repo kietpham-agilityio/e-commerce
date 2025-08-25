@@ -1,5 +1,5 @@
+import 'package:ec_themes/themes/typography.dart';
 import 'package:flutter/material.dart';
-import '../themes/typography.dart';
 
 /// Base class for all text widgets with common functionality
 abstract class BaseEcText extends StatelessWidget {
