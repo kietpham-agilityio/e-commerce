@@ -1,5 +1,4 @@
 export 'icons.dart';
-export 'typography_examples.dart';
 
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
