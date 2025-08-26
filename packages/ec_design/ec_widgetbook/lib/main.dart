@@ -1,4 +1,5 @@
 import 'package:ec_themes/ec_design.dart';
+import 'package:ec_widgetbook/widget/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:widgetbook/widgetbook.dart';
 
@@ -25,10 +26,33 @@ class WidgetbookApp extends StatelessWidget {
           ],
         ),
       ],
-      directories: [WidgetbookCategory(name: 'Widget', children: [
+      directories: [
+        WidgetbookCategory(
+          name: 'Widget',
+          children: [
+            // The example is provided for reference on how to use it
+            exampleWidgetBooks(),
 
+            textWidgetBooks(),
+            buttonWidgetBooks(),
+            cardWidgetBooks(),
+            textfieldWidgetBooks(),
+            chipWidgetBooks(),
+            checkboxWidgetBooks(),
+            iconsWidgetBooks(),
+            dialogWidgetBooks(),
+            snackbarWidgetBooks(),
+            listTileWidgetBooks(),
+            radioWidgetBooks(),
+            switchWidgetBooks(),
+            sliderWidgetBooks(),
+            progressIndicatorWidgetBooks(),
+            tabBarWidgetBooks(),
+            bottomSheetMenuWidgetBooks(),
+            dividerMenuWidgetBooks(),
           ],
-        )],
+        ),
+      ],
     );
   }
 }
