@@ -1,5 +1,5 @@
+import 'package:ec_themes/themes/icons.dart';
 import 'package:flutter/material.dart';
-import 'package:ec_design/ec_design.dart';
 
 void main() {
   runApp(const MyApp());
