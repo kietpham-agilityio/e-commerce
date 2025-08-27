@@ -379,12 +379,7 @@ class EcDesignTheme {
           }
           return BorderSide(color: colorScheme.secondary);
         }),
-        backgroundColor: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.disabled)) {
-            return colorScheme.surface;
-          }
-          return colorScheme.primaryContainer;
-        }),
+
         minimumSize: const WidgetStatePropertyAll(Size.fromHeight(48)),
         textStyle: WidgetStatePropertyAll(
           EcTypography.getTitleMedium(themeType, isDark),
