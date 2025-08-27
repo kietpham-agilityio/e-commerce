@@ -348,7 +348,7 @@ class EcDesignTheme {
       style: ElevatedButton.styleFrom(
         backgroundColor: colorScheme.primary,
         foregroundColor: colorScheme.onPrimary,
-        disabledBackgroundColor: colorScheme.primary.withValues(alpha: 0.9),
+        disabledBackgroundColor: colorScheme.primary.withValues(alpha: 0.7),
         disabledForegroundColor: colorScheme.onPrimary,
         minimumSize: Size.fromHeight(sizing.button),
         textStyle: EcTypography.getTitleMedium(themeType, isDark),
