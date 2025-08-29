@@ -1,0 +1,20 @@
+name: FlutterFire
+repository: https://github.com/firebase/flutterfire
+
+packages:
+  - .
+  - packages/*
+  - packages/*/*
+  - packages/*/*/*
+
+scripts:
+  postbootstrap: >
+    melos exec -- puro flutter pub get && 
+    melos run build_runner
+
+  build_runner:
+    run: |
+      melos exec -- "puro flutter pub run build_runner build --delete-conflicting-outputs"
+    packageFilters:
+      ignore:
+        - ec_lint
