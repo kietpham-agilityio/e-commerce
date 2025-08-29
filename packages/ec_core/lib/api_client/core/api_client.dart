@@ -90,7 +90,7 @@ class ApiClient {
   /// Get base URL
   String get baseUrl => _dio.options.baseUrl;
 
-  /// GET request with error handling
+  /// GET request with enhanced error handling
   Future<T> get<T>(
     String uri, {
     Map<String, dynamic>? queryParameters,
@@ -110,11 +110,14 @@ class ApiClient {
     } on DioException catch (e) {
       throw _handleDioError(e);
     } catch (e) {
-      throw Failure('Unexpected error: $e');
+      throw Failure(
+        'Unexpected error in GET request: $e',
+        internalErrorCode: null,
+      );
     }
   }
 
-  /// POST request with error handling
+  /// POST request with enhanced error handling
   Future<T> post<T>(
     String uri, {
     required dynamic data,
@@ -138,11 +141,14 @@ class ApiClient {
     } on DioException catch (e) {
       throw _handleDioError(e);
     } catch (e) {
-      throw Failure('Unexpected error: $e');
+      throw Failure(
+        'Unexpected error in POST request: $e',
+        internalErrorCode: null,
+      );
     }
   }
 
-  /// PUT request with error handling
+  /// PUT request with enhanced error handling
   Future<T> put<T>(
     String uri, {
     required dynamic data,
@@ -166,11 +172,14 @@ class ApiClient {
     } on DioException catch (e) {
       throw _handleDioError(e);
     } catch (e) {
-      throw Failure('Unexpected error: $e');
+      throw Failure(
+        'Unexpected error in PUT request: $e',
+        internalErrorCode: null,
+      );
     }
   }
 
-  /// PATCH request with error handling
+  /// PATCH request with enhanced error handling
   Future<T> patch<T>(
     String uri, {
     required dynamic data,
@@ -194,11 +203,14 @@ class ApiClient {
     } on DioException catch (e) {
       throw _handleDioError(e);
     } catch (e) {
-      throw Failure('Unexpected error: $e');
+      throw Failure(
+        'Unexpected error in PATCH request: $e',
+        internalErrorCode: null,
+      );
     }
   }
 
-  /// DELETE request with error handling
+  /// DELETE request with enhanced error handling
   Future<T?> delete<T>(
     String uri, {
     dynamic data,
@@ -218,11 +230,14 @@ class ApiClient {
     } on DioException catch (e) {
       throw _handleDioError(e);
     } catch (e) {
-      throw Failure('Unexpected error: $e');
+      throw Failure(
+        'Unexpected error in DELETE request: $e',
+        internalErrorCode: null,
+      );
     }
   }
 
-  /// Upload file with progress tracking
+  /// Upload file with progress tracking and enhanced error handling
   Future<T> uploadFile<T>(
     String uri, {
     required FormData formData,
@@ -246,11 +261,14 @@ class ApiClient {
     } on DioException catch (e) {
       throw _handleDioError(e);
     } catch (e) {
-      throw Failure('Unexpected error: $e');
+      throw Failure(
+        'Unexpected error in file upload: $e',
+        internalErrorCode: null,
+      );
     }
   }
 
-  /// Download file with progress tracking
+  /// Download file with progress tracking and enhanced error handling
   Future<T> downloadFile<T>(
     String url,
     String savePath, {
@@ -272,21 +290,21 @@ class ApiClient {
     } on DioException catch (e) {
       throw _handleDioError(e);
     } catch (e) {
-      throw Failure('Unexpected error: $e');
+      throw Failure(
+        'Unexpected error in file download: $e',
+        internalErrorCode: null,
+      );
     }
   }
 
-  /// Handle Dio specific errors and convert to Failure
+  /// Handle Dio specific errors and convert to Failure with internal error codes
   Failure _handleDioError(DioException error) {
     final apiClientError = ApiClientError.convertApiClientErrorFromError(
       error,
       StackTrace.current,
     );
     
-    return Failure(
-      apiClientError.toString(),
-      noConnectionData: apiClientError,
-    );
+    return Failure.fromApiClientError(apiClientError);
   }
 
   /// Dispose the client

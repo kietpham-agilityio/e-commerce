@@ -14,6 +14,7 @@ part 'api_client_error.freezed.dart';
 ///
 /// Model for mapping backend api error response
 ///
+
 class ApiBackendError {
   ApiBackendError({required this.message, required this.code});
   factory ApiBackendError.fromJson(String source) =>

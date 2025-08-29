@@ -30,6 +30,8 @@ dependencies:
   # Logger for dio
   pretty_dio_logger: ^1.4.0
 
+  background_fetch: ^1.4.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
