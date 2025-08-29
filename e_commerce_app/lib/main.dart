@@ -1,32 +1,12 @@
 import 'package:ec_core/ec_core.dart';
-import 'package:ec_themes/themes/app_colors.dart';
-import 'package:ec_themes/themes/themes.dart';
-import 'package:ec_themes/themes/widgets/switch.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  final ValueNotifier<bool> _customSwitch1 = ValueNotifier<bool>(true);
-  final ValueNotifier<bool> _customSwitch2 = ValueNotifier<bool>(false);
-
-  @override
-  void dispose() {
-    _customSwitch1.dispose();
-    _customSwitch2.dispose();
-
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +14,13 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
       title: flavor.appName,
-      theme: EcDesignTheme.lightTheme,
-      darkTheme: EcDesignTheme.darkTheme,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: flavor.isAdmin ? Colors.deepPurple : Colors.blue,
+        ),
+        useMaterial3: true,
+      ),
       home: Scaffold(
-        backgroundColor: Color(0xffF9F9F9),
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(flavor.appName),
@@ -83,35 +66,6 @@ class _MyAppState extends State<MyApp> {
                     color: flavor.isAdmin ? Colors.red : Colors.blue,
                   ),
                 ),
-              ),
-              ValueListenableBuilder<bool>(
-                valueListenable: _customSwitch1,
-                builder: (context, value, widget) {
-                  return EcSwitch(
-                    themeType: ECThemeType.user,
-                    value: value,
-                    onChanged: (val) => _customSwitch1.value = val,
-                  );
-                },
-              ),
-              ValueListenableBuilder<bool>(
-                valueListenable: _customSwitch2,
-                builder: (context, value, widget) {
-                  return EcSwitch(
-                    themeType: ECThemeType.user,
-                    value: value,
-                    onChanged: (val) => _customSwitch2.value = val,
-                  );
-                },
-              ),
-              ValueListenableBuilder<bool>(
-                valueListenable: _customSwitch2,
-                builder: (context, value, widget) {
-                  return CupertinoSwitch(
-                    value: value,
-                    onChanged: (val) => _customSwitch2.value = val,
-                  );
-                },
               ),
             ],
           ),
