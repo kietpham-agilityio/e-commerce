@@ -1,0 +1,33 @@
+name: ec_widgetbook
+description: "Widgetbook"
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  ec_themes:
+    path: ../ec_themes
+
+  widgetbook: ^3.16.0
+  clipboard: ^2.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+  widgetbook_generator: ^3.16.0
+  widgetbook_annotation: ^3.7.0
+
+flutter:
+  uses-material-design: true
+
+  fonts:
+    - family: e_commerce_icon
+      fonts:
+        - asset: assets/icons/e_commerce_icon.ttf
