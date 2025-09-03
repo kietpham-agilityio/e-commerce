@@ -1,0 +1,8 @@
+# melos_managed_dependency_overrides: ec_core,ec_lint,ec_themes
+dependency_overrides:
+  ec_core:
+    path: ../packages/ec_core
+  ec_lint:
+    path: ../packages/ec_lint
+  ec_themes:
+    path: ../packages/ec_design/ec_themes

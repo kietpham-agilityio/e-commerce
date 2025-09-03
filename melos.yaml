@@ -1,8 +1,9 @@
-name: FlutterFire
-repository: https://github.com/firebase/flutterfire
+name: E-commerce
+repository: https://github.com/kietpham-agilityio/e-commerce
 
 packages:
   - .
+  - e_commerce_app
   - packages/*
   - packages/*/*
   - packages/*/*/*
@@ -16,5 +17,13 @@ scripts:
     run: |
       melos exec -- "puro flutter pub run build_runner build --delete-conflicting-outputs"
     packageFilters:
-      ignore:
-        - ec_lint
+      scope:
+        - e_commerce
+
+  custom_lint_app:
+    run: |
+      melos exec -- "dart run custom_lint"
+    packageFilters:
+      scope:
+        - e_commerce_app
+
