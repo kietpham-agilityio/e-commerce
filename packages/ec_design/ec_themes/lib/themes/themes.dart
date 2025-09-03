@@ -1,5 +1,8 @@
 export 'icons.dart';
+export 'widgets/button.dart';
+export 'app_shadows.dart';
 
+import 'package:ec_themes/themes/app_sizing.dart';
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
 import 'typography.dart';
@@ -332,20 +335,60 @@ class EcDesignTheme {
     return const InputDecorationTheme();
   }
 
-  /// TBD: Build elevated button theme
+  /// Build elevated button theme
   static ElevatedButtonThemeData _buildElevatedButtonTheme(
     ECThemeType themeType,
     bool isDark,
   ) {
-    return const ElevatedButtonThemeData();
+    final colorScheme =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
+    final sizing = AppSizing(themeType);
+
+    return ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: colorScheme.primary,
+        foregroundColor: colorScheme.onPrimary,
+        disabledBackgroundColor: colorScheme.primary.withValues(alpha: 0.7),
+        disabledForegroundColor: colorScheme.onPrimary,
+        minimumSize: Size.fromHeight(sizing.button),
+        textStyle: EcTypography.getTitleMedium(themeType, isDark),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+      ),
+    );
   }
 
-  /// TBD: Build outlined button theme
+  /// Build outlined button theme
   static OutlinedButtonThemeData _buildOutlinedButtonTheme(
     ECThemeType themeType,
     bool isDark,
   ) {
-    return const OutlinedButtonThemeData();
+    final colorScheme =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
+
+    return OutlinedButtonThemeData(
+      style: ButtonStyle(
+        foregroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return colorScheme.surface;
+          }
+          return colorScheme.secondary;
+        }),
+        side: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return BorderSide(color: colorScheme.surface);
+          }
+          return BorderSide(color: colorScheme.secondary);
+        }),
+
+        minimumSize: const WidgetStatePropertyAll(Size.fromHeight(48)),
+        textStyle: WidgetStatePropertyAll(
+          EcTypography.getTitleMedium(themeType, isDark),
+        ),
+        shape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+        ),
+      ),
+    );
   }
 
   /// TBD: Build text button theme
