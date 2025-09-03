@@ -3,6 +3,7 @@ import '../apis/api_client_error.dart';
 import '../apis/failure.dart';
 import '../apis/api_internal_error_code.dart';
 import 'api_client.dart';
+import 'dart:async';
 
 /// Base class for API services
 /// Provides common functionality and error handling
@@ -42,8 +43,11 @@ abstract class BaseApiService {
       return Failure.fromApiClientError(apiClientError);
     }
     
-    // For other exceptions, create a generic failure
-    return Failure.fromException(error);
+    // For other exceptions, create a generic failure with correct type
+    return Failure<dynamic>(
+      error.toString(),
+      internalErrorCode: ApiInternalErrorCode.unsupported(),
+    );
   }
 
   /// Handle API response with custom error mapping and internal error codes
@@ -313,6 +317,272 @@ abstract class BaseApiService {
     throw Failure(
       'Failed after $maxRetries attempts',
       internalErrorCode: ApiInternalErrorCode.unsupported(),
+    );
+  }
+
+  /// Common function for calling APIs using Completer
+  /// Replaces method channel pattern with HTTP methods
+  /// Uses existing common error handling from ApiClient
+  static Future<T> callApiWithCompleter<T>({
+    required Future<T> Function() apiCall,
+    String? errorContext,
+    Duration timeout = const Duration(seconds: 30),
+  }) {
+    final completer = Completer<T>();
+    
+    // Set timeout
+    Timer? timeoutTimer;
+    if (timeout != Duration.zero) {
+      timeoutTimer = Timer(timeout, () {
+        if (!completer.isCompleted) {
+          completer.completeError(
+            Failure(
+              'Request timeout${errorContext != null ? ' for $errorContext' : ''}',
+              internalErrorCode: ApiInternalErrorCode.unsupported(),
+            ),
+          );
+        }
+      });
+    }
+    
+    // Execute API call
+    apiCall().then((T result) {
+      timeoutTimer?.cancel();
+      if (!completer.isCompleted) {
+        completer.complete(result);
+      }
+    }).catchError((dynamic error) {
+      timeoutTimer?.cancel();
+      if (!completer.isCompleted) {
+        // Use existing error handling patterns from ApiClient
+        if (error is Failure) {
+          completer.completeError(error);
+          return;
+        }
+        
+        if (error is DioException) {
+          // Use the common error handling function from ApiClient
+          final apiClientError = ApiClientError.convertApiClientErrorFromError(
+            error,
+            StackTrace.current,
+          );
+          completer.completeError(Failure.fromApiClientError(apiClientError));
+          return;
+        }
+        
+        if (error is Exception) {
+          completer.completeError(
+            Failure(
+              error.toString(),
+              internalErrorCode: ApiInternalErrorCode.unsupported(),
+            ),
+          );
+          return;
+        }
+        
+        // Handle other error types
+        String message = "Unknown error";
+        if (error is Map && error.containsKey('details')) {
+          message = error['details'].toString();
+        } else if (error is String) {
+          message = error;
+        }
+        
+        completer.completeError(
+          Failure(
+            message,
+            internalErrorCode: ApiInternalErrorCode.unsupported(),
+          ),
+        );
+      }
+    });
+    
+    return completer.future;
+  }
+
+  /// GET request using Completer pattern
+  /// Uses existing ApiClient.get() with built-in error handling
+  Future<T> getWithCompleter<T>(
+    String uri, {
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onReceiveProgress,
+    String? errorContext,
+    Duration timeout = const Duration(seconds: 30),
+  }) {
+    return callApiWithCompleter<T>(
+      apiCall: () => apiClient.get<T>(
+        uri,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onReceiveProgress: onReceiveProgress,
+      ),
+      errorContext: errorContext ?? 'GET $uri',
+      timeout: timeout,
+    );
+  }
+
+  /// POST request using Completer pattern
+  /// Uses existing ApiClient.post() with built-in error handling
+  Future<T> postWithCompleter<T>(
+    String uri, {
+    required dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+    String? errorContext,
+    Duration timeout = const Duration(seconds: 30),
+  }) {
+    return callApiWithCompleter<T>(
+      apiCall: () => apiClient.post<T>(
+        uri,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+      ),
+      errorContext: errorContext ?? 'POST $uri',
+      timeout: timeout,
+    );
+  }
+
+  /// PUT request using Completer pattern
+  /// Uses existing ApiClient.put() with built-in error handling
+  Future<T> putWithCompleter<T>(
+    String uri, {
+    required dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+    String? errorContext,
+    Duration timeout = const Duration(seconds: 30),
+  }) {
+    return callApiWithCompleter<T>(
+      apiCall: () => apiClient.put<T>(
+        uri,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+      ),
+      errorContext: errorContext ?? 'PUT $uri',
+      timeout: timeout,
+    );
+  }
+
+  /// PATCH request using Completer pattern
+  /// Uses existing ApiClient.patch() with built-in error handling
+  Future<T> patchWithCompleter<T>(
+    String uri, {
+    required dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+    String? errorContext,
+    Duration timeout = const Duration(seconds: 30),
+  }) {
+    return callApiWithCompleter<T>(
+      apiCall: () => apiClient.patch<T>(
+        uri,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+      ),
+      errorContext: errorContext ?? 'PATCH $uri',
+      timeout: timeout,
+    );
+  }
+
+  /// DELETE request using Completer pattern
+  /// Uses existing ApiClient.delete() with built-in error handling
+  Future<T?> deleteWithCompleter<T>(
+    String uri, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    String? errorContext,
+    Duration timeout = const Duration(seconds: 30),
+  }) {
+    return callApiWithCompleter<T?>(
+      apiCall: () => apiClient.delete<T>(
+        uri,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+      ),
+      errorContext: errorContext ?? 'DELETE $uri',
+      timeout: timeout,
+    );
+  }
+
+  /// Upload file using Completer pattern
+  /// Uses existing ApiClient.uploadFile() with built-in error handling
+  Future<T> uploadFileWithCompleter<T>(
+    String uri, {
+    required FormData formData,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+    String? errorContext,
+    Duration timeout = const Duration(seconds: 60),
+  }) {
+    return callApiWithCompleter<T>(
+      apiCall: () => apiClient.uploadFile<T>(
+        uri,
+        formData: formData,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+      ),
+      errorContext: errorContext ?? 'UPLOAD $uri',
+      timeout: timeout,
+    );
+  }
+
+  /// Download file using Completer pattern
+  /// Uses existing ApiClient.downloadFile() with built-in error handling
+  Future<T> downloadFileWithCompleter<T>(
+    String url,
+    String savePath, {
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onReceiveProgress,
+    String? errorContext,
+    Duration timeout = const Duration(seconds: 120),
+  }) {
+    return callApiWithCompleter<T>(
+      apiCall: () => apiClient.downloadFile<T>(
+        url,
+        savePath,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onReceiveProgress: onReceiveProgress,
+      ),
+      errorContext: errorContext ?? 'DOWNLOAD $url',
+      timeout: timeout,
     );
   }
 }

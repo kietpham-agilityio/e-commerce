@@ -263,4 +263,79 @@ class ProductApiService extends BaseApiService {
       shouldRetry: (failure) => failure.isNetworkError || failure.isServerError,
     );
   }
+
+  /// Get all products with pagination using Completer pattern
+  Future<List<Map<String, dynamic>>> getProductsWithCompleter({
+    int page = 1,
+    int limit = 10,
+    String? category,
+    String? search,
+    Duration timeout = const Duration(seconds: 30),
+  }) async {
+    final queryParams = <String, dynamic>{'page': page, 'limit': limit};
+
+    if (category != null && category.isNotEmpty) {
+      queryParams['category'] = category;
+    }
+
+    if (search != null && search.isNotEmpty) {
+      queryParams['search'] = search;
+    }
+
+    final response = await getWithCompleter<dynamic>(
+      '/products',
+      queryParameters: queryParams,
+      errorContext: 'Get Products',
+      timeout: timeout,
+    );
+    
+    return handleListResponse(
+      response,
+      (json) => json as Map<String, dynamic>,
+    );
+  }
+
+  /// Create a new product using Completer pattern
+  Future<Map<String, dynamic>> createProductWithCompleter(
+    Map<String, dynamic> productData, {
+    Duration timeout = const Duration(seconds: 30),
+  }) async {
+    final response = await postWithCompleter<dynamic>(
+      '/products',
+      data: productData,
+      errorContext: 'Create Product',
+      timeout: timeout,
+    );
+    
+    return handleResponse(response, (json) => json as Map<String, dynamic>);
+  }
+
+  /// Update an existing product using Completer pattern
+  Future<Map<String, dynamic>> updateProductWithCompleter(
+    String id,
+    Map<String, dynamic> productData, {
+    Duration timeout = const Duration(seconds: 30),
+  }) async {
+    final response = await putWithCompleter<dynamic>(
+      '/products/$id',
+      data: productData,
+      errorContext: 'Update Product',
+      timeout: timeout,
+    );
+    
+    return handleResponse(response, (json) => json as Map<String, dynamic>);
+  }
+
+  /// Delete a product using Completer pattern
+  Future<bool> deleteProductWithCompleter(
+    String id, {
+    Duration timeout = const Duration(seconds: 30),
+  }) async {
+    await deleteWithCompleter<dynamic>(
+      '/products/$id',
+      errorContext: 'Delete Product',
+      timeout: timeout,
+    );
+    return true;
+  }
 }

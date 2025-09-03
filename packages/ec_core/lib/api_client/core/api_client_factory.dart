@@ -22,10 +22,7 @@ class ApiClientFactory {
       sendTimeout: sendTimeout,
     );
 
-    return ApiClient(
-      baseOptions,
-      interceptors: interceptors,
-    );
+    return ApiClient(baseOptions, interceptors: interceptors);
   }
 
   /// Create API client with EcFlavor (admin/user variant)
@@ -45,10 +42,7 @@ class ApiClientFactory {
       sendTimeout: sendTimeout,
     );
 
-    return ApiClient(
-      baseOptions,
-      interceptors: interceptors,
-    );
+    return ApiClient(baseOptions, interceptors: interceptors);
   }
 
   /// Create API client for current flavor
@@ -66,10 +60,7 @@ class ApiClientFactory {
       sendTimeout: sendTimeout,
     );
 
-    return ApiClient(
-      baseOptions,
-      interceptors: interceptors,
-    );
+    return ApiClient(baseOptions, interceptors: interceptors);
   }
 
   /// Create API client with custom base URL
@@ -89,10 +80,7 @@ class ApiClientFactory {
       sendTimeout: sendTimeout,
     );
 
-    return ApiClient(
-      baseOptions,
-      interceptors: interceptors,
-    );
+    return ApiClient(baseOptions, interceptors: interceptors);
   }
 
   /// Create API client with default configuration
@@ -110,10 +98,7 @@ class ApiClientFactory {
       sendTimeout: sendTimeout,
     );
 
-    return ApiClient(
-      baseOptions,
-      interceptors: interceptors,
-    );
+    return ApiClient(baseOptions, interceptors: interceptors);
   }
 
   /// Create API client for development environment
@@ -218,10 +203,8 @@ class ApiClientFactory {
     Duration? sendTimeout,
     List<Interceptor>? interceptors,
   }) {
-    final headers = <String, String>{
-      'Authorization': 'Bearer $token',
-    };
-    
+    final headers = <String, String>{'Authorization': 'Bearer $token'};
+
     if (additionalHeaders != null) {
       headers.addAll(additionalHeaders);
     }
@@ -248,10 +231,8 @@ class ApiClientFactory {
     Duration? sendTimeout,
     List<Interceptor>? interceptors,
   }) {
-    final headers = <String, String>{
-      'Authorization': 'Bearer $token',
-    };
-    
+    final headers = <String, String>{'Authorization': 'Bearer $token'};
+
     if (additionalHeaders != null) {
       headers.addAll(additionalHeaders);
     }
