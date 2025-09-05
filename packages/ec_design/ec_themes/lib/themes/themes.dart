@@ -1,6 +1,5 @@
-export 'icons.dart';
-
 import 'package:flutter/material.dart';
+
 import 'app_colors.dart';
 import 'typography.dart';
 
