@@ -44,6 +44,9 @@ dependencies:
   ec_core:
     path: ../packages/ec_core
 
+  ec_lint:
+    path: ../packages/ec_lint
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
