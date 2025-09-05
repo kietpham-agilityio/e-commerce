@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:ec_core/ec_core.dart';
-import 'api_client.dart';
 import 'api_config.dart';
 
 /// Factory class for creating API clients with different configurations

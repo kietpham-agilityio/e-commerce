@@ -202,8 +202,6 @@ abstract class BaseApiService {
       errorCode = response['code'].toString();
     } else if (response.containsKey('error_code')) {
       errorCode = response['error_code'].toString();
-    } else if (response.containsKey('status')) {
-      errorCode = response['status'].toString();
     }
     
     if (errorCode != null) {
@@ -320,10 +318,10 @@ abstract class BaseApiService {
     );
   }
 
-  /// Common function for calling APIs using Completer
+  /// Common function for calling APIs running in background
   /// Replaces method channel pattern with HTTP methods
   /// Uses existing common error handling from ApiClient
-  static Future<T> callApiWithCompleter<T>({
+  static Future<T> callApiRunBackground<T>({
     required Future<T> Function() apiCall,
     String? errorContext,
     Duration timeout = const Duration(seconds: 30),
@@ -411,7 +409,7 @@ abstract class BaseApiService {
     String? errorContext,
     Duration timeout = const Duration(seconds: 30),
   }) {
-    return callApiWithCompleter<T>(
+    return callApiRunBackground<T>(
       apiCall: () => apiClient.get<T>(
         uri,
         queryParameters: queryParameters,
@@ -437,7 +435,7 @@ abstract class BaseApiService {
     String? errorContext,
     Duration timeout = const Duration(seconds: 30),
   }) {
-    return callApiWithCompleter<T>(
+    return callApiRunBackground<T>(
       apiCall: () => apiClient.post<T>(
         uri,
         data: data,
@@ -465,7 +463,7 @@ abstract class BaseApiService {
     String? errorContext,
     Duration timeout = const Duration(seconds: 30),
   }) {
-    return callApiWithCompleter<T>(
+    return callApiRunBackground<T>(
       apiCall: () => apiClient.put<T>(
         uri,
         data: data,
@@ -493,7 +491,7 @@ abstract class BaseApiService {
     String? errorContext,
     Duration timeout = const Duration(seconds: 30),
   }) {
-    return callApiWithCompleter<T>(
+    return callApiRunBackground<T>(
       apiCall: () => apiClient.patch<T>(
         uri,
         data: data,
@@ -519,7 +517,7 @@ abstract class BaseApiService {
     String? errorContext,
     Duration timeout = const Duration(seconds: 30),
   }) {
-    return callApiWithCompleter<T?>(
+    return callApiRunBackground<T?>(
       apiCall: () => apiClient.delete<T>(
         uri,
         data: data,
@@ -545,7 +543,7 @@ abstract class BaseApiService {
     String? errorContext,
     Duration timeout = const Duration(seconds: 60),
   }) {
-    return callApiWithCompleter<T>(
+    return callApiRunBackground<T>(
       apiCall: () => apiClient.uploadFile<T>(
         uri,
         formData: formData,
@@ -572,7 +570,7 @@ abstract class BaseApiService {
     String? errorContext,
     Duration timeout = const Duration(seconds: 120),
   }) {
-    return callApiWithCompleter<T>(
+    return callApiRunBackground<T>(
       apiCall: () => apiClient.downloadFile<T>(
         url,
         savePath,
