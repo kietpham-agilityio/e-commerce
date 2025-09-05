@@ -1,6 +1,5 @@
 // Core API client components
 export 'core/api_client.dart';
-export 'core/base_api_service.dart';
 export 'core/api_client_factory.dart';
 export 'core/api_config.dart';
 
