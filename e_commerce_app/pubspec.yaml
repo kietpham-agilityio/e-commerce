@@ -47,6 +47,8 @@ dependencies:
   ec_lint:
     path: ../packages/ec_lint
 
+  custom_lint: ^0.8.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
