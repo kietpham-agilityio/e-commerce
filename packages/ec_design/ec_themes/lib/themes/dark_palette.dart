@@ -108,6 +108,7 @@ class EcDarkPalette {
   static const MaterialColor ecBlack = MaterialColor(
     _blackPrimaryColor, // default
     <int, Color>{
+      0: Color(0xFF000000),
       50: Color(0xFF0e0e0e),
       100: Color(0xFF131313),
       200: Color(0xFF181818),

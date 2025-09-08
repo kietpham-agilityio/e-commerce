@@ -1,0 +1,4 @@
+# melos_managed_dependency_overrides: ec_themes
+dependency_overrides:
+  ec_themes:
+    path: ../ec_themes
