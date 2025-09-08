@@ -9,7 +9,7 @@ class ApiInternalErrorCode with _$ApiInternalErrorCode {
   // ============================================================================
   // SUPABASE STORAGE ERROR CODES
   // ============================================================================
-  
+
   // Resource Not Found Errors (404)
   factory ApiInternalErrorCode.noSuchBucket() = _NoSuchBucket;
   factory ApiInternalErrorCode.noSuchKey() = _NoSuchKey;
@@ -38,7 +38,8 @@ class ApiInternalErrorCode with _$ApiInternalErrorCode {
   factory ApiInternalErrorCode.accessDenied() = _AccessDenied;
   factory ApiInternalErrorCode.invalidSignature() = _InvalidSignature;
   factory ApiInternalErrorCode.signatureDoesNotMatch() = _SignatureDoesNotMatch;
-  factory ApiInternalErrorCode.invalidUploadSignature() = _InvalidUploadSignature;
+  factory ApiInternalErrorCode.invalidUploadSignature() =
+      _InvalidUploadSignature;
   factory ApiInternalErrorCode.s3InvalidAccessKeyId() = _S3InvalidAccessKeyId;
 
   // Payload Too Large (413)
@@ -70,12 +71,15 @@ class ApiInternalErrorCode with _$ApiInternalErrorCode {
 
   // S3 Related Errors
   factory ApiInternalErrorCode.s3Error() = _S3Error;
-  factory ApiInternalErrorCode.s3MaximumCredentialsLimit() = _S3MaximumCredentialsLimit;
+  factory ApiInternalErrorCode.s3MaximumCredentialsLimit() =
+      _S3MaximumCredentialsLimit;
 
   // Legacy Auth Errors (for backward compatibility)
   factory ApiInternalErrorCode.authGeneral() = _ApiInternalErrorCodeAuthGeneral;
-  factory ApiInternalErrorCode.authNonActiveUserError() = _ApiInternalErrorCodeAuthNonActiveUserError;
-  factory ApiInternalErrorCode.authDoNotHavePermissions() = _ApiInternalErrorCodeAuthDoNotHavePermissions;
+  factory ApiInternalErrorCode.authNonActiveUserError() =
+      _ApiInternalErrorCodeAuthNonActiveUserError;
+  factory ApiInternalErrorCode.authDoNotHavePermissions() =
+      _ApiInternalErrorCodeAuthDoNotHavePermissions;
   factory ApiInternalErrorCode.authFailed() = _ApiInternalErrorCodeAuthFailed;
   factory ApiInternalErrorCode.unsupported() = _ApiInternalErrorCodeUnSupported;
 
@@ -87,10 +91,10 @@ class ApiInternalErrorCode with _$ApiInternalErrorCode {
       noSuchKey: () => 404,
       noSuchUpload: () => 404,
       tenantNotFound: () => 404,
-      
+
       // 401 Unauthorized
       invalidJWT: () => 401,
-      
+
       // 400 Bad Request
       invalidRequest: () => 400,
       invalidBucketName: () => 400,
@@ -101,49 +105,49 @@ class ApiInternalErrorCode with _$ApiInternalErrorCode {
       invalidChecksum: () => 400,
       missingPart: () => 400,
       s3MaximumCredentialsLimit: () => 400,
-      
+
       // 409 Conflict
       resourceAlreadyExists: () => 409,
       keyAlreadyExists: () => 409,
       bucketAlreadyExists: () => 409,
-      
+
       // 403 Forbidden
       accessDenied: () => 403,
       invalidSignature: () => 403,
       signatureDoesNotMatch: () => 403,
       invalidUploadSignature: () => 403,
       s3InvalidAccessKeyId: () => 403,
-      
+
       // 413 Payload Too Large
       entityTooLarge: () => 413,
-      
+
       // 416 Range Not Satisfiable
       invalidRange: () => 416,
-      
+
       // 411 Length Required
       missingContentLength: () => 411,
-      
+
       // 423 Locked
       resourceLocked: () => 423,
       lockTimeout: () => 423,
-      
+
       // 429 Too Many Requests
       tooManyRequests: () => 429,
-      
+
       // 503 Service Unavailable
       slowDown: () => 503,
-      
+
       // 500 Internal Server Error
       internalError: () => 500,
       databaseError: () => 500,
-      
+
       // 504 Gateway Timeout
       databaseTimeout: () => 504,
       gatewayTimeout: () => 504,
-      
+
       // S3 Error (varies)
       s3Error: () => 500,
-      
+
       // Legacy auth errors
       authGeneral: () => 401,
       authNonActiveUserError: () => 401,
@@ -218,8 +222,12 @@ class ApiInternalErrorCode with _$ApiInternalErrorCode {
       keyAlreadyExists: () => 'The specified key already exists.',
       bucketAlreadyExists: () => 'The specified bucket already exists.',
       accessDenied: () => 'Access to the specified resource is denied.',
-      invalidSignature: () => 'The signature provided does not match the calculated signature.',
-      signatureDoesNotMatch: () => 'The request signature does not match the calculated signature.',
+      invalidSignature:
+          () =>
+              'The signature provided does not match the calculated signature.',
+      signatureDoesNotMatch:
+          () =>
+              'The request signature does not match the calculated signature.',
       invalidUploadSignature: () => 'The provided upload signature is invalid.',
       s3InvalidAccessKeyId: () => 'The provided AWS access key ID is invalid.',
       entityTooLarge: () => 'The entity being uploaded is too large.',
@@ -234,10 +242,12 @@ class ApiInternalErrorCode with _$ApiInternalErrorCode {
       databaseTimeout: () => 'Timeout occurred while accessing the database.',
       gatewayTimeout: () => 'Gateway timeout occurred.',
       s3Error: () => 'An error occurred related to Amazon S3.',
-      s3MaximumCredentialsLimit: () => 'The maximum number of credentials has been reached.',
+      s3MaximumCredentialsLimit:
+          () => 'The maximum number of credentials has been reached.',
       authGeneral: () => 'General authentication error.',
       authNonActiveUserError: () => 'User account is not active.',
-      authDoNotHavePermissions: () => 'User does not have required permissions.',
+      authDoNotHavePermissions:
+          () => 'User does not have required permissions.',
       authFailed: () => 'Authentication failed.',
       unsupported: () => 'Unsupported error type.',
     );
@@ -279,16 +289,8 @@ class ApiInternalErrorCode with _$ApiInternalErrorCode {
       'DatabaseTimeout': ApiInternalErrorCode.databaseTimeout(),
       'GatewayTimeout': ApiInternalErrorCode.gatewayTimeout(),
       'S3Error': ApiInternalErrorCode.s3Error(),
-      'S3MaximumCredentialsLimit': ApiInternalErrorCode.s3MaximumCredentialsLimit(),
-      
-      // Legacy error codes (for backward compatibility)
-      'E101': ApiInternalErrorCode.authGeneral(),
-      'E102': ApiInternalErrorCode.authGeneral(),
-      'E103': ApiInternalErrorCode.authGeneral(),
-      'E104': ApiInternalErrorCode.authGeneral(),
-      'E105': ApiInternalErrorCode.authNonActiveUserError(),
-      'E106': ApiInternalErrorCode.authDoNotHavePermissions(),
-      'E107': ApiInternalErrorCode.authGeneral(),
+      'S3MaximumCredentialsLimit':
+          ApiInternalErrorCode.s3MaximumCredentialsLimit(),
     };
 
     return codes[code];

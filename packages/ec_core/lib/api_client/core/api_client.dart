@@ -321,7 +321,7 @@ class ApiClient {
     if (error is Failure) {
       return error as Failure;
     }
-    
+
     // Convert to API client error if possible
     if (error is DioException) {
       final apiClientError = ApiClientError.convertApiClientErrorFromError(
@@ -330,7 +330,7 @@ class ApiClient {
       );
       return Failure.fromApiClientError(apiClientError);
     }
-    
+
     // For other exceptions, create a generic failure
     return Failure(
       error.toString(),
@@ -339,10 +339,7 @@ class ApiClient {
   }
 
   /// Handle API response with custom error mapping and internal error codes
-  T handleResponse<T>(
-    dynamic response,
-    T Function(dynamic) fromJson,
-  ) {
+  T handleResponse<T>(dynamic response, T Function(dynamic) fromJson) {
     try {
       return fromJson(response);
     } catch (e) {
@@ -356,7 +353,7 @@ class ApiClient {
           );
         }
       }
-      
+
       throw Failure(
         'Failed to parse response: $e',
         internalErrorCode: ApiInternalErrorCode.unsupported(),
@@ -383,7 +380,7 @@ class ApiClient {
       }
     } catch (e) {
       if (e is Failure) rethrow;
-      
+
       // Check if response contains error information
       if (response is Map<String, dynamic>) {
         final errorCode = _extractErrorCodeFromResponse(response);
@@ -394,7 +391,7 @@ class ApiClient {
           );
         }
       }
-      
+
       throw Failure(
         'Failed to parse list response: $e',
         internalErrorCode: ApiInternalErrorCode.unsupported(),
@@ -411,7 +408,7 @@ class ApiClient {
       if (response is Map) {
         final data = response['data'] as List;
         final items = data.map((item) => fromJson(item)).toList();
-        
+
         final pagination = Pagination(
           page: response['page'] ?? 1,
           limit: response['limit'] ?? 10,
@@ -419,10 +416,7 @@ class ApiClient {
           totalPages: response['totalPages'] ?? 1,
         );
 
-        return PaginatedResponse(
-          data: items,
-          pagination: pagination,
-        );
+        return PaginatedResponse(data: items, pagination: pagination);
       } else {
         throw Failure(
           'Invalid paginated response format',
@@ -431,7 +425,7 @@ class ApiClient {
       }
     } catch (e) {
       if (e is Failure) rethrow;
-      
+
       // Check if response contains error information
       if (response is Map<String, dynamic>) {
         final errorCode = _extractErrorCodeFromResponse(response);
@@ -442,7 +436,7 @@ class ApiClient {
           );
         }
       }
-      
+
       throw Failure(
         'Failed to parse paginated response: $e',
         internalErrorCode: ApiInternalErrorCode.unsupported(),
@@ -453,8 +447,8 @@ class ApiClient {
   /// Check if response has error
   bool hasError(dynamic response) {
     if (response is Map) {
-      return response.containsKey('error') || 
-             (response.containsKey('message') && response['success'] == false);
+      return response.containsKey('error') ||
+          (response.containsKey('message') && response['success'] == false);
     }
     return false;
   }
@@ -479,7 +473,7 @@ class ApiClient {
   /// Maybe fetch wrapper with enhanced error handling
   /// Returns data if successful, throws Failure if error occurs
   /// May use cached data if available, uncertain outcome
-  /// 
+  ///
   /// Optional parameters:
   /// - [errorHandler]: Custom error handler function
   /// - [maxRetries]: Maximum number of retry attempts (default: 0, no retry)
@@ -493,31 +487,31 @@ class ApiClient {
     bool Function(Failure)? shouldRetry,
   }) async {
     int attempts = 0;
-    
+
     while (attempts <= maxRetries) {
       try {
         return await apiCall();
       } on Failure catch (failure) {
         attempts++;
-        
+
         // Check if we should retry based on error type
-        if (attempts > maxRetries || 
+        if (attempts > maxRetries ||
             (shouldRetry != null && !shouldRetry(failure))) {
           rethrow;
         }
-        
+
         // Don't retry on authentication errors
         if (failure.isAuthError) {
           rethrow;
         }
-        
+
         // Wait before retrying
         if (attempts <= maxRetries) {
           await Future.delayed(delay * attempts);
         }
       } catch (e) {
         attempts++;
-        
+
         if (attempts > maxRetries) {
           if (e is Exception) {
             if (errorHandler != null) {
@@ -530,14 +524,14 @@ class ApiClient {
             internalErrorCode: ApiInternalErrorCode.unsupported(),
           );
         }
-        
+
         // Wait before retrying
         if (attempts <= maxRetries) {
           await Future.delayed(delay * attempts);
         }
       }
     }
-    
+
     throw Failure(
       'Maybe fetch failed after $maxRetries attempts',
       internalErrorCode: ApiInternalErrorCode.unsupported(),
@@ -551,7 +545,7 @@ class ApiClient {
   /// Force fetch wrapper that bypasses any caching and always makes fresh API calls
   /// Returns data if successful, throws Failure if error occurs
   /// Use this when you need to ensure you get the latest data from the server
-  /// 
+  ///
   /// Optional parameters:
   /// - [errorHandler]: Custom error handler function
   /// - [maxRetries]: Maximum number of retry attempts (default: 0, no retry)
@@ -565,31 +559,31 @@ class ApiClient {
     bool Function(Failure)? shouldRetry,
   }) async {
     int attempts = 0;
-    
+
     while (attempts <= maxRetries) {
       try {
         return await apiCall();
       } on Failure catch (failure) {
         attempts++;
-        
+
         // Check if we should retry based on error type
-        if (attempts > maxRetries || 
+        if (attempts > maxRetries ||
             (shouldRetry != null && !shouldRetry(failure))) {
           rethrow;
         }
-        
+
         // Don't retry on authentication errors
         if (failure.isAuthError) {
           rethrow;
         }
-        
+
         // Wait before retrying
         if (attempts <= maxRetries) {
           await Future.delayed(delay * attempts);
         }
       } catch (e) {
         attempts++;
-        
+
         if (attempts > maxRetries) {
           if (e is Exception) {
             if (errorHandler != null) {
@@ -602,14 +596,14 @@ class ApiClient {
             internalErrorCode: ApiInternalErrorCode.unsupported(),
           );
         }
-        
+
         // Wait before retrying
         if (attempts <= maxRetries) {
           await Future.delayed(delay * attempts);
         }
       }
     }
-    
+
     throw Failure(
       'Force fetch failed after $maxRetries attempts',
       internalErrorCode: ApiInternalErrorCode.unsupported(),
@@ -629,7 +623,7 @@ class ApiClient {
     Duration timeout = const Duration(seconds: 30),
   }) {
     final completer = Completer<T>();
-    
+
     // Set timeout
     Timer? timeoutTimer;
     if (timeout != Duration.zero) {
@@ -644,59 +638,64 @@ class ApiClient {
         }
       });
     }
-    
+
     // Execute API call
-    apiCall().then((T result) {
-      timeoutTimer?.cancel();
-      if (!completer.isCompleted) {
-        completer.complete(result);
-      }
-    }).catchError((dynamic error) {
-      timeoutTimer?.cancel();
-      if (!completer.isCompleted) {
-        // Use existing error handling patterns from ApiClient
-        if (error is Failure) {
-          completer.completeError(error);
-          return;
-        }
-        
-        if (error is DioException) {
-          // Use the common error handling function from ApiClient
-          final apiClientError = ApiClientError.convertApiClientErrorFromError(
-            error,
-            StackTrace.current,
-          );
-          completer.completeError(Failure.fromApiClientError(apiClientError));
-          return;
-        }
-        
-        if (error is Exception) {
-          completer.completeError(
-            Failure(
-              error.toString(),
-              internalErrorCode: ApiInternalErrorCode.unsupported(),
-            ),
-          );
-          return;
-        }
-        
-        // Handle other error types
-        String message = "Unknown error";
-        if (error is Map && error.containsKey('details')) {
-          message = error['details'].toString();
-        } else if (error is String) {
-          message = error;
-        }
-        
-        completer.completeError(
-          Failure(
-            message,
-            internalErrorCode: ApiInternalErrorCode.unsupported(),
-          ),
-        );
-      }
-    });
-    
+    apiCall()
+        .then((T result) {
+          timeoutTimer?.cancel();
+          if (!completer.isCompleted) {
+            completer.complete(result);
+          }
+        })
+        .catchError((dynamic error) {
+          timeoutTimer?.cancel();
+          if (!completer.isCompleted) {
+            // Use existing error handling patterns from ApiClient
+            if (error is Failure) {
+              completer.completeError(error);
+              return;
+            }
+
+            if (error is DioException) {
+              // Use the common error handling function from ApiClient
+              final apiClientError =
+                  ApiClientError.convertApiClientErrorFromError(
+                    error,
+                    StackTrace.current,
+                  );
+              completer.completeError(
+                Failure.fromApiClientError(apiClientError),
+              );
+              return;
+            }
+
+            if (error is Exception) {
+              completer.completeError(
+                Failure(
+                  error.toString(),
+                  internalErrorCode: ApiInternalErrorCode.unsupported(),
+                ),
+              );
+              return;
+            }
+
+            // Handle other error types
+            String message = "Unknown error";
+            if (error is Map && error.containsKey('details')) {
+              message = error['details'].toString();
+            } else if (error is String) {
+              message = error;
+            }
+
+            completer.completeError(
+              Failure(
+                message,
+                internalErrorCode: ApiInternalErrorCode.unsupported(),
+              ),
+            );
+          }
+        });
+
     return completer.future;
   }
 
@@ -711,13 +710,14 @@ class ApiClient {
     Duration timeout = const Duration(seconds: 30),
   }) {
     return callApiRunBackground<T>(
-      apiCall: () => get<T>(
-        uri,
-        queryParameters: queryParameters,
-        options: options,
-        cancelToken: cancelToken,
-        onReceiveProgress: onReceiveProgress,
-      ),
+      apiCall:
+          () => get<T>(
+            uri,
+            queryParameters: queryParameters,
+            options: options,
+            cancelToken: cancelToken,
+            onReceiveProgress: onReceiveProgress,
+          ),
       errorContext: errorContext ?? 'GET $uri',
       timeout: timeout,
     );
@@ -736,15 +736,16 @@ class ApiClient {
     Duration timeout = const Duration(seconds: 30),
   }) {
     return callApiRunBackground<T>(
-      apiCall: () => post<T>(
-        uri,
-        data: data,
-        queryParameters: queryParameters,
-        options: options,
-        cancelToken: cancelToken,
-        onSendProgress: onSendProgress,
-        onReceiveProgress: onReceiveProgress,
-      ),
+      apiCall:
+          () => post<T>(
+            uri,
+            data: data,
+            queryParameters: queryParameters,
+            options: options,
+            cancelToken: cancelToken,
+            onSendProgress: onSendProgress,
+            onReceiveProgress: onReceiveProgress,
+          ),
       errorContext: errorContext ?? 'POST $uri',
       timeout: timeout,
     );
@@ -763,15 +764,16 @@ class ApiClient {
     Duration timeout = const Duration(seconds: 30),
   }) {
     return callApiRunBackground<T>(
-      apiCall: () => put<T>(
-        uri,
-        data: data,
-        queryParameters: queryParameters,
-        options: options,
-        cancelToken: cancelToken,
-        onSendProgress: onSendProgress,
-        onReceiveProgress: onReceiveProgress,
-      ),
+      apiCall:
+          () => put<T>(
+            uri,
+            data: data,
+            queryParameters: queryParameters,
+            options: options,
+            cancelToken: cancelToken,
+            onSendProgress: onSendProgress,
+            onReceiveProgress: onReceiveProgress,
+          ),
       errorContext: errorContext ?? 'PUT $uri',
       timeout: timeout,
     );
@@ -790,91 +792,17 @@ class ApiClient {
     Duration timeout = const Duration(seconds: 30),
   }) {
     return callApiRunBackground<T>(
-      apiCall: () => patch<T>(
-        uri,
-        data: data,
-        queryParameters: queryParameters,
-        options: options,
-        cancelToken: cancelToken,
-        onSendProgress: onSendProgress,
-        onReceiveProgress: onReceiveProgress,
-      ),
+      apiCall:
+          () => patch<T>(
+            uri,
+            data: data,
+            queryParameters: queryParameters,
+            options: options,
+            cancelToken: cancelToken,
+            onSendProgress: onSendProgress,
+            onReceiveProgress: onReceiveProgress,
+          ),
       errorContext: errorContext ?? 'PATCH $uri',
-      timeout: timeout,
-    );
-  }
-
-  /// DELETE request using background pattern
-  Future<T?> deleteRunBackground<T>(
-    String uri, {
-    dynamic data,
-    Map<String, dynamic>? queryParameters,
-    Options? options,
-    CancelToken? cancelToken,
-    String? errorContext,
-    Duration timeout = const Duration(seconds: 30),
-  }) {
-    return callApiRunBackground<T?>(
-      apiCall: () => delete<T>(
-        uri,
-        data: data,
-        queryParameters: queryParameters,
-        options: options,
-        cancelToken: cancelToken,
-      ),
-      errorContext: errorContext ?? 'DELETE $uri',
-      timeout: timeout,
-    );
-  }
-
-  /// Upload file using background pattern
-  Future<T> uploadFileRunBackground<T>(
-    String uri, {
-    required FormData formData,
-    Map<String, dynamic>? queryParameters,
-    Options? options,
-    CancelToken? cancelToken,
-    ProgressCallback? onSendProgress,
-    ProgressCallback? onReceiveProgress,
-    String? errorContext,
-    Duration timeout = const Duration(seconds: 60),
-  }) {
-    return callApiRunBackground<T>(
-      apiCall: () => uploadFile<T>(
-        uri,
-        formData: formData,
-        queryParameters: queryParameters,
-        options: options,
-        cancelToken: cancelToken,
-        onSendProgress: onSendProgress,
-        onReceiveProgress: onReceiveProgress,
-      ),
-      errorContext: errorContext ?? 'UPLOAD $uri',
-      timeout: timeout,
-    );
-  }
-
-  /// Download file using background pattern
-  Future<T> downloadFileRunBackground<T>(
-    String url,
-    String savePath, {
-    Map<String, dynamic>? queryParameters,
-    Options? options,
-    CancelToken? cancelToken,
-    ProgressCallback? onReceiveProgress,
-    String? errorContext,
-    Duration timeout = const Duration(seconds: 120),
-  }) {
-    return callApiRunBackground<T>(
-      apiCall: () => downloadFile<T>(
-        url,
-        savePath,
-        queryParameters: queryParameters,
-        options: options,
-        cancelToken: cancelToken,
-        onReceiveProgress: onReceiveProgress,
-      ),
-      errorContext: errorContext ?? 'DOWNLOAD $url',
       timeout: timeout,
     );
   }
@@ -884,19 +812,21 @@ class ApiClient {
   // ============================================================================
 
   /// Extract error code from response and convert to internal error code
-  ApiInternalErrorCode? _extractErrorCodeFromResponse(Map<String, dynamic> response) {
+  ApiInternalErrorCode? _extractErrorCodeFromResponse(
+    Map<String, dynamic> response,
+  ) {
     String? errorCode;
-    
+
     if (response.containsKey('code')) {
       errorCode = response['code'].toString();
     } else if (response.containsKey('error_code')) {
       errorCode = response['error_code'].toString();
     }
-    
+
     if (errorCode != null) {
       return ApiInternalErrorCode.fromInternalErrorMessage(errorCode);
     }
-    
+
     return null;
   }
 
@@ -920,7 +850,7 @@ class ApiClient {
       error,
       StackTrace.current,
     );
-    
+
     return Failure.fromApiClientError(apiClientError);
   }
 
@@ -959,10 +889,7 @@ class PaginatedResponse<T> {
   final List<T> data;
   final Pagination pagination;
 
-  const PaginatedResponse({
-    required this.data,
-    required this.pagination,
-  });
+  const PaginatedResponse({required this.data, required this.pagination});
 
   bool get isEmpty => data.isEmpty;
   bool get isNotEmpty => data.isNotEmpty;
