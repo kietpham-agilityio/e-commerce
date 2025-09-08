@@ -1,11 +1,12 @@
-export 'icons.dart';
-export 'widgets/button.dart';
-export 'app_shadows.dart';
-
 import 'package:ec_themes/themes/app_sizing.dart';
 import 'package:flutter/material.dart';
+
 import 'app_colors.dart';
 import 'typography.dart';
+
+export 'app_shadows.dart';
+export 'icons.dart';
+export 'widgets/button.dart';
 
 /// Design system themes for the e-commerce app
 class EcDesignTheme {
