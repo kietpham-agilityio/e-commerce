@@ -45,6 +45,95 @@ class ApiBackendError {
 
 @freezed
 class ApiClientError with _$ApiClientError {
+  const ApiClientError._();
+  
+  // Manual implementation of getters to fix freezed generation issue
+  @override
+  Object get originalError => when(
+    userNotFound: (originalError, _, __) => originalError,
+    requestCancelled: (originalError, _, __) => originalError,
+    unauthorizedRequest: (originalError, _, __) => originalError,
+    forbiddenRequest: (originalError, _, __) => originalError,
+    badRequest: (originalError, _, __) => originalError,
+    notFound: (originalError, _, __) => originalError,
+    methodNotAllowed: (originalError, _, __) => originalError,
+    notAcceptable: (originalError, _, __) => originalError,
+    requestTimeout: (originalError, _, __) => originalError,
+    sendTimeout: (originalError, _, __) => originalError,
+    conflict: (originalError, _, __) => originalError,
+    internalServerError: (originalError, _, __) => originalError,
+    notImplemented: (originalError, _, __) => originalError,
+    serviceUnavailable: (originalError, _, __) => originalError,
+    noInternetConnection: (originalError, _, __) => originalError,
+    formatException: (originalError, _, __) => originalError,
+    unableToProcess: (originalError, _, __) => originalError,
+    defaultError: (originalError, _, __) => originalError,
+    unexpectedError: (originalError, _, __) => originalError,
+    badResponseMapping: (originalError, _, __) => originalError,
+    pdfUnableGenerate: (originalError, _, __) => originalError,
+    authGeneral: (originalError, _, __) => originalError,
+    authNonActiveUserError: (originalError, _, __) => originalError,
+    authDoNotHavePermissions: (originalError, _, __) => originalError,
+    authFailed: (originalError, _, __) => originalError,
+  );
+  
+  @override
+  ApiBackendError? get developerResponseError => when(
+    userNotFound: (_, developerResponseError, __) => developerResponseError,
+    requestCancelled: (_, developerResponseError, __) => developerResponseError,
+    unauthorizedRequest: (_, developerResponseError, __) => developerResponseError,
+    forbiddenRequest: (_, developerResponseError, __) => developerResponseError,
+    badRequest: (_, developerResponseError, __) => developerResponseError,
+    notFound: (_, developerResponseError, __) => developerResponseError,
+    methodNotAllowed: (_, developerResponseError, __) => developerResponseError,
+    notAcceptable: (_, developerResponseError, __) => developerResponseError,
+    requestTimeout: (_, developerResponseError, __) => developerResponseError,
+    sendTimeout: (_, developerResponseError, __) => developerResponseError,
+    conflict: (_, developerResponseError, __) => developerResponseError,
+    internalServerError: (_, developerResponseError, __) => developerResponseError,
+    notImplemented: (_, developerResponseError, __) => developerResponseError,
+    serviceUnavailable: (_, developerResponseError, __) => developerResponseError,
+    noInternetConnection: (_, developerResponseError, __) => developerResponseError,
+    formatException: (_, developerResponseError, __) => developerResponseError,
+    unableToProcess: (_, developerResponseError, __) => developerResponseError,
+    defaultError: (_, developerResponseError, __) => developerResponseError,
+    unexpectedError: (_, developerResponseError, __) => developerResponseError,
+    badResponseMapping: (_, developerResponseError, __) => developerResponseError,
+    pdfUnableGenerate: (_, developerResponseError, __) => developerResponseError,
+    authGeneral: (_, developerResponseError, __) => developerResponseError,
+    authNonActiveUserError: (_, developerResponseError, __) => developerResponseError,
+    authDoNotHavePermissions: (_, developerResponseError, __) => developerResponseError,
+    authFailed: (_, developerResponseError, __) => developerResponseError,
+  );
+  
+  @override
+  StackTrace? get stackTrace => when(
+    userNotFound: (_, __, stackTrace) => stackTrace,
+    requestCancelled: (_, __, stackTrace) => stackTrace,
+    unauthorizedRequest: (_, __, stackTrace) => stackTrace,
+    forbiddenRequest: (_, __, stackTrace) => stackTrace,
+    badRequest: (_, __, stackTrace) => stackTrace,
+    notFound: (_, __, stackTrace) => stackTrace,
+    methodNotAllowed: (_, __, stackTrace) => stackTrace,
+    notAcceptable: (_, __, stackTrace) => stackTrace,
+    requestTimeout: (_, __, stackTrace) => stackTrace,
+    sendTimeout: (_, __, stackTrace) => stackTrace,
+    conflict: (_, __, stackTrace) => stackTrace,
+    internalServerError: (_, __, stackTrace) => stackTrace,
+    notImplemented: (_, __, stackTrace) => stackTrace,
+    serviceUnavailable: (_, __, stackTrace) => stackTrace,
+    noInternetConnection: (_, __, stackTrace) => stackTrace,
+    formatException: (_, __, stackTrace) => stackTrace,
+    unableToProcess: (_, __, stackTrace) => stackTrace,
+    defaultError: (_, __, stackTrace) => stackTrace,
+    unexpectedError: (_, __, stackTrace) => stackTrace,
+    badResponseMapping: (_, __, stackTrace) => stackTrace,
+    pdfUnableGenerate: (_, __, stackTrace) => stackTrace,
+    authGeneral: (_, __, stackTrace) => stackTrace,
+    authNonActiveUserError: (_, __, stackTrace) => stackTrace,
+    authDoNotHavePermissions: (_, __, stackTrace) => stackTrace,
+    authFailed: (_, __, stackTrace) => stackTrace,
+  );
   const factory ApiClientError.userNotFound(
     Object originalError,
     ApiBackendError? developerResponseError, {
