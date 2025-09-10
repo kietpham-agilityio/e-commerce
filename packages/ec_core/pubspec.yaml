@@ -26,14 +26,12 @@ dependencies:
   # Functional programming
   fpdart: ^1.1.0
 
-  retrofit: ^4.3.0
+  retrofit: ^4.6.0
 
   json_annotation: ^4.9.0
 
   # Logger for dio
   pretty_dio_logger: ^1.4.0
-
-  background_fetch: ^1.4.0
 
 dev_dependencies:
   flutter_test:
@@ -49,9 +47,9 @@ dev_dependencies:
   # Mock library
   http_mock_adapter: ^0.6.1
 
-  build_runner: ^2.4.11
+  build_runner: ^2.5.4
 
-  retrofit_generator: ">=8.0.0 <10.0.0"
+  retrofit_generator: ^9.7.0
   json_serializable: ^6.8.0
 
 flutter:

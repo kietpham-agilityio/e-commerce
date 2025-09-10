@@ -90,6 +90,10 @@ class ApiClient {
     return _dio;
   }
 
+  /// Get Dio client for Retrofit integration
+  /// This method provides the Dio instance that can be used with Retrofit
+  Dio get dio => _dio;
+
   /// Set base URL
   set baseUrl(String baseUrl) {
     _dio.options.baseUrl = baseUrl;
