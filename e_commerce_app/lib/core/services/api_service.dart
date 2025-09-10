@@ -1,4 +1,5 @@
 import 'package:ec_core/ec_core.dart';
+
 import '../di/api_client_module.dart';
 
 /// Example service class that uses GetIt for dependency injection
@@ -37,7 +38,10 @@ class ApiService {
   }
 
   /// Example method to update user data
-  Future<Map<String, dynamic>> updateUser(String userId, Map<String, dynamic> userData) async {
+  Future<Map<String, dynamic>> updateUser(
+    String userId,
+    Map<String, dynamic> userData,
+  ) async {
     try {
       final response = await _apiClient.put('/users/$userId', data: userData);
       return response as Map<String, dynamic>;
@@ -58,6 +62,15 @@ class ApiService {
         throw Exception('Failed to delete user: ${e.message}');
       }
       rethrow;
+    }
+  }
+
+  Future<List<dynamic>> fetchPosts() async {
+    try {
+      final response = await _apiClient.testApis.getApis();
+      return response;
+    } on Failure catch (e) {
+      throw Exception('Failed to fetch posts: ${e.message}');
     }
   }
 
