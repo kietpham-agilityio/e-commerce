@@ -16,24 +16,42 @@ class ApiConfig {
   static const Duration receiveTimeout = Duration(seconds: 30);
   static const Duration sendTimeout = Duration(seconds: 30);
 
+  /// Base URL configuration map
+  static final Map<String, String> _baseUrls = {
+    'dev': 'https://jsonplaceholder.typicode.com',
+    'development': 'https://jsonplaceholder.typicode.com',
+    'staging': 'https://staging-api.ecommerce.com',
+    'prod': 'https://api.ecommerce.com',
+    'production': 'https://api.ecommerce.com',
+  };
+
+  /// Admin base URL configuration map
+  static final Map<String, String> _adminBaseUrls = {
+    'dev': 'https://admin-dev.ecommerce.com',
+    'development': 'https://admin-dev.ecommerce.com',
+    'staging': 'https://admin-staging.ecommerce.com',
+    'prod': 'https://admin.ecommerce.com',
+    'production': 'https://admin.ecommerce.com',
+  };
+
   /// Get base URL based on environment string
-  /// Override this method in your app to provide environment-specific URLs
   static String getBaseUrl(String environment) {
-    // This should be overridden in your main app
-    // For now, return a placeholder that will be replaced
-    throw UnimplementedError(
-      'getBaseUrl must be overridden in your main app to provide environment-specific URLs'
-    );
+    return _baseUrls[environment.toLowerCase()] ?? _baseUrls['dev']!;
   }
 
   /// Get admin base URL based on environment string
-  /// Override this method in your app to provide admin-specific URLs
   static String getAdminBaseUrl(String environment) {
-    // This should be overridden in your main app
-    // For now, return a placeholder that will be replaced
-    throw UnimplementedError(
-      'getAdminBaseUrl must be overridden in your main app to provide admin environment-specific URLs'
-    );
+    return _adminBaseUrls[environment.toLowerCase()] ?? _adminBaseUrls['dev']!;
+  }
+
+  /// Configure base URLs for environments
+  static void configureBaseUrls(Map<String, String> baseUrls) {
+    _baseUrls.addAll(baseUrls);
+  }
+
+  /// Configure admin base URLs for environments
+  static void configureAdminBaseUrls(Map<String, String> adminBaseUrls) {
+    _adminBaseUrls.addAll(adminBaseUrls);
   }
 
   /// Get base URL based on EcFlavor (admin/user variant)
@@ -60,7 +78,7 @@ class ApiConfig {
     Duration? sendTimeout,
   }) {
     final headers = Map<String, String>.from(defaultHeaders);
-    
+
     if (additionalHeaders != null) {
       headers.addAll(additionalHeaders);
     }
