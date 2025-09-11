@@ -1,7 +1,14 @@
-import 'package:ec_themes/themes/icons.dart';
+import 'setup.dart';
+import 'ui/products_widget.dart';
+import 'router.dart';
+import 'repositories/products/abstract_products_repository.dart';
+import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  // Initialize logger
+  setupLogger();
+
   runApp(const MyApp());
 }
 
@@ -16,61 +23,158 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const ProductsPage(),
+      routes: appRoutes,
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class ProductsPage extends StatefulWidget {
+  const ProductsPage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<ProductsPage> createState() => _ProductsPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _ProductsPageState extends State<ProductsPage> {
+  void _showPresentationWidget() {
+    Navigator.pushNamed(context, Routes.talker);
+  }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  Future<void> _callGetProductsList() async {
+    try {
+      final repository = GetIt.instance<AbstractProductsRepository>();
+      final products = await repository.getProductsList();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Loaded ${products.length} products')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error loading products: $e')));
+      }
+    }
+  }
+
+  Future<void> _callGetProduct() async {
+    try {
+      final repository = GetIt.instance<AbstractProductsRepository>();
+      final product = await repository.getProduct('1');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Loaded product: ${product.name}')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error loading product: $e')));
+      }
+    }
+  }
+
+  Future<void> _callAddToFavorites() async {
+    try {
+      final repository = GetIt.instance<AbstractProductsRepository>();
+      final favorite = await repository.addToFavorites('1');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Added product ${favorite.productId} to favorites at ${favorite.addedAt}',
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error adding to favorites: $e')),
+        );
+      }
+    }
+  }
+
+  Future<void> _callAddToCart() async {
+    try {
+      final repository = GetIt.instance<AbstractProductsRepository>();
+      final cartItem = await repository.addToCart('1');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Added product ${cartItem.productId} to cart (qty: ${cartItem.quantity})',
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error adding to cart: $e')));
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+      body: Column(
+        children: [
+          // API Test Buttons Section
+          Container(
+            padding: const EdgeInsets.all(16),
+            color: Colors.grey[100],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(EcDesignIcons.icArrowLeft, size: 30, color: Colors.blue),
-                const SizedBox(width: 20),
-                Icon(EcDesignIcons.icArrowRight, size: 30, color: Colors.green),
+                const Text(
+                  'API Test Buttons',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 12),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: _callGetProductsList,
+                      icon: const Icon(Icons.list),
+                      label: const Text('Get Products List'),
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: _callGetProduct,
+                      icon: const Icon(Icons.shopping_bag),
+                      label: const Text('Get Product'),
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: _callAddToFavorites,
+                      icon: const Icon(Icons.favorite),
+                      label: const Text('Add to Favorites'),
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: _callAddToCart,
+                      icon: const Icon(Icons.add_shopping_cart),
+                      label: const Text('Add to Cart'),
+                    ),
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
+          ),
+          // Products Widget Section
+          const Expanded(child: ProductsWidget()),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        onPressed: _showPresentationWidget,
+        tooltip: 'Show Debug View',
+        child: const Icon(Icons.bug_report),
       ),
     );
   }
