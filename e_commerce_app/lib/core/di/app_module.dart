@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+
 import 'api_client_module.dart';
 import 'service_module.dart';
 
@@ -10,10 +11,10 @@ class AppModule {
   static void initialize() {
     // Register API client dependencies
     ApiClientModule.registerDependencies();
-    
+
     // Register service dependencies
     ServiceModule.registerServices();
-    
+
     // Register other dependencies here as needed
     // Example:
     // AuthModule.registerDependencies();
@@ -30,6 +31,6 @@ class AppModule {
   }
 
   /// Check if all dependencies are registered
-  static bool get isInitialized => 
-    ApiClientModule.isRegistered && ServiceModule.isRegistered;
+  static bool get isInitialized =>
+      ApiClientModule.isRegistered && ServiceModule.isRegistered;
 }

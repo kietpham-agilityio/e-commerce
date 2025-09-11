@@ -45,17 +45,14 @@ class MockBackendInterceptor extends Interceptor {
         return;
       }
 
-      Map<String, dynamic> data;
+      List<Map<String, dynamic>> data;
 
       if (scenario == 'empty') {
-        data = {'id': 0, 'title': 'Mock empty', 'body': 'empty', 'userId': 0};
+        data = [];
       } else {
-        data = {
-          'id': 1,
-          'title': 'Mock created',
-          'body': 'Created by mock',
-          'userId': 1,
-        };
+        data = [
+          {"userId": 1, "id": 1, "title": "Mock Title", "body": "Mock Body"},
+        ];
       }
 
       handler.resolve(

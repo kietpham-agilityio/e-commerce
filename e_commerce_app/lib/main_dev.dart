@@ -169,30 +169,36 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: MockScenarioButton<String>(
         title: 'API Scenarios',
-        scenarios: [
-          MockScenario<String>(
-            name: 'Real API',
-            description: 'Switch back to real API',
-            payload: 'real',
-            apiMode: ApiMode.real,
-          ),
-          MockScenario<String>(
-            name: 'Success',
-            description: 'Mock mode: success responses',
-            payload: 'success',
-            apiMode: ApiMode.mock,
-          ),
-          MockScenario<String>(
-            name: 'Empty',
-            description: 'Mock mode: empty responses',
-            payload: 'empty',
-            apiMode: ApiMode.mock,
-          ),
-          MockScenario<String>(
-            name: 'Error',
-            description: 'Mock mode: error responses',
-            payload: 'error',
-            apiMode: ApiMode.mock,
+        apis: [
+          const MockApi<String>(
+            name: 'Posts',
+            path: '/posts',
+            scenarios: [
+              MockScenario<String>(
+                name: 'Real API',
+                description: 'Switch back to real API',
+                payload: 'real',
+                apiMode: ApiMode.real,
+              ),
+              MockScenario<String>(
+                name: 'Success',
+                description: 'Mock mode: success responses',
+                payload: 'success',
+                apiMode: ApiMode.mock,
+              ),
+              MockScenario<String>(
+                name: 'Empty',
+                description: 'Mock mode: empty responses',
+                payload: 'empty',
+                apiMode: ApiMode.mock,
+              ),
+              MockScenario<String>(
+                name: 'Error',
+                description: 'Mock mode: error responses',
+                payload: 'error',
+                apiMode: ApiMode.mock,
+              ),
+            ],
           ),
         ],
         onSelected: (scenario) {

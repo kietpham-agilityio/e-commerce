@@ -41,6 +41,9 @@ dependencies:
   # Dependency injection
   get_it: ^7.6.4
 
+  # State management
+  flutter_bloc: ^9.1.1
+
   ec_themes:
     path: ../packages/ec_design/ec_themes
 

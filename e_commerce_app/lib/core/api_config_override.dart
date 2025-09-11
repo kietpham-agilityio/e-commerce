@@ -1,12 +1,11 @@
-import 'package:ec_core/ec_core.dart';
-
 /// Custom API configuration that overrides the core ApiConfig methods
 class ApiConfigOverride {
   /// Override getBaseUrl to provide environment-specific URLs
   static String getBaseUrl(String environment) {
     switch (environment.toLowerCase()) {
       case 'dev':
-        return 'https://dev-api.ecommerce.com';
+        // return 'https://dev-api.ecommerce.com';
+        return 'https://jsonplaceholder.typicode.com';
       case 'staging':
         return 'https://staging-api.ecommerce.com';
       case 'prod':
@@ -21,7 +20,8 @@ class ApiConfigOverride {
   static String getAdminBaseUrl(String environment) {
     switch (environment.toLowerCase()) {
       case 'dev':
-        return 'https://dev-admin-api.ecommerce.com';
+        // return 'https://dev-admin-api.ecommerce.com';
+        return 'https://jsonplaceholder.typicode.com';
       case 'staging':
         return 'https://staging-admin-api.ecommerce.com';
       case 'prod':
@@ -32,6 +32,3 @@ class ApiConfigOverride {
     }
   }
 }
-
-
-

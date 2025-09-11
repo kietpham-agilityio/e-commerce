@@ -1,48 +1,49 @@
-import 'package:e_commerce_app/core/di/api_client_module.dart';
-import 'package:ec_core/api_client/core/api_client.dart';
-import 'package:ec_core/api_client/core/api_client_factory.dart';
+import 'package:ec_core/mocked_backend/mock_backend.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ItemsPage extends StatefulWidget {
+import '../core/di/api_client_module.dart';
+import 'items/bloc/items_bloc.dart';
+
+class ItemsPage extends StatelessWidget {
   const ItemsPage({super.key});
 
   @override
-  State<ItemsPage> createState() => _ItemsPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create:
+          (_) =>
+              ItemsBloc(apiClient: ApiClientModule.apiClient)
+                ..add(LoadRequested()),
+      child: const _ItemsView(),
+    );
+  }
 }
 
-class _ItemsPageState extends State<ItemsPage> {
-  late Future<dynamic> _future;
-  late ApiClient _apiClient;
-
-  final testClient = ApiClientFactory.createWithCustomUrl(
-    baseUrl: 'https://jsonplaceholder.typicode.com',
-    headers: {'Content-Type': 'application/json'},
-  );
-
-  void _initializeApiClient() {
-    // Get API client from dependency injection
-    _apiClient = ApiClientModule.apiClient;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeApiClient();
-    _future = testClient.testApis.getApis();
-  }
+class _ItemsView extends StatelessWidget {
+  const _ItemsView();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Items')),
-      body: FutureBuilder<dynamic>(
-        future: _future,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+      appBar: AppBar(
+        title: const Text('Items'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed:
+                () => context.read<ItemsBloc>().add(const LoadRequested()),
+            tooltip: 'Refresh data',
+          ),
+        ],
+      ),
+      body: BlocBuilder<ItemsBloc, ItemsState>(
+        builder: (context, state) {
+          if (state.status == ItemsStatus.loading) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (snapshot.hasError) {
+          if (state.status == ItemsStatus.failure) {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -52,17 +53,16 @@ class _ItemsPageState extends State<ItemsPage> {
                     const Icon(Icons.error_outline, color: Colors.red),
                     const SizedBox(height: 12),
                     Text(
-                      'Failure: ${snapshot.error}',
+                      'Error: ${state.errorMessage ?? 'Unknown error'}',
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 12),
                     ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          _future = testClient.testApis.getApis();
-                        });
-                      },
-                      child: const Text('Try again'),
+                      onPressed:
+                          () => context.read<ItemsBloc>().add(
+                            const LoadRequested(),
+                          ),
+                      child: const Text('Try again!'),
                     ),
                   ],
                 ),
@@ -70,10 +70,19 @@ class _ItemsPageState extends State<ItemsPage> {
             );
           }
 
-          final items = snapshot.data ?? const [];
+          final items = state.items;
 
           if (items.isEmpty) {
-            return const Center(child: Text('Empty'));
+            return const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.inbox, size: 64, color: Colors.grey),
+                  SizedBox(height: 16),
+                  Text('No data available'),
+                ],
+              ),
+            );
           }
 
           return ListView.separated(
@@ -90,6 +99,45 @@ class _ItemsPageState extends State<ItemsPage> {
               );
             },
           );
+        },
+      ),
+      floatingActionButton: MockScenarioButton<String>(
+        title: 'API Scenarios',
+        apis: const [
+          MockApi<String>(
+            name: 'Posts',
+            path: '/posts',
+            scenarios: [
+              MockScenario<String>(
+                name: 'Real API',
+                description: 'Use real API endpoint',
+                payload: 'real',
+                apiMode: ApiMode.real,
+              ),
+              MockScenario<String>(
+                name: 'Mock Success',
+                description: 'Mock successful response with data',
+                payload: 'success',
+                apiMode: ApiMode.mock,
+              ),
+              MockScenario<String>(
+                name: 'Mock Empty',
+                description: 'Mock empty response',
+                payload: 'empty',
+                apiMode: ApiMode.mock,
+              ),
+              MockScenario<String>(
+                name: 'Mock Error',
+                description: 'Mock error response',
+                payload: 'error',
+                apiMode: ApiMode.mock,
+              ),
+            ],
+          ),
+        ],
+        onSelected: (scenario) {
+          ApiModeService.setModeAndScenario(scenario.apiMode, scenario.payload);
+          context.read<ItemsBloc>().add(const LoadRequested());
         },
       ),
     );
