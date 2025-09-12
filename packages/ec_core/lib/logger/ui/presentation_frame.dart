@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:talker_flutter/talker_flutter.dart';
-import '../utils/utils.dart';
+import '../../di/di.dart';
 
 class PresentationFrame extends StatelessWidget {
   const PresentationFrame({
@@ -131,7 +131,7 @@ class _LogsPreview extends StatelessWidget {
                 height: mediaQuery.size.height,
                 alignment: Alignment.center,
                 child: TalkerBuilder(
-                  talker: DI<Talker>(),
+                  talker: DI.get<Talker>(),
                   builder: (context, data) {
                     final reversedLogs = data.reversed.toList();
                     return Container(
