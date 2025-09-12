@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ec_core/ec_core.dart';
 
-void main() {
+void main() async {
+  // Initialize dependency injection
+  await DI.initialize();
+
   runApp(const MyApp());
 }
 
@@ -10,8 +13,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final flavor = EcFlavor.current;
-    
+    final flavor = DI.currentFlavor;
+
     return MaterialApp(
       title: flavor.appName,
       theme: ThemeData(
@@ -39,9 +42,9 @@ class MyApp extends StatelessWidget {
               Text('Environment: ${flavor.environment}'),
               const SizedBox(height: 20),
               Text(
-                flavor.isAdmin 
-                  ? 'This is the admin version with full access'
-                  : 'This is the user version with essential features',
+                flavor.isAdmin
+                    ? 'This is the admin version with full access'
+                    : 'This is the user version with essential features',
                 style: Theme.of(context).textTheme.bodyLarge,
                 textAlign: TextAlign.center,
               ),
@@ -49,7 +52,10 @@ class MyApp extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: flavor.isAdmin ? Colors.red.withValues(alpha: 0.1) : Colors.blue.withValues(alpha: 0.1),
+                  color:
+                      flavor.isAdmin
+                          ? Colors.red.withValues(alpha: 0.1)
+                          : Colors.blue.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
                     color: flavor.isAdmin ? Colors.red : Colors.blue,
@@ -63,6 +69,23 @@ class MyApp extends StatelessWidget {
                     color: flavor.isAdmin ? Colors.red : Colors.blue,
                   ),
                 ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  // Example of using DI services
+                  final apiClient = DI.apiClient;
+                  final logger = DI.logger;
+
+                  logger.info('API Client initialized: ${apiClient.baseUrl}');
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('API Client ready: ${apiClient.baseUrl}'),
+                    ),
+                  );
+                },
+                child: const Text('Test DI Services'),
               ),
             ],
           ),
