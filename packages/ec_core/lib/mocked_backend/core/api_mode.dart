@@ -13,21 +13,48 @@ class ApiModeService {
 
   static String? _currentScenarioType;
 
+  /// Map of API path to scenario type for per-API scenario management
+  static final Map<String, String> _apiScenarios = {};
+
   /// Get current API mode
   static ApiMode get currentMode => _currentMode;
 
-  /// Get current scenario type
+  /// Get current scenario type (legacy - for backward compatibility)
   static String? get currentScenarioType => _currentScenarioType;
+
+  /// Get scenario type for specific API path
+  static String? getScenarioForApi(String apiPath) {
+    return _apiScenarios[apiPath] ?? _currentScenarioType;
+  }
 
   /// Set API mode
   static void setMode(ApiMode mode) {
     _currentMode = mode;
   }
 
-  /// Set both mode and scenario type
+  /// Set both mode and scenario type (legacy - affects all APIs)
   static void setModeAndScenario(ApiMode mode, String? scenarioType) {
     _currentMode = mode;
     _currentScenarioType = scenarioType;
+  }
+
+  /// Set scenario for specific API path
+  static void setScenarioForApi(
+    String apiPath,
+    ApiMode mode,
+    String? scenarioType,
+  ) {
+    _currentMode = mode;
+    if (scenarioType != null) {
+      _apiScenarios[apiPath] = scenarioType;
+    } else {
+      _apiScenarios.remove(apiPath);
+    }
+  }
+
+  /// Clear all API-specific scenarios
+  static void clearApiScenarios() {
+    _apiScenarios.clear();
   }
 
   /// Check if currently using mock API

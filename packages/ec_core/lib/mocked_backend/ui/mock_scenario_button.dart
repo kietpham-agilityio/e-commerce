@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../core/mock_api.dart';
+import '../core/mock_api_service.dart';
 import '../core/mock_scenario.dart';
 import 'mock_api_picker_page.dart';
 
@@ -10,12 +11,12 @@ class MockScenarioButton<T> extends StatelessWidget {
   const MockScenarioButton({
     super.key,
     required this.title,
-    required this.apis,
+    this.apis,
     required this.onSelected,
   });
 
   final String title;
-  final List<MockApi<T>> apis;
+  final List<MockApi<T>>? apis;
   final ValueChanged<MockScenario<T>> onSelected;
 
   @override
@@ -25,10 +26,11 @@ class MockScenarioButton<T> extends StatelessWidget {
     return FloatingActionButton.extended(
       heroTag: const ValueKey('mock_scenario_fab'),
       onPressed: () async {
+        final apisToUse = apis ?? MockApiService.apis.cast<MockApi<T>>();
         final scenario = await Navigator.of(context).push<MockScenario<T>>(
           MaterialPageRoute(
             fullscreenDialog: true,
-            builder: (_) => MockApiPickerPage<T>(title: title, apis: apis),
+            builder: (_) => MockApiPickerPage<T>(title: title, apis: apisToUse),
             settings: const RouteSettings(name: 'mock_api_picker'),
           ),
         );

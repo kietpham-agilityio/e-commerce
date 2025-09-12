@@ -1,5 +1,6 @@
 export 'core/api_mode.dart';
 export 'core/mock_api.dart';
+export 'core/mock_api_service.dart';
 export 'core/mock_scenario.dart';
 export 'interceptors/mock_backend_interceptor.dart';
 export 'ui/mock_api_list_dialog.dart';

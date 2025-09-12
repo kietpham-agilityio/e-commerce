@@ -7,9 +7,9 @@ part 'test_apis.g.dart';
 abstract class TestApis {
   factory TestApis(Dio dio) = _TestApis;
 
-  @POST('/posts')
-  Future<dynamic> testApis({@Body() required Map<String, dynamic> body});
-
   @GET('/posts')
   Future<dynamic> getApis();
+
+  @GET('/comments')
+  Future<dynamic> getComments(@Query('postId') int postId);
 }

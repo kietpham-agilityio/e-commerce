@@ -2,8 +2,9 @@ import 'package:ec_core/mocked_backend/mock_backend.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../core/di/api_client_module.dart';
-import 'items/bloc/items_bloc.dart';
+import '../../core/di/api_client_module.dart';
+import '../comments/comments_page.dart';
+import 'bloc/items_bloc.dart';
 
 class ItemsPage extends StatelessWidget {
   const ItemsPage({super.key});
@@ -96,48 +97,27 @@ class _ItemsView extends StatelessWidget {
                 title: Text(title),
                 subtitle: subtitle != null ? Text(subtitle) : null,
                 leading: CircleAvatar(child: Text('${index + 1}')),
+                trailing: const Icon(Icons.comment_outlined),
+                onTap: () {
+                  final postId = item?['id'] ?? index + 1;
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => CommentsPage(postId: postId as int),
+                    ),
+                  );
+                },
               );
             },
           );
         },
       ),
-      floatingActionButton: MockScenarioButton<String>(
+      floatingActionButton: MockScenarioButton<dynamic>(
         title: 'API Scenarios',
-        apis: const [
-          MockApi<String>(
-            name: 'Posts',
-            path: '/posts',
-            scenarios: [
-              MockScenario<String>(
-                name: 'Real API',
-                description: 'Use real API endpoint',
-                payload: 'real',
-                apiMode: ApiMode.real,
-              ),
-              MockScenario<String>(
-                name: 'Mock Success',
-                description: 'Mock successful response with data',
-                payload: 'success',
-                apiMode: ApiMode.mock,
-              ),
-              MockScenario<String>(
-                name: 'Mock Empty',
-                description: 'Mock empty response',
-                payload: 'empty',
-                apiMode: ApiMode.mock,
-              ),
-              MockScenario<String>(
-                name: 'Mock Error',
-                description: 'Mock error response',
-                payload: 'error',
-                apiMode: ApiMode.mock,
-              ),
-            ],
-          ),
-        ],
         onSelected: (scenario) {
-          ApiModeService.setModeAndScenario(scenario.apiMode, scenario.payload);
-          context.read<ItemsBloc>().add(const LoadRequested());
+          // Scenario is already set by MockApiPickerPage
+          if (ApiPosts.values.contains(scenario.payload)) {
+            context.read<ItemsBloc>().add(const LoadRequested());
+          }
         },
       ),
     );

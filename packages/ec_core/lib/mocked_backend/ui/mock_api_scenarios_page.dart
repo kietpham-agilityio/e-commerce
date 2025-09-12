@@ -40,7 +40,7 @@ class _ScenarioList<T> extends StatelessWidget {
           return ListTile(
             title: Text(item.name),
             subtitle: item.description == null ? null : Text(item.description!),
-            trailing: const Icon(Icons.play_arrow),
+            trailing: const Icon(Icons.chevron_right),
             onTap: () => Navigator.of(context).pop(item),
           );
         },

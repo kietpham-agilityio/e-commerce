@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../core/api_mode.dart';
 import '../core/mock_api.dart';
 import '../core/mock_scenario.dart';
 import 'mock_api_scenarios_page.dart';
@@ -42,6 +43,12 @@ class MockApiPickerPage<T> extends StatelessWidget {
                   ),
                 );
                 if (scenario != null && context.mounted) {
+                  // Set scenario for the specific API path
+                  ApiModeService.setScenarioForApi(
+                    api.path,
+                    scenario.apiMode,
+                    scenario.payload?.toString(),
+                  );
                   Navigator.of(context).pop<MockScenario<T>>(scenario);
                 }
               },

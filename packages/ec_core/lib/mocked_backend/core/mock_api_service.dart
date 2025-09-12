@@ -1,0 +1,80 @@
+import 'package:ec_core/mocked_backend/interceptors/mock_backend_interceptor.dart';
+
+import 'api_mode.dart';
+import 'mock_api.dart';
+import 'mock_scenario.dart';
+
+/// Service to manage mock APIs and scenarios globally across the app
+class MockApiService {
+  MockApiService._internal();
+
+  static final MockApiService _instance = MockApiService._internal();
+
+  factory MockApiService() => _instance;
+
+  static final List<MockApi<dynamic>> _apis = [
+    const MockApi<ApiPosts>(
+      name: 'Posts',
+      path: '/posts',
+      scenarios: [
+        MockScenario<ApiPosts>(
+          name: 'Real API',
+          description: 'Use real API endpoint',
+          payload: ApiPosts.real,
+          apiMode: ApiMode.real,
+        ),
+        MockScenario<ApiPosts>(
+          name: 'Mock Success',
+          description: 'Mock successful response with data',
+          payload: ApiPosts.mockSuccess,
+          apiMode: ApiMode.mock,
+        ),
+        MockScenario<ApiPosts>(
+          name: 'Mock Empty',
+          description: 'Mock empty response',
+          payload: ApiPosts.mockEmpty,
+          apiMode: ApiMode.mock,
+        ),
+        MockScenario<ApiPosts>(
+          name: 'Mock Error',
+          description: 'Mock error response',
+          payload: ApiPosts.mockError,
+          apiMode: ApiMode.mock,
+        ),
+      ],
+    ),
+    const MockApi<ApiComments>(
+      name: 'Comments',
+      path: '/comments',
+      scenarios: [
+        MockScenario<ApiComments>(
+          name: 'Real API',
+          description: 'Use real API endpoint',
+          payload: ApiComments.real,
+          apiMode: ApiMode.real,
+        ),
+        MockScenario<ApiComments>(
+          name: 'Mock Success',
+          description: 'Mock successful response with data',
+          payload: ApiComments.mockSuccess,
+          apiMode: ApiMode.mock,
+        ),
+        MockScenario<ApiComments>(
+          name: 'Mock Empty',
+          description: 'Mock empty response',
+          payload: ApiComments.mockEmpty,
+          apiMode: ApiMode.mock,
+        ),
+        MockScenario<ApiComments>(
+          name: 'Mock Error',
+          description: 'Mock error response',
+          payload: ApiComments.mockError,
+          apiMode: ApiMode.mock,
+        ),
+      ],
+    ),
+  ];
+
+  /// Get all available mock APIs
+  static List<MockApi<dynamic>> get apis => List.unmodifiable(_apis);
+}
