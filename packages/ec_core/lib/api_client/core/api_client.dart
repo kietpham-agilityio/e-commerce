@@ -1,16 +1,22 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
 import 'package:ec_core/api_client/apis/test_apis.dart';
 import 'package:ec_core/mocked_backend/interceptors/mock_backend_interceptor.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:talker_dio_logger/talker_dio_logger.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 import '../apis/api_client_error.dart';
+import '../apis/api_client_error.dart';
 import '../apis/api_internal_error_code.dart';
+import '../apis/api_internal_error_code.dart';
+import '../apis/failure.dart';
 import '../apis/failure.dart';
 
 class ApiClient {
-  ApiClient(this.options, {Dio? dio, this.interceptors}) {
+  ApiClient(this.options, {Dio? dio, this.interceptors, Talker? talker}) {
     _dio = dio ?? Dio();
     _dio
       ..options = options
@@ -18,22 +24,11 @@ class ApiClient {
         'Content-Type': 'application/json; charset=UTF-8',
       };
 
-    // Add interceptors configuration
-    _dio.interceptors.add(
-      PrettyDioLogger(
-        requestHeader: true,
-        requestBody: true,
-        compact: false,
-        filter: (options, args) {
-          // Don't print requests with uris containing '/posts'
-          if (options.path.contains('/posts')) {
-            return false;
-          }
-          // Don't print responses with unit8 list data
-          return !args.isResponse || !args.hasUint8ListData;
-        },
-      ),
-    );
+    // Add TalkerDioLogger interceptor if talker is provided
+    if (talker != null) {
+      _dio.interceptors.add(TalkerDioLogger(talker: talker));
+    }
+
     _dio.interceptors.add(MockBackendInterceptor());
 
     if (interceptors?.isNotEmpty ?? false) {

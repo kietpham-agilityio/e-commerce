@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:ec_core/ec_core.dart';
 
 /// Factory class for creating API clients with different configurations
@@ -11,6 +12,7 @@ class ApiClientFactory {
     Duration? receiveTimeout,
     Duration? sendTimeout,
     List<Interceptor>? interceptors,
+    Talker? talker,
   }) {
     final baseOptions = ApiConfig.createBaseOptionsWithEnvironment(
       environment: environment,
@@ -20,7 +22,7 @@ class ApiClientFactory {
       sendTimeout: sendTimeout,
     );
 
-    return ApiClient(baseOptions, interceptors: interceptors);
+    return ApiClient(baseOptions, interceptors: interceptors, talker: talker);
   }
 
   /// Create API client with EcFlavor (admin/user variant)
@@ -31,6 +33,7 @@ class ApiClientFactory {
     Duration? receiveTimeout,
     Duration? sendTimeout,
     List<Interceptor>? interceptors,
+    Talker? talker,
   }) {
     final baseOptions = ApiConfig.createBaseOptionsWithFlavor(
       flavor: flavor,
@@ -40,7 +43,7 @@ class ApiClientFactory {
       sendTimeout: sendTimeout,
     );
 
-    return ApiClient(baseOptions, interceptors: interceptors);
+    return ApiClient(baseOptions, interceptors: interceptors, talker: talker);
   }
 
   /// Create API client for current flavor
@@ -50,6 +53,7 @@ class ApiClientFactory {
     Duration? receiveTimeout,
     Duration? sendTimeout,
     List<Interceptor>? interceptors,
+    Talker? talker,
   }) {
     final baseOptions = ApiConfig.createCurrentFlavorBaseOptions(
       additionalHeaders: additionalHeaders,
@@ -58,7 +62,7 @@ class ApiClientFactory {
       sendTimeout: sendTimeout,
     );
 
-    return ApiClient(baseOptions, interceptors: interceptors);
+    return ApiClient(baseOptions, interceptors: interceptors, talker: talker);
   }
 
   /// Create API client with custom base URL
@@ -69,6 +73,7 @@ class ApiClientFactory {
     Duration? receiveTimeout,
     Duration? sendTimeout,
     List<Interceptor>? interceptors,
+    Talker? talker,
   }) {
     final baseOptions = ApiConfig.createBaseOptions(
       baseUrl: baseUrl,
@@ -78,7 +83,7 @@ class ApiClientFactory {
       sendTimeout: sendTimeout,
     );
 
-    return ApiClient(baseOptions, interceptors: interceptors);
+    return ApiClient(baseOptions, interceptors: interceptors, talker: talker);
   }
 
   /// Create API client with default configuration
@@ -88,6 +93,7 @@ class ApiClientFactory {
     Duration? receiveTimeout,
     Duration? sendTimeout,
     List<Interceptor>? interceptors,
+    Talker? talker,
   }) {
     final baseOptions = ApiConfig.createDefaultBaseOptions(
       additionalHeaders: additionalHeaders,
@@ -96,7 +102,7 @@ class ApiClientFactory {
       sendTimeout: sendTimeout,
     );
 
-    return ApiClient(baseOptions, interceptors: interceptors);
+    return ApiClient(baseOptions, interceptors: interceptors, talker: talker);
   }
 
   /// Create API client for development environment
@@ -106,6 +112,7 @@ class ApiClientFactory {
     Duration? receiveTimeout,
     Duration? sendTimeout,
     List<Interceptor>? interceptors,
+    Talker? talker,
   }) {
     return createWithEnvironment(
       environment: 'dev',
@@ -114,6 +121,7 @@ class ApiClientFactory {
       receiveTimeout: receiveTimeout,
       sendTimeout: sendTimeout,
       interceptors: interceptors,
+      talker: talker,
     );
   }
 
@@ -124,6 +132,7 @@ class ApiClientFactory {
     Duration? receiveTimeout,
     Duration? sendTimeout,
     List<Interceptor>? interceptors,
+    Talker? talker,
   }) {
     return createWithEnvironment(
       environment: 'staging',
@@ -132,6 +141,7 @@ class ApiClientFactory {
       receiveTimeout: receiveTimeout,
       sendTimeout: sendTimeout,
       interceptors: interceptors,
+      talker: talker,
     );
   }
 
@@ -142,6 +152,7 @@ class ApiClientFactory {
     Duration? receiveTimeout,
     Duration? sendTimeout,
     List<Interceptor>? interceptors,
+    Talker? talker,
   }) {
     return createWithEnvironment(
       environment: 'prod',
@@ -150,6 +161,7 @@ class ApiClientFactory {
       receiveTimeout: receiveTimeout,
       sendTimeout: sendTimeout,
       interceptors: interceptors,
+      talker: talker,
     );
   }
 
@@ -161,6 +173,7 @@ class ApiClientFactory {
     Duration? receiveTimeout,
     Duration? sendTimeout,
     List<Interceptor>? interceptors,
+    Talker? talker,
   }) {
     return createWithFlavor(
       flavor: EcFlavor.admin,
@@ -169,6 +182,7 @@ class ApiClientFactory {
       receiveTimeout: receiveTimeout,
       sendTimeout: sendTimeout,
       interceptors: interceptors,
+      talker: talker,
     );
   }
 
@@ -180,6 +194,7 @@ class ApiClientFactory {
     Duration? receiveTimeout,
     Duration? sendTimeout,
     List<Interceptor>? interceptors,
+    Talker? talker,
   }) {
     return createWithFlavor(
       flavor: EcFlavor.user,
@@ -188,6 +203,7 @@ class ApiClientFactory {
       receiveTimeout: receiveTimeout,
       sendTimeout: sendTimeout,
       interceptors: interceptors,
+      talker: talker,
     );
   }
 
@@ -200,6 +216,7 @@ class ApiClientFactory {
     Duration? receiveTimeout,
     Duration? sendTimeout,
     List<Interceptor>? interceptors,
+    Talker? talker,
   }) {
     final headers = <String, String>{'Authorization': 'Bearer $token'};
 
@@ -214,6 +231,7 @@ class ApiClientFactory {
       receiveTimeout: receiveTimeout,
       sendTimeout: sendTimeout,
       interceptors: interceptors,
+      talker: talker,
     );
 
     return apiClient;
@@ -228,6 +246,7 @@ class ApiClientFactory {
     Duration? receiveTimeout,
     Duration? sendTimeout,
     List<Interceptor>? interceptors,
+    Talker? talker,
   }) {
     final headers = <String, String>{'Authorization': 'Bearer $token'};
 
@@ -242,6 +261,7 @@ class ApiClientFactory {
       receiveTimeout: receiveTimeout,
       sendTimeout: sendTimeout,
       interceptors: interceptors,
+      talker: talker,
     );
 
     return apiClient;
@@ -255,6 +275,7 @@ class ApiClientFactory {
     Duration? connectTimeout,
     Duration? receiveTimeout,
     Duration? sendTimeout,
+    Talker? talker,
   }) {
     return createWithEnvironment(
       environment: environment,
@@ -263,6 +284,7 @@ class ApiClientFactory {
       receiveTimeout: receiveTimeout,
       sendTimeout: sendTimeout,
       interceptors: interceptors,
+      talker: talker,
     );
   }
 
@@ -274,6 +296,7 @@ class ApiClientFactory {
     Duration? connectTimeout,
     Duration? receiveTimeout,
     Duration? sendTimeout,
+    Talker? talker,
   }) {
     return createWithFlavor(
       flavor: flavor,
@@ -282,6 +305,7 @@ class ApiClientFactory {
       receiveTimeout: receiveTimeout,
       sendTimeout: sendTimeout,
       interceptors: interceptors,
+      talker: talker,
     );
   }
 }
