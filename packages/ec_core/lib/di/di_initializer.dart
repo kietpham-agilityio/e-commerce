@@ -5,9 +5,11 @@ import 'package:talker_flutter/talker_flutter.dart';
 import '../ec_flavor.dart';
 import '../api_client/core/api_client.dart';
 import '../services/core/base_service.dart';
+import '../services/ec_local_store/ec_local_store.dart';
 import 'services/api_client_di.dart';
 import 'services/logger_di.dart';
 import 'services/environment_di.dart';
+import 'services/local_storage_di.dart';
 
 /// Unified Dependency Injection system for the E-Commerce application
 /// Combines container management and initialization in a single, clean interface
@@ -33,6 +35,8 @@ class DependencyInjection {
     Duration? receiveTimeout,
     Duration? sendTimeout,
     List<Interceptor>? customInterceptors,
+    String? databaseName,
+    bool enableDatabaseInspector = false,
   }) async {
     final currentFlavor = flavor ?? EcFlavor.current;
 
@@ -58,6 +62,12 @@ class DependencyInjection {
         receiveTimeout: receiveTimeout,
         sendTimeout: sendTimeout,
         customInterceptors: customInterceptors,
+      );
+
+      // Initialize local database
+      await LocalStorageDI.initializeLocalDatabase(
+        dbName: databaseName ?? 'ec_commerce.db',
+        enableInspector: enableDatabaseInspector,
       );
 
       // Initialize all registered services
@@ -159,6 +169,8 @@ class DependencyInjection {
   static Future<void> initializeDevelopment({
     EcFlavor? flavor,
     Map<String, String>? customHeaders,
+    String? databaseName,
+    bool enableDatabaseInspector = true,
   }) async {
     await initialize(
       flavor: flavor,
@@ -173,6 +185,8 @@ class DependencyInjection {
       },
       connectTimeout: const Duration(seconds: 60),
       receiveTimeout: const Duration(seconds: 60),
+      databaseName: databaseName,
+      enableDatabaseInspector: enableDatabaseInspector,
     );
   }
 
@@ -180,6 +194,8 @@ class DependencyInjection {
   static Future<void> initializeStaging({
     EcFlavor? flavor,
     Map<String, String>? customHeaders,
+    String? databaseName,
+    bool enableDatabaseInspector = false,
   }) async {
     await initialize(
       flavor: flavor,
@@ -194,6 +210,8 @@ class DependencyInjection {
       },
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
+      databaseName: databaseName,
+      enableDatabaseInspector: enableDatabaseInspector,
     );
   }
 
@@ -201,6 +219,8 @@ class DependencyInjection {
   static Future<void> initializeProduction({
     EcFlavor? flavor,
     Map<String, String>? customHeaders,
+    String? databaseName,
+    bool enableDatabaseInspector = false,
   }) async {
     await initialize(
       flavor: flavor,
@@ -215,6 +235,8 @@ class DependencyInjection {
       },
       connectTimeout: const Duration(seconds: 15),
       receiveTimeout: const Duration(seconds: 15),
+      databaseName: databaseName,
+      enableDatabaseInspector: enableDatabaseInspector,
     );
   }
 
@@ -223,6 +245,8 @@ class DependencyInjection {
     String environment = 'development',
     bool enableLogging = true,
     Map<String, String>? customHeaders,
+    String? databaseName,
+    bool enableDatabaseInspector = true,
   }) async {
     await initialize(
       flavor: EcFlavor.admin,
@@ -231,6 +255,8 @@ class DependencyInjection {
       enableFileLogging: true,
       enableCrashReporting: true,
       customHeaders: {...?customHeaders, 'X-Flavor': 'admin'},
+      databaseName: databaseName,
+      enableDatabaseInspector: enableDatabaseInspector,
     );
   }
 
@@ -239,6 +265,8 @@ class DependencyInjection {
     String environment = 'production',
     bool enableLogging = false,
     Map<String, String>? customHeaders,
+    String? databaseName,
+    bool enableDatabaseInspector = false,
   }) async {
     await initialize(
       flavor: EcFlavor.user,
@@ -247,6 +275,8 @@ class DependencyInjection {
       enableFileLogging: true,
       enableCrashReporting: true,
       customHeaders: {...?customHeaders, 'X-Flavor': 'user'},
+      databaseName: databaseName,
+      enableDatabaseInspector: enableDatabaseInspector,
     );
   }
 
@@ -321,7 +351,8 @@ class DependencyInjection {
   /// Check if DI is initialized
   static bool get isInitialized {
     return _getIt.isRegistered<EcFlavor>() &&
-        _getIt.isRegistered<ApiClient>(instanceName: 'main');
+        _getIt.isRegistered<ApiClient>(instanceName: 'main') &&
+        _getIt.isRegistered<EcLocalDatabase>(instanceName: 'main');
   }
 
   /// Get current flavor
@@ -346,6 +377,14 @@ class DependencyInjection {
       throw Exception('DI not initialized. Call DI.initialize() first.');
     }
     return LoggerDI.mainTalker;
+  }
+
+  /// Get local database
+  static EcLocalDatabase get localDatabase {
+    if (!isInitialized) {
+      throw Exception('DI not initialized. Call DI.initialize() first.');
+    }
+    return LocalStorageDI.mainDatabase;
   }
 
   // ============================================================================
@@ -378,6 +417,9 @@ class DependencyInjection {
 
       // Dispose loggers
       await LoggerDI.disposeAllLoggers();
+
+      // Dispose local databases
+      await LocalStorageDI.disposeAllLocalDatabases();
 
       // Reset container
       await _getIt.reset();
