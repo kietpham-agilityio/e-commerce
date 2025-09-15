@@ -41,49 +41,17 @@ class _ItemsView extends StatelessWidget {
       body: BlocBuilder<ItemsBloc, ItemsState>(
         builder: (context, state) {
           if (state.status == ItemsStatus.loading) {
-            return const Center(child: CircularProgressIndicator());
+            return _LoadingWidget();
           }
 
           if (state.status == ItemsStatus.failure) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.error_outline, color: Colors.red),
-                    const SizedBox(height: 12),
-                    Text(
-                      'Error: ${state.errorMessage ?? 'Unknown error'}',
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 12),
-                    ElevatedButton(
-                      onPressed:
-                          () => context.read<ItemsBloc>().add(
-                            const LoadRequested(),
-                          ),
-                      child: const Text('Try again!'),
-                    ),
-                  ],
-                ),
-              ),
-            );
+            return _FailureWidget(state);
           }
 
           final items = state.items;
 
           if (items.isEmpty) {
-            return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.inbox, size: 64, color: Colors.grey),
-                  SizedBox(height: 16),
-                  Text('No data available'),
-                ],
-              ),
-            );
+            return _EmptyWidget();
           }
 
           return ListView.separated(
@@ -121,5 +89,64 @@ class _ItemsView extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+class _EmptyWidget extends StatelessWidget {
+  const _EmptyWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.inbox, size: 64, color: Colors.grey),
+          SizedBox(height: 16),
+          Text('No data available'),
+        ],
+      ),
+    );
+  }
+}
+
+class _FailureWidget extends StatelessWidget {
+  const _FailureWidget(this.state);
+
+  final ItemsState state;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline, color: Colors.red),
+            const SizedBox(height: 12),
+            Text(
+              'Error: ${state.errorMessage ?? 'Unknown error'}',
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed:
+                  () => context.read<ItemsBloc>().add(const LoadRequested()),
+              child: const Text('Try again!'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LoadingWidget extends StatelessWidget {
+  const _LoadingWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: CircularProgressIndicator());
   }
 }

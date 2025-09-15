@@ -37,7 +37,10 @@ dependencies:
 
   talker_dio_logger: ^5.0.0
 
-  get_it: ^8.2.0
+  get_it: ^7.6.4
+
+  # State management
+  flutter_bloc: ^9.1.1
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +60,8 @@ dev_dependencies:
 
   retrofit_generator: ">=8.0.0 <10.0.0"
   json_serializable: ^6.8.0
+
+  bloc_test: ^10.0.0
 
 flutter:
   uses-material-design: true

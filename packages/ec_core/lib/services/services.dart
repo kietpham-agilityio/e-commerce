@@ -4,6 +4,3 @@ library;
 
 // Core services
 export 'core/core.dart';
-
-// Example services
-export 'examples/examples.dart';

@@ -22,31 +22,45 @@ class MinVariableNameLengthRule extends DartLintRule {
     correctionMessage: 'Rename the variable to have ≥ $_minLength characters.',
   );
 
+  /// Check whether a variable name is invalid
+  /// - Null names are ignored
+  /// - Whitelisted short names are allowed
+  /// - Leading underscores are stripped before validation
+  /// - Names shorter than [_minLength] are considered invalid
+  bool _isInvalidName(String? name) {
+    if (name == null) return false;
+
+    // Skip if the name is in the allowed list
+    if (_allowedShortNames.contains(name)) return false;
+
+    // Remove leading underscores (e.g. `_foo` → `foo`)
+    final visibleName = name.replaceFirst(RegExp('^_+'), '');
+
+    // Skip if the stripped name is in the allowed list
+    if (_allowedShortNames.contains(visibleName)) return false;
+
+    // Mark as invalid if the visible name is too short
+    return visibleName.length < _minLength;
+  }
+
   @override
   void run(
     CustomLintResolver resolver,
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
-    // Local variables, fields, and top-level variables
+    // Validate local variables, fields, and top-level variables
     context.registry.addVariableDeclaration((VariableDeclaration node) {
-      final identifier = node.name.lexeme;
-      final visibleName = identifier.replaceFirst(RegExp('^_+'), '');
-      if (_allowedShortNames.contains(visibleName)) return;
-      if (visibleName.length < _minLength) {
+      if (_isInvalidName(node.name.lexeme)) {
         reporter.atToken(node.name, code);
       }
     });
 
-    // Formal parameters
+    // Validate formal parameters (function/method parameters)
     context.registry.addSimpleFormalParameter((SimpleFormalParameter node) {
       final token = node.name;
-      if (token == null) return;
-      final identifier = token.lexeme;
-      final visibleName = identifier.replaceFirst(RegExp('^_+'), '');
-      if (_allowedShortNames.contains(visibleName)) return;
-      if (visibleName.length < _minLength) {
-        reporter.atToken(token, code);
+      if (_isInvalidName(token?.lexeme)) {
+        reporter.atToken(token!, code);
       }
     });
   }
