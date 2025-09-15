@@ -38,6 +38,12 @@ dependencies:
   # HTTP client for API calls
   dio: ^5.4.0
 
+  # Dependency injection
+  get_it: ^7.6.4
+
+  # State management
+  flutter_bloc: ^9.1.1
+
   ec_themes:
     path: ../packages/ec_design/ec_themes
 

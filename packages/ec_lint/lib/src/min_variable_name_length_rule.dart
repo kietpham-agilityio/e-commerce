@@ -6,7 +6,15 @@ class MinVariableNameLengthRule extends DartLintRule {
   MinVariableNameLengthRule() : super(code: _code);
 
   static const int _minLength = 3;
-  static const Set<String> _allowedShortNames = {'i', 'j', 'k'};
+  static const Set<String> _allowedShortNames = {
+    'i',
+    'j',
+    'k',
+    'id',
+    '_',
+    '__',
+    '___',
+  };
 
   static const LintCode _code = LintCode(
     name: 'min_variable_name_length',
