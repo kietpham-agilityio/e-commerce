@@ -1,5 +1,4 @@
 // Export all core classes and enums
-export 'ec_flavor.dart';
 export 'api_client/api_client.dart';
 export 'api_client/core/api_client.dart';
 export 'api_client/core/api_client_factory.dart';
@@ -15,3 +14,7 @@ export 'services/services.dart';
 
 // Dependency Injection
 export 'di/di.dart';
+
+// Flavor and Mock Backend
+export 'ec_flavor.dart';
+export 'mocked_backend/mock_backend.dart';

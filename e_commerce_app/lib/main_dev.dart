@@ -1,77 +1,32 @@
-import 'package:ec_themes/themes/icons.dart';
+import 'package:e_commerce_app/presentations/items/items_page.dart';
+import 'package:ec_core/ec_core.dart';
 import 'package:flutter/material.dart';
 
+import 'core/di/app_module.dart';
+
 void main() {
+  // Initialize dependency injection
+  AppModule.initialize();
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final flavor = EcFlavor.current;
+
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'E-Commerce Dev - ${flavor.displayName}',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(EcDesignIcons.icArrowLeft, size: 30, color: Colors.blue),
-                const SizedBox(width: 20),
-                Icon(EcDesignIcons.icArrowRight, size: 30, color: Colors.green),
-              ],
-            ),
-          ],
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: flavor.isAdmin ? Colors.deepPurple : Colors.blue,
         ),
+        useMaterial3: true,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      home: const ItemsPage(),
     );
   }
 }
