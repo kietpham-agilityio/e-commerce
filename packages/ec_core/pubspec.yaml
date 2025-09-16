@@ -70,5 +70,8 @@ dev_dependencies:
 
   bloc_test: ^10.0.0
 
+dependency_overrides:
+  analyzer: ^6.0.0
+
 flutter:
   uses-material-design: true
