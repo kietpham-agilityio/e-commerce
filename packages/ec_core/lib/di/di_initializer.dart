@@ -10,6 +10,8 @@ import 'services/api_client_di.dart';
 import 'services/logger_di.dart';
 import 'services/environment_di.dart';
 import 'services/local_storage_di.dart';
+import '../feature_flags/feature_flag_di.dart';
+import '../feature_flags/feature_flag_manager.dart';
 
 /// Unified Dependency Injection system for the E-Commerce application
 /// Combines container management and initialization in a single, clean interface
@@ -68,6 +70,12 @@ class DependencyInjection {
       await LocalStorageDI.initializeLocalDatabase(
         dbName: databaseName ?? 'ec_commerce.db',
         enableInspector: enableDatabaseInspector,
+      );
+
+      // Initialize feature flag services
+      await FeatureFlagDI.registerFeatureFlagServices(
+        flavor: currentFlavor,
+        initializeWithDefaults: true,
       );
 
       // Initialize all registered services
@@ -387,6 +395,14 @@ class DependencyInjection {
     return LocalStorageDI.mainDatabase;
   }
 
+  /// Get feature flag manager
+  static FeatureFlagManager get featureFlagManager {
+    if (!isInitialized) {
+      throw Exception('DI not initialized. Call DI.initialize() first.');
+    }
+    return FeatureFlagDI.featureFlagManager;
+  }
+
   // ============================================================================
   // CLEANUP METHODS
   // ============================================================================
@@ -420,6 +436,9 @@ class DependencyInjection {
 
       // Dispose local databases
       await LocalStorageDI.disposeAllLocalDatabases();
+
+      // Dispose feature flag services
+      await FeatureFlagDI.disposeFeatureFlagServices();
 
       // Reset container
       await _getIt.reset();

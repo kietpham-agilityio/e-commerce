@@ -12,6 +12,9 @@ export 'logger/utils/good_log.dart';
 // Services
 export 'services/services.dart';
 
+// Feature Flags
+export 'feature_flags/feature_flags.dart';
+
 // Dependency Injection
 export 'di/di.dart';
 

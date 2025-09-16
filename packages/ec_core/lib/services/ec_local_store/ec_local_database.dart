@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'boxes/cached_api_query_box.dart';
 import 'boxes/user_session_box.dart';
 import 'boxes/user_session_persistent_box.dart';
+import '../../feature_flags/feature_flag_box.dart';
 
 enum EcDatabaseSchemaVersion {
   initialVersion(1);
@@ -54,6 +55,8 @@ class EcLocalDatabase {
               UserSessionDbModelSchema,
               UserSessionPersistentDbModelSchema,
               CachedApiQueryDbModelSchema,
+              FeatureFlagBoxSchema,
+              FeatureFlagOverrideBoxSchema,
             ],
             name: dbName,
             directory: dir.path,
@@ -111,6 +114,8 @@ class EcLocalDatabase {
       await store.userSessionDbModels.clear();
       await store.userSessionPersistentDbModels.clear();
       await store.cachedApiQueryDbModels.clear();
+      await store.featureFlagBoxs.clear();
+      await store.featureFlagOverrideBoxs.clear();
     });
   }
 
@@ -120,6 +125,8 @@ class EcLocalDatabase {
       store.userSessionDbModels.clearSync();
       store.userSessionPersistentDbModels.clearSync();
       store.cachedApiQueryDbModels.clearSync();
+      store.featureFlagBoxs.clearSync();
+      store.featureFlagOverrideBoxs.clearSync();
     });
   }
 
@@ -155,13 +162,13 @@ class EcLocalDatabase {
 
   /// Migrates the database from version 1 to 2.
   ///
-  /// Currently, there is no migration needed, but future versions can use
-  /// this function to perform the migration.
+  /// Adds feature flag collections to the database.
   Future<void> migrateV1ToV2(Isar isar) async {
     await isar.writeTxn(() async {
       await isar.userSessionDbModels.clear();
       await isar.userSessionPersistentDbModels.clear();
       await isar.cachedApiQueryDbModels.clear();
+      // Feature flag collections are automatically created by Isar
     });
   }
 
