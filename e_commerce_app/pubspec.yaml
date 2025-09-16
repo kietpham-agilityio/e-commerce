@@ -53,7 +53,7 @@ dependencies:
   ec_lint:
     path: ../packages/ec_lint
 
-  custom_lint: ^0.8.0
+  custom_lint: ^0.7.3
 
 dev_dependencies:
   flutter_test:
