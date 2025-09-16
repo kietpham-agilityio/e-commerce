@@ -143,7 +143,7 @@ class _CommentsView extends StatelessWidget {
       ),
       floatingActionButton: MockScenarioButton<dynamic>(
         title: 'API Scenarios',
-        onSelected: (scenario) {
+        onSelectedMockBackend: (scenario) {
           // Scenario is already set by MockApiPickerPage
           if (ApiComments.values.contains(scenario.payload)) {
             context.read<CommentsBloc>().add(

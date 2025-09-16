@@ -1,4 +1,4 @@
-import 'package:ec_core/mocked_backend/mock_backend.dart';
+import 'package:ec_core/ec_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -81,13 +81,19 @@ class _ItemsView extends StatelessWidget {
       ),
       floatingActionButton: MockScenarioButton<dynamic>(
         title: 'API Scenarios',
-        onSelected: (scenario) {
+        onSelectedMockBackend: (scenario) {
           // Scenario is already set by MockApiPickerPage
           if (ApiPosts.values.contains(scenario.payload)) {
             context.read<ItemsBloc>().add(const LoadRequested());
           }
         },
       ),
+      // floatingActionButton: EcFABButtonStoriesDebug(
+      //   actions: [
+      //     EcFABDebugStoryButton(name: 'Mock Backend', onTap: () {}),
+      //     EcFABDebugStoryButton(name: 'Debug Feature', onTap: () {}),
+      //   ],
+      // ),
     );
   }
 }
