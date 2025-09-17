@@ -14,20 +14,15 @@ class MockApiPickerPage<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.close),
-          onPressed: () => Navigator.of(context).maybePop(),
-        ),
-        title: Text(title),
-      ),
+      appBar: AppBar(title: Text(title)),
       body: Material(
         color: Theme.of(context).colorScheme.surfaceContainerHighest,
         child: ListView.separated(
           itemCount: apis.length,
-          separatorBuilder: (_, __) => const Divider(height: 1),
+          separatorBuilder: (_, __) => const Divider(height: 0),
           itemBuilder: (context, index) {
             final api = apis[index];
+
             return ListTile(
               title: Text(api.name),
               subtitle: Text(api.path),
@@ -42,6 +37,7 @@ class MockApiPickerPage<T> extends StatelessWidget {
                     settings: const RouteSettings(name: 'mock_api_scenarios'),
                   ),
                 );
+
                 if (scenario != null && context.mounted) {
                   // Set scenario for the specific API path
                   ApiModeService.setScenarioForApi(

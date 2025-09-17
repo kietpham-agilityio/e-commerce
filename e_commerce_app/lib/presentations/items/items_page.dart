@@ -56,7 +56,7 @@ class _ItemsView extends StatelessWidget {
 
           return ListView.separated(
             itemCount: items.length,
-            separatorBuilder: (_, __) => const Divider(height: 1),
+            separatorBuilder: (_, __) => const Divider(height: 0),
             itemBuilder: (context, index) {
               final item = items[index] as Map<String, dynamic>?;
               final title = item?['title']?.toString() ?? 'Item ${index + 1}';
@@ -79,21 +79,47 @@ class _ItemsView extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: MockScenarioButton<dynamic>(
-        title: 'API Scenarios',
+      floatingActionButton: FabDebugButton(
         onSelectedMockBackend: (scenario) {
-          // Scenario is already set by MockApiPickerPage
           if (ApiPosts.values.contains(scenario.payload)) {
             context.read<ItemsBloc>().add(const LoadRequested());
           }
         },
+        debugToolsScenarios: [
+          DebugToolsItem(
+            name: 'Success Scenario',
+            onTap: () {
+              context.read<ItemsBloc>().add(
+                const DebugScenarioRequested(DebugToolScenarios.success),
+              );
+            },
+          ),
+          DebugToolsItem(
+            name: 'Empty Scenario',
+            onTap: () {
+              context.read<ItemsBloc>().add(
+                const DebugScenarioRequested(DebugToolScenarios.empty),
+              );
+            },
+          ),
+          DebugToolsItem(
+            name: 'Error Scenario',
+            onTap: () {
+              context.read<ItemsBloc>().add(
+                const DebugScenarioRequested(DebugToolScenarios.error),
+              );
+            },
+          ),
+          DebugToolsItem(
+            name: 'Api Scenario',
+            onTap: () {
+              context.read<ItemsBloc>().add(
+                const DebugScenarioRequested(DebugToolScenarios.api),
+              );
+            },
+          ),
+        ],
       ),
-      // floatingActionButton: EcFABButtonStoriesDebug(
-      //   actions: [
-      //     EcFABDebugStoryButton(name: 'Mock Backend', onTap: () {}),
-      //     EcFABDebugStoryButton(name: 'Debug Feature', onTap: () {}),
-      //   ],
-      // ),
     );
   }
 }
