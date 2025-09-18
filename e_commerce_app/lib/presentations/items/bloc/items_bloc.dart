@@ -43,17 +43,14 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
   ) async {
     emit(state.copyWith(status: ItemsStatus.loading, errorMessage: null));
 
-    // Simulate delay for better UX
-    await Future.delayed(const Duration(milliseconds: 500));
-
     switch (event.scenario) {
       case DebugToolScenarios.success:
         final mockItems = List.generate(
           5,
           (index) => {
             'id': index,
-            'title': 'Mock Item $index',
-            'body': 'This is a mock item description for item $index',
+            'title': 'Debug tools Item $index',
+            'body': 'This is a Debug tools item description for item $index',
           },
         );
 
