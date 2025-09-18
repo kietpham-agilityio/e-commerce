@@ -93,7 +93,16 @@ class EcSearchTextField extends StatefulWidget {
   final EdgeInsetsGeometry? contentPadding;
 
   const EcSearchTextField({
-    super.key,
+    // Fields with defaults
+    this.enabled = true,
+    this.readOnly = false,
+    this.required = false,
+    this.maxLines = 1,
+    this.autofocus = false,
+    this.hasValidation = true,
+    this.themeType = ECThemeType.user,
+    this.isDark = false,
+    // Optional fields (nullable)
     this.semanticsLabel,
     this.controller,
     this.initialValue,
@@ -101,10 +110,6 @@ class EcSearchTextField extends StatefulWidget {
     this.labelText,
     this.helperText,
     this.errorText,
-    this.enabled = true,
-    this.readOnly = false,
-    this.required = false,
-    this.maxLines = 1,
     this.minLines,
     this.maxLength,
     this.focusNode,
@@ -114,15 +119,12 @@ class EcSearchTextField extends StatefulWidget {
     this.onTap,
     this.onFocusLost,
     this.onTapOutside,
-    this.autofocus = false,
-    this.hasValidation = true,
     this.validator,
     this.prefixIcon,
-    this.themeType = ECThemeType.user,
-    this.isDark = false,
     this.decoration,
     this.borderRadius,
     this.contentPadding,
+    super.key,
   });
 
   @override

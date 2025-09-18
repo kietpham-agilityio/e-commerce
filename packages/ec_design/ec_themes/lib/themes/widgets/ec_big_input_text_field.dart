@@ -93,7 +93,17 @@ class EcBigInputTextField extends StatefulWidget {
   final EdgeInsetsGeometry? contentPadding;
 
   const EcBigInputTextField({
-    super.key,
+    // Fields with defaults
+    this.enabled = true,
+    this.readOnly = false,
+    this.required = false,
+    this.maxLines = 5,
+    this.minLines = 3,
+    this.autofocus = false,
+    this.hasValidation = true,
+    this.themeType = ECThemeType.user,
+    this.isDark = false,
+    // Optional fields (nullable)
     this.semanticsLabel,
     this.controller,
     this.initialValue,
@@ -101,11 +111,6 @@ class EcBigInputTextField extends StatefulWidget {
     this.labelText,
     this.helperText,
     this.errorText,
-    this.enabled = true,
-    this.readOnly = false,
-    this.required = false,
-    this.maxLines = 5,
-    this.minLines = 3,
     this.maxLength,
     this.focusNode,
     this.onChanged,
@@ -113,16 +118,13 @@ class EcBigInputTextField extends StatefulWidget {
     this.onTap,
     this.onFocusLost,
     this.onTapOutside,
-    this.autofocus = false,
-    this.hasValidation = true,
     this.validator,
     this.prefixIcon,
     this.suffixIcon,
-    this.themeType = ECThemeType.user,
-    this.isDark = false,
     this.decoration,
     this.borderRadius,
     this.contentPadding,
+    super.key,
   });
 
   @override

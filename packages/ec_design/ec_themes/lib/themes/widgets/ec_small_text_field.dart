@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../typography.dart';
 import '../app_colors.dart';
-import '../app_shadows.dart';
 import '../ec_theme_extension.dart';
 
 /// Small text field widget with 12px vertical padding and trailing icon options
@@ -106,7 +105,17 @@ class EcSmallTextField extends StatefulWidget {
   final EdgeInsetsGeometry? contentPadding;
 
   const EcSmallTextField({
-    super.key,
+    // Fields with defaults
+    this.enabled = true,
+    this.readOnly = false,
+    this.required = false,
+    this.obscureText = false,
+    this.maxLines = 1,
+    this.autofocus = false,
+    this.hasValidation = true,
+    this.themeType = ECThemeType.user,
+    this.isDark = false,
+    // Optional fields (nullable)
     this.semanticsLabel,
     this.controller,
     this.initialValue,
@@ -114,11 +123,6 @@ class EcSmallTextField extends StatefulWidget {
     this.labelText,
     this.helperText,
     this.errorText,
-    this.enabled = true,
-    this.readOnly = false,
-    this.required = false,
-    this.obscureText = false,
-    this.maxLines = 1,
     this.minLines,
     this.maxLength,
     this.keyboardType,
@@ -129,17 +133,14 @@ class EcSmallTextField extends StatefulWidget {
     this.onTap,
     this.onFocusLost,
     this.onTapOutside,
-    this.autofocus = false,
-    this.hasValidation = true,
     this.validator,
     this.onTrailingIconTap,
     this.prefixIcon,
     this.suffixIcon,
-    this.themeType = ECThemeType.user,
-    this.isDark = false,
     this.decoration,
     this.borderRadius,
     this.contentPadding,
+    super.key,
   });
 
   @override
