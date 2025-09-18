@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/data/mocks/items_mock.dart';
 import 'package:ec_core/api_client/core/api_client.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,18 +42,11 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
     DebugScenarioRequested event,
     Emitter<ItemsState> emit,
   ) async {
-    emit(state.copyWith(status: ItemsStatus.loading, errorMessage: null));
+    emit(state.copyWith(status: ItemsStatus.loading));
 
     switch (event.scenario) {
       case DebugToolScenarios.success:
-        final mockItems = List.generate(
-          5,
-          (index) => {
-            'id': index,
-            'title': 'Debug tools Item $index',
-            'body': 'This is a Debug tools item description for item $index',
-          },
-        );
+        final mockItems = EcMockedData.generateMockItems(5);
 
         emit(state.copyWith(status: ItemsStatus.success, items: mockItems));
         break;
