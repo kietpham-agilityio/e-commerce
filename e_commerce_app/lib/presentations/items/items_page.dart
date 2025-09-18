@@ -1,4 +1,4 @@
-import 'package:ec_core/mocked_backend/mock_backend.dart';
+import 'package:ec_core/ec_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -56,7 +56,7 @@ class _ItemsView extends StatelessWidget {
 
           return ListView.separated(
             itemCount: items.length,
-            separatorBuilder: (_, __) => const Divider(height: 1),
+            separatorBuilder: (_, __) => const Divider(height: 0),
             itemBuilder: (context, index) {
               final item = items[index] as Map<String, dynamic>?;
               final title = item?['title']?.toString() ?? 'Item ${index + 1}';
@@ -79,14 +79,46 @@ class _ItemsView extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: MockScenarioButton<dynamic>(
-        title: 'API Scenarios',
-        onSelected: (scenario) {
-          // Scenario is already set by MockApiPickerPage
+      floatingActionButton: FabDebugButton(
+        onSelectedMockBackend: (scenario) {
           if (ApiPosts.values.contains(scenario.payload)) {
             context.read<ItemsBloc>().add(const LoadRequested());
           }
         },
+        debugToolsScenarios: [
+          DebugToolsItem(
+            name: 'Success Scenario',
+            onTap: () {
+              context.read<ItemsBloc>().add(
+                const DebugScenarioRequested(DebugToolScenarios.success),
+              );
+            },
+          ),
+          DebugToolsItem(
+            name: 'Empty Scenario',
+            onTap: () {
+              context.read<ItemsBloc>().add(
+                const DebugScenarioRequested(DebugToolScenarios.empty),
+              );
+            },
+          ),
+          DebugToolsItem(
+            name: 'Error Scenario',
+            onTap: () {
+              context.read<ItemsBloc>().add(
+                const DebugScenarioRequested(DebugToolScenarios.error),
+              );
+            },
+          ),
+          DebugToolsItem(
+            name: 'Api Scenario',
+            onTap: () {
+              context.read<ItemsBloc>().add(
+                const DebugScenarioRequested(DebugToolScenarios.api),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

@@ -12,12 +12,12 @@ class MockScenarioButton<T> extends StatelessWidget {
     super.key,
     required this.title,
     this.apis,
-    required this.onSelected,
+    required this.onSelectedMockBackend,
   });
 
   final String title;
   final List<MockApi<T>>? apis;
-  final ValueChanged<MockScenario<T>> onSelected;
+  final ValueChanged<MockScenario<T>> onSelectedMockBackend;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class MockScenarioButton<T> extends StatelessWidget {
           ),
         );
 
-        if (scenario != null) onSelected(scenario);
+        if (scenario != null) onSelectedMockBackend(scenario);
       },
       icon: const Icon(Icons.bug_report),
       label: const Text('Scenarios'),

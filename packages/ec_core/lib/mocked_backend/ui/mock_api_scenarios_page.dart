@@ -34,9 +34,10 @@ class _ScenarioList<T> extends StatelessWidget {
       color: Theme.of(context).colorScheme.surfaceContainerHighest,
       child: ListView.separated(
         itemCount: scenarios.length,
-        separatorBuilder: (_, __) => const Divider(height: 1),
+        separatorBuilder: (_, __) => const Divider(height: 0),
         itemBuilder: (context, index) {
           final item = scenarios[index];
+
           return ListTile(
             title: Text(item.name),
             subtitle: item.description == null ? null : Text(item.description!),
