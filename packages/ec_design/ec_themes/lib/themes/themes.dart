@@ -1,5 +1,7 @@
 export 'icons.dart';
 export 'widgets/button.dart';
+export 'widgets/tab_bar.dart';
+export 'widgets/tab_bar_example.dart';
 export 'app_shadows.dart';
 
 import 'package:ec_themes/themes/app_sizing.dart';
