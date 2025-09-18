@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../typography.dart';
 import '../app_colors.dart';
-import '../app_shadows.dart';
+import '../ec_theme_extension.dart';
 
 /// Big input text field widget for reviews and long text
 class EcBigInputTextField extends StatefulWidget {
@@ -133,7 +133,7 @@ class _EcBigInputTextFieldState extends State<EcBigInputTextField> {
   late final TextEditingController? _controller;
   late final FocusNode? _focusNode;
   bool _hasFocus = false;
-  bool _hasBeenEdited = false;
+  bool _hasBeenFocused = false;
 
   @override
   void initState() {
@@ -150,6 +150,9 @@ class _EcBigInputTextFieldState extends State<EcBigInputTextField> {
       if (mounted) {
         setState(() {
           _hasFocus = _focusNode.hasFocus;
+          if (_focusNode.hasFocus) {
+            _hasBeenFocused = true;
+          }
         });
 
         if (!_focusNode.hasFocus) {
@@ -161,9 +164,7 @@ class _EcBigInputTextFieldState extends State<EcBigInputTextField> {
 
     _controller!.addListener(() {
       if (mounted) {
-        setState(() {
-          _hasBeenEdited = _controller.text.isNotEmpty;
-        });
+        // Controller listener for any additional logic if needed
       }
     });
   }
@@ -180,94 +181,104 @@ class _EcBigInputTextFieldState extends State<EcBigInputTextField> {
   }
 
   /// Determine if error message should be shown
-  /// Hide error when field has focus or is being edited, or when hasValidation is false
+  /// Show error when field loses focus for the first time if required and empty
+  /// Hide error when field has focus
   bool _shouldShowError() {
-    return widget.hasValidation &&
-        widget.errorText != null &&
-        !_hasFocus &&
-        _hasBeenEdited;
+    if (!widget.hasValidation || widget.errorText == null) {
+      return false;
+    }
+
+    // Don't show error while field has focus
+    if (_hasFocus) {
+      return false;
+    }
+
+    // Show error if field has been focused and lost focus (first time validation)
+    // This covers both empty required fields and fields with validation errors
+    return _hasBeenFocused;
   }
 
   @override
   Widget build(BuildContext context) {
-    final colors =
-        widget.isDark
-            ? EcColors.dark(widget.themeType)
-            : EcColors.light(widget.themeType);
+    final ecTheme = Theme.of(context).extension<EcThemeExtension>()!;
+    final colors = ecTheme.colors;
+    final sizing = ecTheme.sizing;
 
     return Semantics(
       label: widget.semanticsLabel,
       textField: true,
-      child: Container(
-        decoration: BoxDecoration(
-          boxShadow:
-              widget.errorText != null && _shouldShowError()
-                  ? [EcShadows.dropShadowRedSubtle(context)]
-                  : null,
-        ),
-        child: TextFormField(
-          controller: _controller,
-          focusNode: _focusNode,
-          enabled: widget.enabled,
-          readOnly: widget.readOnly,
-          autofocus: widget.autofocus,
-          maxLines: widget.maxLines ?? 5,
-          minLines: widget.minLines ?? 3,
-          maxLength: widget.maxLength,
-          keyboardType: TextInputType.multiline,
-          textInputAction: TextInputAction.newline,
-          onChanged: widget.onChanged,
-          onFieldSubmitted: widget.onSubmitted,
-          onTap: widget.onTap,
-          validator: widget.validator,
-          style: EcTypography.getLabelMedium(widget.themeType, widget.isDark),
-          decoration:
-              widget.decoration ??
-              InputDecoration(
-                hintText: widget.hintText,
-                labelText: widget.labelText,
-                helperText: widget.helperText,
-                errorText: _shouldShowError() ? widget.errorText : null,
-                prefixIcon: widget.prefixIcon,
-                suffixIcon: widget.suffixIcon,
-                contentPadding:
-                    widget.contentPadding ?? const EdgeInsets.all(16),
-                hintStyle: EcTypography.getLabelMedium(
-                  widget.themeType,
-                  widget.isDark,
-                ).copyWith(color: colors.outline),
-                labelStyle: EcTypography.getLabelMedium(
-                  widget.themeType,
-                  widget.isDark,
-                ),
-                helperStyle: EcTypography.getBodySmall(
-                  widget.themeType,
-                  widget.isDark,
-                ),
-                errorStyle: EcTypography.getBodySmall(
-                  widget.themeType,
-                  widget.isDark,
-                ).copyWith(color: colors.error),
-                filled: true,
-                fillColor: colors.primaryContainer,
-                border: _buildBorder(borderRadius: 4),
-                enabledBorder: _buildBorder(borderRadius: 4),
-                focusedBorder: _buildBorder(
-                  color: colors.primary,
-                  borderRadius: 4,
-                ),
-                errorBorder:
-                    widget.errorText != null && _shouldShowError()
-                        ? _buildBorder(color: colors.error, borderRadius: 4)
-                        : _buildBorder(borderRadius: 4),
-                focusedErrorBorder:
-                    widget.errorText != null && _shouldShowError()
-                        ? _buildBorder(color: colors.error, borderRadius: 4)
-                        : _buildBorder(color: colors.primary, borderRadius: 4),
-                disabledBorder: _buildBorder(borderRadius: 4),
-                alignLabelWithHint: true,
+      child: TextFormField(
+        controller: _controller,
+        focusNode: _focusNode,
+        enabled: widget.enabled,
+        readOnly: widget.readOnly,
+        autofocus: widget.autofocus,
+        maxLines: widget.maxLines ?? 5,
+        minLines: widget.minLines ?? 3,
+        maxLength: widget.maxLength,
+        keyboardType: TextInputType.multiline,
+        textInputAction: TextInputAction.newline,
+        onChanged: widget.onChanged,
+        onFieldSubmitted: widget.onSubmitted,
+        onTap: widget.onTap,
+        validator: widget.validator,
+        style: EcTypography.getLabelMedium(ecTheme.themeType, ecTheme.isDark),
+        cursorColor: colors.secondary,
+        cursorWidth: 0.4,
+        decoration:
+            widget.decoration ??
+            InputDecoration(
+              hintText: widget.hintText,
+              errorText: _shouldShowError() ? widget.errorText : null,
+              prefixIcon:
+                  widget.prefixIcon != null
+                      ? SizedBox(
+                        width: sizing.icon,
+                        height: sizing.icon,
+                        child: widget.prefixIcon!,
+                      )
+                      : null,
+              suffixIcon:
+                  widget.suffixIcon != null
+                      ? SizedBox(
+                        width: sizing.icon,
+                        height: sizing.icon,
+                        child: widget.suffixIcon!,
+                      )
+                      : null,
+              contentPadding: widget.contentPadding ?? const EdgeInsets.all(16),
+              hintStyle: EcTypography.getLabelMedium(
+                ecTheme.themeType,
+                ecTheme.isDark,
+              ).copyWith(color: colors.outline),
+              labelStyle: EcTypography.getLabelMedium(
+                ecTheme.themeType,
+                ecTheme.isDark,
               ),
-        ),
+              helperStyle: EcTypography.getBodySmall(
+                ecTheme.themeType,
+                ecTheme.isDark,
+              ),
+              errorStyle: EcTypography.getBodySmall(
+                ecTheme.themeType,
+                ecTheme.isDark,
+              ).copyWith(color: colors.error),
+              filled: true,
+              fillColor: colors.primaryContainer,
+              border: _buildBorder(borderRadius: 4),
+              enabledBorder: _buildBorder(borderRadius: 4),
+              focusedBorder: _buildBorder(borderRadius: 4),
+              errorBorder:
+                  widget.errorText != null && _shouldShowError()
+                      ? _buildBorder(color: colors.error, borderRadius: 4)
+                      : _buildBorder(borderRadius: 4),
+              focusedErrorBorder:
+                  widget.errorText != null && _shouldShowError()
+                      ? _buildBorder(color: colors.error, borderRadius: 4)
+                      : _buildBorder(color: colors.primary, borderRadius: 4),
+              disabledBorder: _buildBorder(borderRadius: 4),
+              alignLabelWithHint: true,
+            ),
       ),
     );
   }

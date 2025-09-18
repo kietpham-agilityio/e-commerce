@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../typography.dart';
 import '../app_colors.dart';
+import '../ec_theme_extension.dart';
 
 /// Ordinary text field widget with 22px vertical padding
 class EcOrdinaryTextField extends StatefulWidget {
@@ -145,7 +146,7 @@ class _EcOrdinaryTextFieldState extends State<EcOrdinaryTextField> {
   late final FocusNode? _focusNode;
   bool _obscureText = false;
   bool _hasFocus = false;
-  bool _hasBeenEdited = false;
+  bool _hasBeenFocused = false;
 
   @override
   void initState() {
@@ -163,6 +164,9 @@ class _EcOrdinaryTextFieldState extends State<EcOrdinaryTextField> {
       if (mounted) {
         setState(() {
           _hasFocus = _focusNode.hasFocus;
+          if (_focusNode.hasFocus) {
+            _hasBeenFocused = true;
+          }
         });
 
         if (!_focusNode.hasFocus) {
@@ -174,9 +178,7 @@ class _EcOrdinaryTextFieldState extends State<EcOrdinaryTextField> {
 
     _controller!.addListener(() {
       if (mounted) {
-        setState(() {
-          _hasBeenEdited = _controller.text.isNotEmpty;
-        });
+        // Controller listener for any additional logic if needed
       }
     });
   }
@@ -193,100 +195,131 @@ class _EcOrdinaryTextFieldState extends State<EcOrdinaryTextField> {
   }
 
   /// Determine if error message should be shown
-  /// Hide error when field has focus or is being edited, or when hasValidation is false
+  /// Show error when field loses focus for the first time if required and empty
+  /// Hide error when field has focus
   bool _shouldShowError() {
-    return widget.hasValidation &&
-        widget.errorText != null &&
-        !_hasFocus &&
-        _hasBeenEdited;
+    if (!widget.hasValidation || widget.errorText == null) {
+      return false;
+    }
+
+    // Don't show error while field has focus
+    if (_hasFocus) {
+      return false;
+    }
+
+    // Show error if field has been focused and lost focus (first time validation)
+    // This covers both empty required fields and fields with validation errors
+    return _hasBeenFocused;
   }
 
   @override
   Widget build(BuildContext context) {
-    final colors =
-        widget.isDark
-            ? EcColors.dark(widget.themeType)
-            : EcColors.light(widget.themeType);
+    final ecTheme = Theme.of(context).extension<EcThemeExtension>()!;
+    final colors = ecTheme.colors;
+    final sizing = ecTheme.sizing;
 
     return Semantics(
       label: widget.semanticsLabel,
       textField: true,
-      child: TextFormField(
-        controller: _controller,
-        focusNode: _focusNode,
-        enabled: widget.enabled,
-        readOnly: widget.readOnly,
-        obscureText: _obscureText,
-        autofocus: widget.autofocus,
-        maxLines: widget.maxLines,
-        minLines: widget.minLines,
-        maxLength: widget.maxLength,
-        keyboardType: widget.keyboardType,
-        textInputAction: widget.textInputAction,
-        onChanged: widget.onChanged,
-        onFieldSubmitted: widget.onSubmitted,
-        onTap: widget.onTap,
-        validator: widget.validator,
-        style: EcTypography.getLabelMedium(widget.themeType, widget.isDark),
-        decoration:
-            widget.decoration ??
-            InputDecoration(
-              hintText: widget.hintText,
-              errorText: _shouldShowError() ? widget.errorText : null,
-              prefixIcon: widget.prefixIcon,
-              suffixIcon:
-                  widget.obscureText
-                      ? _buildPasswordToggle()
-                      : widget.suffixIcon,
-              contentPadding:
-                  widget.contentPadding ??
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
-              hintStyle: EcTypography.getLabelMedium(
-                widget.themeType,
-                widget.isDark,
-              ).copyWith(color: colors.outline),
-              helperStyle: EcTypography.getBodySmall(
-                widget.themeType,
-                widget.isDark,
-              ),
-              errorStyle: EcTypography.getBodySmall(
-                widget.themeType,
-                widget.isDark,
-              ).copyWith(color: colors.error),
-              filled: true,
-              fillColor: colors.primaryContainer,
-              border: _buildBorder(borderRadius: 4),
-              enabledBorder: _buildBorder(borderRadius: 4),
-              focusedBorder: _buildBorder(borderRadius: 4),
-              errorBorder:
-                  widget.errorText != null && _shouldShowError()
-                      ? _buildBorder(color: colors.error, borderRadius: 4)
-                      : _buildBorder(borderRadius: 4),
-              focusedErrorBorder:
-                  widget.errorText != null && _shouldShowError()
-                      ? _buildBorder(color: colors.error, borderRadius: 4)
-                      : _buildBorder(borderRadius: 4),
-              disabledBorder: _buildBorder(borderRadius: 4),
+      child: Column(
+        children: [
+          TextFormField(
+            controller: _controller,
+            focusNode: _focusNode,
+            enabled: widget.enabled,
+            readOnly: widget.readOnly,
+            obscureText: _obscureText,
+            autofocus: widget.autofocus,
+            maxLines: widget.maxLines,
+            minLines: widget.minLines,
+            maxLength: widget.maxLength,
+            keyboardType: widget.keyboardType,
+            textInputAction: widget.textInputAction,
+            onChanged: widget.onChanged,
+            onFieldSubmitted: widget.onSubmitted,
+            onTap: widget.onTap,
+            validator: widget.validator,
+            style: EcTypography.getLabelMedium(
+              ecTheme.themeType,
+              ecTheme.isDark,
             ),
+            cursorColor: colors.secondary,
+            cursorWidth: 0.4,
+            decoration:
+                widget.decoration ??
+                InputDecoration(
+                  hintText: widget.hintText,
+                  errorText: _shouldShowError() ? widget.errorText : null,
+                  prefixIcon:
+                      widget.prefixIcon != null
+                          ? SizedBox(
+                            width: sizing.icon,
+                            height: sizing.icon,
+                            child: widget.prefixIcon!,
+                          )
+                          : null,
+                  suffixIcon:
+                      widget.obscureText
+                          ? _buildPasswordToggle(context)
+                          : widget.suffixIcon != null
+                          ? SizedBox(
+                            width: sizing.icon,
+                            height: sizing.icon,
+                            child: widget.suffixIcon!,
+                          )
+                          : null,
+                  contentPadding:
+                      widget.contentPadding ??
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
+                  hintStyle: EcTypography.getLabelMedium(
+                    ecTheme.themeType,
+                    ecTheme.isDark,
+                  ).copyWith(color: colors.outline),
+                  helperStyle: EcTypography.getBodySmall(
+                    ecTheme.themeType,
+                    ecTheme.isDark,
+                  ),
+                  errorStyle: EcTypography.getBodySmall(
+                    ecTheme.themeType,
+                    ecTheme.isDark,
+                  ).copyWith(color: colors.error),
+                  filled: true,
+                  fillColor: colors.primaryContainer,
+                  border: _buildBorder(borderRadius: 4),
+                  enabledBorder: _buildBorder(borderRadius: 4),
+                  focusedBorder: _buildBorder(borderRadius: 4),
+                  errorBorder:
+                      widget.errorText != null && _shouldShowError()
+                          ? _buildBorder(color: colors.error, borderRadius: 4)
+                          : _buildBorder(borderRadius: 4),
+
+                  disabledBorder: _buildBorder(borderRadius: 4),
+                ),
+          ),
+          if (!_shouldShowError()) SizedBox(height: 24),
+        ],
       ),
     );
   }
 
   /// Build password toggle icon
-  Widget? _buildPasswordToggle() {
-    return IconButton(
-      icon: Icon(
-        _obscureText ? Icons.visibility : Icons.visibility_off,
-        color:
-            widget.isDark
-                ? EcColors.dark(widget.themeType).outline
-                : EcColors.light(widget.themeType).outline,
+  Widget? _buildPasswordToggle(BuildContext context) {
+    final ecTheme = Theme.of(context).extension<EcThemeExtension>()!;
+    final sizing = ecTheme.sizing;
+    return SizedBox(
+      width: sizing.icon,
+      height: sizing.icon,
+      child: IconButton(
+        icon: Icon(
+          _obscureText ? Icons.visibility : Icons.visibility_off,
+          color: ecTheme.colors.outline,
+        ),
+        onPressed: () {
+          setState(() {
+            _obscureText = !_obscureText;
+          });
+        },
       ),
-      onPressed: () {
-        setState(() {
-          _obscureText = !_obscureText;
-        });
-      },
     );
   }
 

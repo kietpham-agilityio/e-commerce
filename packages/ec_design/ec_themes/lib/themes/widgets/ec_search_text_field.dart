@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../typography.dart';
 import '../app_colors.dart';
+import '../ec_theme_extension.dart';
 
 /// Search text field widget with search icon and functionality
 class EcSearchTextField extends StatefulWidget {
@@ -132,7 +133,7 @@ class _EcSearchTextFieldState extends State<EcSearchTextField> {
   late final TextEditingController? _controller;
   late final FocusNode? _focusNode;
   bool _hasFocus = false;
-  bool _hasBeenEdited = false;
+  bool _hasBeenFocused = false;
 
   @override
   void initState() {
@@ -149,6 +150,9 @@ class _EcSearchTextFieldState extends State<EcSearchTextField> {
       if (mounted) {
         setState(() {
           _hasFocus = _focusNode.hasFocus;
+          if (_focusNode.hasFocus) {
+            _hasBeenFocused = true;
+          }
         });
 
         if (!_focusNode.hasFocus) {
@@ -160,9 +164,7 @@ class _EcSearchTextFieldState extends State<EcSearchTextField> {
 
     _controller!.addListener(() {
       if (mounted) {
-        setState(() {
-          _hasBeenEdited = _controller.text.isNotEmpty;
-        });
+        // Controller listener for any additional logic if needed
       }
     });
   }
@@ -179,20 +181,28 @@ class _EcSearchTextFieldState extends State<EcSearchTextField> {
   }
 
   /// Determine if error message should be shown
-  /// Hide error when field has focus or is being edited, or when hasValidation is false
+  /// Show error when field loses focus for the first time if required and empty
+  /// Hide error when field has focus
   bool _shouldShowError() {
-    return widget.hasValidation &&
-        widget.errorText != null &&
-        !_hasFocus &&
-        _hasBeenEdited;
+    if (!widget.hasValidation || widget.errorText == null) {
+      return false;
+    }
+
+    // Don't show error while field has focus
+    if (_hasFocus) {
+      return false;
+    }
+
+    // Show error if field has been focused and lost focus (first time validation)
+    // This covers both empty required fields and fields with validation errors
+    return _hasBeenFocused;
   }
 
   @override
   Widget build(BuildContext context) {
-    final colors =
-        widget.isDark
-            ? EcColors.dark(widget.themeType)
-            : EcColors.light(widget.themeType);
+    final ecTheme = Theme.of(context).extension<EcThemeExtension>()!;
+    final colors = ecTheme.colors;
+    final sizing = ecTheme.sizing;
 
     return Semantics(
       label: widget.semanticsLabel,
@@ -215,50 +225,66 @@ class _EcSearchTextFieldState extends State<EcSearchTextField> {
         },
         onTap: widget.onTap,
         validator: widget.validator,
-        style: EcTypography.getLabelMedium(widget.themeType, widget.isDark),
+        style: EcTypography.getLabelMedium(ecTheme.themeType, ecTheme.isDark),
+        cursorColor: colors.secondary,
+        cursorWidth: 0.4,
         decoration:
             widget.decoration ??
             InputDecoration(
               hintText: widget.hintText ?? 'Search...',
               errorText: _shouldShowError() ? widget.errorText : null,
+              prefixIconConstraints: BoxConstraints(
+                minWidth: sizing.button,
+                minHeight: sizing.icon,
+              ),
               prefixIcon:
                   widget.prefixIcon ??
-                  Icon(Icons.search, color: colors.outline),
+                  Container(
+                    padding: const EdgeInsets.only(left: 15),
+                    width: sizing.icon,
+                    height: sizing.icon,
+                    child: Icon(Icons.search, color: colors.outline),
+                  ),
+              suffixIconConstraints: BoxConstraints(
+                minWidth: sizing.button,
+                minHeight: sizing.button,
+              ),
               suffixIcon:
                   (_controller?.text.isNotEmpty ?? false)
-                      ? IconButton(
-                        icon: Icon(Icons.clear, color: colors.outline),
-                        onPressed: () {
-                          _controller?.clear();
-                          widget.onSearch?.call('');
-                          setState(() {});
-                        },
+                      ? SizedBox(
+                        width: sizing.icon,
+                        height: sizing.icon,
+                        child: IconButton(
+                          icon: Icon(Icons.clear, color: colors.outline),
+                          onPressed: () {
+                            _controller?.clear();
+                            widget.onSearch?.call('');
+                            setState(() {});
+                          },
+                        ),
                       )
                       : null,
               contentPadding:
                   widget.contentPadding ??
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
               hintStyle: EcTypography.getLabelMedium(
-                widget.themeType,
-                widget.isDark,
+                ecTheme.themeType,
+                ecTheme.isDark,
               ).copyWith(color: colors.outline),
               filled: true,
               fillColor: colors.primaryContainer,
-              border: _buildBorder(borderRadius: 8),
-              enabledBorder: _buildBorder(borderRadius: 8),
-              focusedBorder: _buildBorder(
-                color: colors.primary,
-                borderRadius: 8,
-              ),
+              border: _buildBorder(borderRadius: 23),
+              enabledBorder: _buildBorder(borderRadius: 23),
+              focusedBorder: _buildBorder(borderRadius: 23),
               errorBorder:
                   widget.errorText != null && _shouldShowError()
-                      ? _buildBorder(color: colors.error, borderRadius: 8)
-                      : _buildBorder(borderRadius: 8),
+                      ? _buildBorder(color: colors.error, borderRadius: 23)
+                      : _buildBorder(borderRadius: 23),
               focusedErrorBorder:
                   widget.errorText != null && _shouldShowError()
-                      ? _buildBorder(color: colors.error, borderRadius: 8)
-                      : _buildBorder(borderRadius: 8),
-              disabledBorder: _buildBorder(borderRadius: 8),
+                      ? _buildBorder(color: colors.error, borderRadius: 23)
+                      : _buildBorder(borderRadius: 23),
+              disabledBorder: _buildBorder(borderRadius: 23),
             ),
       ),
     );
@@ -268,7 +294,7 @@ class _EcSearchTextFieldState extends State<EcSearchTextField> {
   OutlineInputBorder _buildBorder({Color? color, double? borderRadius}) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(
-        borderRadius ?? widget.borderRadius ?? 8,
+        borderRadius ?? widget.borderRadius ?? 23,
       ),
       borderSide: color != null ? BorderSide(color: color) : BorderSide.none,
     );

@@ -1,17 +1,18 @@
 export 'icons.dart';
 export 'widgets/button.dart';
 export 'widgets/form_input.dart';
-export 'widgets/ec_text_field_type.dart';
 export 'widgets/ec_ordinary_text_field.dart';
 export 'widgets/ec_small_text_field.dart';
 export 'widgets/ec_search_text_field.dart';
 export 'widgets/ec_big_input_text_field.dart';
 export 'app_shadows.dart';
+export 'ec_theme_extension.dart';
 
 import 'package:ec_themes/themes/app_sizing.dart';
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
 import 'typography.dart';
+import 'ec_theme_extension.dart';
 
 /// Design system themes for the e-commerce app
 class EcDesignTheme {
@@ -104,6 +105,11 @@ class EcDesignTheme {
 
       // Expansion tile theme
       expansionTileTheme: _buildExpansionTileTheme(ECThemeType.user, false),
+
+      // EC Theme Extension
+      extensions: const [
+        EcThemeExtension(themeType: ECThemeType.user, isDark: false),
+      ],
     );
   }
 
@@ -194,6 +200,11 @@ class EcDesignTheme {
 
       // Expansion tile theme
       expansionTileTheme: _buildExpansionTileTheme(ECThemeType.user, true),
+
+      // EC Theme Extension
+      extensions: const [
+        EcThemeExtension(themeType: ECThemeType.user, isDark: true),
+      ],
     );
   }
 
@@ -247,6 +258,11 @@ class EcDesignTheme {
       popupMenuTheme: _buildPopupMenuTheme(ECThemeType.admin, false),
       bottomSheetTheme: _buildBottomSheetTheme(ECThemeType.admin, false),
       expansionTileTheme: _buildExpansionTileTheme(ECThemeType.admin, false),
+
+      // EC Theme Extension
+      extensions: const [
+        EcThemeExtension(themeType: ECThemeType.admin, isDark: false),
+      ],
     );
   }
 
@@ -297,6 +313,11 @@ class EcDesignTheme {
       popupMenuTheme: _buildPopupMenuTheme(ECThemeType.admin, true),
       bottomSheetTheme: _buildBottomSheetTheme(ECThemeType.admin, true),
       expansionTileTheme: _buildExpansionTileTheme(ECThemeType.admin, true),
+
+      // EC Theme Extension
+      extensions: const [
+        EcThemeExtension(themeType: ECThemeType.admin, isDark: true),
+      ],
     );
   }
 
