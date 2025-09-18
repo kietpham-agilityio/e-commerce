@@ -1,5 +1,7 @@
 export 'icons.dart';
 export 'widgets/button.dart';
+export 'widgets/tab_bar.dart';
+export 'widgets/tab_bar_example.dart';
 export 'widgets/form_input.dart';
 export 'widgets/ec_ordinary_text_field.dart';
 export 'widgets/ec_small_text_field.dart';
