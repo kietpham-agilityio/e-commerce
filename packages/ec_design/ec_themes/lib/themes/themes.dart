@@ -1,8 +1,12 @@
 export 'icons.dart';
 export 'widgets/button.dart';
 export 'widgets/tab_bar.dart';
+export 'widgets/ec_app_bar.dart';
+
 export 'widgets/example_pages/tab_bar_example.dart';
-export 'widgets/ec_icon_button.dart';
+export 'widgets/example_pages/ec_app_bar_example.dart';
+
+export 'widgets/icon_button.dart';
 export 'widgets/example_pages/icon_button_example.dart';
 export 'widgets/example_pages/example_navigation.dart';
 export 'widgets/textfield/form_input.dart';

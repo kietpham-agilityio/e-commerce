@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'icon_button_example.dart';
 import 'form_input_example.dart';
 import 'tab_bar_example.dart';
+import 'ec_app_bar_example.dart';
 
 /// Navigation page that lists all example pages
 class ExampleNavigation extends StatelessWidget {
@@ -44,6 +45,14 @@ class ExampleNavigation extends StatelessWidget {
                 icon: Icons.edit,
                 onTap:
                     () => _navigateToPage(context, const FormInputExamples()),
+              ),
+              _buildExampleTile(
+                context,
+                title: 'App Bar',
+                subtitle:
+                    'Common app bar with surfaceDim background and variations',
+                icon: Icons.web_asset,
+                onTap: () => _navigateToPage(context, const EcAppBarExample()),
               ),
             ],
           ),
