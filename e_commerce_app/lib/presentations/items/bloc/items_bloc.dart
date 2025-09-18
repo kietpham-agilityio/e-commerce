@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/data/mocks/items_mock.dart';
 import 'package:ec_core/api_client/core/api_client.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,7 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
   ItemsBloc({required this.apiClient}) : super(const ItemsState()) {
     on<LoadRequested>(_onLoadRequested);
     on<RefreshRequested>(_onRefreshRequested);
+    on<DebugScenarioRequested>(_onDebugScenarioRequested);
   }
 
   final ApiClient apiClient;
@@ -34,5 +36,34 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
     Emitter<ItemsState> emit,
   ) async {
     add(const LoadRequested());
+  }
+
+  Future<void> _onDebugScenarioRequested(
+    DebugScenarioRequested event,
+    Emitter<ItemsState> emit,
+  ) async {
+    emit(state.copyWith(status: ItemsStatus.loading));
+
+    switch (event.scenario) {
+      case DebugToolScenarios.success:
+        final mockItems = EcMockedData.generateMockItems(5);
+
+        emit(state.copyWith(status: ItemsStatus.success, items: mockItems));
+        break;
+      case DebugToolScenarios.empty:
+        emit(state.copyWith(status: ItemsStatus.success, items: <dynamic>[]));
+        break;
+      case DebugToolScenarios.error:
+        emit(
+          state.copyWith(
+            status: ItemsStatus.failure,
+            errorMessage: 'Debug scenario: Simulated error occurred',
+          ),
+        );
+        break;
+      default:
+        // Fallback to normal load
+        add(const LoadRequested());
+    }
   }
 }

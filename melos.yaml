@@ -13,12 +13,16 @@ scripts:
     melos exec -- puro flutter pub get && 
     melos run build_runner
 
+  postclean: >
+    melos exec -- puro flutter clean
+
   build_runner:
     run: |
       melos exec -- "puro flutter pub run build_runner build --delete-conflicting-outputs"
     packageFilters:
       scope:
-        - e_commerce
+        - ec_core
+        - e_commerce_app
 
   custom_lint_app:
     run: |
