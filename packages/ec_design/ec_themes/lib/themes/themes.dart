@@ -1,12 +1,12 @@
 export 'icons.dart';
 export 'widgets/button.dart';
 export 'widgets/tab_bar.dart';
-export 'widgets/tab_bar_example.dart';
-export 'widgets/form_input.dart';
-export 'widgets/ec_ordinary_text_field.dart';
-export 'widgets/ec_small_text_field.dart';
-export 'widgets/ec_search_text_field.dart';
-export 'widgets/ec_big_input_text_field.dart';
+export 'widgets/example_pages/tab_bar_example.dart';
+export 'widgets/textfield/form_input.dart';
+export 'widgets/textfield/ec_ordinary_text_field.dart';
+export 'widgets/textfield/ec_small_text_field.dart';
+export 'widgets/textfield/ec_search_text_field.dart';
+export 'widgets/textfield/ec_big_input_text_field.dart';
 export 'app_shadows.dart';
 export 'ec_theme_extension.dart';
 

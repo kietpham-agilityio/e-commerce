@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../typography.dart';
-import '../app_colors.dart';
-import '../ec_theme_extension.dart';
+import '../../typography.dart';
+import '../../app_colors.dart';
+import '../../ec_theme_extension.dart';
 
-/// Ordinary text field widget with 22px vertical padding
-class EcOrdinaryTextField extends StatefulWidget {
+/// Big input text field widget for reviews and long text
+class EcBigInputTextField extends StatefulWidget {
   /// The semantic label for accessibility (screen readers)
   final String? semanticsLabel;
 
@@ -35,9 +35,6 @@ class EcOrdinaryTextField extends StatefulWidget {
   /// Whether the field is required
   final bool required;
 
-  /// Whether to obscure text (for passwords)
-  final bool obscureText;
-
   /// Maximum number of lines for multiline fields
   final int? maxLines;
 
@@ -46,12 +43,6 @@ class EcOrdinaryTextField extends StatefulWidget {
 
   /// Maximum number of characters allowed
   final int? maxLength;
-
-  /// Text input type
-  final TextInputType? keyboardType;
-
-  /// Text input action
-  final TextInputAction? textInputAction;
 
   /// Focus node for the field
   final FocusNode? focusNode;
@@ -101,13 +92,13 @@ class EcOrdinaryTextField extends StatefulWidget {
   /// Content padding
   final EdgeInsetsGeometry? contentPadding;
 
-  const EcOrdinaryTextField({
+  const EcBigInputTextField({
     // Fields with defaults
     this.enabled = true,
     this.readOnly = false,
     this.required = false,
-    this.obscureText = false,
-    this.maxLines = 1,
+    this.maxLines = 5,
+    this.minLines = 3,
     this.autofocus = false,
     this.hasValidation = true,
     this.themeType = ECThemeType.user,
@@ -120,10 +111,7 @@ class EcOrdinaryTextField extends StatefulWidget {
     this.labelText,
     this.helperText,
     this.errorText,
-    this.minLines,
     this.maxLength,
-    this.keyboardType,
-    this.textInputAction,
     this.focusNode,
     this.onChanged,
     this.onSubmitted,
@@ -140,13 +128,12 @@ class EcOrdinaryTextField extends StatefulWidget {
   });
 
   @override
-  State<EcOrdinaryTextField> createState() => _EcOrdinaryTextFieldState();
+  State<EcBigInputTextField> createState() => _EcBigInputTextFieldState();
 }
 
-class _EcOrdinaryTextFieldState extends State<EcOrdinaryTextField> {
+class _EcBigInputTextFieldState extends State<EcBigInputTextField> {
   late final TextEditingController? _controller;
   late final FocusNode? _focusNode;
-  bool _obscureText = false;
   bool _hasFocus = false;
   bool _hasBeenFocused = false;
 
@@ -156,7 +143,6 @@ class _EcOrdinaryTextFieldState extends State<EcOrdinaryTextField> {
     _controller =
         widget.controller ?? TextEditingController(text: widget.initialValue);
     _focusNode = widget.focusNode ?? FocusNode();
-    _obscureText = widget.obscureText;
 
     if (widget.initialValue != null && widget.controller == null) {
       _controller!.text = widget.initialValue!;
@@ -223,104 +209,78 @@ class _EcOrdinaryTextFieldState extends State<EcOrdinaryTextField> {
     return Semantics(
       label: widget.semanticsLabel,
       textField: true,
-      child: Column(
-        children: [
-          TextFormField(
-            controller: _controller,
-            focusNode: _focusNode,
-            enabled: widget.enabled,
-            readOnly: widget.readOnly,
-            obscureText: _obscureText,
-            autofocus: widget.autofocus,
-            maxLines: widget.maxLines,
-            minLines: widget.minLines,
-            maxLength: widget.maxLength,
-            keyboardType: widget.keyboardType,
-            textInputAction: widget.textInputAction,
-            onChanged: widget.onChanged,
-            onFieldSubmitted: widget.onSubmitted,
-            onTap: widget.onTap,
-            validator: widget.validator,
-            style: EcTypography.getLabelMedium(
-              ecTheme.themeType,
-              ecTheme.isDark,
+      child: TextFormField(
+        controller: _controller,
+        focusNode: _focusNode,
+        enabled: widget.enabled,
+        readOnly: widget.readOnly,
+        autofocus: widget.autofocus,
+        maxLines: widget.maxLines ?? 5,
+        minLines: widget.minLines ?? 3,
+        maxLength: widget.maxLength,
+        keyboardType: TextInputType.multiline,
+        textInputAction: TextInputAction.newline,
+        onChanged: widget.onChanged,
+        onFieldSubmitted: widget.onSubmitted,
+        onTap: widget.onTap,
+        validator: widget.validator,
+        style: EcTypography.getLabelMedium(ecTheme.themeType, ecTheme.isDark),
+        cursorColor: colors.secondary,
+        cursorWidth: 0.4,
+        decoration:
+            widget.decoration ??
+            InputDecoration(
+              hintText: widget.hintText,
+              errorText: _shouldShowError() ? widget.errorText : null,
+              prefixIcon:
+                  widget.prefixIcon != null
+                      ? SizedBox(
+                        width: sizing.icon,
+                        height: sizing.icon,
+                        child: widget.prefixIcon!,
+                      )
+                      : null,
+              suffixIcon:
+                  widget.suffixIcon != null
+                      ? SizedBox(
+                        width: sizing.icon,
+                        height: sizing.icon,
+                        child: widget.suffixIcon!,
+                      )
+                      : null,
+              contentPadding: widget.contentPadding ?? const EdgeInsets.all(16),
+              hintStyle: EcTypography.getLabelMedium(
+                ecTheme.themeType,
+                ecTheme.isDark,
+              ).copyWith(color: colors.outline),
+              labelStyle: EcTypography.getLabelMedium(
+                ecTheme.themeType,
+                ecTheme.isDark,
+              ),
+              helperStyle: EcTypography.getBodySmall(
+                ecTheme.themeType,
+                ecTheme.isDark,
+              ),
+              errorStyle: EcTypography.getBodySmall(
+                ecTheme.themeType,
+                ecTheme.isDark,
+              ).copyWith(color: colors.error),
+              filled: true,
+              fillColor: colors.primaryContainer,
+              border: _buildBorder(borderRadius: 4),
+              enabledBorder: _buildBorder(borderRadius: 4),
+              focusedBorder: _buildBorder(borderRadius: 4),
+              errorBorder:
+                  widget.errorText != null && _shouldShowError()
+                      ? _buildBorder(color: colors.error, borderRadius: 4)
+                      : _buildBorder(borderRadius: 4),
+              focusedErrorBorder:
+                  widget.errorText != null && _shouldShowError()
+                      ? _buildBorder(color: colors.error, borderRadius: 4)
+                      : _buildBorder(color: colors.primary, borderRadius: 4),
+              disabledBorder: _buildBorder(borderRadius: 4),
+              alignLabelWithHint: true,
             ),
-            cursorColor: colors.secondary,
-            cursorWidth: 0.4,
-            decoration:
-                widget.decoration ??
-                InputDecoration(
-                  hintText: widget.hintText,
-                  errorText: _shouldShowError() ? widget.errorText : null,
-                  prefixIcon:
-                      widget.prefixIcon != null
-                          ? SizedBox(
-                            width: sizing.icon,
-                            height: sizing.icon,
-                            child: widget.prefixIcon!,
-                          )
-                          : null,
-                  suffixIcon:
-                      widget.obscureText
-                          ? _buildPasswordToggle(context)
-                          : widget.suffixIcon != null
-                          ? SizedBox(
-                            width: sizing.icon,
-                            height: sizing.icon,
-                            child: widget.suffixIcon!,
-                          )
-                          : null,
-                  contentPadding:
-                      widget.contentPadding ??
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
-                  hintStyle: EcTypography.getLabelMedium(
-                    ecTheme.themeType,
-                    ecTheme.isDark,
-                  ).copyWith(color: colors.outline),
-                  helperStyle: EcTypography.getBodySmall(
-                    ecTheme.themeType,
-                    ecTheme.isDark,
-                  ),
-                  errorStyle: EcTypography.getBodySmall(
-                    ecTheme.themeType,
-                    ecTheme.isDark,
-                  ).copyWith(color: colors.error),
-                  filled: true,
-                  fillColor: colors.primaryContainer,
-                  border: _buildBorder(borderRadius: 4),
-                  enabledBorder: _buildBorder(borderRadius: 4),
-                  focusedBorder: _buildBorder(borderRadius: 4),
-                  errorBorder:
-                      widget.errorText != null && _shouldShowError()
-                          ? _buildBorder(color: colors.error, borderRadius: 4)
-                          : _buildBorder(borderRadius: 4),
-
-                  disabledBorder: _buildBorder(borderRadius: 4),
-                ),
-          ),
-          if (!_shouldShowError()) SizedBox(height: 24),
-        ],
-      ),
-    );
-  }
-
-  /// Build password toggle icon
-  Widget? _buildPasswordToggle(BuildContext context) {
-    final ecTheme = Theme.of(context).extension<EcThemeExtension>()!;
-    final sizing = ecTheme.sizing;
-    return SizedBox(
-      width: sizing.icon,
-      height: sizing.icon,
-      child: IconButton(
-        icon: Icon(
-          _obscureText ? Icons.visibility : Icons.visibility_off,
-          color: ecTheme.colors.outline,
-        ),
-        onPressed: () {
-          setState(() {
-            _obscureText = !_obscureText;
-          });
-        },
       ),
     );
   }

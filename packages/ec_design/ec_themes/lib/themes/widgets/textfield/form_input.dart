@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'ec_ordinary_text_field.dart';
 import 'ec_search_text_field.dart';
 import 'ec_big_input_text_field.dart';
-import '../app_colors.dart';
+import '../../app_colors.dart';
 
 /// Validation errors for form inputs
 enum EcValidationError { invalid, empty, tooShort, tooLong, invalidFormat }
