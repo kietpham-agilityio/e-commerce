@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../typography.dart';
-import '../app_colors.dart';
-import '../ec_theme_extension.dart';
+import '../../typography.dart';
+import '../../app_colors.dart';
+import '../../ec_theme_extension.dart';
 
 /// Small text field widget with 12px vertical padding and trailing icon options
 class EcSmallTextField extends StatefulWidget {

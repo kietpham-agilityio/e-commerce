@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../typography.dart';
-import '../app_colors.dart';
-import '../ec_theme_extension.dart';
+import '../../typography.dart';
+import '../../app_colors.dart';
+import '../../ec_theme_extension.dart';
 
-/// Big input text field widget for reviews and long text
-class EcBigInputTextField extends StatefulWidget {
+/// Search text field widget with search icon and functionality
+class EcSearchTextField extends StatefulWidget {
   /// The semantic label for accessibility (screen readers)
   final String? semanticsLabel;
 
@@ -48,7 +48,10 @@ class EcBigInputTextField extends StatefulWidget {
   final FocusNode? focusNode;
 
   /// Callback when text changes
-  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSearch;
+
+  /// Callback for search submit
+  final VoidCallback? onSearchSubmit;
 
   /// Callback when field is submitted
   final ValueChanged<String>? onSubmitted;
@@ -74,9 +77,6 @@ class EcBigInputTextField extends StatefulWidget {
   /// Prefix icon
   final Widget? prefixIcon;
 
-  /// Suffix icon
-  final Widget? suffixIcon;
-
   /// Theme type for styling
   final ECThemeType themeType;
 
@@ -92,13 +92,12 @@ class EcBigInputTextField extends StatefulWidget {
   /// Content padding
   final EdgeInsetsGeometry? contentPadding;
 
-  const EcBigInputTextField({
+  const EcSearchTextField({
     // Fields with defaults
     this.enabled = true,
     this.readOnly = false,
     this.required = false,
-    this.maxLines = 5,
-    this.minLines = 3,
+    this.maxLines = 1,
     this.autofocus = false,
     this.hasValidation = true,
     this.themeType = ECThemeType.user,
@@ -111,16 +110,17 @@ class EcBigInputTextField extends StatefulWidget {
     this.labelText,
     this.helperText,
     this.errorText,
+    this.minLines,
     this.maxLength,
     this.focusNode,
-    this.onChanged,
+    this.onSearch,
+    this.onSearchSubmit,
     this.onSubmitted,
     this.onTap,
     this.onFocusLost,
     this.onTapOutside,
     this.validator,
     this.prefixIcon,
-    this.suffixIcon,
     this.decoration,
     this.borderRadius,
     this.contentPadding,
@@ -128,10 +128,10 @@ class EcBigInputTextField extends StatefulWidget {
   });
 
   @override
-  State<EcBigInputTextField> createState() => _EcBigInputTextFieldState();
+  State<EcSearchTextField> createState() => _EcSearchTextFieldState();
 }
 
-class _EcBigInputTextFieldState extends State<EcBigInputTextField> {
+class _EcSearchTextFieldState extends State<EcSearchTextField> {
   late final TextEditingController? _controller;
   late final FocusNode? _focusNode;
   bool _hasFocus = false;
@@ -215,13 +215,16 @@ class _EcBigInputTextFieldState extends State<EcBigInputTextField> {
         enabled: widget.enabled,
         readOnly: widget.readOnly,
         autofocus: widget.autofocus,
-        maxLines: widget.maxLines ?? 5,
-        minLines: widget.minLines ?? 3,
+        maxLines: widget.maxLines,
+        minLines: widget.minLines,
         maxLength: widget.maxLength,
-        keyboardType: TextInputType.multiline,
-        textInputAction: TextInputAction.newline,
-        onChanged: widget.onChanged,
-        onFieldSubmitted: widget.onSubmitted,
+        keyboardType: TextInputType.text,
+        textInputAction: TextInputAction.search,
+        onChanged: widget.onSearch,
+        onFieldSubmitted: (value) {
+          widget.onSearchSubmit?.call();
+          widget.onSubmitted?.call(value);
+        },
         onTap: widget.onTap,
         validator: widget.validator,
         style: EcTypography.getLabelMedium(ecTheme.themeType, ecTheme.isDark),
@@ -230,56 +233,60 @@ class _EcBigInputTextFieldState extends State<EcBigInputTextField> {
         decoration:
             widget.decoration ??
             InputDecoration(
-              hintText: widget.hintText,
+              hintText: widget.hintText ?? 'Search...',
               errorText: _shouldShowError() ? widget.errorText : null,
+              prefixIconConstraints: BoxConstraints(
+                minWidth: sizing.button,
+                minHeight: sizing.icon,
+              ),
               prefixIcon:
-                  widget.prefixIcon != null
-                      ? SizedBox(
-                        width: sizing.icon,
-                        height: sizing.icon,
-                        child: widget.prefixIcon!,
-                      )
-                      : null,
+                  widget.prefixIcon ??
+                  Container(
+                    padding: const EdgeInsets.only(left: 15),
+                    width: sizing.icon,
+                    height: sizing.icon,
+                    child: Icon(Icons.search, color: colors.outline),
+                  ),
+              suffixIconConstraints: BoxConstraints(
+                minWidth: sizing.button,
+                minHeight: sizing.button,
+              ),
               suffixIcon:
-                  widget.suffixIcon != null
+                  (_controller?.text.isNotEmpty ?? false)
                       ? SizedBox(
                         width: sizing.icon,
                         height: sizing.icon,
-                        child: widget.suffixIcon!,
+                        child: IconButton(
+                          icon: Icon(Icons.clear, color: colors.outline),
+                          onPressed: () {
+                            _controller?.clear();
+                            widget.onSearch?.call('');
+                            setState(() {});
+                          },
+                        ),
                       )
                       : null,
-              contentPadding: widget.contentPadding ?? const EdgeInsets.all(16),
+              contentPadding:
+                  widget.contentPadding ??
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
               hintStyle: EcTypography.getLabelMedium(
                 ecTheme.themeType,
                 ecTheme.isDark,
               ).copyWith(color: colors.outline),
-              labelStyle: EcTypography.getLabelMedium(
-                ecTheme.themeType,
-                ecTheme.isDark,
-              ),
-              helperStyle: EcTypography.getBodySmall(
-                ecTheme.themeType,
-                ecTheme.isDark,
-              ),
-              errorStyle: EcTypography.getBodySmall(
-                ecTheme.themeType,
-                ecTheme.isDark,
-              ).copyWith(color: colors.error),
               filled: true,
               fillColor: colors.primaryContainer,
-              border: _buildBorder(borderRadius: 4),
-              enabledBorder: _buildBorder(borderRadius: 4),
-              focusedBorder: _buildBorder(borderRadius: 4),
+              border: _buildBorder(borderRadius: 23),
+              enabledBorder: _buildBorder(borderRadius: 23),
+              focusedBorder: _buildBorder(borderRadius: 23),
               errorBorder:
                   widget.errorText != null && _shouldShowError()
-                      ? _buildBorder(color: colors.error, borderRadius: 4)
-                      : _buildBorder(borderRadius: 4),
+                      ? _buildBorder(color: colors.error, borderRadius: 23)
+                      : _buildBorder(borderRadius: 23),
               focusedErrorBorder:
                   widget.errorText != null && _shouldShowError()
-                      ? _buildBorder(color: colors.error, borderRadius: 4)
-                      : _buildBorder(color: colors.primary, borderRadius: 4),
-              disabledBorder: _buildBorder(borderRadius: 4),
-              alignLabelWithHint: true,
+                      ? _buildBorder(color: colors.error, borderRadius: 23)
+                      : _buildBorder(borderRadius: 23),
+              disabledBorder: _buildBorder(borderRadius: 23),
             ),
       ),
     );
@@ -289,7 +296,7 @@ class _EcBigInputTextFieldState extends State<EcBigInputTextField> {
   OutlineInputBorder _buildBorder({Color? color, double? borderRadius}) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(
-        borderRadius ?? widget.borderRadius ?? 8,
+        borderRadius ?? widget.borderRadius ?? 23,
       ),
       borderSide: color != null ? BorderSide(color: color) : BorderSide.none,
     );

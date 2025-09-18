@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../typography.dart';
-import '../app_colors.dart';
-import '../ec_theme_extension.dart';
+import '../../typography.dart';
+import '../../app_colors.dart';
+import '../../ec_theme_extension.dart';
 
-/// Search text field widget with search icon and functionality
-class EcSearchTextField extends StatefulWidget {
+/// Ordinary text field widget with 22px vertical padding
+class EcOrdinaryTextField extends StatefulWidget {
   /// The semantic label for accessibility (screen readers)
   final String? semanticsLabel;
 
@@ -35,6 +35,9 @@ class EcSearchTextField extends StatefulWidget {
   /// Whether the field is required
   final bool required;
 
+  /// Whether to obscure text (for passwords)
+  final bool obscureText;
+
   /// Maximum number of lines for multiline fields
   final int? maxLines;
 
@@ -44,14 +47,17 @@ class EcSearchTextField extends StatefulWidget {
   /// Maximum number of characters allowed
   final int? maxLength;
 
+  /// Text input type
+  final TextInputType? keyboardType;
+
+  /// Text input action
+  final TextInputAction? textInputAction;
+
   /// Focus node for the field
   final FocusNode? focusNode;
 
   /// Callback when text changes
-  final ValueChanged<String>? onSearch;
-
-  /// Callback for search submit
-  final VoidCallback? onSearchSubmit;
+  final ValueChanged<String>? onChanged;
 
   /// Callback when field is submitted
   final ValueChanged<String>? onSubmitted;
@@ -77,6 +83,9 @@ class EcSearchTextField extends StatefulWidget {
   /// Prefix icon
   final Widget? prefixIcon;
 
+  /// Suffix icon
+  final Widget? suffixIcon;
+
   /// Theme type for styling
   final ECThemeType themeType;
 
@@ -92,11 +101,12 @@ class EcSearchTextField extends StatefulWidget {
   /// Content padding
   final EdgeInsetsGeometry? contentPadding;
 
-  const EcSearchTextField({
+  const EcOrdinaryTextField({
     // Fields with defaults
     this.enabled = true,
     this.readOnly = false,
     this.required = false,
+    this.obscureText = false,
     this.maxLines = 1,
     this.autofocus = false,
     this.hasValidation = true,
@@ -112,15 +122,17 @@ class EcSearchTextField extends StatefulWidget {
     this.errorText,
     this.minLines,
     this.maxLength,
+    this.keyboardType,
+    this.textInputAction,
     this.focusNode,
-    this.onSearch,
-    this.onSearchSubmit,
+    this.onChanged,
     this.onSubmitted,
     this.onTap,
     this.onFocusLost,
     this.onTapOutside,
     this.validator,
     this.prefixIcon,
+    this.suffixIcon,
     this.decoration,
     this.borderRadius,
     this.contentPadding,
@@ -128,12 +140,13 @@ class EcSearchTextField extends StatefulWidget {
   });
 
   @override
-  State<EcSearchTextField> createState() => _EcSearchTextFieldState();
+  State<EcOrdinaryTextField> createState() => _EcOrdinaryTextFieldState();
 }
 
-class _EcSearchTextFieldState extends State<EcSearchTextField> {
+class _EcOrdinaryTextFieldState extends State<EcOrdinaryTextField> {
   late final TextEditingController? _controller;
   late final FocusNode? _focusNode;
+  bool _obscureText = false;
   bool _hasFocus = false;
   bool _hasBeenFocused = false;
 
@@ -143,6 +156,7 @@ class _EcSearchTextFieldState extends State<EcSearchTextField> {
     _controller =
         widget.controller ?? TextEditingController(text: widget.initialValue);
     _focusNode = widget.focusNode ?? FocusNode();
+    _obscureText = widget.obscureText;
 
     if (widget.initialValue != null && widget.controller == null) {
       _controller!.text = widget.initialValue!;
@@ -209,85 +223,104 @@ class _EcSearchTextFieldState extends State<EcSearchTextField> {
     return Semantics(
       label: widget.semanticsLabel,
       textField: true,
-      child: TextFormField(
-        controller: _controller,
-        focusNode: _focusNode,
-        enabled: widget.enabled,
-        readOnly: widget.readOnly,
-        autofocus: widget.autofocus,
-        maxLines: widget.maxLines,
-        minLines: widget.minLines,
-        maxLength: widget.maxLength,
-        keyboardType: TextInputType.text,
-        textInputAction: TextInputAction.search,
-        onChanged: widget.onSearch,
-        onFieldSubmitted: (value) {
-          widget.onSearchSubmit?.call();
-          widget.onSubmitted?.call(value);
-        },
-        onTap: widget.onTap,
-        validator: widget.validator,
-        style: EcTypography.getLabelMedium(ecTheme.themeType, ecTheme.isDark),
-        cursorColor: colors.secondary,
-        cursorWidth: 0.4,
-        decoration:
-            widget.decoration ??
-            InputDecoration(
-              hintText: widget.hintText ?? 'Search...',
-              errorText: _shouldShowError() ? widget.errorText : null,
-              prefixIconConstraints: BoxConstraints(
-                minWidth: sizing.button,
-                minHeight: sizing.icon,
-              ),
-              prefixIcon:
-                  widget.prefixIcon ??
-                  Container(
-                    padding: const EdgeInsets.only(left: 15),
-                    width: sizing.icon,
-                    height: sizing.icon,
-                    child: Icon(Icons.search, color: colors.outline),
-                  ),
-              suffixIconConstraints: BoxConstraints(
-                minWidth: sizing.button,
-                minHeight: sizing.button,
-              ),
-              suffixIcon:
-                  (_controller?.text.isNotEmpty ?? false)
-                      ? SizedBox(
-                        width: sizing.icon,
-                        height: sizing.icon,
-                        child: IconButton(
-                          icon: Icon(Icons.clear, color: colors.outline),
-                          onPressed: () {
-                            _controller?.clear();
-                            widget.onSearch?.call('');
-                            setState(() {});
-                          },
-                        ),
-                      )
-                      : null,
-              contentPadding:
-                  widget.contentPadding ??
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
-              hintStyle: EcTypography.getLabelMedium(
-                ecTheme.themeType,
-                ecTheme.isDark,
-              ).copyWith(color: colors.outline),
-              filled: true,
-              fillColor: colors.primaryContainer,
-              border: _buildBorder(borderRadius: 23),
-              enabledBorder: _buildBorder(borderRadius: 23),
-              focusedBorder: _buildBorder(borderRadius: 23),
-              errorBorder:
-                  widget.errorText != null && _shouldShowError()
-                      ? _buildBorder(color: colors.error, borderRadius: 23)
-                      : _buildBorder(borderRadius: 23),
-              focusedErrorBorder:
-                  widget.errorText != null && _shouldShowError()
-                      ? _buildBorder(color: colors.error, borderRadius: 23)
-                      : _buildBorder(borderRadius: 23),
-              disabledBorder: _buildBorder(borderRadius: 23),
+      child: Column(
+        children: [
+          TextFormField(
+            controller: _controller,
+            focusNode: _focusNode,
+            enabled: widget.enabled,
+            readOnly: widget.readOnly,
+            obscureText: _obscureText,
+            autofocus: widget.autofocus,
+            maxLines: widget.maxLines,
+            minLines: widget.minLines,
+            maxLength: widget.maxLength,
+            keyboardType: widget.keyboardType,
+            textInputAction: widget.textInputAction,
+            onChanged: widget.onChanged,
+            onFieldSubmitted: widget.onSubmitted,
+            onTap: widget.onTap,
+            validator: widget.validator,
+            style: EcTypography.getLabelMedium(
+              ecTheme.themeType,
+              ecTheme.isDark,
             ),
+            cursorColor: colors.secondary,
+            cursorWidth: 0.4,
+            decoration:
+                widget.decoration ??
+                InputDecoration(
+                  hintText: widget.hintText,
+                  errorText: _shouldShowError() ? widget.errorText : null,
+                  prefixIcon:
+                      widget.prefixIcon != null
+                          ? SizedBox(
+                            width: sizing.icon,
+                            height: sizing.icon,
+                            child: widget.prefixIcon!,
+                          )
+                          : null,
+                  suffixIcon:
+                      widget.obscureText
+                          ? _buildPasswordToggle(context)
+                          : widget.suffixIcon != null
+                          ? SizedBox(
+                            width: sizing.icon,
+                            height: sizing.icon,
+                            child: widget.suffixIcon!,
+                          )
+                          : null,
+                  contentPadding:
+                      widget.contentPadding ??
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
+                  hintStyle: EcTypography.getLabelMedium(
+                    ecTheme.themeType,
+                    ecTheme.isDark,
+                  ).copyWith(color: colors.outline),
+                  helperStyle: EcTypography.getBodySmall(
+                    ecTheme.themeType,
+                    ecTheme.isDark,
+                  ),
+                  errorStyle: EcTypography.getBodySmall(
+                    ecTheme.themeType,
+                    ecTheme.isDark,
+                  ).copyWith(color: colors.error),
+                  filled: true,
+                  fillColor: colors.primaryContainer,
+                  border: _buildBorder(borderRadius: 4),
+                  enabledBorder: _buildBorder(borderRadius: 4),
+                  focusedBorder: _buildBorder(borderRadius: 4),
+                  errorBorder:
+                      widget.errorText != null && _shouldShowError()
+                          ? _buildBorder(color: colors.error, borderRadius: 4)
+                          : _buildBorder(borderRadius: 4),
+
+                  disabledBorder: _buildBorder(borderRadius: 4),
+                ),
+          ),
+          if (!_shouldShowError()) SizedBox(height: 24),
+        ],
+      ),
+    );
+  }
+
+  /// Build password toggle icon
+  Widget? _buildPasswordToggle(BuildContext context) {
+    final ecTheme = Theme.of(context).extension<EcThemeExtension>()!;
+    final sizing = ecTheme.sizing;
+    return SizedBox(
+      width: sizing.icon,
+      height: sizing.icon,
+      child: IconButton(
+        icon: Icon(
+          _obscureText ? Icons.visibility : Icons.visibility_off,
+          color: ecTheme.colors.outline,
+        ),
+        onPressed: () {
+          setState(() {
+            _obscureText = !_obscureText;
+          });
+        },
       ),
     );
   }
@@ -296,7 +329,7 @@ class _EcSearchTextFieldState extends State<EcSearchTextField> {
   OutlineInputBorder _buildBorder({Color? color, double? borderRadius}) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(
-        borderRadius ?? widget.borderRadius ?? 23,
+        borderRadius ?? widget.borderRadius ?? 8,
       ),
       borderSide: color != null ? BorderSide(color: color) : BorderSide.none,
     );
