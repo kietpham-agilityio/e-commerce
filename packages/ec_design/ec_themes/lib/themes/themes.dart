@@ -3,7 +3,7 @@ export 'widgets/button.dart';
 export 'widgets/tab_bar.dart';
 export 'widgets/example_pages/tab_bar_example.dart';
 export 'widgets/ec_icon_button.dart';
-export 'widgets/example_pages/ec_icon_button_example.dart';
+export 'widgets/example_pages/icon_button_example.dart';
 export 'widgets/example_pages/example_navigation.dart';
 export 'widgets/textfield/form_input.dart';
 export 'widgets/textfield/ec_ordinary_text_field.dart';
