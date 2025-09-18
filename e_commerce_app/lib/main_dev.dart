@@ -1,5 +1,6 @@
-import 'package:e_commerce_app/presentations/items/items_page.dart';
 import 'package:ec_core/ec_core.dart';
+import 'package:ec_themes/themes/widgets/form_input_example.dart';
+import 'package:ec_themes/themes/themes.dart';
 import 'package:flutter/material.dart';
 
 import 'core/di/app_module.dart';
@@ -20,13 +21,10 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'E-Commerce Dev - ${flavor.displayName}',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: flavor.isAdmin ? Colors.deepPurple : Colors.blue,
-        ),
-        useMaterial3: true,
-      ),
-      home: const ItemsPage(),
+      theme: EcDesignTheme.lightTheme,
+      darkTheme: EcDesignTheme.darkTheme,
+      themeMode: ThemeMode.system,
+      home: const FormInputExamples(),
     );
   }
 }
