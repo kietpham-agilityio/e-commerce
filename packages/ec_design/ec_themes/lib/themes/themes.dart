@@ -3,10 +3,12 @@ export 'widgets/button.dart';
 export 'widgets/tab_bar.dart';
 export 'widgets/app_bar.dart';
 export 'widgets/tag.dart';
+export 'widgets/checkbox.dart';
 
 export 'widgets/example_pages/tab_bar_example.dart';
 export 'widgets/example_pages/app_bar_example.dart';
 export 'widgets/example_pages/tag_example.dart';
+export 'widgets/example_pages/checkbox_example.dart';
 
 export 'widgets/icon_button.dart';
 export 'widgets/example_pages/icon_button_example.dart';

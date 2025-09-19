@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../app_bar.dart';
 import '../tag.dart';
+import '../text.dart';
 
 /// Example page demonstrating EcTag usage with multiple selection
 class EcTagExample extends StatefulWidget {
@@ -60,9 +61,8 @@ class _EcTagExampleState extends State<EcTagExample> {
                           .toList(),
                 ),
                 const SizedBox(height: 16),
-                Text(
+                EcBodyMediumText(
                   'Selected: ${_selectedOutlinedTags.join(', ')}',
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
                 ),
               ],
             ),
@@ -92,9 +92,8 @@ class _EcTagExampleState extends State<EcTagExample> {
                           .toList(),
                 ),
                 const SizedBox(height: 16),
-                Text(
+                EcBodyMediumText(
                   'Selected: ${_selectedRoundedTags.join(', ')}',
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
                 ),
               ],
             ),
@@ -141,10 +140,7 @@ class _EcTagExampleState extends State<EcTagExample> {
               title: 'Layout Examples',
               description: 'Different ways to arrange tags',
               children: [
-                const Text(
-                  'Row Layout:',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
+                EcTitleMediumText('Row Layout:'),
                 const SizedBox(height: 8),
                 EcTagRow(
                   tags:
@@ -159,10 +155,7 @@ class _EcTagExampleState extends State<EcTagExample> {
                           .toList(),
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  'Column Layout:',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
+                EcTitleMediumText('Column Layout:'),
                 const SizedBox(height: 8),
                 EcTagColumn(
                   tags:
@@ -218,12 +211,9 @@ class _EcTagExampleState extends State<EcTagExample> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Filter Results:',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                      EcTitleMediumText('Filter Results:'),
                       const SizedBox(height: 8),
-                      Text(
+                      EcBodyMediumText(
                         _selectedOutlinedTags.isEmpty
                             ? 'No filters applied'
                             : 'Filtering by: ${_selectedOutlinedTags.join(', ')}',
@@ -247,15 +237,9 @@ class _EcTagExampleState extends State<EcTagExample> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
+        EcHeadlineSmallText(title),
         const SizedBox(height: 8),
-        Text(
-          description,
-          style: const TextStyle(fontSize: 14, color: Colors.grey),
-        ),
+        EcBodySmallText(description),
         const SizedBox(height: 16),
         ...children,
       ],

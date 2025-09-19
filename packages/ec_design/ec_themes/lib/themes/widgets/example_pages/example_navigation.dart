@@ -4,6 +4,7 @@ import 'form_input_example.dart';
 import 'tab_bar_example.dart';
 import 'app_bar_example.dart';
 import 'tag_example.dart';
+import 'checkbox_example.dart';
 import '../app_bar.dart';
 
 /// Navigation page that lists all example pages
@@ -60,6 +61,15 @@ class ExampleNavigation extends StatelessWidget {
                     'Multiple selectable tags for filtering with 4 different styles',
                 icon: Icons.label,
                 onTap: () => _navigateToPage(context, const EcTagExample()),
+              ),
+              _buildExampleTile(
+                context,
+                title: 'Checkbox',
+                subtitle:
+                    'Checkbox widget with text support and multiple selection',
+                icon: Icons.check_box,
+                onTap:
+                    () => _navigateToPage(context, const EcCheckboxExample()),
               ),
             ],
           ),
