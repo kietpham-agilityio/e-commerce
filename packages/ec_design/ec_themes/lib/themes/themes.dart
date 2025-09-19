@@ -1,19 +1,23 @@
 export 'icons.dart';
 export 'widgets/button.dart';
 export 'widgets/tab_bar.dart';
-export 'widgets/ec_app_bar.dart';
+export 'widgets/app_bar.dart';
+export 'widgets/tag.dart';
+export 'widgets/checkbox.dart';
 
 export 'widgets/example_pages/tab_bar_example.dart';
-export 'widgets/example_pages/ec_app_bar_example.dart';
+export 'widgets/example_pages/app_bar_example.dart';
+export 'widgets/example_pages/tag_example.dart';
+export 'widgets/example_pages/checkbox_example.dart';
 
 export 'widgets/icon_button.dart';
 export 'widgets/example_pages/icon_button_example.dart';
 export 'widgets/example_pages/example_navigation.dart';
 export 'widgets/textfield/form_input.dart';
-export 'widgets/textfield/ec_ordinary_text_field.dart';
-export 'widgets/textfield/ec_small_text_field.dart';
-export 'widgets/textfield/ec_search_text_field.dart';
-export 'widgets/textfield/ec_big_input_text_field.dart';
+export 'widgets/textfield/ordinary_text_field.dart';
+export 'widgets/textfield/small_text_field.dart';
+export 'widgets/textfield/search_text_field.dart';
+export 'widgets/textfield/big_input_text_field.dart';
 export 'app_shadows.dart';
 export 'ec_theme_extension.dart';
 

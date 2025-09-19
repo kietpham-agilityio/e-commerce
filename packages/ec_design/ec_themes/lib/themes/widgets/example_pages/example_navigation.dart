@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'icon_button_example.dart';
 import 'form_input_example.dart';
 import 'tab_bar_example.dart';
-import 'ec_app_bar_example.dart';
-import '../ec_app_bar.dart';
+import 'app_bar_example.dart';
+import 'tag_example.dart';
+import 'checkbox_example.dart';
+import '../app_bar.dart';
 
 /// Navigation page that lists all example pages
 class ExampleNavigation extends StatelessWidget {
@@ -51,6 +53,23 @@ class ExampleNavigation extends StatelessWidget {
                     'Common app bar with surfaceDim background and variations',
                 icon: Icons.web_asset,
                 onTap: () => _navigateToPage(context, const EcAppBarExample()),
+              ),
+              _buildExampleTile(
+                context,
+                title: 'Tag',
+                subtitle:
+                    'Multiple selectable tags for filtering with 4 different styles',
+                icon: Icons.label,
+                onTap: () => _navigateToPage(context, const EcTagExample()),
+              ),
+              _buildExampleTile(
+                context,
+                title: 'Checkbox',
+                subtitle:
+                    'Checkbox widget with text support and multiple selection',
+                icon: Icons.check_box,
+                onTap:
+                    () => _navigateToPage(context, const EcCheckboxExample()),
               ),
             ],
           ),

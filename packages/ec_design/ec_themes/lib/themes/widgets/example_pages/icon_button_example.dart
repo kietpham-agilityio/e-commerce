@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../icon_button.dart';
 import '../../app_shadows.dart';
-import '../ec_app_bar.dart';
+import '../app_bar.dart';
 
 /// Example page demonstrating EcIconButton usage
 class EcIconButtonExample extends StatelessWidget {

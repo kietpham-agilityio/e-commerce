@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../textfield/form_input.dart';
-import '../textfield/ec_small_text_field.dart';
+import '../textfield/small_text_field.dart';
 import '../text.dart';
-import '../ec_app_bar.dart';
+import '../app_bar.dart';
 
 /// Example usage of form input widgets with validation
 /// This demonstrates how to use the EcEmailField similar to the attached example
