@@ -34,7 +34,7 @@ class EcShadows {
             : EcLightPalette.ecBlack[0]!.withValues(alpha: 0.05);
 
     return BoxShadow(
-      offset: const Offset(0, 1),
+      offset: const Offset(0, 4),
       blurRadius: 8,
       spreadRadius: 0,
       color: color,

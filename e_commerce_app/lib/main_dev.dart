@@ -1,5 +1,4 @@
 import 'package:ec_core/ec_core.dart';
-import 'package:ec_themes/themes/widgets/form_input_example.dart';
 import 'package:ec_themes/themes/themes.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: EcDesignTheme.lightTheme,
       darkTheme: EcDesignTheme.darkTheme,
       themeMode: ThemeMode.system,
-      home: const FormInputExamples(),
+      home: const ExampleNavigation(),
     );
   }
 }
