@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'ec_ordinary_text_field.dart';
-import 'ec_search_text_field.dart';
-import 'ec_big_input_text_field.dart';
+import 'ordinary_text_field.dart';
+import 'search_text_field.dart';
+import 'big_input_text_field.dart';
 import '../../app_colors.dart';
 
 /// Validation errors for form inputs

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../ec_app_bar.dart';
+import '../app_bar.dart';
 
 /// Example page demonstrating EcAppBar usage
 class EcAppBarExample extends StatelessWidget {
