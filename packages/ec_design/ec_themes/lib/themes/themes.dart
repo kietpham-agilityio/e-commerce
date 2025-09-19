@@ -4,6 +4,7 @@ export 'widgets/tab_bar.dart';
 export 'widgets/app_bar.dart';
 export 'widgets/tag.dart';
 export 'widgets/checkbox.dart';
+export 'widgets/text.dart';
 
 export 'widgets/example_pages/tab_bar_example.dart';
 export 'widgets/example_pages/app_bar_example.dart';
