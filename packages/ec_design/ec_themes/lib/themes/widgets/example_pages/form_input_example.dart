@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../textfield/form_input.dart';
 import '../textfield/ec_small_text_field.dart';
 import '../text.dart';
+import '../ec_app_bar.dart';
 
 /// Example usage of form input widgets with validation
 /// This demonstrates how to use the EcEmailField similar to the attached example
@@ -125,7 +126,7 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login Form Example')),
+      appBar: EcAppBar(titleText: 'Login Form Example'),
       body: GestureDetector(
         onTap: _unfocusAllFields,
         child: Padding(
@@ -431,10 +432,7 @@ class _FormInputExamplesState extends State<FormInputExamples> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-      appBar: AppBar(
-        title: EcTitleLargeText('Form Input Examples'),
-        backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-      ),
+      appBar: EcAppBar(titleText: 'Form Input Examples'),
       body: GestureDetector(
         onTap: _unfocusAllFields,
         child: SingleChildScrollView(

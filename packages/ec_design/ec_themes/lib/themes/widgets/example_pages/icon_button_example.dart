@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../icon_button.dart';
 import '../../app_shadows.dart';
+import '../ec_app_bar.dart';
 
 /// Example page demonstrating EcIconButton usage
 class EcIconButtonExample extends StatelessWidget {
@@ -10,7 +11,7 @@ class EcIconButtonExample extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-      appBar: AppBar(title: const Text('EcIconButton Examples')),
+      appBar: EcAppBar(titleText: 'EcIconButton Examples'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ec_themes/themes/themes.dart';
+import '../ec_app_bar.dart';
 
 /// Example page demonstrating the tab bar widget
 class TabBarExamplePage extends StatefulWidget {
@@ -16,10 +17,7 @@ class _TabBarExamplePageState extends State<TabBarExamplePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
-      appBar: AppBar(
-        title: const Text('Tab Bar Examples'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
+      appBar: EcAppBar(titleText: 'Tab Bar Examples'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

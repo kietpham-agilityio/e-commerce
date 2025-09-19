@@ -3,6 +3,7 @@ import 'icon_button_example.dart';
 import 'form_input_example.dart';
 import 'tab_bar_example.dart';
 import 'ec_app_bar_example.dart';
+import '../ec_app_bar.dart';
 
 /// Navigation page that lists all example pages
 class ExampleNavigation extends StatelessWidget {
@@ -12,10 +13,7 @@ class ExampleNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-      appBar: AppBar(
-        title: const Text('Design System Examples'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
+      appBar: EcAppBar(titleText: 'Design System Examples'),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
