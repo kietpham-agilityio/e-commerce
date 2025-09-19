@@ -6,6 +6,7 @@ import 'app_bar_example.dart';
 import 'tag_example.dart';
 import 'checkbox_example.dart';
 import 'label_example.dart';
+import 'slide_range_filter_example.dart';
 import '../app_bar.dart';
 
 /// Navigation page that lists all example pages
@@ -79,6 +80,18 @@ class ExampleNavigation extends StatelessWidget {
                     'Promotional labels for discounts, new products, and sales',
                 icon: Icons.local_offer,
                 onTap: () => _navigateToPage(context, const EcLabelExample()),
+              ),
+              _buildExampleTile(
+                context,
+                title: 'Slide Range Filter',
+                subtitle:
+                    'Range slider for filtering values like price, rating, and year',
+                icon: Icons.tune,
+                onTap:
+                    () => _navigateToPage(
+                      context,
+                      const EcSlideRangeFilterExample(),
+                    ),
               ),
             ],
           ),
