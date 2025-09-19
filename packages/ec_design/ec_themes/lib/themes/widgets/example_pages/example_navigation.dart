@@ -5,6 +5,7 @@ import 'tab_bar_example.dart';
 import 'app_bar_example.dart';
 import 'tag_example.dart';
 import 'checkbox_example.dart';
+import 'label_example.dart';
 import '../app_bar.dart';
 
 /// Navigation page that lists all example pages
@@ -70,6 +71,14 @@ class ExampleNavigation extends StatelessWidget {
                 icon: Icons.check_box,
                 onTap:
                     () => _navigateToPage(context, const EcCheckboxExample()),
+              ),
+              _buildExampleTile(
+                context,
+                title: 'Label',
+                subtitle:
+                    'Promotional labels for discounts, new products, and sales',
+                icon: Icons.local_offer,
+                onTap: () => _navigateToPage(context, const EcLabelExample()),
               ),
             ],
           ),
