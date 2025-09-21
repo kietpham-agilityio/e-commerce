@@ -1,66 +1,103 @@
+import 'package:ec_core/ec_core.dart';
+import 'package:ec_themes/themes/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'core/di/app_module.dart';
+import 'presentations/pages/example_navigation.dart';
+
+void main() async {
+  // Ensure Flutter binding is initialized
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Load environment variables
+  await dotenv.load(fileName: ".env.prod");
+
+  try {
+    // Initialize dependency injection using ec_core DI system
+    await DI.initializeProduction(
+      flavor: EcFlavor.user, // or EcFlavor.admin for admin flavor
+      customHeaders: {'X-App-Version': '1.0.0', 'X-Platform': 'mobile'},
+      databaseName: 'e_commerce_prod.db',
+      enableDatabaseInspector: false,
+    );
+
+    // Initialize app-specific dependencies
+    AppModule.initialize();
+
+    runApp(const MyApp());
+  } catch (e, stackTrace) {
+    // Handle initialization errors
+    debugPrint('Failed to initialize app: $e');
+    debugPrint('Stack trace: $stackTrace');
+
+    // Run app anyway with error handling
+    runApp(ErrorApp(error: e));
+  }
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final flavor = EcFlavor.current;
+
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      title: 'E-Commerce Production - ${flavor.displayName}',
+      theme: EcDesignTheme.lightTheme,
+      darkTheme: EcDesignTheme.darkTheme,
+      themeMode: ThemeMode.system,
+      home: const ExamplePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+/// Error app widget to display initialization errors
+class ErrorApp extends StatelessWidget {
+  final Object error;
 
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  const ErrorApp({super.key, required this.error});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+    return MaterialApp(
+      title: 'E-Commerce Production - Error',
+      theme: EcDesignTheme.lightTheme,
+      darkTheme: EcDesignTheme.darkTheme,
+      themeMode: ThemeMode.system,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const EcTitleMediumText('Initialization Error'),
+          backgroundColor: Colors.red,
+          foregroundColor: Colors.white,
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                const SizedBox(height: 16),
+                const EcHeadlineSmallText(
+                  'Failed to initialize the application',
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                EcBodyMediumText('Error: $error', textAlign: TextAlign.center),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: () {
+                    // Restart the app
+                    main();
+                  },
+                  child: const EcLabelMediumText('Retry'),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

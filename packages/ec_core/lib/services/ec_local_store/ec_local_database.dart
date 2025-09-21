@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'boxes/cached_api_query_box.dart';
 import 'boxes/user_session_box.dart';
 import 'boxes/user_session_persistent_box.dart';
-import '../../feature_flags/feature_flag_box.dart';
 
 enum EcDatabaseSchemaVersion {
   initialVersion(1);
@@ -55,8 +54,6 @@ class EcLocalDatabase {
               UserSessionDbModelSchema,
               UserSessionPersistentDbModelSchema,
               CachedApiQueryDbModelSchema,
-              FeatureFlagBoxSchema,
-              FeatureFlagOverrideBoxSchema,
             ],
             name: dbName,
             directory: dir.path,
@@ -114,8 +111,6 @@ class EcLocalDatabase {
       await store.userSessionDbModels.clear();
       await store.userSessionPersistentDbModels.clear();
       await store.cachedApiQueryDbModels.clear();
-      await store.featureFlagBoxs.clear();
-      await store.featureFlagOverrideBoxs.clear();
     });
   }
 
@@ -125,8 +120,6 @@ class EcLocalDatabase {
       store.userSessionDbModels.clearSync();
       store.userSessionPersistentDbModels.clearSync();
       store.cachedApiQueryDbModels.clearSync();
-      store.featureFlagBoxs.clearSync();
-      store.featureFlagOverrideBoxs.clearSync();
     });
   }
 

@@ -1,12 +1,17 @@
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_themes/themes/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'core/di/app_module.dart';
+import 'presentations/pages/example_navigation.dart';
 
 void main() async {
   // Ensure Flutter binding is initialized
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Load environment variables
+  await dotenv.load(fileName: ".env.dev");
 
   try {
     // Initialize dependency injection using ec_core DI system
@@ -43,7 +48,7 @@ class MyApp extends StatelessWidget {
       theme: EcDesignTheme.lightTheme,
       darkTheme: EcDesignTheme.darkTheme,
       themeMode: ThemeMode.system,
-      home: const ExampleNavigation(),
+      home: const ExamplePage(),
     );
   }
 }

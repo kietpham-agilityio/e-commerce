@@ -6,12 +6,11 @@ import '../ec_flavor.dart';
 import '../api_client/core/api_client.dart';
 import '../services/core/base_service.dart';
 import '../services/ec_local_store/ec_local_store.dart';
+import '../feature_flags/feature_flag_service.dart';
 import 'services/api_client_di.dart';
 import 'services/logger_di.dart';
 import 'services/environment_di.dart';
 import 'services/local_storage_di.dart';
-import '../feature_flags/feature_flag_di.dart';
-import '../feature_flags/feature_flag_manager.dart';
 
 /// Unified Dependency Injection system for the E-Commerce application
 /// Combines container management and initialization in a single, clean interface
@@ -72,12 +71,6 @@ class DependencyInjection {
         enableInspector: enableDatabaseInspector,
       );
 
-      // Initialize feature flag services
-      await FeatureFlagDI.registerFeatureFlagServices(
-        flavor: currentFlavor,
-        initializeWithDefaults: true,
-      );
-
       // Initialize all registered services
       await _initializeAllServices();
 
@@ -101,6 +94,9 @@ class DependencyInjection {
   }) {
     // Register flavor as singleton
     _getIt.registerSingleton<EcFlavor>(flavor);
+
+    // Register feature flag service
+    registerFeatureFlagService();
   }
 
   /// Register environment-specific services
@@ -149,6 +145,18 @@ class DependencyInjection {
 
   /// Initialize all registered services
   static Future<void> _initializeAllServices() async {
+    // Initialize feature flag service
+    try {
+      final featureFlagService = getFeatureFlagService();
+      await featureFlagService.initialize();
+    } catch (e, stackTrace) {
+      LoggerDI.error(
+        'Failed to initialize feature flag service',
+        exception: e,
+        stackTrace: stackTrace,
+      );
+    }
+
     // Get all registered services and initialize them
     final services = <BaseService>[];
 
@@ -395,14 +403,6 @@ class DependencyInjection {
     return LocalStorageDI.mainDatabase;
   }
 
-  /// Get feature flag manager
-  static FeatureFlagManager get featureFlagManager {
-    if (!isInitialized) {
-      throw Exception('DI not initialized. Call DI.initialize() first.');
-    }
-    return FeatureFlagDI.featureFlagManager;
-  }
-
   // ============================================================================
   // CLEANUP METHODS
   // ============================================================================
@@ -436,9 +436,6 @@ class DependencyInjection {
 
       // Dispose local databases
       await LocalStorageDI.disposeAllLocalDatabases();
-
-      // Dispose feature flag services
-      await FeatureFlagDI.disposeFeatureFlagServices();
 
       // Reset container
       await _getIt.reset();

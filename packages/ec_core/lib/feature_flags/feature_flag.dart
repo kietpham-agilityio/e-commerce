@@ -1,140 +1,159 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'env.dart';
 
-part 'feature_flag.freezed.dart';
-part 'feature_flag.g.dart';
+/// Simple feature flag class for E-Commerce application
+class EcFeatureFlag {
+  EcFeatureFlag({
+    this.enableDebugMode,
+    this.enableApiLogging,
+    this.enableMockBackend,
+    this.enableDatabaseInspector,
+    this.enableAdminDebugPanel,
+    this.enableUserImpersonation,
+    this.enableAnalytics,
+    this.enableCrashReporting,
+    this.enablePerformanceMonitoring,
+    this.enableApiCache,
+    this.enableDarkMode,
+    this.enableAnimations,
+    this.enableDebugOverlay,
+    this.enableNewCheckoutFlow,
+    this.enableSocialLogin,
+    this.enablePushNotifications,
+  });
 
-/// Enum defining different types of feature flags
-enum FeatureFlagType {
-  /// Boolean feature flag (on/off)
-  boolean,
+  factory EcFeatureFlag.withEnvironment() {
+    return EcFeatureFlag(
+      enableDebugMode: EcEnv.enableDebugMode,
+      enableApiLogging: EcEnv.enableApiLogging,
+      enableMockBackend: EcEnv.enableMockBackend,
+      enableDatabaseInspector: EcEnv.enableDatabaseInspector,
+      enableAdminDebugPanel: EcEnv.enableAdminDebugPanel,
+      enableUserImpersonation: EcEnv.enableUserImpersonation,
+      enableAnalytics: EcEnv.enableAnalytics,
+      enableCrashReporting: EcEnv.enableCrashReporting,
+      enablePerformanceMonitoring: EcEnv.enablePerformanceMonitoring,
+      enableApiCache: EcEnv.enableApiCache,
+      enableDarkMode: EcEnv.enableDarkMode,
+      enableAnimations: EcEnv.enableAnimations,
+      enableDebugOverlay: EcEnv.enableDebugOverlay,
+      enableNewCheckoutFlow: EcEnv.enableNewCheckoutFlow,
+      enableSocialLogin: EcEnv.enableSocialLogin,
+      enablePushNotifications: EcEnv.enablePushNotifications,
+    );
+  }
 
-  /// String feature flag with custom values
-  string,
+  // Debug and Development Features
+  bool? enableDebugMode;
+  bool? enableApiLogging;
+  bool? enableMockBackend;
+  bool? enableDatabaseInspector;
 
-  /// Number feature flag with numeric values
-  number,
+  // Admin-specific features
+  bool? enableAdminDebugPanel;
+  bool? enableUserImpersonation;
 
-  /// JSON feature flag with complex data structures
-  json,
+  // Analytics and Monitoring
+  bool? enableAnalytics;
+  bool? enableCrashReporting;
+  bool? enablePerformanceMonitoring;
+
+  // API Configuration
+  bool? enableApiCache;
+
+  // UI Features
+  bool? enableDarkMode;
+  bool? enableAnimations;
+  bool? enableDebugOverlay;
+
+  // Feature Toggles
+  bool? enableNewCheckoutFlow;
+  bool? enableSocialLogin;
+  bool? enablePushNotifications;
+
+  EcFeatureFlag copyWith({
+    bool? enableDebugMode,
+    bool? enableApiLogging,
+    bool? enableMockBackend,
+    bool? enableDatabaseInspector,
+    bool? enableAdminDebugPanel,
+    bool? enableUserImpersonation,
+    bool? enableAnalytics,
+    bool? enableCrashReporting,
+    bool? enablePerformanceMonitoring,
+    bool? enableApiCache,
+    bool? enableDarkMode,
+    bool? enableAnimations,
+    bool? enableDebugOverlay,
+    bool? enableNewCheckoutFlow,
+    bool? enableSocialLogin,
+    bool? enablePushNotifications,
+  }) {
+    return EcFeatureFlag(
+      enableDebugMode: enableDebugMode ?? this.enableDebugMode,
+      enableApiLogging: enableApiLogging ?? this.enableApiLogging,
+      enableMockBackend: enableMockBackend ?? this.enableMockBackend,
+      enableDatabaseInspector:
+          enableDatabaseInspector ?? this.enableDatabaseInspector,
+      enableAdminDebugPanel:
+          enableAdminDebugPanel ?? this.enableAdminDebugPanel,
+      enableUserImpersonation:
+          enableUserImpersonation ?? this.enableUserImpersonation,
+      enableAnalytics: enableAnalytics ?? this.enableAnalytics,
+      enableCrashReporting: enableCrashReporting ?? this.enableCrashReporting,
+      enablePerformanceMonitoring:
+          enablePerformanceMonitoring ?? this.enablePerformanceMonitoring,
+      enableApiCache: enableApiCache ?? this.enableApiCache,
+      enableDarkMode: enableDarkMode ?? this.enableDarkMode,
+      enableAnimations: enableAnimations ?? this.enableAnimations,
+      enableDebugOverlay: enableDebugOverlay ?? this.enableDebugOverlay,
+      enableNewCheckoutFlow:
+          enableNewCheckoutFlow ?? this.enableNewCheckoutFlow,
+      enableSocialLogin: enableSocialLogin ?? this.enableSocialLogin,
+      enablePushNotifications:
+          enablePushNotifications ?? this.enablePushNotifications,
+    );
+  }
+
+  void setDebugMode({bool enable = true}) {
+    enableDebugMode = enable;
+    enableApiLogging = enable;
+    enableMockBackend = enable;
+    enableDatabaseInspector = enable;
+    enableDebugOverlay = enable;
+  }
+
+  void setProductionMode({bool enable = true}) {
+    enableDebugMode = !enable;
+    enableApiLogging = !enable;
+    enableMockBackend = !enable;
+    enableDatabaseInspector = !enable;
+    enableDebugOverlay = !enable;
+    enableAnalytics = enable;
+    enableCrashReporting = enable;
+    enablePerformanceMonitoring = enable;
+  }
+
+  // Override the toString method to display the properties
+  @override
+  String toString() {
+    return '''
+    Feature Flags:
+      - Enable Debug Mode: $enableDebugMode
+      - Enable API Logging: $enableApiLogging
+      - Enable Mock Backend: $enableMockBackend
+      - Enable Database Inspector: $enableDatabaseInspector
+      - Enable Admin Debug Panel: $enableAdminDebugPanel
+      - Enable User Impersonation: $enableUserImpersonation
+      - Enable Analytics: $enableAnalytics
+      - Enable Crash Reporting: $enableCrashReporting
+      - Enable Performance Monitoring: $enablePerformanceMonitoring
+      - Enable API Cache: $enableApiCache
+      - Enable Dark Mode: $enableDarkMode
+      - Enable Animations: $enableAnimations
+      - Enable Debug Overlay: $enableDebugOverlay
+      - Enable New Checkout Flow: $enableNewCheckoutFlow
+      - Enable Social Login: $enableSocialLogin
+      - Enable Push Notifications: $enablePushNotifications
+    ''';
+  }
 }
-
-/// Enum defining different environments for feature flags
-enum FeatureFlagEnvironment {
-  /// Development environment
-  development,
-
-  /// Staging environment
-  staging,
-
-  /// Production environment
-  production,
-}
-
-/// Enum defining different flavors for feature flags
-enum FeatureFlagFlavor {
-  /// Admin flavor
-  admin,
-
-  /// User flavor
-  user,
-}
-
-/// Feature flag configuration model
-@freezed
-class FeatureFlag with _$FeatureFlag {
-  const factory FeatureFlag({
-    /// Unique identifier for the feature flag
-    required String key,
-
-    /// Display name for the feature flag
-    required String name,
-
-    /// Description of what this feature flag controls
-    required String description,
-
-    /// Type of the feature flag
-    required FeatureFlagType type,
-
-    /// Default value for the feature flag
-    required dynamic defaultValue,
-
-    /// Current value of the feature flag
-    required dynamic currentValue,
-
-    /// Whether the feature flag is enabled
-    required bool isEnabled,
-
-    /// Whether the feature flag can be overridden locally
-    required bool isOverridable,
-
-    /// Environment where this feature flag applies
-    required FeatureFlagEnvironment environment,
-
-    /// Flavor where this feature flag applies
-    required FeatureFlagFlavor flavor,
-
-    /// Timestamp when the feature flag was created
-    required DateTime createdAt,
-
-    /// Timestamp when the feature flag was last updated
-    required DateTime updatedAt,
-
-    /// Additional metadata for the feature flag
-    Map<String, dynamic>? metadata,
-  }) = _FeatureFlag;
-
-  factory FeatureFlag.fromJson(Map<String, dynamic> json) =>
-      _$FeatureFlagFromJson(json);
-}
-
-/// Feature flag override model for local overrides
-@freezed
-class FeatureFlagOverride with _$FeatureFlagOverride {
-  const factory FeatureFlagOverride({
-    /// Feature flag key
-    required String key,
-
-    /// Override value
-    required dynamic value,
-
-    /// Whether the override is enabled
-    required bool isEnabled,
-
-    /// Timestamp when the override was created
-    required DateTime createdAt,
-
-    /// Timestamp when the override expires (optional)
-    DateTime? expiresAt,
-
-    /// Reason for the override
-    String? reason,
-  }) = _FeatureFlagOverride;
-
-  factory FeatureFlagOverride.fromJson(Map<String, dynamic> json) =>
-      _$FeatureFlagOverrideFromJson(json);
-}
-
-/// Feature flag configuration model for different environments
-@freezed
-class FeatureFlagConfig with _$FeatureFlagConfig {
-  const factory FeatureFlagConfig({
-    /// Environment this configuration applies to
-    required FeatureFlagEnvironment environment,
-
-    /// Flavor this configuration applies to
-    required FeatureFlagFlavor flavor,
-
-    /// Feature flags for this environment/flavor combination
-    required Map<String, FeatureFlag> flags,
-
-    /// Timestamp when this configuration was created
-    required DateTime createdAt,
-
-    /// Timestamp when this configuration was last updated
-    required DateTime updatedAt,
-  }) = _FeatureFlagConfig;
-
-  factory FeatureFlagConfig.fromJson(Map<String, dynamic> json) =>
-      _$FeatureFlagConfigFromJson(json);
-}
-
