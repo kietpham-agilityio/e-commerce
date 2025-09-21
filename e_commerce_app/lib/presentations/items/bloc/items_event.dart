@@ -14,3 +14,14 @@ class LoadRequested extends ItemsEvent {
 class RefreshRequested extends ItemsEvent {
   const RefreshRequested();
 }
+
+class DebugScenarioRequested extends ItemsEvent {
+  const DebugScenarioRequested(this.scenario);
+
+  final DebugToolScenarios scenario;
+
+  @override
+  List<Object?> get props => [scenario];
+}
+
+enum DebugToolScenarios { success, empty, error, api }

@@ -1,0 +1,4 @@
+# melos_managed_dependency_overrides: analyzer,isar_generator
+dependency_overrides:
+  analyzer: ^6.0.0
+  isar_generator: ^3.1.0+1
