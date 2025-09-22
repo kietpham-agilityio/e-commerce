@@ -6,6 +6,7 @@ import '../ec_flavor.dart';
 import '../api_client/core/api_client.dart';
 import '../services/core/base_service.dart';
 import '../services/ec_local_store/ec_local_store.dart';
+import '../feature_flags/feature_flag_service.dart';
 import 'services/api_client_di.dart';
 import 'services/logger_di.dart';
 import 'services/environment_di.dart';
@@ -93,6 +94,9 @@ class DependencyInjection {
   }) {
     // Register flavor as singleton
     _getIt.registerSingleton<EcFlavor>(flavor);
+
+    // Register feature flag service
+    registerFeatureFlagService();
   }
 
   /// Register environment-specific services
@@ -141,6 +145,18 @@ class DependencyInjection {
 
   /// Initialize all registered services
   static Future<void> _initializeAllServices() async {
+    // Initialize feature flag service
+    try {
+      final featureFlagService = getFeatureFlagService();
+      await featureFlagService.initialize();
+    } catch (e, stackTrace) {
+      LoggerDI.error(
+        'Failed to initialize feature flag service',
+        exception: e,
+        stackTrace: stackTrace,
+      );
+    }
+
     // Get all registered services and initialize them
     final services = <BaseService>[];
 

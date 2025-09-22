@@ -10,8 +10,10 @@ packages:
 
 scripts:
   postbootstrap: >
-    melos exec -- puro flutter pub get && 
-    melos run build_runner
+    melos exec -- puro flutter pub get
+
+  postclean: >
+    melos exec -- puro flutter clean
 
   postclean: >
     melos exec -- puro flutter clean
@@ -30,4 +32,3 @@ scripts:
     packageFilters:
       scope:
         - e_commerce_app
-

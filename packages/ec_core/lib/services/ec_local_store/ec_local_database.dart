@@ -155,13 +155,13 @@ class EcLocalDatabase {
 
   /// Migrates the database from version 1 to 2.
   ///
-  /// Currently, there is no migration needed, but future versions can use
-  /// this function to perform the migration.
+  /// Adds feature flag collections to the database.
   Future<void> migrateV1ToV2(Isar isar) async {
     await isar.writeTxn(() async {
       await isar.userSessionDbModels.clear();
       await isar.userSessionPersistentDbModels.clear();
       await isar.cachedApiQueryDbModels.clear();
+      // Feature flag collections are automatically created by Isar
     });
   }
 

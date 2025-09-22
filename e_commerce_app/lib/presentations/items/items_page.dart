@@ -1,6 +1,7 @@
 import 'package:ec_core/ec_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ec_themes/themes/themes.dart';
 
 import '../../core/di/api_client_module.dart';
 import '../comments/comments_page.dart';
@@ -26,9 +27,15 @@ class _ItemsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get feature flags
+    final featureFlagService = getFeatureFlagService();
+    final flags = featureFlagService.flags;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Items'),
+        title: const EcTitleMediumText('Items'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -36,6 +43,18 @@ class _ItemsView extends StatelessWidget {
                 () => context.read<ItemsBloc>().add(const LoadRequested()),
             tooltip: 'Refresh data',
           ),
+          // Show debug button only if debug mode is enabled
+          if (flags.enableDebugMode == true) ...[
+            IconButton(
+              icon: const Icon(Icons.bug_report),
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Debug mode: API calls logged')),
+                );
+              },
+              tooltip: 'Debug Info',
+            ),
+          ],
         ],
       ),
       body: BlocBuilder<ItemsBloc, ItemsState>(
