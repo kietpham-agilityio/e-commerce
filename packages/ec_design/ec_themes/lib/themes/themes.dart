@@ -10,6 +10,7 @@ export 'widgets/example_pages/tab_bar_example.dart';
 export 'widgets/example_pages/app_bar_example.dart';
 export 'widgets/example_pages/tag_example.dart';
 export 'widgets/example_pages/checkbox_example.dart';
+export 'widgets/example_pages/api_client_example.dart';
 
 export 'widgets/icon_button.dart';
 export 'widgets/example_pages/icon_button_example.dart';
