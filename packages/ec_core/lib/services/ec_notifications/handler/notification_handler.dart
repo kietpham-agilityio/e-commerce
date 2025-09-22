@@ -22,12 +22,12 @@ class NotificationHandler {
 
   static void navigate({
     required NotificationsResponseEntity notification,
-    void Function(NotificationsResponseEntity)? onTap,
+    void Function(NotificationsResponseEntity)? onOrderDetailsTap,
   }) {
     try {
       switch (notification.type) {
         case NotificationType.orderDetails:
-          onTap?.call(notification);
+          onOrderDetailsTap?.call(notification);
           break;
         default:
           log('Unknown notification type: ${notification.type}');

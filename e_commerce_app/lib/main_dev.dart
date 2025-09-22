@@ -1,4 +1,6 @@
+import 'package:e_commerce_app/core/di/service_module.dart';
 import 'package:ec_core/ec_core.dart';
+import 'package:ec_core/services/ec_notifications/ec_notifications.dart';
 import 'package:ec_themes/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -24,6 +26,9 @@ void main() async {
 
     // Initialize app-specific dependencies
     AppModule.initialize();
+
+    await NotificationsService.setNotificationListeners();
+    ServiceModule.notificationsService;
 
     runApp(const MyApp());
   } catch (e, stackTrace) {

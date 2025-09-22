@@ -1,9 +1,10 @@
+import 'package:e_commerce_app/presentations/comments/comments_page.dart';
 import 'package:e_commerce_app/presentations/pages/feature_flag_demo_page.dart';
-import 'package:flutter/material.dart';
-import 'package:ec_themes/themes/themes.dart';
 import 'package:ec_core/ec_core.dart';
+import 'package:ec_themes/themes/themes.dart';
+import 'package:flutter/material.dart';
+
 import '../items/items_page.dart';
-import '../comments/comments_page.dart';
 
 /// Simple navigation widget for testing features
 class ExamplePage extends StatelessWidget {

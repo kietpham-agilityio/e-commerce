@@ -1,10 +1,10 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:awesome_notifications_fcm/awesome_notifications_fcm.dart';
 import 'package:ec_core/services/ec_notifications/config/notification_config.dart';
 import 'package:ec_core/services/ec_notifications/models/notification_models.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 @pragma('vm:entry-point')
 class NotificationsService {
@@ -46,16 +46,21 @@ class NotificationsService {
   }
 
   Future<void> _requestNotificationPermission() async {
-    bool isAllowed = await awesomeNotifications.isNotificationAllowed();
+    awesomeNotifications.isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        awesomeNotifications.requestPermissionToSendNotifications();
 
-    if (!isAllowed) {
-      // show a dialog to ask for permission
-      await Permission.notification.request().then((
-        PermissionStatus status,
-      ) async {
         // TODO: handle update notification box
-      });
-    }
+        log('Handle update notification box');
+      }
+    });
+  }
+
+  NotificationsService configure({
+    FutureOr<void> Function(NotificationsResponseEntity)? onTap,
+  }) {
+    entity.setHandlers(onTap: onTap);
+    return this;
   }
 
   Future<void> _setupFCM() async {
