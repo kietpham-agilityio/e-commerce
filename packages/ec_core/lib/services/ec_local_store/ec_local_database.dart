@@ -1,10 +1,12 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:ec_core/services/ec_local_store/boxes/notifications_box.dart';
 import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'boxes/cached_api_query_box.dart';
 import 'boxes/user_session_box.dart';
 import 'boxes/user_session_persistent_box.dart';
@@ -27,6 +29,7 @@ class EcLocalDatabase {
   static late final UserSessionBox _userSessionBox;
   static late final UserSessionPersistentBox _userSessionPersistentBox;
   static late final CachedApiQueryBox _cachedApiQueryBox;
+  static late final NotificationsBox _notificationsBox;
 
   // Remove final modifier for support hot reload when re-initialize
   late Isar store;
@@ -54,6 +57,7 @@ class EcLocalDatabase {
               UserSessionDbModelSchema,
               UserSessionPersistentDbModelSchema,
               CachedApiQueryDbModelSchema,
+              NotificationsDbModelSchema,
             ],
             name: dbName,
             directory: dir.path,
@@ -95,6 +99,7 @@ class EcLocalDatabase {
       _userSessionBox,
     );
     _cachedApiQueryBox = CachedApiQueryBoxImpl(store);
+    _notificationsBox = NotificationsBoxImpl(store);
   }
 
   bool isOpen() => store.isOpen;
@@ -111,15 +116,18 @@ class EcLocalDatabase {
       await store.userSessionDbModels.clear();
       await store.userSessionPersistentDbModels.clear();
       await store.cachedApiQueryDbModels.clear();
+      await store.notificationsDbModels.clear();
     });
   }
 
   /// Clear data from database synchronously
   void clearDBSync() {
     store.writeTxnSync(() {
+      store.notificationsDbModels.clear();
       store.userSessionDbModels.clearSync();
       store.userSessionPersistentDbModels.clearSync();
       store.cachedApiQueryDbModels.clearSync();
+      store.notificationsDbModels.clearSync();
     });
   }
 
@@ -161,7 +169,7 @@ class EcLocalDatabase {
       await isar.userSessionDbModels.clear();
       await isar.userSessionPersistentDbModels.clear();
       await isar.cachedApiQueryDbModels.clear();
-      // Feature flag collections are automatically created by Isar
+      await isar.notificationsDbModels.clear();
     });
   }
 
@@ -171,4 +179,6 @@ class EcLocalDatabase {
       _userSessionPersistentBox;
 
   CachedApiQueryBox get cachedApiQueryBox => _cachedApiQueryBox;
+
+  NotificationsBox get notificationsBox => _notificationsBox;
 }

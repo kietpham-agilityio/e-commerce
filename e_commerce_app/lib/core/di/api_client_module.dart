@@ -1,6 +1,4 @@
 import 'package:ec_core/ec_core.dart';
-import 'package:ec_core/mocked_backend/interceptors/mock_backend_interceptor.dart';
-import 'package:get_it/get_it.dart';
 
 import '../api_config_override.dart';
 

@@ -53,6 +53,14 @@ dependencies:
   simple_speed_dial: ^0.1.7
 
   flutter_dotenv: ^6.0.0
+  # A complete solution to create Local and Push Notifications, customizing buttons, images, sounds, emoticons and applying many different layouts for Flutter apps.
+  awesome_notifications: ^0.10.1
+
+  # Awesome Notifications add-on plugin to send push notifications through Firebase Cloud Messaging, enabling all awesome notifications features.
+  awesome_notifications_fcm: ^0.10.1
+
+  # Permission plugin for Flutter. This plugin provides a cross-platform (iOS, Android) API to request and check permissions.
+  permission_handler: ^12.0.1
 
 dev_dependencies:
   flutter_test:
