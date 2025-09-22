@@ -1,4 +1,5 @@
 import 'package:ec_core/ec_core.dart';
+import 'package:ec_core/mocked_backend/interceptors/mock_backend_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ec_themes/themes/themes.dart';

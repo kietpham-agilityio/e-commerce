@@ -39,9 +39,12 @@ dependencies:
 
   get_it: ^8.2.0
 
-  # Local database
   isar: ^3.1.0+1
-  isar_flutter_libs: ^3.1.0+1
+
+  isar_flutter_libs:
+    git:
+      url: https://github.com/MrLittleWhite/isar_flutter_libs.git
+
   path_provider: ^2.1.4
   shared_preferences: ^2.3.2
 
