@@ -17,11 +17,3 @@ export 'services/services.dart';
 
 // Feature Flags
 export 'feature_flags/feature_flags.dart';
-
-// Dependency Injection
-export 'di/di.dart';
-
-// Flavor and Mock Backend
-export 'ec_flavor.dart';
-export 'mocked_backend/mock_backend.dart';
-export 'services/services.dart';
