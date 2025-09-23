@@ -5,7 +5,7 @@ import '../utils/good_log.dart';
 final lightTheme = ThemeData(
   primaryColor: Colors.purple,
   primarySwatch: Colors.purple,
-  scaffoldBackgroundColor: const Color(0xffF9F9F9),
+  scaffoldBackgroundColor: const Color(0xffffffff),
   cardColor: Colors.white,
   appBarTheme: const AppBarTheme(color: Colors.white),
 );

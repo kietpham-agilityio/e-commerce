@@ -11,7 +11,6 @@ export 'icons.dart';
 export 'widgets/app_bar.dart';
 export 'widgets/button.dart';
 export 'widgets/checkbox.dart';
-export 'widgets/example_pages/api_client_example.dart';
 export 'widgets/example_pages/app_bar_example.dart';
 export 'widgets/example_pages/checkbox_example.dart';
 export 'widgets/example_pages/example_navigation.dart';

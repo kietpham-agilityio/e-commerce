@@ -21,15 +21,17 @@ class EnvironmentDI {
   }) async {
     final currentFlavor = flavor ?? EcFlavor.current;
 
-    // Register logger services for development
-    LoggerDI.registerLoggerServices(
-      flavor: currentFlavor,
-      enableConsoleLogs: true,
-      enableHistory: true,
-      maxHistoryItems: 200,
-      enableFileLogging: enableFileLogging,
-      enableCrashReporting: enableCrashReporting,
-    );
+    // Register logger services for development (only if not already registered)
+    if (!LoggerDI.isTalkerRegistered(instanceName: 'main')) {
+      LoggerDI.registerLoggerServices(
+        flavor: currentFlavor,
+        enableConsoleLogs: true,
+        enableHistory: true,
+        maxHistoryItems: 200,
+        enableFileLogging: enableFileLogging,
+        enableCrashReporting: enableCrashReporting,
+      );
+    }
 
     // Register API clients for development
     ApiClientDI.registerApiClients(
@@ -61,15 +63,17 @@ class EnvironmentDI {
   }) async {
     final currentFlavor = flavor ?? EcFlavor.current;
 
-    // Register logger services for staging
-    LoggerDI.registerLoggerServices(
-      flavor: currentFlavor,
-      enableConsoleLogs: false, // No console logs in staging
-      enableHistory: true,
-      maxHistoryItems: 100,
-      enableFileLogging: enableFileLogging,
-      enableCrashReporting: enableCrashReporting,
-    );
+    // Register logger services for staging (only if not already registered)
+    if (!LoggerDI.isTalkerRegistered(instanceName: 'main')) {
+      LoggerDI.registerLoggerServices(
+        flavor: currentFlavor,
+        enableConsoleLogs: false, // No console logs in staging
+        enableHistory: true,
+        maxHistoryItems: 100,
+        enableFileLogging: enableFileLogging,
+        enableCrashReporting: enableCrashReporting,
+      );
+    }
 
     // Register API clients for staging
     ApiClientDI.registerApiClients(
@@ -104,15 +108,17 @@ class EnvironmentDI {
   }) async {
     final currentFlavor = flavor ?? EcFlavor.current;
 
-    // Register logger services for production
-    LoggerDI.registerLoggerServices(
-      flavor: currentFlavor,
-      enableConsoleLogs: false, // No console logs in production
-      enableHistory: true,
-      maxHistoryItems: 50,
-      enableFileLogging: enableFileLogging,
-      enableCrashReporting: enableCrashReporting,
-    );
+    // Register logger services for production (only if not already registered)
+    if (!LoggerDI.isTalkerRegistered(instanceName: 'main')) {
+      LoggerDI.registerLoggerServices(
+        flavor: currentFlavor,
+        enableConsoleLogs: false, // No console logs in production
+        enableHistory: true,
+        maxHistoryItems: 50,
+        enableFileLogging: enableFileLogging,
+        enableCrashReporting: enableCrashReporting,
+      );
+    }
 
     // Register API clients for production
     ApiClientDI.registerApiClients(

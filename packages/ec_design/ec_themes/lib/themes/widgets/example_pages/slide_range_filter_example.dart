@@ -167,7 +167,7 @@ class _EcSlideRangeFilterExampleState extends State<EcSlideRangeFilterExample> {
                   label: 'Size Range (cm)',
                   activeColor: Colors.purple,
                   thumbColor: Colors.purple,
-                  overlayColor: Colors.purple.withOpacity(0.12),
+                  overlayColor: Colors.purple.withValues(alpha: 0.12),
                   trackHeight: 8,
                   valueFormatter: (value) => '${value.toInt()} cm',
                   onChanged: (values) {
