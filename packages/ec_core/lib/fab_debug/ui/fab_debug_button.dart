@@ -27,23 +27,28 @@ class FabDebugButton<T> extends StatelessWidget {
             fullscreenDialog: true,
             builder:
                 (_) => FabDebugPage(
-                  onDebugTools: () async {
-                    final result = await Navigator.of(context).push(
-                      MaterialPageRoute(
-                        fullscreenDialog: false,
-                        builder:
-                            (_) => DebugToolsPickerPage<String>(
-                              title: 'Debug Scenarios',
-                              items: debugToolsScenarios,
-                            ),
-                        settings: const RouteSettings(name: 'debug_scenarios'),
-                      ),
-                    );
+                  onDebugTools:
+                      debugToolsScenarios.isEmpty
+                          ? null
+                          : () async {
+                            final result = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                fullscreenDialog: false,
+                                builder:
+                                    (_) => DebugToolsPickerPage<String>(
+                                      title: 'Debug Scenarios',
+                                      items: debugToolsScenarios,
+                                    ),
+                                settings: const RouteSettings(
+                                  name: 'debug_scenarios',
+                                ),
+                              ),
+                            );
 
-                    if (result != null && context.mounted) {
-                      Navigator.of(context).pop();
-                    }
-                  },
+                            if (result != null && context.mounted) {
+                              Navigator.of(context).pop();
+                            }
+                          },
                   onMockedBackend: () async {
                     final result = await Navigator.of(
                       context,
@@ -78,12 +83,12 @@ class FabDebugButton<T> extends StatelessWidget {
 class FabDebugPage extends StatelessWidget {
   const FabDebugPage({
     super.key,
-    required this.onDebugTools,
     required this.onMockedBackend,
+    this.onDebugTools,
   });
 
-  final VoidCallback onDebugTools;
   final VoidCallback onMockedBackend;
+  final VoidCallback? onDebugTools;
 
   @override
   Widget build(BuildContext context) {
@@ -95,23 +100,21 @@ class FabDebugPage extends StatelessWidget {
         ),
         title: const Text('Fab Debug'),
       ),
-      body: Material(
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
-        child: Column(
-          children: [
+      body: Column(
+        children: [
+          if (onDebugTools != null)
             ListTile(
               title: const Text('Debug tools'),
               onTap: onDebugTools,
               trailing: const Icon(Icons.chevron_right),
             ),
-            const Divider(height: 0),
-            ListTile(
-              title: const Text('Mocked Backend'),
-              onTap: onMockedBackend,
-              trailing: const Icon(Icons.chevron_right),
-            ),
-          ],
-        ),
+          const Divider(height: 0),
+          ListTile(
+            title: const Text('Mocked Backend'),
+            onTap: onMockedBackend,
+            trailing: const Icon(Icons.chevron_right),
+          ),
+        ],
       ),
     );
   }

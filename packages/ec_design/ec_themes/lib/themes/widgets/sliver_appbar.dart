@@ -59,6 +59,7 @@ class EcSliverAppBar extends StatelessWidget {
     final double toolbarHeight = sizing.appBarHeight;
 
     return SliverAppBar(
+      backgroundColor: Theme.of(context).colorScheme.onSecondary,
       expandedHeight: maxExtentHeight,
       toolbarHeight: toolbarHeight,
       pinned: pinned,

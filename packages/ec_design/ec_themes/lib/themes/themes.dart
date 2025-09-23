@@ -38,6 +38,7 @@ class EcDesignTheme {
       useMaterial3: true,
       brightness: Brightness.light,
       fontFamily: EcTypography.fontFamily,
+      scaffoldBackgroundColor: EcColors.light(ECThemeType.user).surfaceDim,
 
       // Color scheme
       colorScheme: EcColors.light(ECThemeType.user),
@@ -488,7 +489,10 @@ class EcDesignTheme {
 
   /// TBD: Build card theme
   static CardThemeData _buildCardTheme(ECThemeType themeType, bool isDark) {
-    return const CardThemeData();
+    final colorScheme =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
+
+    return CardThemeData(color: colorScheme.surfaceDim);
   }
 
   /// TBD: Build app bar theme
@@ -497,9 +501,10 @@ class EcDesignTheme {
         isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
 
     return AppBarTheme(
-      scrolledUnderElevation: 0,
+      scrolledUnderElevation: 1,
       color: colorScheme.surfaceDim,
       foregroundColor: colorScheme.secondary,
+      surfaceTintColor: colorScheme.surface,
     );
   }
 
@@ -542,7 +547,10 @@ class EcDesignTheme {
     ECThemeType themeType,
     bool isDark,
   ) {
-    return const DividerThemeData();
+    final colorScheme =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
+
+    return DividerThemeData(color: colorScheme.surface);
   }
 
   /// TBD: Build icon theme
@@ -555,7 +563,15 @@ class EcDesignTheme {
     ECThemeType themeType,
     bool isDark,
   ) {
-    return const ListTileThemeData();
+    final colorScheme =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
+
+    return ListTileThemeData(
+      tileColor: colorScheme.surfaceDim,
+      iconColor: colorScheme.secondary,
+      titleTextStyle: EcTypography.getTitleLarge(themeType, isDark),
+      subtitleTextStyle: EcTypography.getAdminBodyMedium(themeType, isDark),
+    );
   }
 
   /// TBD: Build switch theme

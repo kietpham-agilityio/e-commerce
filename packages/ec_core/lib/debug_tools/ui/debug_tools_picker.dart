@@ -14,24 +14,21 @@ class DebugToolsPickerPage<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(title)),
-      body: Material(
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
-        child: ListView.separated(
-          itemCount: items.length,
-          separatorBuilder: (_, __) => const Divider(height: 0),
-          itemBuilder: (context, index) {
-            final item = items[index];
+      body: ListView.separated(
+        itemCount: items.length,
+        separatorBuilder: (_, __) => const Divider(height: 0),
+        itemBuilder: (context, index) {
+          final item = items[index];
 
-            return ListTile(
-              title: Text(item.name),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () {
-                item.onTap();
-                Navigator.of(context).pop(item);
-              },
-            );
-          },
-        ),
+          return ListTile(
+            title: Text(item.name),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              item.onTap();
+              Navigator.of(context).pop(item);
+            },
+          );
+        },
       ),
     );
   }
@@ -47,24 +44,21 @@ class DebugToolPicker<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(title)),
-      body: Material(
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
-        child: ListView.separated(
-          itemCount: items.length,
-          separatorBuilder: (_, __) => const Divider(height: 0),
-          itemBuilder: (context, index) {
-            final item = items[index];
+      body: ListView.separated(
+        itemCount: items.length,
+        separatorBuilder: (_, __) => const Divider(height: 0),
+        itemBuilder: (context, index) {
+          final item = items[index];
 
-            return ListTile(
-              title: Text(item.name),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () {
-                item.onTap();
-                Navigator.of(context).pop(item);
-              },
-            );
-          },
-        ),
+          return ListTile(
+            title: Text(item.name),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              item.onTap();
+              Navigator.of(context).pop(item);
+            },
+          );
+        },
       ),
     );
   }

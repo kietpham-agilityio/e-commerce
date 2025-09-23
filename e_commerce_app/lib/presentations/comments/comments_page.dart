@@ -1,4 +1,4 @@
-import 'package:ec_core/mocked_backend/mock_backend.dart';
+import 'package:ec_core/ec_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -141,16 +141,48 @@ class _CommentsView extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: MockScenarioButton<dynamic>(
-        title: 'API Scenarios',
+      floatingActionButton: FabDebugButton(
         onSelectedMockBackend: (scenario) {
-          // Scenario is already set by MockApiPickerPage
           if (ApiComments.values.contains(scenario.payload)) {
             context.read<CommentsBloc>().add(
               LoadCommentsRequested(postId: postId),
             );
           }
         },
+        debugToolsScenarios: [
+          DebugToolsItem(
+            name: 'Success Scenario',
+            onTap: () {
+              context.read<CommentsBloc>().add(
+                const DebugScenarioRequested(DebugToolScenarios.success),
+              );
+            },
+          ),
+          DebugToolsItem(
+            name: 'Empty Scenario',
+            onTap: () {
+              context.read<CommentsBloc>().add(
+                const DebugScenarioRequested(DebugToolScenarios.empty),
+              );
+            },
+          ),
+          DebugToolsItem(
+            name: 'Error Scenario',
+            onTap: () {
+              context.read<CommentsBloc>().add(
+                const DebugScenarioRequested(DebugToolScenarios.error),
+              );
+            },
+          ),
+          DebugToolsItem(
+            name: 'Api Scenario',
+            onTap: () {
+              context.read<CommentsBloc>().add(
+                const DebugScenarioRequested(DebugToolScenarios.api),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
