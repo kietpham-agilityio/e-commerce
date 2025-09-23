@@ -1,8 +1,7 @@
 import 'package:ec_core/ec_core.dart';
-import 'package:ec_core/mocked_backend/interceptors/mock_backend_interceptor.dart';
+import 'package:ec_themes/themes/widgets/sliver_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ec_themes/themes/themes.dart';
 
 import '../../core/di/api_client_module.dart';
 import '../comments/comments_page.dart';
@@ -28,74 +27,84 @@ class _ItemsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get feature flags
     final featureFlagService = getFeatureFlagService();
     final flags = featureFlagService.flags;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const EcTitleMediumText('Items'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed:
-                () => context.read<ItemsBloc>().add(const LoadRequested()),
-            tooltip: 'Refresh data',
-          ),
-          // Show debug button only if debug mode is enabled
-          if (flags.enableDebugMode == true) ...[
-            IconButton(
-              icon: const Icon(Icons.bug_report),
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Debug mode: API calls logged')),
-                );
-              },
-              tooltip: 'Debug Info',
-            ),
-          ],
-        ],
-      ),
       body: BlocBuilder<ItemsBloc, ItemsState>(
         builder: (context, state) {
-          if (state.status == ItemsStatus.loading) {
-            return _LoadingWidget();
-          }
-
-          if (state.status == ItemsStatus.failure) {
-            return _FailureWidget(state);
-          }
-
-          final items = state.items;
-
-          if (items.isEmpty) {
-            return _EmptyWidget();
-          }
-
-          return ListView.separated(
-            itemCount: items.length,
-            separatorBuilder: (_, __) => const Divider(height: 0),
-            itemBuilder: (context, index) {
-              final item = items[index] as Map<String, dynamic>?;
-              final title = item?['title']?.toString() ?? 'Item ${index + 1}';
-              final subtitle = item?['body']?.toString();
-              return ListTile(
-                title: Text(title),
-                subtitle: subtitle != null ? Text(subtitle) : null,
-                leading: CircleAvatar(child: Text('${index + 1}')),
-                trailing: const Icon(Icons.comment_outlined),
-                onTap: () {
-                  final postId = item?['id'] ?? index + 1;
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => CommentsPage(postId: postId as int),
+          return CustomScrollView(
+            slivers: [
+              EcSliverAppBar(
+                title: 'Items',
+                actions: [
+                  IconButton(
+                    icon: const Icon(Icons.refresh),
+                    onPressed:
+                        () => context.read<ItemsBloc>().add(
+                          const LoadRequested(),
+                        ),
+                    tooltip: 'Refresh data',
+                  ),
+                  // Show debug button only if debug mode is enabled
+                  if (flags.enableDebugMode == true) ...[
+                    IconButton(
+                      icon: const Icon(Icons.bug_report),
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Debug mode: API calls logged'),
+                          ),
+                        );
+                      },
+                      tooltip: 'Debug Info',
                     ),
-                  );
-                },
-              );
-            },
+                  ],
+                ],
+              ),
+
+              if (state.status == ItemsStatus.loading) ...[
+                const SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: _LoadingWidget(),
+                ),
+              ] else if (state.status == ItemsStatus.failure) ...[
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: _FailureWidget(state),
+                ),
+              ] else if (state.items.isEmpty) ...[
+                const SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: _EmptyWidget(),
+                ),
+              ] else ...[
+                SliverList.separated(
+                  itemCount: state.items.length,
+                  itemBuilder: (context, index) {
+                    final item = state.items[index] as Map<String, dynamic>?;
+                    final title =
+                        item?['title']?.toString() ?? 'Item ${index + 1}';
+                    final subtitle = item?['body']?.toString();
+                    return ListTile(
+                      title: Text(title),
+                      subtitle: subtitle != null ? Text(subtitle) : null,
+                      leading: CircleAvatar(child: Text('${index + 1}')),
+                      trailing: const Icon(Icons.comment_outlined),
+                      onTap: () {
+                        final postId = item?['id'] ?? index + 1;
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => CommentsPage(postId: postId as int),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  separatorBuilder: (_, __) => const Divider(height: 0),
+                ),
+              ],
+            ],
           );
         },
       ),

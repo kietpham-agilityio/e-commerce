@@ -1,3 +1,5 @@
+import 'dart:developer' show log;
+
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:talker_flutter/talker_flutter.dart';
@@ -154,10 +156,10 @@ class DependencyInjection {
         final talker = _getIt.get<Talker>(instanceName: 'main');
         talker.info(message);
       } else {
-        print('[INFO] $message');
+        log('[INFO] $message');
       }
     } catch (e) {
-      print('[INFO] $message');
+      log('[INFO] $message');
     }
   }
 
@@ -172,14 +174,14 @@ class DependencyInjection {
         final talker = _getIt.get<Talker>(instanceName: 'main');
         talker.error(message, exception, stackTrace);
       } else {
-        print('[ERROR] $message');
-        if (exception != null) print('[ERROR] Exception: $exception');
-        if (stackTrace != null) print('[ERROR] StackTrace: $stackTrace');
+        log('[ERROR] $message');
+        if (exception != null) log('[ERROR] Exception: $exception');
+        if (stackTrace != null) log('[ERROR] StackTrace: $stackTrace');
       }
     } catch (e) {
-      print('[ERROR] $message');
-      if (exception != null) print('[ERROR] Exception: $exception');
-      if (stackTrace != null) print('[ERROR] StackTrace: $stackTrace');
+      log('[ERROR] $message');
+      if (exception != null) log('[ERROR] Exception: $exception');
+      if (stackTrace != null) log('[ERROR] StackTrace: $stackTrace');
     }
   }
 
