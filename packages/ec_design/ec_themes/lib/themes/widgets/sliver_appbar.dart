@@ -119,11 +119,13 @@ class EcSliverAppBar extends StatelessWidget {
             ),
             child: Align(
               alignment: Alignment(alignX, 1.0),
-              child: EcDisplayMediumText(
+              child: Text(
                 title,
                 maxLines: titleMaxLines,
                 overflow: TextOverflow.ellipsis,
-                fontSize: sliverTitleFontSize,
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                  fontSize: sliverTitleFontSize,
+                ),
               ),
             ),
           );

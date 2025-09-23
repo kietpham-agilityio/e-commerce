@@ -15,7 +15,6 @@ abstract class BaseEcText extends StatelessWidget {
     this.fontWeight,
     this.height,
     this.letterSpacing,
-    this.fontSize,
   });
 
   /// The text to display
@@ -48,8 +47,6 @@ abstract class BaseEcText extends StatelessWidget {
   /// Custom letter spacing override
   final double? letterSpacing;
 
-  final double? fontSize;
-
   /// Get the base text style for this widget
   TextStyle get baseStyle;
 
@@ -64,7 +61,6 @@ abstract class BaseEcText extends StatelessWidget {
       fontWeight: fontWeight,
       height: height,
       letterSpacing: letterSpacing,
-      fontSize: fontSize,
     );
 
     return Text(
@@ -113,7 +109,6 @@ class EcDisplayMediumText extends BaseEcText {
     super.fontWeight,
     super.height,
     super.letterSpacing,
-    super.fontSize,
   });
 
   @override
