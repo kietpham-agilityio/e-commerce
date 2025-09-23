@@ -15,4 +15,5 @@ class UserSizing {
   static const double button = 48;
   static const double iconButtonBig = 52;
   static const double textFieldOrdinary = 64;
+  static const double expandedAppBar = 96;
 }

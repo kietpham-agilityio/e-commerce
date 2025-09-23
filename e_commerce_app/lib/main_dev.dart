@@ -3,6 +3,7 @@ import 'package:ec_core/ec_core.dart';
 import 'package:ec_core/services/ec_notifications/ec_notifications.dart';
 import 'package:ec_themes/themes/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'core/di/app_module.dart';
@@ -30,7 +31,14 @@ void main() async {
     await NotificationsService.setNotificationListeners();
     ServiceModule.notificationsService;
 
-    runApp(const MyApp());
+    runApp(
+      AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.transparent,
+        ),
+        child: const MyApp(),
+      ),
+    );
   } catch (e, stackTrace) {
     // Handle initialization errors
     debugPrint('Failed to initialize app: $e');
