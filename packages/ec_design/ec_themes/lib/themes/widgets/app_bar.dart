@@ -1,3 +1,4 @@
+import 'package:ec_themes/themes/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../ec_theme_extension.dart';
@@ -93,10 +94,9 @@ class EcAppBar extends StatelessWidget implements PreferredSizeWidget {
     if (titleWidget == null && titleText != null) {
       titleWidget = Text(
         titleText!,
-        style: TextStyle(
-          color: foregroundColor ?? colors.secondary,
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
+        style: EcTypography.getHeadlineMedium(
+          ecTheme.themeType,
+          ecTheme.isDark,
         ),
       );
     }

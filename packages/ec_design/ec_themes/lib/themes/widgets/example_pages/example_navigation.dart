@@ -7,12 +7,11 @@ import 'tag_example.dart';
 import 'checkbox_example.dart';
 import 'label_example.dart';
 import 'slide_range_filter_example.dart';
-import 'api_client_example.dart';
 import '../app_bar.dart';
 
 /// Navigation page that lists all example pages
-class ExampleNavigation extends StatelessWidget {
-  const ExampleNavigation({super.key});
+class WidgetExample extends StatelessWidget {
+  const WidgetExample({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -93,14 +92,6 @@ class ExampleNavigation extends StatelessWidget {
                       context,
                       const EcSlideRangeFilterExample(),
                     ),
-              ),
-              _buildExampleTile(
-                context,
-                title: 'API Client',
-                subtitle:
-                    'HTTP methods, maybe fetch, force fetch, and background API calls',
-                icon: Icons.api,
-                onTap: () => _navigateToPage(context, const ApiClientExample()),
               ),
             ],
           ),

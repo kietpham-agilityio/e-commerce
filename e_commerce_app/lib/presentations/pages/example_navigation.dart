@@ -1,4 +1,5 @@
 import 'package:e_commerce_app/presentations/comments/comments_page.dart';
+import 'package:e_commerce_app/presentations/pages/api_client_example.dart';
 import 'package:e_commerce_app/presentations/pages/feature_flag_demo_page.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_themes/themes/themes.dart';
@@ -58,6 +59,23 @@ class ExamplePage extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const CommentsPage(postId: 1),
+                ),
+              );
+            },
+          ),
+
+          const SizedBox(height: 12),
+
+          _buildNavigationCard(
+            context,
+            title: 'API Client Example',
+            description:
+                'Demonstrate API client concepts with mock implementations',
+            icon: Icons.api,
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const ApiClientExample(),
                 ),
               );
             },

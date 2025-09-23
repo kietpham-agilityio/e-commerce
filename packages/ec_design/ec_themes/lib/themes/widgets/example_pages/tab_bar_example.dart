@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ec_themes/themes/themes.dart';
-import '../app_bar.dart';
 
 /// Example page demonstrating the tab bar widget
 class TabBarExamplePage extends StatefulWidget {

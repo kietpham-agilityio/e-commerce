@@ -45,11 +45,20 @@ class DependencyInjection {
       // Reset container to avoid conflicts
       await _getIt.reset();
 
-      // Register core services
+      // Register core services first (including flavor)
       _registerCoreServices(
         flavor: currentFlavor,
         enableLogging: enableLogging,
       );
+
+      // Register logger services early to avoid circular dependency
+      if (enableLogging) {
+        _registerEarlyLoggerServices(
+          flavor: currentFlavor,
+          enableFileLogging: enableFileLogging,
+          enableCrashReporting: enableCrashReporting,
+        );
+      }
 
       // Register environment-specific services (this includes API clients and loggers)
       await _registerEnvironmentServices(
@@ -74,11 +83,11 @@ class DependencyInjection {
       // Initialize all registered services
       await _initializeAllServices();
 
-      LoggerDI.info(
+      _logInfo(
         'DI initialization completed successfully for ${currentFlavor.displayName} flavor in $environment environment',
       );
     } catch (e, stackTrace) {
-      LoggerDI.error(
+      _logError(
         'Failed to initialize DI',
         exception: e,
         stackTrace: stackTrace,
@@ -97,6 +106,81 @@ class DependencyInjection {
 
     // Register feature flag service
     registerFeatureFlagService();
+  }
+
+  /// Register logger services early to avoid circular dependency
+  static void _registerEarlyLoggerServices({
+    required EcFlavor flavor,
+    required bool enableFileLogging,
+    required bool enableCrashReporting,
+  }) {
+    // Register main Talker instance early
+    final settings = TalkerSettings(
+      useConsoleLogs: true,
+      useHistory: true,
+      maxHistoryItems: 200,
+      enabled: true,
+    );
+
+    final talker = TalkerFlutter.init(settings: settings);
+    _getIt.registerSingleton<Talker>(talker, instanceName: 'main');
+
+    // Register flavor-specific Talker instance
+    if (flavor.isAdmin) {
+      final adminSettings = TalkerSettings(
+        useConsoleLogs: true,
+        useHistory: true,
+        maxHistoryItems: 500,
+        enabled: true,
+      );
+      final adminTalker = TalkerFlutter.init(settings: adminSettings);
+      _getIt.registerSingleton<Talker>(adminTalker, instanceName: 'admin');
+    } else {
+      final userSettings = TalkerSettings(
+        useConsoleLogs: false,
+        useHistory: true,
+        maxHistoryItems: 50,
+        enabled: true,
+      );
+      final userTalker = TalkerFlutter.init(settings: userSettings);
+      _getIt.registerSingleton<Talker>(userTalker, instanceName: 'user');
+    }
+  }
+
+  /// Fallback logging method when LoggerDI is not available
+  static void _logInfo(String message) {
+    try {
+      if (_getIt.isRegistered<Talker>(instanceName: 'main')) {
+        final talker = _getIt.get<Talker>(instanceName: 'main');
+        talker.info(message);
+      } else {
+        print('[INFO] $message');
+      }
+    } catch (e) {
+      print('[INFO] $message');
+    }
+  }
+
+  /// Fallback logging method when LoggerDI is not available
+  static void _logError(
+    String message, {
+    Object? exception,
+    StackTrace? stackTrace,
+  }) {
+    try {
+      if (_getIt.isRegistered<Talker>(instanceName: 'main')) {
+        final talker = _getIt.get<Talker>(instanceName: 'main');
+        talker.error(message, exception, stackTrace);
+      } else {
+        print('[ERROR] $message');
+        if (exception != null) print('[ERROR] Exception: $exception');
+        if (stackTrace != null) print('[ERROR] StackTrace: $stackTrace');
+      }
+    } catch (e) {
+      print('[ERROR] $message');
+      if (exception != null) print('[ERROR] Exception: $exception');
+      if (stackTrace != null) print('[ERROR] StackTrace: $stackTrace');
+    }
   }
 
   /// Register environment-specific services
@@ -150,7 +234,7 @@ class DependencyInjection {
       final featureFlagService = getFeatureFlagService();
       await featureFlagService.initialize();
     } catch (e, stackTrace) {
-      LoggerDI.error(
+      _logError(
         'Failed to initialize feature flag service',
         exception: e,
         stackTrace: stackTrace,
@@ -168,7 +252,7 @@ class DependencyInjection {
       try {
         await service.initialize();
       } catch (e, stackTrace) {
-        LoggerDI.error(
+        _logError(
           'Failed to initialize service: ${service.runtimeType}',
           exception: e,
           stackTrace: stackTrace,
@@ -420,7 +504,7 @@ class DependencyInjection {
         try {
           await service.dispose();
         } catch (e, stackTrace) {
-          LoggerDI.error(
+          _logError(
             'Failed to dispose service: ${service.runtimeType}',
             exception: e,
             stackTrace: stackTrace,
@@ -440,13 +524,9 @@ class DependencyInjection {
       // Reset container
       await _getIt.reset();
 
-      LoggerDI.info('DI disposal completed successfully');
+      _logInfo('DI disposal completed successfully');
     } catch (e, stackTrace) {
-      LoggerDI.error(
-        'Failed to dispose DI',
-        exception: e,
-        stackTrace: stackTrace,
-      );
+      _logError('Failed to dispose DI', exception: e, stackTrace: stackTrace);
       rethrow;
     }
   }
@@ -454,7 +534,7 @@ class DependencyInjection {
   /// Reset DI container
   static Future<void> reset() async {
     await _getIt.reset();
-    LoggerDI.info('DI container reset completed');
+    _logInfo('DI container reset completed');
   }
 }
 

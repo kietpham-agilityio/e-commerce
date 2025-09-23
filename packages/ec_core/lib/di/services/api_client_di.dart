@@ -44,7 +44,9 @@ class ApiClientDI {
     required bool enableLogging,
   }) {
     final talker =
-        enableLogging && DI.isRegistered<Talker>() ? DI.get<Talker>() : null;
+        enableLogging && DI.isRegistered<Talker>(instanceName: 'main')
+            ? DI.get<Talker>(instanceName: 'main')
+            : null;
 
     final apiClient = ApiClientFactory.createForCurrentFlavor(
       additionalHeaders: customHeaders,
@@ -71,7 +73,9 @@ class ApiClientDI {
   }) {
     final currentFlavor = flavor ?? EcFlavor.current;
     final talker =
-        enableLogging && DI.isRegistered<Talker>() ? DI.get<Talker>() : null;
+        enableLogging && DI.isRegistered<Talker>(instanceName: 'main')
+            ? DI.get<Talker>(instanceName: 'main')
+            : null;
 
     final authClient = ApiClientFactory.createWithAuth(
       token: token,
@@ -99,7 +103,9 @@ class ApiClientDI {
     String instanceName = 'custom',
   }) {
     final talker =
-        enableLogging && DI.isRegistered<Talker>() ? DI.get<Talker>() : null;
+        enableLogging && DI.isRegistered<Talker>(instanceName: 'main')
+            ? DI.get<Talker>(instanceName: 'main')
+            : null;
 
     final customClient = ApiClientFactory.createWithCustomUrl(
       baseUrl: baseUrl,
