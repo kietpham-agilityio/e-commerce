@@ -30,22 +30,19 @@ class _ScenarioList<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Theme.of(context).colorScheme.surfaceContainerHighest,
-      child: ListView.separated(
-        itemCount: scenarios.length,
-        separatorBuilder: (_, __) => const Divider(height: 0),
-        itemBuilder: (context, index) {
-          final item = scenarios[index];
+    return ListView.separated(
+      itemCount: scenarios.length,
+      separatorBuilder: (_, __) => const Divider(height: 0),
+      itemBuilder: (context, index) {
+        final item = scenarios[index];
 
-          return ListTile(
-            title: Text(item.name),
-            subtitle: item.description == null ? null : Text(item.description!),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => Navigator.of(context).pop(item),
-          );
-        },
-      ),
+        return ListTile(
+          title: Text(item.name),
+          subtitle: item.description == null ? null : Text(item.description!),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: () => Navigator.of(context).pop(item),
+        );
+      },
     );
   }
 }
