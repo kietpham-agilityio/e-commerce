@@ -48,3 +48,8 @@ app.*.map.json
 *.freezed.dart
 
 *.env.*
+
+# Firebase
+firebase.json
+**/google-services.json
+**/GoogleService-Info.plist
