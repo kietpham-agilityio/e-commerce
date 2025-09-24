@@ -2,6 +2,7 @@ import 'package:e_commerce_app/core/di/service_module.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_core/services/ec_notifications/ec_notifications.dart';
 import 'package:ec_themes/themes/themes.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -15,6 +16,8 @@ void main() async {
 
   // Load environment variables
   await dotenv.load(fileName: ".env.dev");
+
+  await Firebase.initializeApp();
 
   try {
     // Initialize dependency injection using ec_core DI system
