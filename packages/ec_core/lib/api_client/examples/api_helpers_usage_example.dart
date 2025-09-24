@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import '../core/api_client_factory.dart';
 import '../core/api_client.dart';
 import '../helpers/api_helpers.dart';
@@ -31,9 +32,9 @@ class ApiHelpersUsageExample {
         },
       );
 
-      print('User fetched: ${user.firstName} ${user.lastName}');
+      log('User fetched: ${user.firstName} ${user.lastName}');
     } catch (e) {
-      print('Maybe fetch failed: $e');
+      log('Maybe fetch failed: $e');
     }
   }
 
@@ -49,9 +50,9 @@ class ApiHelpersUsageExample {
         delay: const Duration(seconds: 1),
       );
 
-      print('Force fetched ${products.length} products');
+      log('Force fetched ${products.length} products');
     } catch (e) {
-      print('Force fetch failed: $e');
+      log('Force fetch failed: $e');
     }
   }
 
@@ -68,9 +69,9 @@ class ApiHelpersUsageExample {
         timeout: const Duration(seconds: 30),
       );
 
-      print('Background fetch completed: ${user.firstName}');
+      log('Background fetch completed: ${user.firstName}');
     } catch (e) {
-      print('Background API call failed: $e');
+      log('Background API call failed: $e');
     }
   }
 
@@ -89,9 +90,9 @@ class ApiHelpersUsageExample {
         checkConnectivity: true,
       );
 
-      print('Connected and fetched ${products.length} products');
+      log('Connected and fetched ${products.length} products');
     } catch (e) {
-      print('Background API with connectivity check failed: $e');
+      log('Background API with connectivity check failed: $e');
     }
   }
 
@@ -114,9 +115,9 @@ class ApiHelpersUsageExample {
             },
           );
 
-      print('Cart fetched with retry: ${cart['items']?.length ?? 0} items');
+      log('Cart fetched with retry: ${cart['items']?.length ?? 0} items');
     } catch (e) {
-      print('Background API with retry failed: $e');
+      log('Background API with retry failed: $e');
     }
   }
 
@@ -141,9 +142,9 @@ class ApiHelpersUsageExample {
         maxDelay: const Duration(seconds: 30),
       );
 
-      print('Orders fetched with exponential backoff: ${orders.length} orders');
+      log('Orders fetched with exponential backoff: ${orders.length} orders');
     } catch (e) {
-      print('Background API with exponential backoff failed: $e');
+      log('Background API with exponential backoff failed: $e');
     }
   }
 
@@ -161,9 +162,9 @@ class ApiHelpersUsageExample {
         recoveryTimeout: const Duration(minutes: 1),
       );
 
-      print('User fetched with circuit breaker: ${user.firstName}');
+      log('User fetched with circuit breaker: ${user.firstName}');
     } catch (e) {
-      print('Background API with circuit breaker failed: $e');
+      log('Background API with circuit breaker failed: $e');
     }
   }
 
@@ -189,11 +190,9 @@ class ApiHelpersUsageExample {
             (json) => ProductDto.fromJson(json as Map<String, dynamic>),
           );
 
-      print(
-        'Paginated response handled: ${paginatedResponse.data.length} items',
-      );
-      print('Page: ${paginatedResponse.pagination.page}');
-      print('Total: ${paginatedResponse.pagination.total}');
+      log('Paginated response handled: ${paginatedResponse.data.length} items');
+      log('Page: ${paginatedResponse.pagination.page}');
+      log('Total: ${paginatedResponse.pagination.total}');
 
       // Handle list response
       final listResponse = ApiResponseHelper.handleListResponse<ProductDto>(
@@ -201,13 +200,13 @@ class ApiHelpersUsageExample {
         (json) => ProductDto.fromJson(json as Map<String, dynamic>),
       );
 
-      print('List response handled: ${listResponse.length} items');
+      log('List response handled: ${listResponse.length} items');
 
       // Check for errors
       final hasError = ApiResponseHelper.hasError(rawResponse);
-      print('Response has error: $hasError');
+      log('Response has error: $hasError');
     } catch (e) {
-      print('Response helper example failed: $e');
+      log('Response helper example failed: $e');
     }
   }
 
@@ -223,7 +222,7 @@ class ApiHelpersUsageExample {
       );
 
       if (cachedUser != null) {
-        print('Using cached user: ${cachedUser.firstName}');
+        log('Using cached user: ${cachedUser.firstName}');
       } else {
         // Fetch from API and cache
         final response = await _apiClient.userApi.getCurrentUser();
@@ -233,19 +232,19 @@ class ApiHelpersUsageExample {
             response.data.toJson(),
             expiration: const Duration(minutes: 30),
           );
-          print('User fetched and cached: ${response.data.firstName}');
+          log('User fetched and cached: ${response.data.firstName}');
         }
       }
 
       // Check if cache exists
       final hasCache = await ApiCacheHelper.hasCachedApiResponse(endpoint);
-      print('Cache exists: $hasCache');
+      log('Cache exists: $hasCache');
 
       // Get cache statistics
       final stats = await ApiCacheHelper.getCacheStats();
-      print('Cache stats: $stats');
+      log('Cache stats: $stats');
     } catch (e) {
-      print('Cache helper example failed: $e');
+      log('Cache helper example failed: $e');
     }
   }
 
@@ -269,7 +268,7 @@ class ApiHelpersUsageExample {
           );
 
       if (cachedProducts != null) {
-        print('Using cached products: ${cachedProducts.length} items');
+        log('Using cached products: ${cachedProducts.length} items');
         return;
       }
 
@@ -299,11 +298,9 @@ class ApiHelpersUsageExample {
         expiration: const Duration(hours: 1),
       );
 
-      print(
-        'Products fetched, processed, and cached: ${products.length} items',
-      );
+      log('Products fetched, processed, and cached: ${products.length} items');
     } catch (e) {
-      print('Complete workflow failed: $e');
+      log('Complete workflow failed: $e');
     }
   }
 
@@ -317,7 +314,7 @@ class ApiHelpersUsageExample {
         ),
         maxRetries: 2,
         errorHandler: (error) {
-          print('Custom error handler: ${error.toString()}');
+          log('Custom error handler: ${error.toString()}');
           // Return a default user or rethrow
           return const Failure<String>(
             'Failed to fetch user after retries',
@@ -330,7 +327,7 @@ class ApiHelpersUsageExample {
         },
       );
     } catch (e) {
-      print('Error handling example failed: $e');
+      log('Error handling example failed: $e');
     }
   }
 
@@ -343,9 +340,9 @@ class ApiHelpersUsageExample {
       // Cleanup expired cache entries
       await ApiCacheHelper.cleanupExpiredCache();
 
-      print('Cleanup completed');
+      log('Cleanup completed');
     } catch (e) {
-      print('Cleanup failed: $e');
+      log('Cleanup failed: $e');
     }
   }
 

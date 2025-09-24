@@ -151,6 +151,147 @@ class UpdateOrderStatusRequestDto with _$UpdateOrderStatusRequestDto {
       _$UpdateOrderStatusRequestDtoFromJson(json);
 }
 
+/// Cancel Order Request DTO
+@freezed
+class CancelOrderRequestDto with _$CancelOrderRequestDto {
+  const factory CancelOrderRequestDto({required String reason, String? note}) =
+      _CancelOrderRequestDto;
+
+  factory CancelOrderRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$CancelOrderRequestDtoFromJson(json);
+}
+
+/// Return Order Request DTO
+@freezed
+class ReturnOrderRequestDto with _$ReturnOrderRequestDto {
+  const factory ReturnOrderRequestDto({
+    required String reason,
+    required List<String> itemIds,
+    String? note,
+    List<String>? attachments,
+  }) = _ReturnOrderRequestDto;
+
+  factory ReturnOrderRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$ReturnOrderRequestDtoFromJson(json);
+}
+
+/// Reorder Items Request DTO
+@freezed
+class ReorderItemsRequestDto with _$ReorderItemsRequestDto {
+  const factory ReorderItemsRequestDto({
+    required List<String> selectedItemIds,
+    String? note,
+  }) = _ReorderItemsRequestDto;
+
+  factory ReorderItemsRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$ReorderItemsRequestDtoFromJson(json);
+}
+
+/// Payment Request DTO
+@freezed
+class PaymentRequestDto with _$PaymentRequestDto {
+  const factory PaymentRequestDto({
+    required String paymentMethodId,
+    required PaymentMethod paymentMethod,
+    Map<String, dynamic>? paymentDetails,
+    String? billingAddressId,
+  }) = _PaymentRequestDto;
+
+  factory PaymentRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$PaymentRequestDtoFromJson(json);
+}
+
+/// Payment Validation Request DTO
+@freezed
+class PaymentValidationRequestDto with _$PaymentValidationRequestDto {
+  const factory PaymentValidationRequestDto({
+    required String paymentMethodId,
+    required PaymentMethod paymentMethod,
+    Map<String, dynamic>? paymentDetails,
+  }) = _PaymentValidationRequestDto;
+
+  factory PaymentValidationRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$PaymentValidationRequestDtoFromJson(json);
+}
+
+/// Shipping Calculation Request DTO
+@freezed
+class ShippingCalculationRequestDto with _$ShippingCalculationRequestDto {
+  const factory ShippingCalculationRequestDto({
+    required OrderAddressDto destination,
+    required List<ShippingItemDto> items,
+    String? preferredCarrier,
+  }) = _ShippingCalculationRequestDto;
+
+  factory ShippingCalculationRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$ShippingCalculationRequestDtoFromJson(json);
+}
+
+/// Shipping Item DTO for calculation
+@freezed
+class ShippingItemDto with _$ShippingItemDto {
+  const factory ShippingItemDto({
+    required String productId,
+    required int quantity,
+    required double weight,
+    required double length,
+    required double width,
+    required double height,
+  }) = _ShippingItemDto;
+
+  factory ShippingItemDto.fromJson(Map<String, dynamic> json) =>
+      _$ShippingItemDtoFromJson(json);
+}
+
+/// Update Shipping Address Request DTO
+@freezed
+class UpdateShippingAddressRequestDto with _$UpdateShippingAddressRequestDto {
+  const factory UpdateShippingAddressRequestDto({
+    required OrderAddressDto address,
+  }) = _UpdateShippingAddressRequestDto;
+
+  factory UpdateShippingAddressRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$UpdateShippingAddressRequestDtoFromJson(json);
+}
+
+/// Update Order Request DTO
+@freezed
+class UpdateOrderRequestDto with _$UpdateOrderRequestDto {
+  const factory UpdateOrderRequestDto({
+    String? status,
+    double? discountAmount,
+    String? notes,
+    OrderAddressDto? shippingAddress,
+    OrderAddressDto? billingAddress,
+  }) = _UpdateOrderRequestDto;
+
+  factory UpdateOrderRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$UpdateOrderRequestDtoFromJson(json);
+}
+
+/// Add Order Note Request DTO
+@freezed
+class AddOrderNoteRequestDto with _$AddOrderNoteRequestDto {
+  const factory AddOrderNoteRequestDto({required String note, String? author}) =
+      _AddOrderNoteRequestDto;
+
+  factory AddOrderNoteRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$AddOrderNoteRequestDtoFromJson(json);
+}
+
+/// Refund Payment Request DTO
+@freezed
+class RefundPaymentRequestDto with _$RefundPaymentRequestDto {
+  const factory RefundPaymentRequestDto({
+    required double amount,
+    required String reason,
+    String? note,
+  }) = _RefundPaymentRequestDto;
+
+  factory RefundPaymentRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$RefundPaymentRequestDtoFromJson(json);
+}
+
 /// Order Status Enum
 enum OrderStatus {
   @JsonValue('pending')

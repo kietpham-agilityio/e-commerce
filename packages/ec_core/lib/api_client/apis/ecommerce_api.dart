@@ -5,36 +5,17 @@ import 'order_api.dart';
 import 'product_api.dart';
 import 'user_api.dart';
 import 'dtos/base_response.dart';
+import '../dtos/ecommerce_dto.dart';
+import '../dtos/cart_dto.dart';
 
 part 'ecommerce_api.g.dart';
 
 /// Main E-Commerce API client that combines all services
 @RestApi()
 abstract class EcommerceApi {
-  factory EcommerceApi(Dio dio, {String? baseUrl}) = _EcommerceApi;
+  factory EcommerceApi(Dio dio, {String? baseUrl}) = EcommerceApiImpl;
 
   // ============================================================================
-  // PRIVATE GETTERS FOR INTERNAL USE
-  // ============================================================================
-
-  Dio get dio;
-  String get baseUrl;
-
-  // ============================================================================
-  // API SERVICE GETTERS
-  // ============================================================================
-
-  /// Get User API service
-  UserApi get userApi => UserApi(dio, baseUrl: baseUrl);
-
-  /// Get Product API service
-  ProductApi get productApi => ProductApi(dio, baseUrl: baseUrl);
-
-  /// Get Cart API service
-  CartApi get cartApi => CartApi(dio, baseUrl: baseUrl);
-
-  /// Get Order API service
-  OrderApi get orderApi => OrderApi(dio, baseUrl: baseUrl);
 
   // ============================================================================
   // HEALTH CHECK ENDPOINTS
@@ -42,15 +23,15 @@ abstract class EcommerceApi {
 
   /// Health check endpoint
   @GET('/health')
-  Future<BaseResponseDto<Map<String, dynamic>>> healthCheck();
+  Future<BaseResponseDto<HealthCheckDto>> healthCheck();
 
   /// API version info
   @GET('/version')
-  Future<BaseResponseDto<Map<String, dynamic>>> getVersion();
+  Future<BaseResponseDto<VersionInfoDto>> getVersion();
 
   /// API status
   @GET('/status')
-  Future<BaseResponseDto<Map<String, dynamic>>> getStatus();
+  Future<BaseResponseDto<ApiStatusDto>> getStatus();
 
   // ============================================================================
   // CONFIGURATION ENDPOINTS
@@ -58,23 +39,23 @@ abstract class EcommerceApi {
 
   /// Get app configuration
   @GET('/config')
-  Future<BaseResponseDto<Map<String, dynamic>>> getAppConfig();
+  Future<BaseResponseDto<AppConfigDto>> getAppConfig();
 
   /// Get feature flags
   @GET('/config/features')
-  Future<BaseResponseDto<Map<String, dynamic>>> getFeatureFlags();
+  Future<BaseResponseDto<FeatureFlagsDto>> getFeatureFlags();
 
   /// Get supported currencies
   @GET('/config/currencies')
-  Future<BaseResponseDto<List<Map<String, dynamic>>>> getSupportedCurrencies();
+  Future<BaseResponseDto<List<CurrencyDto>>> getSupportedCurrencies();
 
   /// Get supported countries
   @GET('/config/countries')
-  Future<BaseResponseDto<List<Map<String, dynamic>>>> getSupportedCountries();
+  Future<BaseResponseDto<List<CountryDto>>> getSupportedCountries();
 
   /// Get supported languages
   @GET('/config/languages')
-  Future<BaseResponseDto<List<Map<String, dynamic>>>> getSupportedLanguages();
+  Future<BaseResponseDto<List<LanguageDto>>> getSupportedLanguages();
 
   // ============================================================================
   // NOTIFICATION ENDPOINTS
@@ -82,7 +63,7 @@ abstract class EcommerceApi {
 
   /// Get user notifications
   @GET('/notifications')
-  Future<PaginatedResponseDto<Map<String, dynamic>>> getNotifications(
+  Future<PaginatedResponseDto<NotificationDto>> getNotifications(
     @Query('page') int page,
     @Query('limit') int limit,
     @Query('unread') bool? unreadOnly,
@@ -110,15 +91,15 @@ abstract class EcommerceApi {
 
   /// Get user wishlist
   @GET('/wishlist')
-  Future<PaginatedResponseDto<Map<String, dynamic>>> getWishlist(
+  Future<PaginatedResponseDto<WishlistItemDto>> getWishlist(
     @Query('page') int page,
     @Query('limit') int limit,
   );
 
   /// Add product to wishlist
   @POST('/wishlist')
-  Future<BaseResponseDto<Map<String, dynamic>>> addToWishlist(
-    @Body() Map<String, String> request,
+  Future<BaseResponseDto<WishlistItemDto>> addToWishlist(
+    @Body() AddToWishlistRequestDto request,
   );
 
   /// Remove product from wishlist
@@ -129,9 +110,9 @@ abstract class EcommerceApi {
 
   /// Move wishlist item to cart
   @POST('/wishlist/{productId}/move-to-cart')
-  Future<BaseResponseDto<Map<String, dynamic>>> moveToCart(
+  Future<BaseResponseDto<CartItemDto>> moveToCart(
     @Path('productId') String productId,
-    @Body() Map<String, dynamic>? options,
+    @Body() MoveToCartOptionsDto? options,
   );
 
   // ============================================================================
@@ -140,16 +121,16 @@ abstract class EcommerceApi {
 
   /// Get user reviews
   @GET('/reviews')
-  Future<PaginatedResponseDto<Map<String, dynamic>>> getUserReviews(
+  Future<PaginatedResponseDto<UserReviewDto>> getUserReviews(
     @Query('page') int page,
     @Query('limit') int limit,
   );
 
   /// Update review
   @PUT('/reviews/{reviewId}')
-  Future<BaseResponseDto<Map<String, dynamic>>> updateReview(
+  Future<BaseResponseDto<UserReviewDto>> updateReview(
     @Path('reviewId') String reviewId,
-    @Body() Map<String, dynamic> review,
+    @Body() UpdateReviewRequestDto request,
   );
 
   /// Delete review
@@ -162,13 +143,13 @@ abstract class EcommerceApi {
 
   /// Validate coupon code
   @POST('/coupons/validate')
-  Future<BaseResponseDto<Map<String, dynamic>>> validateCoupon(
-    @Body() Map<String, String> request,
+  Future<BaseResponseDto<CouponValidationDto>> validateCoupon(
+    @Body() ValidateCouponRequestDto request,
   );
 
   /// Get available coupons
   @GET('/coupons')
-  Future<BaseResponseDto<List<Map<String, dynamic>>>> getAvailableCoupons(
+  Future<BaseResponseDto<List<CouponDto>>> getAvailableCoupons(
     @Query('category') String? category,
     @Query('minAmount') double? minAmount,
   );
@@ -179,14 +160,14 @@ abstract class EcommerceApi {
 
   /// Get dashboard analytics (Admin only)
   @GET('/admin/analytics/dashboard')
-  Future<BaseResponseDto<Map<String, dynamic>>> getDashboardAnalytics(
+  Future<BaseResponseDto<AnalyticsDataDto>> getDashboardAnalytics(
     @Query('dateFrom') String? dateFrom,
     @Query('dateTo') String? dateTo,
   );
 
   /// Get sales analytics (Admin only)
   @GET('/admin/analytics/sales')
-  Future<BaseResponseDto<Map<String, dynamic>>> getSalesAnalytics(
+  Future<BaseResponseDto<AnalyticsDataDto>> getSalesAnalytics(
     @Query('dateFrom') String? dateFrom,
     @Query('dateTo') String? dateTo,
     @Query('groupBy') String? groupBy,
@@ -194,16 +175,53 @@ abstract class EcommerceApi {
 
   /// Get customer analytics (Admin only)
   @GET('/admin/analytics/customers')
-  Future<BaseResponseDto<Map<String, dynamic>>> getCustomerAnalytics(
+  Future<BaseResponseDto<AnalyticsDataDto>> getCustomerAnalytics(
     @Query('dateFrom') String? dateFrom,
     @Query('dateTo') String? dateTo,
   );
 
   /// Get product analytics (Admin only)
   @GET('/admin/analytics/products')
-  Future<BaseResponseDto<Map<String, dynamic>>> getProductAnalytics(
+  Future<BaseResponseDto<AnalyticsDataDto>> getProductAnalytics(
     @Query('dateFrom') String? dateFrom,
     @Query('dateTo') String? dateTo,
     @Query('productId') String? productId,
   );
+
+  // ============================================================================
+  // TEST API ENDPOINTS
+  // ============================================================================
+
+  /// Get posts from test API
+  @GET('/posts')
+  Future<dynamic> getApis();
+
+  /// Get comments from test API
+  @GET('/comments')
+  Future<dynamic> getComments(@Query('postId') int postId);
+}
+
+/// Concrete implementation of EcommerceApi
+class EcommerceApiImpl extends _EcommerceApi {
+  EcommerceApiImpl(super._dio, {super.baseUrl});
+
+  // ============================================================================
+  // API SERVICE GETTERS
+  // ============================================================================
+
+  /// Get User API service
+  @override
+  UserApi get userApi => UserApi(_dio, baseUrl: baseUrl);
+
+  /// Get Product API service
+  @override
+  ProductApi get productApi => ProductApi(_dio, baseUrl: baseUrl);
+
+  /// Get Cart API service
+  @override
+  CartApi get cartApi => CartApi(_dio, baseUrl: baseUrl);
+
+  /// Get Order API service
+  @override
+  OrderApi get orderApi => OrderApi(_dio, baseUrl: baseUrl);
 }

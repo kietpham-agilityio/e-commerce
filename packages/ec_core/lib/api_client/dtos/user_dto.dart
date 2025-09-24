@@ -132,3 +132,118 @@ class PasswordResetConfirmDto with _$PasswordResetConfirmDto {
   factory PasswordResetConfirmDto.fromJson(Map<String, dynamic> json) =>
       _$PasswordResetConfirmDtoFromJson(json);
 }
+
+/// Refresh Token Request DTO
+@freezed
+class RefreshTokenRequestDto with _$RefreshTokenRequestDto {
+  const factory RefreshTokenRequestDto({required String refreshToken}) =
+      _RefreshTokenRequestDto;
+
+  factory RefreshTokenRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$RefreshTokenRequestDtoFromJson(json);
+}
+
+/// Verify Email Request DTO
+@freezed
+class VerifyEmailRequestDto with _$VerifyEmailRequestDto {
+  const factory VerifyEmailRequestDto({required String token}) =
+      _VerifyEmailRequestDto;
+
+  factory VerifyEmailRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$VerifyEmailRequestDtoFromJson(json);
+}
+
+/// Update Profile Request DTO
+@freezed
+class UpdateProfileRequestDto with _$UpdateProfileRequestDto {
+  const factory UpdateProfileRequestDto({
+    String? firstName,
+    String? lastName,
+    String? phoneNumber,
+    String? dateOfBirth,
+    String? profileImage,
+  }) = _UpdateProfileRequestDto;
+
+  factory UpdateProfileRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$UpdateProfileRequestDtoFromJson(json);
+}
+
+/// Change Password Request DTO
+@freezed
+class ChangePasswordRequestDto with _$ChangePasswordRequestDto {
+  const factory ChangePasswordRequestDto({
+    required String currentPassword,
+    required String newPassword,
+  }) = _ChangePasswordRequestDto;
+
+  factory ChangePasswordRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$ChangePasswordRequestDtoFromJson(json);
+}
+
+/// Add Address Request DTO
+@freezed
+class AddAddressRequestDto with _$AddAddressRequestDto {
+  const factory AddAddressRequestDto({
+    required String type,
+    required String street,
+    required String city,
+    required String state,
+    required String postalCode,
+    required String country,
+    String? apartment,
+    bool? isDefault,
+  }) = _AddAddressRequestDto;
+
+  factory AddAddressRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$AddAddressRequestDtoFromJson(json);
+}
+
+/// Update Address Request DTO
+@freezed
+class UpdateAddressRequestDto with _$UpdateAddressRequestDto {
+  const factory UpdateAddressRequestDto({
+    String? type,
+    String? street,
+    String? city,
+    String? state,
+    String? postalCode,
+    String? country,
+    String? apartment,
+    bool? isDefault,
+  }) = _UpdateAddressRequestDto;
+
+  factory UpdateAddressRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$UpdateAddressRequestDtoFromJson(json);
+}
+
+/// Update Preferences Request DTO
+@freezed
+class UpdatePreferencesRequestDto with _$UpdatePreferencesRequestDto {
+  const factory UpdatePreferencesRequestDto({
+    String? language,
+    String? currency,
+    String? timezone,
+    bool? emailNotifications,
+    bool? smsNotifications,
+    bool? pushNotifications,
+  }) = _UpdatePreferencesRequestDto;
+
+  factory UpdatePreferencesRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$UpdatePreferencesRequestDtoFromJson(json);
+}
+
+/// Update User Request DTO (Admin)
+@freezed
+class UpdateUserRequestDto with _$UpdateUserRequestDto {
+  const factory UpdateUserRequestDto({
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? phoneNumber,
+    String? status,
+    String? role,
+  }) = _UpdateUserRequestDto;
+
+  factory UpdateUserRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$UpdateUserRequestDtoFromJson(json);
+}

@@ -22,7 +22,7 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
     emit(state.copyWith(status: CommentsStatus.loading, postId: event.postId));
 
     try {
-      final dynamic response = await apiClient.testApis.getComments(
+      final dynamic response = await apiClient.ecommerceApi.getComments(
         event.postId,
       );
       final List<dynamic> comments = response is List ? response : <dynamic>[];

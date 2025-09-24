@@ -57,16 +57,16 @@ abstract class CartApi {
 
   /// Get cart items count
   @GET('/cart/count')
-  Future<BaseResponseDto<Map<String, int>>> getCartItemsCount();
+  Future<BaseResponseDto<CartCountDto>> getCartItemsCount();
 
   /// Validate cart (check availability, prices, etc.)
   @POST('/cart/validate')
-  Future<BaseResponseDto<Map<String, dynamic>>> validateCart();
+  Future<BaseResponseDto<CartValidationDto>> validateCart();
 
   /// Merge guest cart with user cart
   @POST('/cart/merge')
   Future<BaseResponseDto<CartDto>> mergeCart(
-    @Body() Map<String, dynamic> guestCartData,
+    @Body() MergeCartRequestDto request,
   );
 
   // ============================================================================
@@ -75,7 +75,7 @@ abstract class CartApi {
 
   /// Get cart abandonment analytics (Admin only)
   @GET('/admin/cart/analytics/abandonment')
-  Future<BaseResponseDto<Map<String, dynamic>>> getCartAbandonmentAnalytics(
+  Future<BaseResponseDto<CartAnalyticsDto>> getCartAbandonmentAnalytics(
     @Query('dateFrom') String? dateFrom,
     @Query('dateTo') String? dateTo,
     @Query('groupBy') String? groupBy,
@@ -83,7 +83,7 @@ abstract class CartApi {
 
   /// Get cart conversion analytics (Admin only)
   @GET('/admin/cart/analytics/conversion')
-  Future<BaseResponseDto<Map<String, dynamic>>> getCartConversionAnalytics(
+  Future<BaseResponseDto<CartAnalyticsDto>> getCartConversionAnalytics(
     @Query('dateFrom') String? dateFrom,
     @Query('dateTo') String? dateTo,
     @Query('groupBy') String? groupBy,
@@ -91,7 +91,7 @@ abstract class CartApi {
 
   /// Get popular cart items (Admin only)
   @GET('/admin/cart/analytics/popular-items')
-  Future<BaseResponseDto<List<Map<String, dynamic>>>> getPopularCartItems(
+  Future<BaseResponseDto<List<PopularCartItemDto>>> getPopularCartItems(
     @Query('limit') int? limit,
     @Query('dateFrom') String? dateFrom,
     @Query('dateTo') String? dateTo,

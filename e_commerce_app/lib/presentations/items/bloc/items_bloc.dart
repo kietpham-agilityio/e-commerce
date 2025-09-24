@@ -22,7 +22,7 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
     emit(state.copyWith(status: ItemsStatus.loading, errorMessage: null));
 
     try {
-      final dynamic response = await apiClient.testApis.getApis();
+      final dynamic response = await apiClient.ecommerceApi.getApis();
       final List<dynamic> items = response is List ? response : <dynamic>[];
       emit(state.copyWith(status: ItemsStatus.success, items: items));
     } catch (e) {

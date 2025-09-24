@@ -113,3 +113,68 @@ class CartSummaryDto with _$CartSummaryDto {
   factory CartSummaryDto.fromJson(Map<String, dynamic> json) =>
       _$CartSummaryDtoFromJson(json);
 }
+
+/// Merge Cart Request DTO
+@freezed
+class MergeCartRequestDto with _$MergeCartRequestDto {
+  const factory MergeCartRequestDto({
+    required List<CartItemDto> items,
+    String? guestSessionId,
+  }) = _MergeCartRequestDto;
+
+  factory MergeCartRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$MergeCartRequestDtoFromJson(json);
+}
+
+/// Cart Count DTO
+@freezed
+class CartCountDto with _$CartCountDto {
+  const factory CartCountDto({
+    required int totalItems,
+    required int uniqueProducts,
+  }) = _CartCountDto;
+
+  factory CartCountDto.fromJson(Map<String, dynamic> json) =>
+      _$CartCountDtoFromJson(json);
+}
+
+/// Cart Validation DTO
+@freezed
+class CartValidationDto with _$CartValidationDto {
+  const factory CartValidationDto({
+    required bool isValid,
+    required List<String> errors,
+    required List<String> warnings,
+    required Map<String, dynamic> details,
+  }) = _CartValidationDto;
+
+  factory CartValidationDto.fromJson(Map<String, dynamic> json) =>
+      _$CartValidationDtoFromJson(json);
+}
+
+/// Cart Analytics DTO
+@freezed
+class CartAnalyticsDto with _$CartAnalyticsDto {
+  const factory CartAnalyticsDto({
+    required Map<String, dynamic> data,
+    required String period,
+    required DateTime generatedAt,
+  }) = _CartAnalyticsDto;
+
+  factory CartAnalyticsDto.fromJson(Map<String, dynamic> json) =>
+      _$CartAnalyticsDtoFromJson(json);
+}
+
+/// Popular Cart Item DTO
+@freezed
+class PopularCartItemDto with _$PopularCartItemDto {
+  const factory PopularCartItemDto({
+    required String productId,
+    required String productName,
+    required int addCount,
+    required double conversionRate,
+  }) = _PopularCartItemDto;
+
+  factory PopularCartItemDto.fromJson(Map<String, dynamic> json) =>
+      _$PopularCartItemDtoFromJson(json);
+}

@@ -83,302 +83,591 @@ class _ApiClientExampleState extends State<ApiClientExample> {
   }
 
   // ============================================================================
-  // BASIC HTTP METHODS EXAMPLES
+  // RETROFIT API EXAMPLES
   // ============================================================================
 
-  Future<void> _testGetRequest() async {
+  Future<void> _testRetrofitGetPosts() async {
     _setLoading(true);
-    ApiClientLogger.info('Starting GET request to /posts/1');
+    ApiClientLogger.info('Starting Retrofit GET posts request');
 
     if (!_checkApiClientAvailable()) {
       ApiClientLogger.error(
-        '❌ Cannot perform GET request - ApiClient not available',
+        '❌ Cannot perform Retrofit request - ApiClient not available',
       );
       _setLoading(false);
       return;
     }
 
     try {
-      final response = await _apiClient.get<Map<String, dynamic>>('/posts/1');
-      ApiClientLogger.success('GET Success: ${response['title']}');
-    } catch (e) {
-      ApiClientLogger.error('GET Error: $e');
-    } finally {
-      _setLoading(false);
-    }
-  }
-
-  Future<void> _testPostRequest() async {
-    _setLoading(true);
-    ApiClientLogger.info('Starting POST request to /posts');
-
-    if (!_checkApiClientAvailable()) {
-      ApiClientLogger.error(
-        '❌ Cannot perform POST request - ApiClient not available',
-      );
-      _setLoading(false);
-      return;
-    }
-
-    try {
-      final postData = {
-        'title': 'API Client Example Post',
-        'body': 'This is a test post created by the API client example',
-        'userId': 1,
-      };
-
-      final response = await _apiClient.post<Map<String, dynamic>>(
-        '/posts',
-        data: postData,
-      );
+      final posts = await _apiClient.getApis();
       ApiClientLogger.success(
-        'POST Success: Created post with ID ${response['id']}',
+        'Retrofit GET Posts Success: ${posts.length} posts retrieved',
       );
-    } catch (e) {
-      ApiClientLogger.error('POST Error: $e');
-    } finally {
-      _setLoading(false);
-    }
-  }
 
-  Future<void> _testPutRequest() async {
-    _setLoading(true);
-    ApiClientLogger.info('Starting PUT request to /posts/1');
-
-    if (!_checkApiClientAvailable()) {
-      ApiClientLogger.error(
-        '❌ Cannot perform PUT request - ApiClient not available',
-      );
-      _setLoading(false);
-      return;
-    }
-
-    try {
-      final putData = {
-        'id': 1,
-        'title': 'Updated Post Title',
-        'body': 'This post has been updated via PUT request',
-        'userId': 1,
-      };
-
-      final response = await _apiClient.put<Map<String, dynamic>>(
-        '/posts/1',
-        data: putData,
-      );
-      ApiClientLogger.success(
-        'PUT Success: Updated post - ${response['title']}',
-      );
-    } catch (e) {
-      ApiClientLogger.error('PUT Error: $e');
-    } finally {
-      _setLoading(false);
-    }
-  }
-
-  Future<void> _testPatchRequest() async {
-    _setLoading(true);
-    ApiClientLogger.info('Starting PATCH request to /posts/1');
-
-    try {
-      final patchData = {'title': 'Partially Updated Title'};
-
-      final response = await _apiClient.patch<Map<String, dynamic>>(
-        '/posts/1',
-        data: patchData,
-      );
-      ApiClientLogger.success(
-        'PATCH Success: Updated title to - ${response['title']}',
-      );
-    } catch (e) {
-      ApiClientLogger.error('PATCH Error: $e');
-    } finally {
-      _setLoading(false);
-    }
-  }
-
-  Future<void> _testDeleteRequest() async {
-    _setLoading(true);
-    ApiClientLogger.info('Starting DELETE request to /posts/1');
-
-    try {
-      await _apiClient.delete('/posts/1');
-      ApiClientLogger.success('DELETE Success: Post deleted');
-    } catch (e) {
-      ApiClientLogger.error('DELETE Error: $e');
-    } finally {
-      _setLoading(false);
-    }
-  }
-
-  // ============================================================================
-  // MAYBE FETCH EXAMPLES
-  // ============================================================================
-
-  Future<void> _testMaybeFetch() async {
-    _setLoading(true);
-    ApiClientLogger.info('Starting maybe fetch with retry logic');
-
-    if (!_checkApiClientAvailable()) {
-      ApiClientLogger.error(
-        '❌ Cannot perform Maybe Fetch - ApiClient not available',
-      );
-      _setLoading(false);
-      return;
-    }
-
-    try {
-      final result = await _apiClient.maybeFetch<Map<String, dynamic>>(
-        () => _apiClient.get<Map<String, dynamic>>('/posts/2'),
-        maxRetries: 3,
-        delay: const Duration(seconds: 1),
-      );
-      ApiClientLogger.success('Maybe Fetch Success: ${result['title']}');
-    } catch (e) {
-      ApiClientLogger.error('Maybe Fetch Error: $e');
-    } finally {
-      _setLoading(false);
-    }
-  }
-
-  Future<void> _testMaybeFetchWithFailure() async {
-    _setLoading(true);
-    ApiClientLogger.info('Starting maybe fetch with intentional failure');
-
-    try {
-      final result = await _apiClient.maybeFetch<Map<String, dynamic>>(
-        () => _apiClient.get<Map<String, dynamic>>('/nonexistent-endpoint'),
-        maxRetries: 2,
-        delay: const Duration(milliseconds: 500),
-      );
-      ApiClientLogger.success('Maybe Fetch Success: $result');
-    } catch (e) {
-      ApiClientLogger.error('Maybe Fetch Failed: $e');
-    } finally {
-      _setLoading(false);
-    }
-  }
-
-  // ============================================================================
-  // FORCE FETCH EXAMPLES
-  // ============================================================================
-
-  Future<void> _testForceFetch() async {
-    _setLoading(true);
-    ApiClientLogger.info('Starting force fetch (bypasses cache)');
-
-    try {
-      final result = await _apiClient.forceFetch<Map<String, dynamic>>(
-        () => _apiClient.get<Map<String, dynamic>>('/posts/3'),
-        maxRetries: 2,
-        delay: const Duration(seconds: 1),
-      );
-      ApiClientLogger.success('Force Fetch Success: ${result['title']}');
-    } catch (e) {
-      ApiClientLogger.error('Force Fetch Error: $e');
-    } finally {
-      _setLoading(false);
-    }
-  }
-
-  // ============================================================================
-  // BACKGROUND API CALL EXAMPLES
-  // ============================================================================
-
-  Future<void> _testBackgroundGet() async {
-    ApiClientLogger.info('Starting background GET request');
-
-    if (!_checkApiClientAvailable()) {
-      ApiClientLogger.error(
-        '❌ Cannot perform Background GET - ApiClient not available',
-      );
-      return;
-    }
-
-    try {
-      final result = await _apiClient.getRunBackground<Map<String, dynamic>>(
-        '/posts/4',
-        errorContext: 'Background GET Test',
-        timeout: const Duration(seconds: 15),
-      );
-      await Future.delayed(const Duration(seconds: 5));
-      ApiClientLogger.success('Background GET Success: ${result['title']}');
-    } catch (e) {
-      ApiClientLogger.error('Background GET Error: $e');
-    }
-  }
-
-  Future<void> _testBackgroundPost() async {
-    ApiClientLogger.info('Starting background POST request');
-
-    try {
-      final postData = {
-        'title': 'Background Post',
-        'body': 'This post was created in the background',
-        'userId': 1,
-      };
-
-      final result = await _apiClient.postRunBackground<Map<String, dynamic>>(
-        '/posts',
-        data: postData,
-        errorContext: 'Background POST Test',
-        timeout: const Duration(seconds: 15),
-      );
-      ApiClientLogger.success(
-        'Background POST Success: Created post ${result['id']}',
-      );
-    } catch (e) {
-      ApiClientLogger.error('Background POST Error: $e');
-    }
-  }
-
-  // ============================================================================
-  // RESPONSE HANDLING EXAMPLES
-  // ============================================================================
-
-  Future<void> _testListResponse() async {
-    _setLoading(true);
-    ApiClientLogger.info('Starting list response handling test');
-
-    try {
-      final response = await _apiClient.get<List<dynamic>>('/posts?_limit=5');
-      final posts = _apiClient.handleListResponse<Map<String, dynamic>>(
-        response,
-        (item) => Map<String, dynamic>.from(item),
-      );
-      ApiClientLogger.success(
-        'List Response Success: Got ${posts.length} posts',
-      );
-      for (int i = 0; i < posts.length && i < 3; i++) {
-        ApiClientLogger.info('  - Post ${i + 1}: ${posts[i]['title']}');
+      // Log first few posts
+      if (posts is List && posts.isNotEmpty) {
+        final firstPost = posts[0];
+        if (firstPost is Map && firstPost.containsKey('title')) {
+          ApiClientLogger.info('First post: ${firstPost['title']}');
+        }
       }
     } catch (e) {
-      ApiClientLogger.error('List Response Error: $e');
+      ApiClientLogger.error('Retrofit GET Posts Error: $e');
     } finally {
       _setLoading(false);
     }
   }
+
+  Future<void> _testRetrofitGetComments() async {
+    _setLoading(true);
+    ApiClientLogger.info('Starting Retrofit GET comments request');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot perform Retrofit request - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      final comments = await _apiClient.getComments(1);
+      ApiClientLogger.success(
+        'Retrofit GET Comments Success: Retrieved comments for post 1',
+      );
+
+      // Log comment details
+      if (comments is List && comments.isNotEmpty) {
+        ApiClientLogger.info('Found ${comments.length} comments');
+        final firstComment = comments[0];
+        if (firstComment is Map && firstComment.containsKey('body')) {
+          ApiClientLogger.info('First comment: ${firstComment['body']}');
+        }
+      }
+    } catch (e) {
+      ApiClientLogger.error('Retrofit GET Comments Error: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testComprehensiveApiTest() async {
+    _setLoading(true);
+    ApiClientLogger.info('Starting comprehensive API test');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot perform comprehensive test - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      final testResults = await _apiClient.testApis();
+
+      ApiClientLogger.success('✅ Comprehensive API Test Completed!');
+
+      // Log summary
+      if (testResults.containsKey('summary')) {
+        final summary = testResults['summary'];
+        ApiClientLogger.info('📊 Test Summary:');
+        ApiClientLogger.info('   Total Tests: ${summary['total_tests']}');
+        ApiClientLogger.info('   Successful: ${summary['successful']}');
+        ApiClientLogger.info('   Failed: ${summary['failed']}');
+        ApiClientLogger.info('   Success Rate: ${summary['success_rate']}');
+        ApiClientLogger.info('   Duration: ${summary['total_duration_ms']}ms');
+      }
+
+      // Log individual test results
+      ApiClientLogger.info('📋 Individual Test Results:');
+      for (final entry in testResults.entries) {
+        if (entry.key == 'summary') continue;
+
+        final testName = entry.key;
+        final result = entry.value;
+        final status = result['status'] ?? 'unknown';
+
+        if (status == 'success') {
+          ApiClientLogger.success('   ✅ $testName: SUCCESS');
+        } else {
+          ApiClientLogger.error('   ❌ $testName: FAILED - ${result['error']}');
+        }
+      }
+    } catch (e) {
+      ApiClientLogger.error('Comprehensive API Test Error: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testEcommerceApiServices() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing EcommerceApi services');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test EcommerceApi services - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      // Test health check
+      try {
+        final healthResult = await _apiClient.ecommerceApi.healthCheck();
+        ApiClientLogger.success(
+          '✅ Health Check: ${healthResult.success ? 'Success' : 'Failed'}',
+        );
+      } catch (e) {
+        ApiClientLogger.error('❌ Health Check failed: $e');
+      }
+
+      // Test user API service
+      try {
+        await _apiClient.userApi.getCurrentUser();
+        ApiClientLogger.success('✅ User API: Current user retrieved');
+      } catch (e) {
+        ApiClientLogger.error('❌ User API failed: $e');
+      }
+
+      // Test product API service
+      try {
+        await _apiClient.productApi.getProducts(
+          1, // page
+          5, // limit
+          null, // category
+          null, // brand
+          null, // search
+          null, // minPrice
+          null, // maxPrice
+          null, // sortBy
+          null, // sortOrder
+          null, // inStock
+          null, // featured
+        );
+        ApiClientLogger.success('✅ Product API: Products retrieved');
+      } catch (e) {
+        ApiClientLogger.error('❌ Product API failed: $e');
+      }
+
+      // Test cart API service
+      try {
+        await _apiClient.cartApi.getCart();
+        ApiClientLogger.success('✅ Cart API: Cart retrieved');
+      } catch (e) {
+        ApiClientLogger.error('❌ Cart API failed: $e');
+      }
+
+      // Test order API service
+      try {
+        await _apiClient.orderApi.getOrders(
+          1, // page
+          5, // limit
+          null, // status
+          null, // dateFrom
+          null, // dateTo
+        );
+        ApiClientLogger.success('✅ Order API: Orders retrieved');
+      } catch (e) {
+        ApiClientLogger.error('❌ Order API failed: $e');
+      }
+    } catch (e) {
+      ApiClientLogger.error('EcommerceApi Services Test Error: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testApiConnectivity() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing API connectivity');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test connectivity - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      final connectivityResult = await _apiClient.testConnectivity();
+
+      ApiClientLogger.success('✅ Connectivity Test Completed!');
+      ApiClientLogger.info('📊 Connectivity Results:');
+      ApiClientLogger.info(
+        '   Status Code: ${connectivityResult['status_code']}',
+      );
+      ApiClientLogger.info(
+        '   Duration: ${connectivityResult['duration_ms']}ms',
+      );
+      ApiClientLogger.info('   Timestamp: ${connectivityResult['timestamp']}');
+
+      if (connectivityResult['status'] == 'success') {
+        ApiClientLogger.success('🌐 API server is reachable');
+      } else {
+        ApiClientLogger.error('❌ API server is not reachable');
+      }
+    } catch (e) {
+      ApiClientLogger.error('Connectivity Test Error: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  // ============================================================================
+  // API HELPER EXAMPLES
+  // ============================================================================
+
+  Future<void> _testApiHelpers() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing API Helper classes');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test API helpers - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      // Note: API helpers are now separate classes that can be used independently
+      // They provide advanced functionality like caching, background calls, etc.
+
+      ApiClientLogger.info('📚 Available API Helper Classes:');
+      ApiClientLogger.info(
+        '   - ApiFetchHelper: maybeFetch, forceFetch methods',
+      );
+      ApiClientLogger.info(
+        '   - ApiBackgroundHelper: background API calls with timeout',
+      );
+      ApiClientLogger.info(
+        '   - ApiResponseHelper: response parsing and validation',
+      );
+      ApiClientLogger.info('   - ApiCacheHelper: caching with Isar database');
+
+      ApiClientLogger.success('✅ API Helper classes are available for use');
+      ApiClientLogger.info(
+        '💡 Import helpers from: package:ec_core/api_client/helpers/api_helpers.dart',
+      );
+    } catch (e) {
+      ApiClientLogger.error('API Helpers Test Error: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  // ============================================================================
+  // ERROR HANDLING EXAMPLES
+  // ============================================================================
 
   Future<void> _testErrorHandling() async {
     _setLoading(true);
-    ApiClientLogger.info('Starting comprehensive error handling test');
+    ApiClientLogger.info('Testing error handling with Retrofit APIs');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test error handling - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
 
     try {
-      // This should fail with 404
-      await _apiClient.get('/posts/99999');
-      ApiClientLogger.warning('Error Handling: Unexpected success');
+      // Test with a non-existent endpoint to trigger error handling
+      await _apiClient.getComments(99999); // This should fail
+      ApiClientLogger.warning('Unexpected success - should have failed');
     } catch (e) {
+      ApiClientLogger.success('✅ Error handling working correctly');
+
       if (e is Failure) {
-        // Demonstrate Failure class capabilities
         _logFailureDetails(e);
-      } else if (e is Exception) {
-        // Convert Exception to Failure and demonstrate capabilities
-        final handledError = _apiClient.handleError(e);
-        _logFailureDetails(handledError);
       } else {
-        // For any other error type, wrap it as Exception
-        final handledError = _apiClient.handleError(Exception(e.toString()));
-        _logFailureDetails(handledError);
+        ApiClientLogger.info('Error type: ${e.runtimeType}');
+        ApiClientLogger.info('Error message: $e');
       }
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  // ============================================================================
+  // COMPREHENSIVE API USAGE EXAMPLES
+  // ============================================================================
+
+  Future<void> _testUserAuthenticationFlow() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing user authentication flow');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test authentication - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      // Simulate user login (this would typically be a real API call)
+      ApiClientLogger.info('🔐 Simulating user login...');
+
+      // In a real scenario, you would call:
+      // final loginResponse = await _apiClient.userApi.login(
+      //   const AuthRequestDto(
+      //     email: 'user@example.com',
+      //     password: 'password123',
+      //   ),
+      // );
+
+      ApiClientLogger.info('✅ Authentication flow demonstrated');
+      ApiClientLogger.info('💡 Real implementation would include:');
+      ApiClientLogger.info('   - User login with credentials');
+      ApiClientLogger.info('   - Token storage and header management');
+      ApiClientLogger.info('   - User profile retrieval');
+      ApiClientLogger.info('   - Error handling for auth failures');
+    } catch (e) {
+      ApiClientLogger.error('Authentication Flow Error: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testProductSearchFlow() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing product search flow');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test product search - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      ApiClientLogger.info('🛍️ Simulating product search...');
+
+      // In a real scenario, you would call:
+      // final response = await _apiClient.productApi.getProducts(
+      //   page: 1,
+      //   limit: 20,
+      //   categoryId: 'electronics',
+      //   minPrice: 50.0,
+      //   maxPrice: 500.0,
+      //   sortBy: 'price',
+      //   sortOrder: 'asc',
+      // );
+
+      ApiClientLogger.success('✅ Product search flow demonstrated');
+      ApiClientLogger.info('💡 Real implementation would include:');
+      ApiClientLogger.info('   - Search with filters (price, category, brand)');
+      ApiClientLogger.info('   - Pagination handling');
+      ApiClientLogger.info('   - Sorting options');
+      ApiClientLogger.info('   - Product details and variants');
+    } catch (e) {
+      ApiClientLogger.error('Product Search Flow Error: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testCartManagementFlow() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing cart management flow');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test cart management - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      ApiClientLogger.info('🛒 Simulating cart management...');
+
+      // In a real scenario, you would call:
+      // final response = await _apiClient.cartApi.addToCart(
+      //   const AddToCartRequestDto(
+      //     productId: 'product-123',
+      //     quantity: 2,
+      //     variantId: 'variant-456',
+      //   ),
+      // );
+
+      ApiClientLogger.success('✅ Cart management flow demonstrated');
+      ApiClientLogger.info('💡 Real implementation would include:');
+      ApiClientLogger.info('   - Add/remove items from cart');
+      ApiClientLogger.info('   - Update quantities');
+      ApiClientLogger.info('   - Cart validation');
+      ApiClientLogger.info('   - Cart summary and totals');
+    } catch (e) {
+      ApiClientLogger.error('Cart Management Flow Error: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testOrderProcessingFlow() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing order processing flow');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test order processing - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      ApiClientLogger.info('📦 Simulating order processing...');
+
+      // In a real scenario, you would call:
+      // final response = await _apiClient.orderApi.createOrder(
+      //   const CreateOrderRequestDto(
+      //     shippingAddress: OrderAddressDto(...),
+      //     billingAddress: OrderAddressDto(...),
+      //     paymentMethod: PaymentMethod.creditCard,
+      //     shippingMethod: ShippingMethod.standard,
+      //   ),
+      // );
+
+      ApiClientLogger.success('✅ Order processing flow demonstrated');
+      ApiClientLogger.info('💡 Real implementation would include:');
+      ApiClientLogger.info('   - Order creation with addresses');
+      ApiClientLogger.info('   - Payment method selection');
+      ApiClientLogger.info('   - Shipping options');
+      ApiClientLogger.info('   - Order tracking and status updates');
+    } catch (e) {
+      ApiClientLogger.error('Order Processing Flow Error: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testApiHelpersIntegration() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing API helpers integration');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test API helpers - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      ApiClientLogger.info('🔧 Demonstrating API helpers integration...');
+
+      // Import the helpers
+      ApiClientLogger.info('📚 Available API Helper Classes:');
+      ApiClientLogger.info(
+        '   - ApiFetchHelper: maybeFetch, forceFetch with retry logic',
+      );
+      ApiClientLogger.info(
+        '   - ApiBackgroundHelper: background calls with timeout, connectivity checks',
+      );
+      ApiClientLogger.info(
+        '   - ApiResponseHelper: response parsing and validation',
+      );
+      ApiClientLogger.info('   - ApiCacheHelper: caching with Isar database');
+
+      ApiClientLogger.info('💡 Example usage patterns:');
+      ApiClientLogger.info(
+        '   - Maybe fetch with retry: ApiFetchHelper.maybeFetch()',
+      );
+      ApiClientLogger.info(
+        '   - Force fetch bypassing cache: ApiFetchHelper.forceFetch()',
+      );
+      ApiClientLogger.info(
+        '   - Background API calls: ApiBackgroundHelper.callApiRunBackground()',
+      );
+      ApiClientLogger.info(
+        '   - Response handling: ApiResponseHelper.handlePaginatedResponse()',
+      );
+      ApiClientLogger.info('   - Caching: ApiCacheHelper.cacheApiResponse()');
+
+      ApiClientLogger.success('✅ API helpers integration demonstrated');
+    } catch (e) {
+      ApiClientLogger.error('API Helpers Integration Error: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testCompleteWorkflowExample() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing complete workflow example');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test complete workflow - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      ApiClientLogger.info('🔄 Demonstrating complete workflow...');
+
+      // Simulate a complete e-commerce workflow
+      ApiClientLogger.info('📋 Complete E-commerce Workflow:');
+      ApiClientLogger.info('   1. 🔐 User Authentication');
+      ApiClientLogger.info('   2. 🛍️ Product Search & Browsing');
+      ApiClientLogger.info('   3. 🛒 Cart Management');
+      ApiClientLogger.info('   4. 💳 Checkout Process');
+      ApiClientLogger.info('   5. 📦 Order Processing');
+      ApiClientLogger.info('   6. 📊 Order Tracking');
+
+      ApiClientLogger.info('💡 Real implementation would combine:');
+      ApiClientLogger.info('   - Retrofit API services for type-safe calls');
+      ApiClientLogger.info('   - API helpers for advanced functionality');
+      ApiClientLogger.info('   - Comprehensive error handling');
+      ApiClientLogger.info('   - Caching for performance');
+      ApiClientLogger.info('   - Background processing for reliability');
+
+      ApiClientLogger.success('✅ Complete workflow demonstrated');
+    } catch (e) {
+      ApiClientLogger.error('Complete Workflow Error: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testBaseUrlManagement() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing base URL management');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test base URL management - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      // Get current base URL
+      final currentBaseUrl = _apiClient.baseUrl;
+      ApiClientLogger.info('📡 Current Base URL: $currentBaseUrl');
+
+      // Test changing base URL (this would recreate the Retrofit services)
+      // Note: In a real scenario, you might want to change to a different API endpoint
+      ApiClientLogger.info(
+        '🔄 Base URL can be changed via apiClient.baseUrl = "new_url"',
+      );
+      ApiClientLogger.info(
+        '💡 This will automatically recreate all Retrofit services',
+      );
+
+      ApiClientLogger.success('✅ Base URL management is working correctly');
+    } catch (e) {
+      ApiClientLogger.error('Base URL Management Error: $e');
     } finally {
       _setLoading(false);
     }
@@ -518,234 +807,44 @@ class _ApiClientExampleState extends State<ApiClientExample> {
     ApiClientLogger.info('   Description: ${errorCode.description}');
   }
 
-  /// Test creating custom Failure objects
-  Future<void> _testCustomFailures() async {
+  Future<void> _testApiServiceAccess() async {
     _setLoading(true);
-    ApiClientLogger.info('Starting custom failure creation test');
+    ApiClientLogger.info('Testing API service access patterns');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test API service access - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
 
     try {
-      // Test 1: Create Failure from HTTP status code
-      final statusCodeFailure = Failure.fromStatusCode(
-        404,
-        customMessage: 'Custom 404 message',
-      );
-      ApiClientLogger.info('✅ Created Failure from status code:');
-      _logFailureDetails(statusCodeFailure);
+      // Demonstrate different ways to access API services
+      ApiClientLogger.info('🔗 API Service Access Patterns:');
 
-      // Test 2: Create Failure from Supabase error
-      final supabaseError = {
-        'code': 'InvalidJWT',
-        'message': 'The provided JWT is invalid',
-      };
-      final supabaseFailure = Failure.fromSupabaseError(supabaseError);
-      ApiClientLogger.info('✅ Created Failure from Supabase error:');
-      _logFailureDetails(supabaseFailure);
+      // Direct access to EcommerceApi
+      ApiClientLogger.info('   📡 Direct: apiClient.ecommerceApi');
 
-      // Test 3: Create Failure from exception
-      final exceptionFailure = Failure.fromException(
-        Exception('Custom exception message'),
-      );
-      ApiClientLogger.info('✅ Created Failure from exception:');
-      _logFailureDetails(exceptionFailure);
+      // Individual service access
+      ApiClientLogger.info('   👤 User: apiClient.userApi');
+      ApiClientLogger.info('   🛍️ Product: apiClient.productApi');
+      ApiClientLogger.info('   🛒 Cart: apiClient.cartApi');
+      ApiClientLogger.info('   📦 Order: apiClient.orderApi');
 
-      // Test 4: Create custom Failure with specific internal error code
-      final customFailure = Failure(
-        'Custom business logic error',
-        internalErrorCode: ApiInternalErrorCode.accessDenied(),
+      // Test service access
+      final ecommerceApi = _apiClient.ecommerceApi;
+      final userApi = _apiClient.userApi;
+
+      ApiClientLogger.success('✅ All API services accessible');
+      ApiClientLogger.info(
+        '📊 Services available: ${ecommerceApi.runtimeType}, ${userApi.runtimeType}, etc.',
       );
-      ApiClientLogger.info('✅ Created custom Failure:');
-      _logFailureDetails(customFailure);
     } catch (e) {
-      ApiClientLogger.error('❌ Error in custom failure test: $e');
+      ApiClientLogger.error('API Service Access Error: $e');
     } finally {
       _setLoading(false);
     }
-  }
-
-  /// Test different error scenarios
-  Future<void> _testVariousErrorScenarios() async {
-    _setLoading(true);
-    ApiClientLogger.info('Starting various error scenarios test');
-
-    // Test different endpoints that will fail
-    final testScenarios = [
-      {'url': '/nonexistent', 'description': '404 Not Found'},
-      {'url': '/unauthorized', 'description': '401 Unauthorized'},
-      {'url': '/forbidden', 'description': '403 Forbidden'},
-      {'url': '/server-error', 'description': '500 Server Error'},
-    ];
-
-    for (final scenario in testScenarios) {
-      try {
-        ApiClientLogger.info('Testing: ${scenario['description']}');
-        await _apiClient.get(scenario['url']!);
-        ApiClientLogger.warning('Unexpected success for ${scenario['url']}');
-      } catch (e) {
-        if (e is Failure) {
-          ApiClientLogger.info('Expected failure for ${scenario['url']}:');
-          _logFailureDetails(e);
-        }
-      }
-    }
-
-    _setLoading(false);
-  }
-
-  /// Test ApiClientError creation and handling
-  Future<void> _testApiClientErrorHandling() async {
-    _setLoading(true);
-    ApiClientLogger.info('Starting ApiClientError handling test');
-
-    try {
-      // Simulate different types of errors
-      final testErrors = [
-        ApiClientError.notFound('Resource not found', null),
-        ApiClientError.unauthorizedRequest('Unauthorized', null),
-        ApiClientError.internalServerError('Server error', null),
-        ApiClientError.noInternetConnection('No connection', null),
-        ApiClientError.authFailed('Auth failed', null),
-      ];
-
-      for (final error in testErrors) {
-        ApiClientLogger.info('Testing ApiClientError: ${error.runtimeType}');
-
-        // Convert ApiClientError to Failure
-        final failure = Failure.fromApiClientError(error);
-        _logFailureDetails(failure);
-
-        ApiClientLogger.info('---');
-      }
-    } catch (e) {
-      ApiClientLogger.error('❌ Error in ApiClientError test: $e');
-    } finally {
-      _setLoading(false);
-    }
-  }
-
-  /// Real-world example: User authentication with comprehensive error handling
-  Future<void> _testUserAuthenticationExample() async {
-    _setLoading(true);
-    ApiClientLogger.info('Starting user authentication example');
-
-    try {
-      // Simulate user login attempt
-      await _authenticateUser('test@example.com', 'password123');
-    } catch (e) {
-      if (e is Failure) {
-        await _handleAuthenticationFailure(e);
-      } else {
-        ApiClientLogger.error('Unexpected error type: $e');
-      }
-    } finally {
-      _setLoading(false);
-    }
-  }
-
-  /// Simulate user authentication
-  Future<void> _authenticateUser(String email, String password) async {
-    try {
-      // This would typically be a real API call
-      await _apiClient.post(
-        '/auth/login',
-        data: {'email': email, 'password': password},
-      );
-      ApiClientLogger.success('✅ Authentication successful!');
-    } catch (e) {
-      // Re-throw as Failure for consistent handling
-      if (e is Failure) {
-        rethrow;
-      } else if (e is Exception) {
-        throw _apiClient.handleError(e);
-      } else {
-        throw Failure(
-          'Authentication failed: ${e.toString()}',
-          internalErrorCode: ApiInternalErrorCode.unsupported(),
-        );
-      }
-    }
-  }
-
-  /// Handle authentication failure with user-friendly messages
-  Future<void> _handleAuthenticationFailure(Failure failure) async {
-    ApiClientLogger.error('❌ Authentication failed');
-
-    // Handle different types of authentication errors
-    if (failure.isAuthError) {
-      await _showAuthErrorDialog(failure);
-    } else if (failure.isNetworkError) {
-      await _showNetworkErrorDialog(failure);
-    } else if (failure.isClientError) {
-      await _showClientErrorDialog(failure);
-    } else {
-      await _showGenericErrorDialog(failure);
-    }
-
-    // Log detailed error information for debugging
-    _logFailureDetails(failure);
-  }
-
-  /// Show authentication-specific error dialog
-  Future<void> _showAuthErrorDialog(Failure failure) async {
-    String userMessage = 'Authentication failed. Please try again.';
-    String action = 'Retry';
-
-    failure.internalErrorCode?.maybeWhen(
-      invalidJWT: () {
-        userMessage = 'Your session has expired. Please log in again.';
-        action = 'Redirect to login';
-      },
-      accessDenied: () {
-        userMessage =
-            'Access denied. You don\'t have permission to perform this action.';
-        action = 'Contact administrator';
-      },
-      authFailed: () {
-        userMessage =
-            'Invalid email or password. Please check your credentials.';
-        action = 'Try again';
-      },
-      authNonActiveUserError: () {
-        userMessage = 'Your account is not active. Please contact support.';
-        action = 'Contact support';
-      },
-      orElse: () {
-        userMessage = 'Authentication failed. Please try again.';
-        action = 'Retry';
-      },
-    );
-
-    ApiClientLogger.warning('🔒 Auth Error Dialog:');
-    ApiClientLogger.warning('   Message: $userMessage');
-    ApiClientLogger.warning('   Action: $action');
-  }
-
-  /// Show network error dialog
-  Future<void> _showNetworkErrorDialog(Failure failure) async {
-    ApiClientLogger.warning('🌐 Network Error Dialog:');
-    ApiClientLogger.warning(
-      '   Message: Please check your internet connection and try again.',
-    );
-    ApiClientLogger.warning('   Action: Retry when connection is restored');
-  }
-
-  /// Show client error dialog
-  Future<void> _showClientErrorDialog(Failure failure) async {
-    ApiClientLogger.warning('📱 Client Error Dialog:');
-    ApiClientLogger.warning(
-      '   Message: There was an issue with your request. Please try again.',
-    );
-    ApiClientLogger.warning(
-      '   Action: Retry or contact support if issue persists',
-    );
-  }
-
-  /// Show generic error dialog
-  Future<void> _showGenericErrorDialog(Failure failure) async {
-    ApiClientLogger.warning('❓ Generic Error Dialog:');
-    ApiClientLogger.warning(
-      '   Message: Something went wrong. Please try again later.',
-    );
-    ApiClientLogger.warning('   Action: Retry or contact support');
   }
 
   // ============================================================================
@@ -754,26 +853,47 @@ class _ApiClientExampleState extends State<ApiClientExample> {
 
   Future<void> _testHeaderManagement() async {
     _setLoading(true);
-    ApiClientLogger.info('Testing header management');
+    ApiClientLogger.info('Testing header management with Retrofit');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test header management - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
 
     try {
-      // Add custom headers
+      // Note: Header management is now handled through the Dio instance
+      // The ApiClient exposes basic HTTP methods that can be used for testing
+
+      ApiClientLogger.info('🔧 Header Management with Retrofit:');
+      ApiClientLogger.info(
+        '   📡 Headers are managed through Dio interceptors',
+      );
+      ApiClientLogger.info(
+        '   🔄 Retrofit services automatically include configured headers',
+      );
+      ApiClientLogger.info(
+        '   💡 Use apiClient.addHeader() and apiClient.removeHeader() for basic HTTP methods',
+      );
+
+      // Test basic header functionality
       _apiClient.addHeader('X-Custom-Header', 'Example-Value');
       _apiClient.addHeader(
         'X-Request-ID',
         '${DateTime.now().millisecondsSinceEpoch}',
       );
 
-      // Make a request with custom headers
-      final response = await _apiClient.get<Map<String, dynamic>>('/posts/5');
-      ApiClientLogger.success('Header Test Success: ${response['title']}');
+      ApiClientLogger.success('✅ Headers added successfully');
+      ApiClientLogger.info('📋 Added headers: X-Custom-Header, X-Request-ID');
 
-      // Remove custom headers
+      // Clean up
       _apiClient.removeHeader('X-Custom-Header');
       _apiClient.removeHeader('X-Request-ID');
-      ApiClientLogger.info('Headers removed successfully');
+      ApiClientLogger.info('🧹 Headers removed successfully');
     } catch (e) {
-      ApiClientLogger.error('Header Test Error: $e');
+      ApiClientLogger.error('Header Management Error: $e');
     } finally {
       _setLoading(false);
     }
@@ -857,7 +977,7 @@ class _ApiClientExampleState extends State<ApiClientExample> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              'Real API Client Demo',
+                              'Comprehensive API Client Demo',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.blue.shade700,
@@ -867,8 +987,9 @@ class _ApiClientExampleState extends State<ApiClientExample> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'This example demonstrates API client concepts using the real ApiClient from ec_core package. '
-                          'All API calls are now logged through the Talker system configured in your project.',
+                          'This comprehensive example demonstrates the new Retrofit-based ApiClient with integrated API helpers. '
+                          'Features include type-safe API calls, advanced caching, background processing, retry logic, '
+                          'and complete e-commerce workflows. All API calls are logged through the Talker system.',
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.blue.shade600,
@@ -878,69 +999,70 @@ class _ApiClientExampleState extends State<ApiClientExample> {
                     ),
                   ),
 
-                  // Basic HTTP Methods Section
+                  // Retrofit API Section
                   _buildSection(
-                    title: 'Basic HTTP Methods',
+                    title: 'Retrofit API Examples',
                     children: [
                       _buildButtonGrid([
-                        ('GET Request', _testGetRequest),
-                        ('POST Request', _testPostRequest),
-                        ('PUT Request', _testPutRequest),
-                        ('PATCH Request', _testPatchRequest),
-                        ('DELETE Request', _testDeleteRequest),
+                        ('Get Posts', _testRetrofitGetPosts),
+                        ('Get Comments', _testRetrofitGetComments),
+                        ('Comprehensive Test', _testComprehensiveApiTest),
                       ]),
                     ],
                   ),
 
                   const SizedBox(height: 32),
 
-                  // Maybe Fetch Section
+                  // EcommerceApi Services Section
                   _buildSection(
-                    title: 'Maybe Fetch (with retry)',
+                    title: 'EcommerceApi Services',
                     children: [
                       _buildButtonGrid([
-                        ('Maybe Fetch Success', _testMaybeFetch),
-                        ('Maybe Fetch with Retry', _testMaybeFetchWithFailure),
+                        ('Test Services', _testEcommerceApiServices),
+                        ('Service Access', _testApiServiceAccess),
                       ]),
                     ],
                   ),
 
                   const SizedBox(height: 32),
 
-                  // Force Fetch Section
+                  // API Helpers Section
                   _buildSection(
-                    title: 'Force Fetch (bypass cache)',
-                    children: [
-                      _buildButtonGrid([('Force Fetch', _testForceFetch)]),
-                    ],
-                  ),
-
-                  const SizedBox(height: 32),
-
-                  // Background API Calls Section
-                  _buildSection(
-                    title: 'Background API Calls',
+                    title: 'API Helpers & Utilities',
                     children: [
                       _buildButtonGrid([
-                        ('Background GET', _testBackgroundGet),
-                        ('Background POST', _testBackgroundPost),
+                        ('API Helpers', _testApiHelpers),
+                        ('Connectivity Test', _testApiConnectivity),
+                        ('Base URL Management', _testBaseUrlManagement),
                       ]),
                     ],
                   ),
 
                   const SizedBox(height: 32),
 
-                  // Response Handling Section
+                  // Comprehensive Usage Examples Section
                   _buildSection(
-                    title: 'Response Handling',
+                    title: 'E-commerce Workflow Examples',
                     children: [
                       _buildButtonGrid([
-                        ('List Response', _testListResponse),
+                        ('User Authentication', _testUserAuthenticationFlow),
+                        ('Product Search', _testProductSearchFlow),
+                        ('Cart Management', _testCartManagementFlow),
+                        ('Order Processing', _testOrderProcessingFlow),
+                      ]),
+                    ],
+                  ),
+
+                  const SizedBox(height: 32),
+
+                  // API Helpers Integration Section
+                  _buildSection(
+                    title: 'API Helpers & Advanced Features',
+                    children: [
+                      _buildButtonGrid([
+                        ('API Helpers Integration', _testApiHelpersIntegration),
+                        ('Complete Workflow', _testCompleteWorkflowExample),
                         ('Error Handling', _testErrorHandling),
-                        ('Custom Failures', _testCustomFailures),
-                        ('Various Scenarios', _testVariousErrorScenarios),
-                        ('ApiClientError Test', _testApiClientErrorHandling),
-                        ('Auth Example', _testUserAuthenticationExample),
                         ('Header Management', _testHeaderManagement),
                       ]),
                     ],

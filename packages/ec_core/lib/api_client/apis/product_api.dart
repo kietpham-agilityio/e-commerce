@@ -57,7 +57,7 @@ abstract class ProductApi {
 
   /// Get product reviews
   @GET('/products/{productId}/reviews')
-  Future<PaginatedResponseDto<Map<String, dynamic>>> getProductReviews(
+  Future<PaginatedResponseDto<ProductReviewDto>> getProductReviews(
     @Path('productId') String productId,
     @Query('page') int page,
     @Query('limit') int limit,
@@ -66,9 +66,9 @@ abstract class ProductApi {
 
   /// Add product review
   @POST('/products/{productId}/reviews')
-  Future<BaseResponseDto<Map<String, dynamic>>> addProductReview(
+  Future<BaseResponseDto<ProductReviewDto>> addProductReview(
     @Path('productId') String productId,
-    @Body() Map<String, dynamic> review,
+    @Body() ProductReviewRequestDto request,
   );
 
   // ============================================================================
@@ -131,14 +131,14 @@ abstract class ProductApi {
   /// Create new product (Admin only)
   @POST('/admin/products')
   Future<BaseResponseDto<ProductDto>> createProduct(
-    @Body() Map<String, dynamic> product,
+    @Body() CreateProductRequestDto request,
   );
 
   /// Update product (Admin only)
   @PUT('/admin/products/{productId}')
   Future<BaseResponseDto<ProductDto>> updateProduct(
     @Path('productId') String productId,
-    @Body() Map<String, dynamic> updates,
+    @Body() UpdateProductRequestDto request,
   );
 
   /// Delete product (Admin only)
@@ -149,13 +149,13 @@ abstract class ProductApi {
   @PUT('/admin/products/{productId}/stock')
   Future<BaseResponseDto<ProductDto>> updateProductStock(
     @Path('productId') String productId,
-    @Body() Map<String, dynamic> stockUpdate,
+    @Body() UpdateProductStockRequestDto request,
   );
 
   /// Bulk update products (Admin only)
   @PUT('/admin/products/bulk')
   Future<BaseResponseDto<List<ProductDto>>> bulkUpdateProducts(
-    @Body() Map<String, dynamic> updates,
+    @Body() BulkUpdateProductsRequestDto request,
   );
 
   // ============================================================================
@@ -165,14 +165,14 @@ abstract class ProductApi {
   /// Create new category (Admin only)
   @POST('/admin/categories')
   Future<BaseResponseDto<CategoryDto>> createCategory(
-    @Body() Map<String, dynamic> category,
+    @Body() CreateCategoryRequestDto request,
   );
 
   /// Update category (Admin only)
   @PUT('/admin/categories/{categoryId}')
   Future<BaseResponseDto<CategoryDto>> updateCategory(
     @Path('categoryId') String categoryId,
-    @Body() Map<String, dynamic> updates,
+    @Body() UpdateCategoryRequestDto request,
   );
 
   /// Delete category (Admin only)
@@ -188,14 +188,14 @@ abstract class ProductApi {
   /// Create new brand (Admin only)
   @POST('/admin/brands')
   Future<BaseResponseDto<BrandDto>> createBrand(
-    @Body() Map<String, dynamic> brand,
+    @Body() CreateBrandRequestDto request,
   );
 
   /// Update brand (Admin only)
   @PUT('/admin/brands/{brandId}')
   Future<BaseResponseDto<BrandDto>> updateBrand(
     @Path('brandId') String brandId,
-    @Body() Map<String, dynamic> updates,
+    @Body() UpdateBrandRequestDto request,
   );
 
   /// Delete brand (Admin only)

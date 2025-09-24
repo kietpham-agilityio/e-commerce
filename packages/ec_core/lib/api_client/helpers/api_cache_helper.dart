@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:ec_core/services/ec_local_store/ec_local_store.dart';
 
 /// Helper class for caching API responses using the local storage system
@@ -34,7 +35,7 @@ class ApiCacheHelper {
       );
     } catch (e) {
       // Cache errors should not break the app
-      print('Failed to cache response for key $key: $e');
+      log('Failed to cache response for key $key: $e');
     }
   }
 
@@ -78,7 +79,7 @@ class ApiCacheHelper {
       return null;
     } catch (e) {
       // Cache errors should not break the app
-      print('Failed to retrieve cached response for key $key: $e');
+      log('Failed to retrieve cached response for key $key: $e');
       return null;
     }
   }
@@ -115,7 +116,7 @@ class ApiCacheHelper {
     try {
       await _cacheBox.clearCacheForEndpoint(key);
     } catch (e) {
-      print('Failed to remove cached response for key $key: $e');
+      log('Failed to remove cached response for key $key: $e');
     }
   }
 
@@ -124,7 +125,7 @@ class ApiCacheHelper {
     try {
       await _cacheBox.clearAllCache();
     } catch (e) {
-      print('Failed to clear cache: $e');
+      log('Failed to clear cache: $e');
     }
   }
 
@@ -133,7 +134,7 @@ class ApiCacheHelper {
     try {
       await _cacheBox.clearCacheForUser(userId);
     } catch (e) {
-      print('Failed to clear cache for user $userId: $e');
+      log('Failed to clear cache for user $userId: $e');
     }
   }
 
@@ -142,7 +143,7 @@ class ApiCacheHelper {
     try {
       await _cacheBox.clearCacheForEndpoint(endpoint);
     } catch (e) {
-      print('Failed to clear cache for endpoint $endpoint: $e');
+      log('Failed to clear cache for endpoint $endpoint: $e');
     }
   }
 
@@ -170,7 +171,7 @@ class ApiCacheHelper {
     try {
       await _cacheBox.clearExpiredCache();
     } catch (e) {
-      print('Failed to cleanup expired cache: $e');
+      log('Failed to cleanup expired cache: $e');
     }
   }
 

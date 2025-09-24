@@ -40,34 +40,32 @@ abstract class OrderApi {
   @PUT('/orders/{orderId}/cancel')
   Future<BaseResponseDto<OrderDto>> cancelOrder(
     @Path('orderId') String orderId,
-    @Body() Map<String, String>? reason,
+    @Body() CancelOrderRequestDto request,
   );
 
   /// Request order return
   @POST('/orders/{orderId}/return')
-  Future<BaseResponseDto<Map<String, dynamic>>> requestReturn(
+  Future<BaseResponseDto<OrderDto>> requestReturn(
     @Path('orderId') String orderId,
-    @Body() Map<String, dynamic> returnRequest,
+    @Body() ReturnOrderRequestDto request,
   );
 
   /// Get order tracking information
   @GET('/orders/{orderId}/tracking')
-  Future<BaseResponseDto<Map<String, dynamic>>> getOrderTracking(
+  Future<BaseResponseDto<OrderDto>> getOrderTracking(
     @Path('orderId') String orderId,
   );
 
   /// Download order invoice
   @GET('/orders/{orderId}/invoice')
   @DioResponseType(ResponseType.bytes)
-  Future<Response<List<int>>> downloadOrderInvoice(
-    @Path('orderId') String orderId,
-  );
+  Future<List<int>> downloadOrderInvoice(@Path('orderId') String orderId);
 
   /// Reorder items from previous order
   @POST('/orders/{orderId}/reorder')
-  Future<BaseResponseDto<Map<String, dynamic>>> reorderItems(
+  Future<BaseResponseDto<OrderDto>> reorderItems(
     @Path('orderId') String orderId,
-    @Body() Map<String, dynamic>? selectedItems,
+    @Body() ReorderItemsRequestDto request,
   );
 
   /// Get order history
@@ -82,19 +80,19 @@ abstract class OrderApi {
 
   /// Process payment for order
   @POST('/orders/{orderId}/payment')
-  Future<BaseResponseDto<Map<String, dynamic>>> processPayment(
+  Future<BaseResponseDto<OrderDto>> processPayment(
     @Path('orderId') String orderId,
-    @Body() Map<String, dynamic> paymentData,
+    @Body() PaymentRequestDto request,
   );
 
   /// Get payment methods
   @GET('/payment/methods')
-  Future<BaseResponseDto<List<Map<String, dynamic>>>> getPaymentMethods();
+  Future<BaseResponseDto<List<OrderPaymentDto>>> getPaymentMethods();
 
   /// Validate payment method
   @POST('/payment/validate')
-  Future<BaseResponseDto<Map<String, dynamic>>> validatePaymentMethod(
-    @Body() Map<String, dynamic> paymentData,
+  Future<BaseResponseDto<OrderPaymentDto>> validatePaymentMethod(
+    @Body() PaymentValidationRequestDto request,
   );
 
   // ============================================================================
@@ -103,13 +101,13 @@ abstract class OrderApi {
 
   /// Calculate shipping cost
   @POST('/shipping/calculate')
-  Future<BaseResponseDto<Map<String, dynamic>>> calculateShipping(
-    @Body() Map<String, dynamic> shippingRequest,
+  Future<BaseResponseDto<OrderShippingDto>> calculateShipping(
+    @Body() ShippingCalculationRequestDto request,
   );
 
   /// Get shipping methods
   @GET('/shipping/methods')
-  Future<BaseResponseDto<List<Map<String, dynamic>>>> getShippingMethods(
+  Future<BaseResponseDto<List<OrderShippingDto>>> getShippingMethods(
     @Query('address') String? address,
   );
 
@@ -117,7 +115,7 @@ abstract class OrderApi {
   @PUT('/orders/{orderId}/shipping-address')
   Future<BaseResponseDto<OrderDto>> updateShippingAddress(
     @Path('orderId') String orderId,
-    @Body() Map<String, dynamic> address,
+    @Body() UpdateShippingAddressRequestDto request,
   );
 
   // ============================================================================
@@ -148,19 +146,19 @@ abstract class OrderApi {
   @PUT('/admin/orders/{orderId}')
   Future<BaseResponseDto<OrderDto>> updateOrder(
     @Path('orderId') String orderId,
-    @Body() Map<String, dynamic> updates,
+    @Body() UpdateOrderRequestDto request,
   );
 
   /// Add order note (Admin only)
   @POST('/admin/orders/{orderId}/notes')
-  Future<BaseResponseDto<Map<String, dynamic>>> addOrderNote(
+  Future<BaseResponseDto<OrderDto>> addOrderNote(
     @Path('orderId') String orderId,
-    @Body() Map<String, String> note,
+    @Body() AddOrderNoteRequestDto request,
   );
 
   /// Get order analytics (Admin only)
   @GET('/admin/orders/analytics')
-  Future<BaseResponseDto<Map<String, dynamic>>> getOrderAnalytics(
+  Future<BaseResponseDto<OrderDto>> getOrderAnalytics(
     @Query('dateFrom') String? dateFrom,
     @Query('dateTo') String? dateTo,
     @Query('groupBy') String? groupBy,
@@ -169,7 +167,7 @@ abstract class OrderApi {
   /// Export orders (Admin only)
   @GET('/admin/orders/export')
   @DioResponseType(ResponseType.bytes)
-  Future<Response<List<int>>> exportOrders(
+  Future<List<int>> exportOrders(
     @Query('format') String format,
     @Query('dateFrom') String? dateFrom,
     @Query('dateTo') String? dateTo,
@@ -181,14 +179,14 @@ abstract class OrderApi {
 
   /// Refund order payment (Admin only)
   @POST('/admin/orders/{orderId}/refund')
-  Future<BaseResponseDto<Map<String, dynamic>>> refundPayment(
+  Future<BaseResponseDto<OrderPaymentDto>> refundPayment(
     @Path('orderId') String orderId,
-    @Body() Map<String, dynamic> refundData,
+    @Body() RefundPaymentRequestDto request,
   );
 
   /// Get payment analytics (Admin only)
   @GET('/admin/payment/analytics')
-  Future<BaseResponseDto<Map<String, dynamic>>> getPaymentAnalytics(
+  Future<BaseResponseDto<OrderPaymentDto>> getPaymentAnalytics(
     @Query('dateFrom') String? dateFrom,
     @Query('dateTo') String? dateTo,
     @Query('groupBy') String? groupBy,

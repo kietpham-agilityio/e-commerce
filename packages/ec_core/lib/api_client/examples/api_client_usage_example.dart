@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../core/api_client.dart';
 import '../core/api_client_factory.dart';
 import '../dtos/user_dto.dart';
@@ -43,10 +45,10 @@ class ApiClientUsageExample {
         // Set authorization header for future requests
         _apiClient.setAuthorizationHeader('Bearer $token');
 
-        print('User logged in: ${user.firstName} ${user.lastName}');
+        log('User logged in: ${user.firstName} ${user.lastName}');
       }
     } catch (e) {
-      print('Login failed: $e');
+      log('Login failed: $e');
     }
   }
 
@@ -57,12 +59,12 @@ class ApiClientUsageExample {
 
       if (response.success) {
         final user = response.data;
-        print('User profile: ${user.firstName} ${user.lastName}');
-        print('Email: ${user.email}');
-        print('Phone: ${user.phoneNumber ?? 'Not provided'}');
+        log('User profile: ${user.firstName} ${user.lastName}');
+        log('Email: ${user.email}');
+        log('Phone: ${user.phoneNumber ?? 'Not provided'}');
       }
     } catch (e) {
-      print('Failed to get user profile: $e');
+      log('Failed to get user profile: $e');
     }
   }
 
@@ -81,14 +83,14 @@ class ApiClientUsageExample {
 
       if (response.success) {
         final products = response.data;
-        print('Found ${products.length} products');
+        log('Found ${products.length} products');
 
         for (final product in products) {
-          print('- ${product.name}: \$${product.price}');
+          log('- ${product.name}: \$${product.price}');
         }
       }
     } catch (e) {
-      print('Failed to search products: $e');
+      log('Failed to search products: $e');
     }
   }
 
@@ -105,11 +107,11 @@ class ApiClientUsageExample {
 
       if (response.success) {
         final cart = response.data;
-        print('Added to cart. Total items: ${cart.items.length}');
-        print('Cart total: \$${cart.totalAmount}');
+        log('Added to cart. Total items: ${cart.items.length}');
+        log('Cart total: \$${cart.totalAmount}');
       }
     } catch (e) {
-      print('Failed to add to cart: $e');
+      log('Failed to add to cart: $e');
     }
   }
 
@@ -120,20 +122,18 @@ class ApiClientUsageExample {
 
       if (response.success) {
         final cart = response.data;
-        print('Cart contains ${cart.items.length} items:');
+        log('Cart contains ${cart.items.length} items:');
 
         for (final item in cart.items) {
-          print(
-            '- ${item.productName} x${item.quantity}: \$${item.totalPrice}',
-          );
+          log('- ${item.productName} x${item.quantity}: \$${item.totalPrice}');
         }
 
-        print('Subtotal: \$${cart.subtotal}');
-        print('Tax: \$${cart.taxAmount}');
-        print('Total: \$${cart.totalAmount}');
+        log('Subtotal: \$${cart.subtotal}');
+        log('Tax: \$${cart.taxAmount}');
+        log('Total: \$${cart.totalAmount}');
       }
     } catch (e) {
-      print('Failed to get cart: $e');
+      log('Failed to get cart: $e');
     }
   }
 
@@ -169,14 +169,14 @@ class ApiClientUsageExample {
 
       if (response.success) {
         final order = response.data;
-        print('Order created successfully!');
-        print('Order ID: ${order.id}');
-        print('Order Number: ${order.orderNumber}');
-        print('Total: \$${order.totalAmount}');
-        print('Status: ${order.status}');
+        log('Order created successfully!');
+        log('Order ID: ${order.id}');
+        log('Order Number: ${order.orderNumber}');
+        log('Total: \$${order.totalAmount}');
+        log('Status: ${order.status}');
       }
     } catch (e) {
-      print('Failed to create order: $e');
+      log('Failed to create order: $e');
     }
   }
 
@@ -191,16 +191,16 @@ class ApiClientUsageExample {
 
       if (response.success) {
         final orders = response.data;
-        print('Found ${orders.length} orders:');
+        log('Found ${orders.length} orders:');
 
         for (final order in orders) {
-          print(
+          log(
             '- Order #${order.orderNumber}: \$${order.totalAmount} (${order.status})',
           );
         }
       }
     } catch (e) {
-      print('Failed to get orders: $e');
+      log('Failed to get orders: $e');
     }
   }
 

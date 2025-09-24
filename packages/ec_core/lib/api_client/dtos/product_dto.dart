@@ -171,3 +171,164 @@ class ProductSearchResponseDto with _$ProductSearchResponseDto {
   factory ProductSearchResponseDto.fromJson(Map<String, dynamic> json) =>
       _$ProductSearchResponseDtoFromJson(json);
 }
+
+/// Product Review Request DTO
+@freezed
+class ProductReviewRequestDto with _$ProductReviewRequestDto {
+  const factory ProductReviewRequestDto({
+    required int rating,
+    required String comment,
+    String? title,
+  }) = _ProductReviewRequestDto;
+
+  factory ProductReviewRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$ProductReviewRequestDtoFromJson(json);
+}
+
+/// Create Product Request DTO (Admin)
+@freezed
+class CreateProductRequestDto with _$CreateProductRequestDto {
+  const factory CreateProductRequestDto({
+    required String name,
+    required String description,
+    required String categoryId,
+    required String brandId,
+    required double price,
+    required int stock,
+    required String sku,
+    List<String>? images,
+    List<ProductVariantDto>? variants,
+    ProductShippingDto? shipping,
+    ProductSeoDto? seo,
+    Map<String, String>? attributes,
+  }) = _CreateProductRequestDto;
+
+  factory CreateProductRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$CreateProductRequestDtoFromJson(json);
+}
+
+/// Update Product Request DTO (Admin)
+@freezed
+class UpdateProductRequestDto with _$UpdateProductRequestDto {
+  const factory UpdateProductRequestDto({
+    String? name,
+    String? description,
+    String? categoryId,
+    String? brandId,
+    double? price,
+    int? stock,
+    String? sku,
+    List<String>? images,
+    List<ProductVariantDto>? variants,
+    ProductShippingDto? shipping,
+    ProductSeoDto? seo,
+    Map<String, String>? attributes,
+    bool? isActive,
+  }) = _UpdateProductRequestDto;
+
+  factory UpdateProductRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$UpdateProductRequestDtoFromJson(json);
+}
+
+/// Update Product Stock Request DTO (Admin)
+@freezed
+class UpdateProductStockRequestDto with _$UpdateProductStockRequestDto {
+  const factory UpdateProductStockRequestDto({
+    required int stock,
+    String? reason,
+  }) = _UpdateProductStockRequestDto;
+
+  factory UpdateProductStockRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$UpdateProductStockRequestDtoFromJson(json);
+}
+
+/// Bulk Update Products Request DTO (Admin)
+@freezed
+class BulkUpdateProductsRequestDto with _$BulkUpdateProductsRequestDto {
+  const factory BulkUpdateProductsRequestDto({
+    required List<String> productIds,
+    required Map<String, dynamic> updates,
+  }) = _BulkUpdateProductsRequestDto;
+
+  factory BulkUpdateProductsRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$BulkUpdateProductsRequestDtoFromJson(json);
+}
+
+/// Create Category Request DTO (Admin)
+@freezed
+class CreateCategoryRequestDto with _$CreateCategoryRequestDto {
+  const factory CreateCategoryRequestDto({
+    required String name,
+    required String description,
+    String? parentId,
+    String? image,
+    bool? isActive,
+  }) = _CreateCategoryRequestDto;
+
+  factory CreateCategoryRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$CreateCategoryRequestDtoFromJson(json);
+}
+
+/// Update Category Request DTO (Admin)
+@freezed
+class UpdateCategoryRequestDto with _$UpdateCategoryRequestDto {
+  const factory UpdateCategoryRequestDto({
+    String? name,
+    String? description,
+    String? parentId,
+    String? image,
+    bool? isActive,
+  }) = _UpdateCategoryRequestDto;
+
+  factory UpdateCategoryRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$UpdateCategoryRequestDtoFromJson(json);
+}
+
+/// Create Brand Request DTO (Admin)
+@freezed
+class CreateBrandRequestDto with _$CreateBrandRequestDto {
+  const factory CreateBrandRequestDto({
+    required String name,
+    required String description,
+    String? logo,
+    String? website,
+    bool? isActive,
+  }) = _CreateBrandRequestDto;
+
+  factory CreateBrandRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$CreateBrandRequestDtoFromJson(json);
+}
+
+/// Update Brand Request DTO (Admin)
+@freezed
+class UpdateBrandRequestDto with _$UpdateBrandRequestDto {
+  const factory UpdateBrandRequestDto({
+    String? name,
+    String? description,
+    String? logo,
+    String? website,
+    bool? isActive,
+  }) = _UpdateBrandRequestDto;
+
+  factory UpdateBrandRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$UpdateBrandRequestDtoFromJson(json);
+}
+
+/// Product Review DTO
+@freezed
+class ProductReviewDto with _$ProductReviewDto {
+  const factory ProductReviewDto({
+    required String id,
+    required String productId,
+    required String userId,
+    required String userName,
+    required int rating,
+    required String comment,
+    String? title,
+    required DateTime createdAt,
+    DateTime? updatedAt,
+  }) = _ProductReviewDto;
+
+  factory ProductReviewDto.fromJson(Map<String, dynamic> json) =>
+      _$ProductReviewDtoFromJson(json);
+}

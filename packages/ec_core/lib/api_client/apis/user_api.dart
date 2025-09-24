@@ -33,7 +33,7 @@ abstract class UserApi {
   /// Refresh access token
   @POST('/auth/refresh')
   Future<BaseResponseDto<AuthResponseDto>> refreshToken(
-    @Body() Map<String, String> request,
+    @Body() RefreshTokenRequestDto request,
   );
 
   /// Request password reset
@@ -50,7 +50,7 @@ abstract class UserApi {
 
   /// Verify email address
   @POST('/auth/verify-email')
-  Future<SuccessResponseDto> verifyEmail(@Body() Map<String, String> request);
+  Future<SuccessResponseDto> verifyEmail(@Body() VerifyEmailRequestDto request);
 
   // ============================================================================
   // USER PROFILE ENDPOINTS
@@ -63,13 +63,13 @@ abstract class UserApi {
   /// Update user profile
   @PUT('/users/me')
   Future<BaseResponseDto<UserDto>> updateProfile(
-    @Body() Map<String, dynamic> updates,
+    @Body() UpdateProfileRequestDto request,
   );
 
   /// Change password
   @PUT('/users/me/password')
   Future<SuccessResponseDto> changePassword(
-    @Body() Map<String, String> request,
+    @Body() ChangePasswordRequestDto request,
   );
 
   /// Delete user account
@@ -87,14 +87,14 @@ abstract class UserApi {
   /// Add new address
   @POST('/users/me/addresses')
   Future<BaseResponseDto<UserAddressDto>> addAddress(
-    @Body() Map<String, dynamic> address,
+    @Body() AddAddressRequestDto request,
   );
 
   /// Update address
   @PUT('/users/me/addresses/{addressId}')
   Future<BaseResponseDto<UserAddressDto>> updateAddress(
     @Path('addressId') String addressId,
-    @Body() Map<String, dynamic> updates,
+    @Body() UpdateAddressRequestDto request,
   );
 
   /// Delete address
@@ -118,7 +118,7 @@ abstract class UserApi {
   /// Update user preferences
   @PUT('/users/me/preferences')
   Future<BaseResponseDto<UserPreferencesDto>> updatePreferences(
-    @Body() Map<String, dynamic> preferences,
+    @Body() UpdatePreferencesRequestDto request,
   );
 
   // ============================================================================
@@ -142,7 +142,7 @@ abstract class UserApi {
   @PUT('/admin/users/{userId}')
   Future<BaseResponseDto<UserDto>> updateUserById(
     @Path('userId') String userId,
-    @Body() Map<String, dynamic> updates,
+    @Body() UpdateUserRequestDto request,
   );
 
   /// Deactivate user (Admin only)
