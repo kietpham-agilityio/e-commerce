@@ -10,19 +10,13 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: EcAppBar(title: EcHeadlineSmallText('Home')),
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(EcDesignIcons.icClose),
-          Center(
-            child: EcElevatedButton(
-              text: 'Go product details page',
-              onPressed: () {
-                context.pushNamed(AppPaths.productDetails.name);
-              },
-            ),
-          ),
-        ],
+      body: Center(
+        child: EcElevatedButton(
+          text: 'Go product details page',
+          onPressed: () {
+            context.pushNamed(AppPaths.productDetails.name);
+          },
+        ),
       ),
     );
   }
