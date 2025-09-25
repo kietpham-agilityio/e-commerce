@@ -7,14 +7,20 @@ class EcDesignIcons {
 
   // Navigation Icons
   static const IconData icArrowLeft = IconData(0xe900, fontFamily: _fontFamily);
-  static const IconData icArrowRight = IconData(0xe902, fontFamily: _fontFamily);
+  static const IconData icArrowRight = IconData(
+    0xe902,
+    fontFamily: _fontFamily,
+  );
   static const IconData icArrowRightFilled = IconData(
     0xe901,
     fontFamily: _fontFamily,
   );
 
   // E-commerce Icons
-  static const IconData icShoppingBag = IconData(0xe903, fontFamily: _fontFamily);
+  static const IconData icShoppingBag = IconData(
+    0xe903,
+    fontFamily: _fontFamily,
+  );
   static const IconData icShoppingBagFilled = IconData(
     0xe91a,
     fontFamily: _fontFamily,
@@ -108,10 +114,7 @@ class EcDesignIcons {
 
   // Social & Communication Icons
   static const IconData icShare = IconData(0xe917, fontFamily: _fontFamily);
-  static const IconData icShareLink = IconData(
-    0xe917,
-    fontFamily: _fontFamily,
-  );
+  static const IconData icShareLink = IconData(0xe917, fontFamily: _fontFamily);
 
   // Help & Information Icons
   static const IconData icHelp = IconData(0xe90b, fontFamily: _fontFamily);
