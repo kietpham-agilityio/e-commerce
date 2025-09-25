@@ -340,31 +340,6 @@ class _ApiClientExampleState extends State<ApiClientExample> {
     }
   }
 
-  Future<void> _testCircuitBreaker() async {
-    _setLoading(true);
-    ApiClientLogger.info('Testing CircuitBreaker helper');
-
-    if (!_checkApiClientAvailable()) {
-      ApiClientLogger.error(
-        '❌ Cannot test CircuitBreaker - ApiClient not available',
-      );
-      _setLoading(false);
-      return;
-    }
-
-    try {
-      final apiHelpersDemo = ApiHelpersDemo(_apiClient);
-      final result = await apiHelpersDemo.circuitBreaker();
-      ApiClientLogger.success(
-        '✅ CircuitBreaker: ${result.length} posts retrieved',
-      );
-    } catch (e) {
-      ApiClientLogger.error('❌ CircuitBreaker failed: $e');
-    } finally {
-      _setLoading(false);
-    }
-  }
-
   Future<void> _testBasicCaching() async {
     _setLoading(true);
     ApiClientLogger.info('Testing BasicCaching helper');
@@ -1196,7 +1171,6 @@ class _ApiClientExampleState extends State<ApiClientExample> {
                         ('Connectivity Check', _testConnectivityCheck),
                         ('Retry Call', _testRetryCall),
                         ('Exponential Backoff', _testExponentialBackoff),
-                        ('Circuit Breaker', _testCircuitBreaker),
                         ('Basic Caching', _testBasicCaching),
                         ('Auto Cache Key', _testAutoCacheKey),
                         ('Response Handling', _testResponseHandling),

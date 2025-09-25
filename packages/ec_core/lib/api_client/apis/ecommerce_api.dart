@@ -4,9 +4,6 @@ import 'cart_api.dart';
 import 'order_api.dart';
 import 'product_api.dart';
 import 'user_api.dart';
-import 'dtos/base_response.dart';
-import '../dtos/ecommerce_dto.dart';
-import '../dtos/cart_dto.dart';
 
 part 'ecommerce_api.g.dart';
 
