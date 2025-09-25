@@ -148,26 +148,6 @@ class ApiHelpersUsageExample {
     }
   }
 
-  /// Example: Using ApiBackgroundHelper with circuit breaker
-  Future<void> backgroundApiWithCircuitBreakerExample() async {
-    try {
-      final user = await ApiBackgroundHelper.callApiWithCircuitBreaker<UserDto>(
-        apiCall:
-            () => _apiClient.userApi.getCurrentUser().then(
-              (response) => response.data,
-            ),
-        errorContext: 'Get user profile',
-        timeout: const Duration(seconds: 30),
-        failureThreshold: 5,
-        recoveryTimeout: const Duration(minutes: 1),
-      );
-
-      log('User fetched with circuit breaker: ${user.firstName}');
-    } catch (e) {
-      log('Background API with circuit breaker failed: $e');
-    }
-  }
-
   /// Example: Using ApiResponseHelper for response handling
   Future<void> responseHelperExample() async {
     try {

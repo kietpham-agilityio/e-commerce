@@ -151,135 +151,6 @@ class _ApiClientExampleState extends State<ApiClientExample> {
     }
   }
 
-  Future<void> _testComprehensiveApiTest() async {
-    _setLoading(true);
-    ApiClientLogger.info('Starting comprehensive API test');
-
-    if (!_checkApiClientAvailable()) {
-      ApiClientLogger.error(
-        '❌ Cannot perform comprehensive test - ApiClient not available',
-      );
-      _setLoading(false);
-      return;
-    }
-
-    try {
-      final testResults = await _apiClient.testApis();
-
-      ApiClientLogger.success('✅ Comprehensive API Test Completed!');
-
-      // Log summary
-      if (testResults.containsKey('summary')) {
-        final summary = testResults['summary'];
-        ApiClientLogger.info('📊 Test Summary:');
-        ApiClientLogger.info('   Total Tests: ${summary['total_tests']}');
-        ApiClientLogger.info('   Successful: ${summary['successful']}');
-        ApiClientLogger.info('   Failed: ${summary['failed']}');
-        ApiClientLogger.info('   Success Rate: ${summary['success_rate']}');
-        ApiClientLogger.info('   Duration: ${summary['total_duration_ms']}ms');
-      }
-
-      // Log individual test results
-      ApiClientLogger.info('📋 Individual Test Results:');
-      for (final entry in testResults.entries) {
-        if (entry.key == 'summary') continue;
-
-        final testName = entry.key;
-        final result = entry.value;
-        final status = result['status'] ?? 'unknown';
-
-        if (status == 'success') {
-          ApiClientLogger.success('   ✅ $testName: SUCCESS');
-        } else {
-          ApiClientLogger.error('   ❌ $testName: FAILED - ${result['error']}');
-        }
-      }
-    } catch (e) {
-      ApiClientLogger.error('Comprehensive API Test Error: $e');
-    } finally {
-      _setLoading(false);
-    }
-  }
-
-  Future<void> _testEcommerceApiServices() async {
-    _setLoading(true);
-    ApiClientLogger.info('Testing EcommerceApi services');
-
-    if (!_checkApiClientAvailable()) {
-      ApiClientLogger.error(
-        '❌ Cannot test EcommerceApi services - ApiClient not available',
-      );
-      _setLoading(false);
-      return;
-    }
-
-    try {
-      // Test health check
-      try {
-        final healthResult = await _apiClient.ecommerceApi.healthCheck();
-        ApiClientLogger.success(
-          '✅ Health Check: ${healthResult.success ? 'Success' : 'Failed'}',
-        );
-      } catch (e) {
-        ApiClientLogger.error('❌ Health Check failed: $e');
-      }
-
-      // Test user API service
-      try {
-        await _apiClient.userApi.getCurrentUser();
-        ApiClientLogger.success('✅ User API: Current user retrieved');
-      } catch (e) {
-        ApiClientLogger.error('❌ User API failed: $e');
-      }
-
-      // Test product API service
-      try {
-        await _apiClient.productApi.getProducts(
-          1, // page
-          5, // limit
-          null, // category
-          null, // brand
-          null, // search
-          null, // minPrice
-          null, // maxPrice
-          null, // sortBy
-          null, // sortOrder
-          null, // inStock
-          null, // featured
-        );
-        ApiClientLogger.success('✅ Product API: Products retrieved');
-      } catch (e) {
-        ApiClientLogger.error('❌ Product API failed: $e');
-      }
-
-      // Test cart API service
-      try {
-        await _apiClient.cartApi.getCart();
-        ApiClientLogger.success('✅ Cart API: Cart retrieved');
-      } catch (e) {
-        ApiClientLogger.error('❌ Cart API failed: $e');
-      }
-
-      // Test order API service
-      try {
-        await _apiClient.orderApi.getOrders(
-          1, // page
-          5, // limit
-          null, // status
-          null, // dateFrom
-          null, // dateTo
-        );
-        ApiClientLogger.success('✅ Order API: Orders retrieved');
-      } catch (e) {
-        ApiClientLogger.error('❌ Order API failed: $e');
-      }
-    } catch (e) {
-      ApiClientLogger.error('EcommerceApi Services Test Error: $e');
-    } finally {
-      _setLoading(false);
-    }
-  }
-
   Future<void> _testApiConnectivity() async {
     _setLoading(true);
     ApiClientLogger.info('Testing API connectivity');
@@ -321,40 +192,328 @@ class _ApiClientExampleState extends State<ApiClientExample> {
   // API HELPER EXAMPLES
   // ============================================================================
 
-  Future<void> _testApiHelpers() async {
+  // ============================================================================
+  // INDIVIDUAL API HELPER METHODS
+  // ============================================================================
+
+  Future<void> _testMaybeFetch() async {
     _setLoading(true);
-    ApiClientLogger.info('Testing API Helper classes');
+    ApiClientLogger.info('Testing MaybeFetch helper');
 
     if (!_checkApiClientAvailable()) {
       ApiClientLogger.error(
-        '❌ Cannot test API helpers - ApiClient not available',
+        '❌ Cannot test MaybeFetch - ApiClient not available',
       );
       _setLoading(false);
       return;
     }
 
     try {
-      // Note: API helpers are now separate classes that can be used independently
-      // They provide advanced functionality like caching, background calls, etc.
+      final apiHelpersDemo = ApiHelpersDemo(_apiClient);
+      final result = await apiHelpersDemo.maybeFetch();
+      ApiClientLogger.success('✅ MaybeFetch: ${result.length} posts retrieved');
+    } catch (e) {
+      ApiClientLogger.error('❌ MaybeFetch failed: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
 
-      ApiClientLogger.info('📚 Available API Helper Classes:');
-      ApiClientLogger.info(
-        '   - ApiFetchHelper: maybeFetch, forceFetch methods',
-      );
-      ApiClientLogger.info(
-        '   - ApiBackgroundHelper: background API calls with timeout',
-      );
-      ApiClientLogger.info(
-        '   - ApiResponseHelper: response parsing and validation',
-      );
-      ApiClientLogger.info('   - ApiCacheHelper: caching with Isar database');
+  Future<void> _testForceFetch() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing ForceFetch helper');
 
-      ApiClientLogger.success('✅ API Helper classes are available for use');
-      ApiClientLogger.info(
-        '💡 Import helpers from: package:ec_core/api_client/helpers/api_helpers.dart',
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test ForceFetch - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      final apiHelpersDemo = ApiHelpersDemo(_apiClient);
+      final result = await apiHelpersDemo.forceFetch();
+      ApiClientLogger.success('✅ ForceFetch: ${result.length} posts retrieved');
+    } catch (e) {
+      ApiClientLogger.error('❌ ForceFetch failed: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testBackgroundCall() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing BackgroundCall helper');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test BackgroundCall - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      final apiHelpersDemo = ApiHelpersDemo(_apiClient);
+      final result = await apiHelpersDemo.backgroundCall();
+      ApiClientLogger.success(
+        '✅ BackgroundCall: ${result.length} posts retrieved',
       );
     } catch (e) {
-      ApiClientLogger.error('API Helpers Test Error: $e');
+      ApiClientLogger.error('❌ BackgroundCall failed: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testConnectivityCheck() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing ConnectivityCheck helper');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test ConnectivityCheck - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      final apiHelpersDemo = ApiHelpersDemo(_apiClient);
+      final result = await apiHelpersDemo.connectivityCheck();
+      ApiClientLogger.success(
+        '✅ ConnectivityCheck: ${result.length} posts retrieved',
+      );
+    } catch (e) {
+      ApiClientLogger.error('❌ ConnectivityCheck failed: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testRetryCall() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing RetryCall helper');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test RetryCall - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      final apiHelpersDemo = ApiHelpersDemo(_apiClient);
+      final result = await apiHelpersDemo.retryCall();
+      ApiClientLogger.success('✅ RetryCall: ${result.length} posts retrieved');
+    } catch (e) {
+      ApiClientLogger.error('❌ RetryCall failed: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testExponentialBackoff() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing ExponentialBackoff helper');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test ExponentialBackoff - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      final apiHelpersDemo = ApiHelpersDemo(_apiClient);
+      final result = await apiHelpersDemo.exponentialBackoff();
+      ApiClientLogger.success(
+        '✅ ExponentialBackoff: ${result.length} posts retrieved',
+      );
+    } catch (e) {
+      ApiClientLogger.error('❌ ExponentialBackoff failed: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testCircuitBreaker() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing CircuitBreaker helper');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test CircuitBreaker - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      final apiHelpersDemo = ApiHelpersDemo(_apiClient);
+      final result = await apiHelpersDemo.circuitBreaker();
+      ApiClientLogger.success(
+        '✅ CircuitBreaker: ${result.length} posts retrieved',
+      );
+    } catch (e) {
+      ApiClientLogger.error('❌ CircuitBreaker failed: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testBasicCaching() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing BasicCaching helper');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test BasicCaching - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      final apiHelpersDemo = ApiHelpersDemo(_apiClient);
+      final result = await apiHelpersDemo.basicCaching();
+      ApiClientLogger.success(
+        '✅ BasicCaching: ${result.length} posts retrieved',
+      );
+    } catch (e) {
+      ApiClientLogger.error('❌ BasicCaching failed: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testAutoCacheKey() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing AutoCacheKey helper');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test AutoCacheKey - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      final apiHelpersDemo = ApiHelpersDemo(_apiClient);
+      final result = await apiHelpersDemo.autoCacheKey();
+      ApiClientLogger.success(
+        '✅ AutoCacheKey: ${result.length} posts retrieved',
+      );
+    } catch (e) {
+      ApiClientLogger.error('❌ AutoCacheKey failed: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testResponseHandling() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing ResponseHandling helper');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test ResponseHandling - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      final apiHelpersDemo = ApiHelpersDemo(_apiClient);
+      final result = await apiHelpersDemo.responseHandling();
+      ApiClientLogger.success(
+        '✅ ResponseHandling: ${result.length} posts processed',
+      );
+    } catch (e) {
+      ApiClientLogger.error('❌ ResponseHandling failed: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testAllIndividualHelpers() async {
+    _setLoading(true);
+    ApiClientLogger.info('Testing all individual API helpers');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot test all helpers - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      final apiHelpersDemo = ApiHelpersDemo(_apiClient);
+      final testResults = await apiHelpersDemo.testAllIndividualHelpers();
+
+      if (testResults.containsKey('summary')) {
+        final summary = testResults['summary'] as Map<String, dynamic>;
+        ApiClientLogger.success('✅ All individual helpers test completed:');
+        ApiClientLogger.info('   - Total tests: ${summary['total_tests']}');
+        ApiClientLogger.info('   - Successful: ${summary['successful']}');
+        ApiClientLogger.info('   - Failed: ${summary['failed']}');
+        ApiClientLogger.info('   - Success rate: ${summary['success_rate']}');
+        ApiClientLogger.info(
+          '   - Duration: ${summary['total_duration_ms']}ms',
+        );
+      }
+    } catch (e) {
+      ApiClientLogger.error('❌ All individual helpers test failed: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testClearCache() async {
+    _setLoading(true);
+    ApiClientLogger.info('Clearing all cache');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error('❌ Cannot clear cache - ApiClient not available');
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      final apiHelpersDemo = ApiHelpersDemo(_apiClient);
+      await apiHelpersDemo.clearAllCache();
+      ApiClientLogger.success('✅ All cache cleared successfully');
+    } catch (e) {
+      ApiClientLogger.error('❌ Clear cache failed: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testCacheStatistics() async {
+    _setLoading(true);
+    ApiClientLogger.info('Getting cache statistics');
+
+    if (!_checkApiClientAvailable()) {
+      ApiClientLogger.error(
+        '❌ Cannot get cache statistics - ApiClient not available',
+      );
+      _setLoading(false);
+      return;
+    }
+
+    try {
+      final apiHelpersDemo = ApiHelpersDemo(_apiClient);
+      final cacheStats = await apiHelpersDemo.getCacheStatistics();
+      ApiClientLogger.success('✅ Cache statistics retrieved');
+      ApiClientLogger.info('📊 Cache Statistics: $cacheStats');
+    } catch (e) {
+      ApiClientLogger.error('❌ Get cache statistics failed: $e');
     } finally {
       _setLoading(false);
     }
@@ -364,7 +523,7 @@ class _ApiClientExampleState extends State<ApiClientExample> {
   // ERROR HANDLING EXAMPLES
   // ============================================================================
 
-  Future<void> _testErrorHandling() async {
+  Future<void> _testErrorHandlingExample() async {
     _setLoading(true);
     ApiClientLogger.info('Testing error handling with Retrofit APIs');
 
@@ -1006,7 +1165,7 @@ class _ApiClientExampleState extends State<ApiClientExample> {
                       _buildButtonGrid([
                         ('Get Posts', _testRetrofitGetPosts),
                         ('Get Comments', _testRetrofitGetComments),
-                        ('Comprehensive Test', _testComprehensiveApiTest),
+                        ('Connectivity Test', _testApiConnectivity),
                       ]),
                     ],
                   ),
@@ -1018,22 +1177,44 @@ class _ApiClientExampleState extends State<ApiClientExample> {
                     title: 'EcommerceApi Services',
                     children: [
                       _buildButtonGrid([
-                        ('Test Services', _testEcommerceApiServices),
                         ('Service Access', _testApiServiceAccess),
+                        ('Base URL Management', _testBaseUrlManagement),
                       ]),
                     ],
                   ),
 
                   const SizedBox(height: 32),
 
-                  // API Helpers Section
+                  // Individual API Helper Methods Section
                   _buildSection(
-                    title: 'API Helpers & Utilities',
+                    title: 'Individual API Helper Methods',
                     children: [
                       _buildButtonGrid([
-                        ('API Helpers', _testApiHelpers),
-                        ('Connectivity Test', _testApiConnectivity),
-                        ('Base URL Management', _testBaseUrlManagement),
+                        ('Maybe Fetch', _testMaybeFetch),
+                        ('Force Fetch', _testForceFetch),
+                        ('Background Call', _testBackgroundCall),
+                        ('Connectivity Check', _testConnectivityCheck),
+                        ('Retry Call', _testRetryCall),
+                        ('Exponential Backoff', _testExponentialBackoff),
+                        ('Circuit Breaker', _testCircuitBreaker),
+                        ('Basic Caching', _testBasicCaching),
+                        ('Auto Cache Key', _testAutoCacheKey),
+                        ('Response Handling', _testResponseHandling),
+                      ]),
+                    ],
+                  ),
+
+                  const SizedBox(height: 32),
+
+                  // API Helpers Integration Section
+                  _buildSection(
+                    title: 'API Helpers Integration',
+                    children: [
+                      _buildButtonGrid([
+                        ('Test All Helpers', _testAllIndividualHelpers),
+                        ('API Helpers Integration', _testApiHelpersIntegration),
+                        ('Clear Cache', _testClearCache),
+                        ('Cache Statistics', _testCacheStatistics),
                       ]),
                     ],
                   ),
@@ -1062,7 +1243,7 @@ class _ApiClientExampleState extends State<ApiClientExample> {
                       _buildButtonGrid([
                         ('API Helpers Integration', _testApiHelpersIntegration),
                         ('Complete Workflow', _testCompleteWorkflowExample),
-                        ('Error Handling', _testErrorHandling),
+                        ('Error Handling Example', _testErrorHandlingExample),
                         ('Header Management', _testHeaderManagement),
                       ]),
                     ],
