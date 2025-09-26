@@ -52,15 +52,16 @@ class LayoutScaffold extends StatelessWidget {
                   ecBottomNavigationItem
                       .map(
                         (item) => BottomNavigationBarItem(
-                          icon: Icon(
-                            item.icon,
-                            size: sizing.bottomNavigationBarIcon,
+                          icon: SizedBox(
+                            width: sizing.bottomNavigationBarIcon,
+                            height: sizing.bottomNavigationBarIcon,
+                            child: item.icon,
                           ),
                           label: item.label,
-                          activeIcon: Icon(
-                            item.selectedIcon,
-                            color: ecTheme.colorScheme.primary,
-                            size: sizing.bottomNavigationBarIcon,
+                          activeIcon: SizedBox(
+                            width: sizing.bottomNavigationBarIcon,
+                            height: sizing.bottomNavigationBarIcon,
+                            child: item.selectedIcon,
                           ),
                         ),
                       )
