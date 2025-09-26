@@ -95,7 +95,6 @@ class AppRouter {
 
 enum AppPaths {
   login(name: 'login', path: '/login'),
-  signup(name: 'signup', path: '/signup'),
   home(name: 'home', path: '/home'),
   shop(name: 'shop', path: '/shop'),
   bag(name: 'bag', path: '/bag'),
