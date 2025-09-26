@@ -125,4 +125,10 @@ class AppSizing {
     ECThemeType.admin => AdminSizing.expandedAppBar,
     ECThemeType.user => AdminSizing.expandedAppBar,
   };
+
+  // Height of a bottom navigation bar icon
+  double get bottomNavigationBarIcon => switch (type) {
+    ECThemeType.admin => AdminSizing.bottomNavigationBarIcon,
+    ECThemeType.user => AdminSizing.bottomNavigationBarIcon,
+  };
 }

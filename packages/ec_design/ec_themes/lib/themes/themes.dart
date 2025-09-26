@@ -513,7 +513,23 @@ class EcDesignTheme {
     ECThemeType themeType,
     bool isDark,
   ) {
-    return const BottomNavigationBarThemeData();
+    final colorScheme =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
+
+    return BottomNavigationBarThemeData(
+      backgroundColor: colorScheme.onPrimary,
+      type: BottomNavigationBarType.fixed,
+      selectedLabelStyle: _buildTextTheme(
+        themeType,
+        isDark,
+      ).labelSmall?.copyWith(fontWeight: EcTypography.semiBold),
+      unselectedLabelStyle: _buildTextTheme(
+        themeType,
+        isDark,
+      ).labelSmall?.copyWith(fontWeight: EcTypography.regular),
+      selectedIconTheme: IconThemeData(color: colorScheme.primary),
+      unselectedIconTheme: IconThemeData(color: colorScheme.outline),
+    );
   }
 
   /// TBD: Build floating action button theme
