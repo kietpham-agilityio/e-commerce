@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'app_colors.dart';
 
 /// Typography scale for the e-commerce design system
@@ -21,7 +22,7 @@ class EcTypography {
   static const FontWeight bold = FontWeight.w700; // Metropolis-Bold.otf
 
   // Font sizes
-  static const double xs = 10.0;
+  static const double xs = 11.0;
   static const double sm = 12.0;
   static const double base = 14.0;
   static const double lg = 16.0;
@@ -33,8 +34,9 @@ class EcTypography {
   static const double massive = 48.0;
 
   // Line heights (as multipliers)
+  static const double baseHeight = 1;
   static const double tightHeight = 1.25;
-  static const double normalHeight = 1.5;
+  static const double normalHeight = 1.4;
   static const double relaxedHeight = 1.75;
 
   // Letter spacing
@@ -47,14 +49,13 @@ class EcTypography {
 
   /// User theme - Display large text style - for hero titles
   static TextStyle getUserDisplayLarge(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: massive,
       fontWeight: bold,
-      height: tightHeight,
+      height: baseHeight,
       letterSpacing: tightSpacing,
       color: colors.secondary,
     );
@@ -62,14 +63,13 @@ class EcTypography {
 
   /// User theme - Display medium text style - for section headers
   static TextStyle getUserDisplayMedium(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: giant,
       fontWeight: bold,
-      height: tightHeight,
+      height: baseHeight,
       letterSpacing: tightSpacing,
       color: colors.secondary,
     );
@@ -77,14 +77,13 @@ class EcTypography {
 
   /// User theme - Display small text style - for subsection headers
   static TextStyle getUserDisplaySmall(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: huge,
       fontWeight: semiBold,
-      height: tightHeight,
+      height: baseHeight,
       letterSpacing: tightSpacing,
       color: colors.secondary,
     );
@@ -92,14 +91,13 @@ class EcTypography {
 
   /// User theme - Headline large text style - for main page titles
   static TextStyle getUserHeadlineLarge(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: xxxl,
       fontWeight: semiBold,
-      height: tightHeight,
+      height: baseHeight,
       letterSpacing: normalSpacing,
       color: colors.secondary,
     );
@@ -107,14 +105,13 @@ class EcTypography {
 
   /// User theme - Headline medium text style - for page titles
   static TextStyle getUserHeadlineMedium(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: xxl,
       fontWeight: semiBold,
-      height: tightHeight,
+      height: baseHeight,
       letterSpacing: normalSpacing,
       color: colors.secondary,
     );
@@ -122,14 +119,13 @@ class EcTypography {
 
   /// User theme - Headline small text style - for section titles
   static TextStyle getUserHeadlineSmall(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: xl,
       fontWeight: semiBold,
-      height: tightHeight,
+      height: baseHeight,
       letterSpacing: normalSpacing,
       color: colors.secondary,
     );
@@ -137,14 +133,13 @@ class EcTypography {
 
   /// User theme - Title large text style - for card titles
   static TextStyle getUserTitleLarge(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: lg,
       fontWeight: medium,
-      height: normalHeight,
+      height: baseHeight,
       letterSpacing: normalSpacing,
       color: colors.secondary,
     );
@@ -152,14 +147,13 @@ class EcTypography {
 
   /// User theme - Title medium text style - for list item titles
   static TextStyle getUserTitleMedium(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: base,
       fontWeight: medium,
-      height: normalHeight,
+      height: baseHeight,
       letterSpacing: normalSpacing,
       color: colors.secondary,
     );
@@ -167,14 +161,13 @@ class EcTypography {
 
   /// User theme - Title small text style - for small titles
   static TextStyle getUserTitleSmall(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: sm,
       fontWeight: medium,
-      height: normalHeight,
+      height: baseHeight,
       letterSpacing: wideSpacing,
       color: colors.secondary,
     );
@@ -182,14 +175,13 @@ class EcTypography {
 
   /// User theme - Body large text style - for main content
   static TextStyle getUserBodyLarge(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: lg,
       fontWeight: regular,
-      height: relaxedHeight,
+      height: 1,
       letterSpacing: normalSpacing,
       color: colors.secondary,
     );
@@ -197,14 +189,13 @@ class EcTypography {
 
   /// User theme - Body medium text style - for regular content
   static TextStyle getUserBodyMedium(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: base,
       fontWeight: regular,
-      height: relaxedHeight,
+      height: baseHeight,
       letterSpacing: normalSpacing,
       color: colors.secondary,
     );
@@ -212,9 +203,8 @@ class EcTypography {
 
   /// User theme - Body small text style - for secondary content
   static TextStyle getUserBodySmall(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: sm,
@@ -227,14 +217,13 @@ class EcTypography {
 
   /// User theme - Label large text style - for form labels
   static TextStyle getUserLabelLarge(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: base,
       fontWeight: medium,
-      height: normalHeight,
+      height: baseHeight,
       letterSpacing: wideSpacing,
       color: colors.secondary,
     );
@@ -242,9 +231,8 @@ class EcTypography {
 
   /// User theme - Label medium text style - for small labels
   static TextStyle getUserLabelMedium(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: base,
@@ -257,14 +245,13 @@ class EcTypography {
 
   /// User theme - Label small text style - for tiny labels
   static TextStyle getUserLabelSmall(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: xs,
       fontWeight: medium,
-      height: normalHeight,
+      height: baseHeight,
       letterSpacing: wideSpacing,
       color: colors.secondary,
     );
@@ -275,9 +262,8 @@ class EcTypography {
 
   /// Admin theme - Display large text style - for dashboard headers
   static TextStyle getAdminDisplayLarge(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: massive,
@@ -290,14 +276,13 @@ class EcTypography {
 
   /// Admin theme - Display medium text style - for section headers
   static TextStyle getAdminDisplayMedium(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: giant,
       fontWeight: bold,
-      height: 1.2,
+      height: baseHeight,
       letterSpacing: -0.8,
       color: colors.primary,
     );
@@ -305,14 +290,13 @@ class EcTypography {
 
   /// Admin theme - Display small text style - for subsection headers
   static TextStyle getAdminDisplaySmall(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: huge,
       fontWeight: bold, // Bolder for admin
-      height: 1.2,
+      height: baseHeight,
       letterSpacing: -0.5,
       color: colors.primary,
     );
@@ -320,14 +304,13 @@ class EcTypography {
 
   /// Admin theme - Headline large text style - for main page titles
   static TextStyle getAdminHeadlineLarge(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: xxxl,
       fontWeight: bold, // Bolder for admin
-      height: 1.3,
+      height: baseHeight,
       letterSpacing: -0.3,
       color: colors.secondary,
     );
@@ -335,14 +318,13 @@ class EcTypography {
 
   /// Admin theme - Headline medium text style - for page titles
   static TextStyle getAdminHeadlineMedium(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: xxl,
       fontWeight: bold,
-      height: 1.3,
+      height: baseHeight,
       letterSpacing: -0.2,
       color: colors.secondary,
     );
@@ -350,14 +332,13 @@ class EcTypography {
 
   /// Admin theme - Headline small text style - for section titles
   static TextStyle getAdminHeadlineSmall(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: xl,
       fontWeight: bold,
-      height: 1.3,
+      height: baseHeight,
       letterSpacing: -0.1,
       color: colors.secondary,
     );
@@ -365,14 +346,13 @@ class EcTypography {
 
   /// Admin theme - Title large text style - for card titles
   static TextStyle getAdminTitleLarge(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: lg,
       fontWeight: semiBold, // Semi-bold for admin
-      height: 1.4,
+      height: baseHeight,
       letterSpacing: 0.0,
       color: colors.secondary,
     );
@@ -380,14 +360,13 @@ class EcTypography {
 
   /// Admin theme - Title medium text style - for list item titles
   static TextStyle getAdminTitleMedium(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: base,
       fontWeight: semiBold,
-      height: 1.4,
+      height: baseHeight,
       letterSpacing: 0.0,
       color: colors.secondary,
     );
@@ -395,14 +374,13 @@ class EcTypography {
 
   /// Admin theme - Title small text style - for small titles
   static TextStyle getAdminTitleSmall(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: sm,
       fontWeight: semiBold,
-      height: 1.4,
+      height: baseHeight,
       letterSpacing: 0.1,
       color: colors.secondary,
     );
@@ -410,14 +388,13 @@ class EcTypography {
 
   /// Admin theme - Body large text style - for main content
   static TextStyle getAdminBodyLarge(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: lg,
       fontWeight: medium, // Medium for admin readability
-      height: 1.6,
+      height: baseHeight,
       letterSpacing: 0.0,
       color: colors.secondary,
     );
@@ -425,14 +402,13 @@ class EcTypography {
 
   /// Admin theme - Body medium text style - for regular content
   static TextStyle getAdminBodyMedium(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: base,
       fontWeight: medium,
-      height: 1.6,
+      height: baseHeight,
       letterSpacing: 0.0,
       color: colors.secondary,
     );
@@ -440,14 +416,13 @@ class EcTypography {
 
   /// Admin theme - Body small text style - for secondary content
   static TextStyle getAdminBodySmall(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: sm,
       fontWeight: medium,
-      height: 1.6,
+      height: baseHeight,
       letterSpacing: 0.1,
       color: colors.outline,
     );
@@ -455,14 +430,13 @@ class EcTypography {
 
   /// Admin theme - Label large text style - for form labels
   static TextStyle getAdminLabelLarge(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: base,
       fontWeight: semiBold, // Semi-bold for admin labels
-      height: 1.4,
+      height: baseHeight,
       letterSpacing: 0.1,
       color: colors.secondary,
     );
@@ -470,14 +444,13 @@ class EcTypography {
 
   /// Admin theme - Label medium text style - for small labels
   static TextStyle getAdminLabelMedium(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: base,
       fontWeight: semiBold,
-      height: 1.4,
+      height: baseHeight,
       letterSpacing: 0.1,
       color: colors.secondary,
     );
@@ -485,14 +458,13 @@ class EcTypography {
 
   /// Admin theme - Label small text style - for tiny labels
   static TextStyle getAdminLabelSmall(ECThemeType themeType, bool isDark) {
-    final colors = isDark
-        ? EcColors.dark(themeType)
-        : EcColors.light(themeType);
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: xs,
       fontWeight: semiBold,
-      height: 1.4,
+      height: baseHeight,
       letterSpacing: 0.2,
       color: colors.secondary,
     );
@@ -502,20 +474,28 @@ class EcTypography {
   // Keep existing methods for backward compatibility
 
   /// Legacy method - returns user typography by default
-  static TextStyle get displayLarge => getUserDisplayLarge(ECThemeType.user, false);
-  static TextStyle get displayMedium => getUserDisplayMedium(ECThemeType.user, false);
-  static TextStyle get displaySmall => getUserDisplaySmall(ECThemeType.user, false);
-  static TextStyle get headlineLarge => getUserHeadlineLarge(ECThemeType.user, false);
-  static TextStyle get headlineMedium => getUserHeadlineMedium(ECThemeType.user, false);
-  static TextStyle get headlineSmall => getUserHeadlineSmall(ECThemeType.user, false);
+  static TextStyle get displayLarge =>
+      getUserDisplayLarge(ECThemeType.user, false);
+  static TextStyle get displayMedium =>
+      getUserDisplayMedium(ECThemeType.user, false);
+  static TextStyle get displaySmall =>
+      getUserDisplaySmall(ECThemeType.user, false);
+  static TextStyle get headlineLarge =>
+      getUserHeadlineLarge(ECThemeType.user, false);
+  static TextStyle get headlineMedium =>
+      getUserHeadlineMedium(ECThemeType.user, false);
+  static TextStyle get headlineSmall =>
+      getUserHeadlineSmall(ECThemeType.user, false);
   static TextStyle get titleLarge => getUserTitleLarge(ECThemeType.user, false);
-  static TextStyle get titleMedium => getUserTitleMedium(ECThemeType.user, false);
+  static TextStyle get titleMedium =>
+      getUserTitleMedium(ECThemeType.user, false);
   static TextStyle get titleSmall => getUserTitleSmall(ECThemeType.user, false);
   static TextStyle get bodyLarge => getUserBodyLarge(ECThemeType.user, false);
   static TextStyle get bodyMedium => getUserBodyMedium(ECThemeType.user, false);
   static TextStyle get bodySmall => getUserBodySmall(ECThemeType.user, false);
   static TextStyle get labelLarge => getUserLabelLarge(ECThemeType.user, false);
-  static TextStyle get labelMedium => getUserLabelMedium(ECThemeType.user, false);
+  static TextStyle get labelMedium =>
+      getUserLabelMedium(ECThemeType.user, false);
   static TextStyle get labelSmall => getUserLabelSmall(ECThemeType.user, false);
 
   // ===== UTILITY METHODS =====

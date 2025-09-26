@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'core/di/app_module.dart';
-import 'presentations/pages/example_navigation.dart';
 
 void main() async {
   // Ensure Flutter binding is initialized
@@ -70,14 +69,6 @@ class MyApp extends StatelessWidget {
       darkTheme: EcDesignTheme.darkTheme,
       themeMode: ThemeMode.system,
       routerConfig: AppRouter.router,
-    );
-
-    return MaterialApp(
-      title: 'E-Commerce Dev - ${flavor.displayName}',
-      theme: EcDesignTheme.lightTheme,
-      darkTheme: EcDesignTheme.darkTheme,
-      themeMode: ThemeMode.system,
-      home: const ExamplePage(),
     );
   }
 }

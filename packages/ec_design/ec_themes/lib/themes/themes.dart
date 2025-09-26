@@ -492,7 +492,13 @@ class EcDesignTheme {
     final colorScheme =
         isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
 
-    return CardThemeData(color: colorScheme.surfaceDim);
+    return CardThemeData(
+      color: colorScheme.surfaceDim,
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8)),
+      ),
+    );
   }
 
   /// TBD: Build app bar theme
