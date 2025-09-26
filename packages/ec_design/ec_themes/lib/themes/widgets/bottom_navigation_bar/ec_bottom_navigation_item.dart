@@ -9,34 +9,34 @@ class EcBottomNavigationItem {
   });
 
   final String label;
-  final IconData icon;
-  final IconData selectedIcon;
+  final Widget icon;
+  final Widget selectedIcon;
 }
 
-const ecBottomNavigationItem = [
+final ecBottomNavigationItem = [
   EcBottomNavigationItem(
     label: 'Home',
-    icon: EcDesignIcons.icHomeOutlined,
-    selectedIcon: EcDesignIcons.icHomeFilled,
+    icon: EcAssets.homeOutlined(),
+    selectedIcon: EcAssets.homeFilled(),
   ),
   EcBottomNavigationItem(
     label: 'Shop',
-    icon: EcDesignIcons.icShopOutlined,
-    selectedIcon: EcDesignIcons.icShopFilled,
+    icon: EcAssets.shopOutlined(),
+    selectedIcon: EcAssets.shopFilled(),
   ),
   EcBottomNavigationItem(
     label: 'Bag',
-    icon: EcDesignIcons.icShoppingBagOutlined,
-    selectedIcon: EcDesignIcons.icShoppingBagFilled,
+    icon: EcAssets.shoppingBagOutlined(),
+    selectedIcon: EcAssets.shoppingBagFilled(),
   ),
   EcBottomNavigationItem(
     label: 'Favorites',
-    icon: EcDesignIcons.icHeartOutlined,
-    selectedIcon: EcDesignIcons.icHeartFilled,
+    icon: EcAssets.heartOutlined(),
+    selectedIcon: EcAssets.heartFilled(),
   ),
   EcBottomNavigationItem(
     label: 'Profile',
-    icon: EcDesignIcons.icProfileOutlined,
-    selectedIcon: EcDesignIcons.icProfileFilled,
+    icon: EcAssets.profileOutlined(),
+    selectedIcon: EcAssets.profileFilled(),
   ),
 ];

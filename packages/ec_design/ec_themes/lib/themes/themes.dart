@@ -7,8 +7,8 @@ import 'typography.dart';
 
 export 'app_shadows.dart';
 export 'ec_theme_extension.dart';
-export 'icons.dart';
 export 'widgets/app_bar.dart';
+export 'widgets/image.dart';
 export 'widgets/button.dart';
 export 'widgets/checkbox.dart';
 export 'widgets/example_pages/app_bar_example.dart';

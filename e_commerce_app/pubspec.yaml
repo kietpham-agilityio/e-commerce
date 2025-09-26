@@ -102,10 +102,7 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
-    - family: e_commerce_icon
-      fonts:
-        - asset: ../packages/ec_design/ec_themes/assets/icons/e_commerce_icon.ttf
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
