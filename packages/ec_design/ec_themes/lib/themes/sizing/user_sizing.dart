@@ -4,6 +4,7 @@ class UserSizing {
   static const double checkbox = 20;
   static const double iconSlider = 22;
   static const double icon = 24;
+  static const double bottomNavigationBarIcon = 30;
   static const double bigIcon = 36;
   static const double textFieldSmall = 36;
   static const double iconButtonSmall = 36;
