@@ -1,12 +1,12 @@
 import 'package:talker_flutter/talker_flutter.dart';
 
-/// `GoodLog` - This class contains the basic structure of the log.
-class GoodLog extends TalkerLog {
-  GoodLog(String super.message);
+/// `ErrorLog` - This class contains the basic structure of the error log.
+class ErrorLog extends TalkerLog {
+  ErrorLog(String super.message);
 
   /// Log title
   @override
-  String get title => 'good';
+  String get title => 'error';
 
   /// Log key
   @override
@@ -20,7 +20,7 @@ class GoodLog extends TalkerLog {
   @override
   String toString() => message ?? '';
 
-  static get getPen => AnsiPen()..xterm(121);
+  static get getPen => AnsiPen()..xterm(196); // Red color
 
-  static get getKey => 'good';
+  static get getKey => 'error';
 }

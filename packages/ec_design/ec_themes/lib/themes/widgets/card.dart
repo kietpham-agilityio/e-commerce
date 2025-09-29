@@ -108,7 +108,7 @@ class EcCardInList extends StatelessWidget {
                 top: 0,
                 right: 0,
                 child: EcIconButton(
-                  icon: Icon(EcDesignIcons.icClose, color: colorScheme.surface),
+                  icon: EcAssets.close(),
                   size: 40,
                   backgroundColor: Colors.transparent,
                   onPressed: onClose,
@@ -294,7 +294,7 @@ class EcCardInGrid extends StatelessWidget {
             top: 0,
             right: 0,
             child: EcIconButton(
-              icon: Icon(EcDesignIcons.icClose, color: colorScheme.surface),
+              icon: EcAssets.close(),
               size: 40,
               backgroundColor: Colors.transparent,
               onPressed: onClose,
