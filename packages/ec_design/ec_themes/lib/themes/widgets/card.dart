@@ -2,8 +2,6 @@ import 'package:ec_themes/themes/app_spacing.dart';
 import 'package:ec_themes/themes/themes.dart';
 import 'package:flutter/material.dart';
 
-import 'image.dart';
-
 /// {@template ec_card_in_list}
 /// A customizable card widget for displaying a product/item in a list view,
 /// typically used in e-commerce applications.
@@ -108,7 +106,7 @@ class EcCardInList extends StatelessWidget {
                 top: 0,
                 right: 0,
                 child: EcIconButton(
-                  icon: Icon(EcDesignIcons.icClose, color: colorScheme.surface),
+                  icon: EcAssets.close(color: colorScheme.surface),
                   size: 40,
                   backgroundColor: Colors.transparent,
                   onPressed: onClose,
@@ -294,7 +292,7 @@ class EcCardInGrid extends StatelessWidget {
             top: 0,
             right: 0,
             child: EcIconButton(
-              icon: Icon(EcDesignIcons.icClose, color: colorScheme.surface),
+              icon: EcAssets.close(color: colorScheme.surface),
               size: 40,
               backgroundColor: Colors.transparent,
               onPressed: onClose,

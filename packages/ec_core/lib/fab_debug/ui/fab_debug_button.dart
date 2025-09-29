@@ -75,7 +75,7 @@ class FabDebugButton<T> extends StatelessWidget {
           ),
         );
       },
-      child: const Icon(Icons.bug_report),
+      child: const Icon(Icons.accessibility),
     );
   }
 }
