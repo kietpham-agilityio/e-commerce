@@ -67,6 +67,8 @@ class EcCardInList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Column(
       spacing: 7,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,9 +97,7 @@ class EcCardInList extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.surfaceDim.withValues(alpha: 0.7),
+                    color: colorScheme.surfaceDim.withValues(alpha: 0.7),
                   ),
 
                   alignment: Alignment.center,
@@ -108,10 +108,7 @@ class EcCardInList extends StatelessWidget {
                 top: 0,
                 right: 0,
                 child: EcIconButton(
-                  icon: Icon(
-                    EcDesignIcons.icClose,
-                    color: Theme.of(context).colorScheme.surface,
-                  ),
+                  icon: Icon(EcDesignIcons.icClose, color: colorScheme.surface),
                   size: 40,
                   backgroundColor: Colors.transparent,
                   onPressed: onClose,
@@ -124,7 +121,7 @@ class EcCardInList extends StatelessWidget {
             'Sorry, this item is currently sold out',
             letterSpacing: 0,
             fontWeight: FontWeight.w400,
-            color: Theme.of(context).colorScheme.surface,
+            color: colorScheme.surface,
           )
         else
           SizedBox(height: 11),
@@ -211,6 +208,7 @@ class EcCardInGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final ecTheme = Theme.of(context).extension<EcThemeExtension>()!;
     final spacing = AppSpacing(ecTheme.themeType);
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Stack(
       children: [
@@ -261,9 +259,7 @@ class EcCardInGrid extends StatelessWidget {
                   topLeft: Radius.circular(8),
                   topRight: Radius.circular(8),
                 ),
-                color: Theme.of(
-                  context,
-                ).colorScheme.surfaceDim.withValues(alpha: 0.6),
+                color: colorScheme.surfaceDim.withValues(alpha: 0.6),
               ),
               alignment: Alignment.center,
             ),
@@ -279,9 +275,7 @@ class EcCardInGrid extends StatelessWidget {
                   bottomLeft: Radius.circular(8),
                   bottomRight: Radius.circular(8),
                 ),
-                color: Theme.of(
-                  context,
-                ).colorScheme.surface.withValues(alpha: 0.5),
+                color: colorScheme.surface.withValues(alpha: 0.5),
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -290,7 +284,7 @@ class EcCardInGrid extends StatelessWidget {
                   height: 1.2,
                   letterSpacing: 0,
                   fontWeight: FontWeight.w400,
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: colorScheme.secondary,
                 ),
               ),
             ),
@@ -300,10 +294,7 @@ class EcCardInGrid extends StatelessWidget {
             top: 0,
             right: 0,
             child: EcIconButton(
-              icon: Icon(
-                EcDesignIcons.icClose,
-                color: Theme.of(context).colorScheme.surface,
-              ),
+              icon: Icon(EcDesignIcons.icClose, color: colorScheme.surface),
               size: 40,
               backgroundColor: Colors.transparent,
               onPressed: onClose,
