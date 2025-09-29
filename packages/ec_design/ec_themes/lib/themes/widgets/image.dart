@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ec_themes/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ec_themes/gen/assets.gen.dart';
 
 ///
 /// An enum defines all supported types of image loader

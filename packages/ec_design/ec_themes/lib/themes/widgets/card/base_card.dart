@@ -116,6 +116,7 @@ class EcCardInList extends StatelessWidget {
         ),
         if (isSoldOut)
           EcLabelSmallText(
+            // FIXME: use l10n
             'Sorry, this item is currently sold out',
             letterSpacing: 0,
             fontWeight: FontWeight.w400,
@@ -204,8 +205,8 @@ class EcCardInGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ecTheme = Theme.of(context).extension<EcThemeExtension>()!;
-    final spacing = AppSpacing(ecTheme.themeType);
+    final themeExtension = Theme.of(context).extension<EcThemeExtension>()!;
+    final spacing = AppSpacing(themeExtension.themeType);
     final colorScheme = Theme.of(context).colorScheme;
 
     return Stack(
@@ -278,6 +279,7 @@ class EcCardInGrid extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: EcLabelSmallText(
+                  // FIXME: use l10n
                   'Sorry, this item is currently sold out',
                   height: 1.2,
                   letterSpacing: 0,
