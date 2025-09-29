@@ -103,6 +103,11 @@ class _CommentsView extends StatelessWidget {
               final commentId = comment?['id']?.toString() ?? '${index + 1}';
 
               return Card(
+                elevation: 4,
+                shadowColor: Theme.of(
+                  context,
+                ).colorScheme.onSecondary.withValues(alpha: 0.9),
+                color: Theme.of(context).colorScheme.onSecondary,
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Column(
@@ -110,7 +115,12 @@ class _CommentsView extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          CircleAvatar(radius: 16, child: Text(commentId)),
+                          CircleAvatar(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.surfaceDim,
+                            radius: 16,
+                            child: Text(commentId),
+                          ),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Column(

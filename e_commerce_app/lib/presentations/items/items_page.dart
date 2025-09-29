@@ -1,4 +1,5 @@
 import 'package:ec_core/ec_core.dart';
+import 'package:ec_themes/ec_design.dart';
 import 'package:ec_themes/themes/widgets/sliver_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,6 +30,7 @@ class _ItemsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final featureFlagService = getFeatureFlagService();
     final flags = featureFlagService.flags;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       body: BlocBuilder<ItemsBloc, ItemsState>(
@@ -79,6 +81,7 @@ class _ItemsView extends StatelessWidget {
                   child: _EmptyWidget(),
                 ),
               ] else ...[
+                const SliverToBoxAdapter(child: SizedBox(height: 16)),
                 SliverList.separated(
                   itemCount: state.items.length,
                   itemBuilder: (context, index) {
@@ -86,22 +89,49 @@ class _ItemsView extends StatelessWidget {
                     final title =
                         item?['title']?.toString() ?? 'Item ${index + 1}';
                     final subtitle = item?['body']?.toString();
-                    return ListTile(
-                      title: Text(title),
-                      subtitle: subtitle != null ? Text(subtitle) : null,
-                      leading: CircleAvatar(child: Text('${index + 1}')),
-                      trailing: const Icon(Icons.comment_outlined),
-                      onTap: () {
-                        final postId = item?['id'] ?? index + 1;
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => CommentsPage(postId: postId as int),
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Material(
+                        elevation: 4,
+                        shadowColor: colorScheme.onSecondary.withValues(
+                          alpha: 0.9,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                        child: ListTile(
+                          tileColor: colorScheme.onSecondary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                        );
-                      },
+                          title: EcTitleLargeText(title),
+                          subtitle:
+                              subtitle != null
+                                  ? Padding(
+                                    padding: const EdgeInsets.only(top: 6),
+                                    child: EcBodyMediumText(
+                                      subtitle,
+                                      color: colorScheme.surface,
+                                    ),
+                                  )
+                                  : null,
+                          leading: CircleAvatar(
+                            backgroundColor: colorScheme.surfaceDim,
+                            child: EcTitleMediumText('${index + 1}'),
+                          ),
+                          trailing: const Icon(Icons.comment_outlined),
+                          onTap: () {
+                            final postId = item?['id'] ?? index + 1;
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder:
+                                    (_) => CommentsPage(postId: postId as int),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     );
                   },
-                  separatorBuilder: (_, __) => const Divider(height: 0),
+                  separatorBuilder: (_, __) => SizedBox(height: 16),
                 ),
               ],
             ],

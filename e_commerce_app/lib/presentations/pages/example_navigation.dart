@@ -24,12 +24,7 @@ class ExamplePage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-      appBar: EcAppBar(
-        title: const EcTitleMediumText('E-Commerce Example'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
-      ),
+      appBar: EcAppBar(title: const EcTitleLargeText('E-Commerce Example')),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -103,6 +98,7 @@ class ExamplePage extends StatelessWidget {
           const SizedBox(height: 8),
 
           Card(
+            color: Theme.of(context).colorScheme.onSecondary,
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -135,11 +131,24 @@ class ExamplePage extends StatelessWidget {
     required IconData icon,
     required VoidCallback onTap,
   }) {
-    return Card(
+    return Material(
+      elevation: 4,
+      shadowColor: Theme.of(
+        context,
+      ).colorScheme.onSecondary.withValues(alpha: 0.9),
+      borderRadius: BorderRadius.circular(8),
       child: ListTile(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        tileColor: Theme.of(context).colorScheme.onSecondary,
         leading: Icon(icon),
-        title: EcTitleSmallText(title),
-        subtitle: EcBodySmallText(description),
+        title: EcTitleLargeText(title),
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: 6),
+          child: EcBodyMediumText(
+            description,
+            color: Theme.of(context).colorScheme.surface,
+          ),
+        ),
         trailing: const Icon(Icons.chevron_right),
         onTap: onTap,
       ),
