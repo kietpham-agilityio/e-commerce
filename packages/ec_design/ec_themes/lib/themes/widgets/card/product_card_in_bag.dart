@@ -40,12 +40,12 @@ class EcProductCardInBag extends StatelessWidget {
   /// {@macro ec_product_card_in_bag}
   const EcProductCardInBag({
     required this.title,
-    required this.isSoldOut,
-    required this.imageUrl,
-    required this.color,
-    required this.size,
-    required this.price,
-    required this.quantity,
+    this.isSoldOut = false,
+    this.imageUrl = '',
+    this.color,
+    this.size,
+    this.price,
+    this.quantity,
     this.onMore,
     this.onMinor,
     this.onPlus,
@@ -62,16 +62,16 @@ class EcProductCardInBag extends StatelessWidget {
   final String imageUrl;
 
   /// The product color description.
-  final String color;
+  final String? color;
 
   /// The product size description.
-  final String size;
+  final String? size;
 
   /// The product price.
-  final int price;
+  final int? price;
 
   /// The current quantity in the bag.
-  final int quantity;
+  final int? quantity;
 
   /// Callback for the "more" button (optional).
   final VoidCallback? onMore;
