@@ -23,7 +23,7 @@ class RatingStarsView extends StatelessWidget {
   /// {@macro rating_stars_view}
   const RatingStarsView({
     required this.rating,
-    required this.totalReviews,
+    this.totalReviews = 0,
     super.key,
   });
 
