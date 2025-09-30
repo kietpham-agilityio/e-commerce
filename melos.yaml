@@ -22,6 +22,7 @@ scripts:
       scope:
         - ec_core
         - e_commerce_app
+        - ec_themes
 
   custom_lint_app:
     run: |
