@@ -75,6 +75,7 @@ class EcCardInList extends StatelessWidget {
           clipBehavior: Clip.none,
           children: [
             Card(
+              color: colorScheme.primaryContainer,
               clipBehavior: Clip.antiAlias,
               child: Row(
                 spacing: 12,
