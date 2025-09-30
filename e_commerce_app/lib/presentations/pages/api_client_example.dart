@@ -1323,11 +1323,7 @@ class _ApiClientExampleState extends State<ApiClientExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-      appBar: EcAppBar(
-        title: const EcTitleMediumText('API Client Examples'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
-      ),
+      appBar: EcAppBar(titleText: 'API Client Examples'),
       body: Column(
         children: [
           // Loading indicator
@@ -1514,12 +1510,9 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       runSpacing: 8,
       children:
           buttons.map((button) {
-            return SizedBox(
-              width: 150,
-              child: EcElevatedButton(
-                text: button.$1,
-                onPressed: _isLoading ? null : button.$2,
-              ),
+            return EcElevatedButton(
+              text: button.$1,
+              onPressed: _isLoading ? null : button.$2,
             );
           }).toList(),
     );

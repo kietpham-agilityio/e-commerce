@@ -25,11 +25,7 @@ class ExamplePage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-      appBar: EcAppBar(
-        title: const EcTitleMediumText('E-Commerce Example'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
-      ),
+      appBar: EcAppBar(title: const EcTitleMediumText('E-Commerce Example')),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
