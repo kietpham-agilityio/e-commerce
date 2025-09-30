@@ -390,18 +390,12 @@ class EcDesignTheme {
         borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide(color: colors.outline),
       ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: colors.primary),
-      ),
+
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide(color: colors.error),
       ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: colors.error),
-      ),
+
       disabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide(color: colors.outline.withValues(alpha: 0.3)),
