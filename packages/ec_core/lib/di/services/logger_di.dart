@@ -1,6 +1,11 @@
 import 'package:talker_flutter/talker_flutter.dart';
 
 import '../../ec_flavor.dart';
+import '../../logger/utils/success_log.dart';
+import '../../logger/utils/error_log.dart';
+import '../../logger/utils/good_log.dart';
+import '../../logger/utils/info_log.dart';
+import '../../logger/utils/warning_log.dart';
 import '../di_initializer.dart';
 
 /// Logger and debugging services dependency injection configuration
@@ -194,17 +199,26 @@ class LoggerDI {
 
   /// Log debug message
   static void debug(String message) {
-    log(message, level: 'debug');
+    if (isTalkerRegistered()) {
+      final talker = mainTalker;
+      talker.logCustom(InfoLog(message));
+    }
   }
 
   /// Log info message
   static void info(String message) {
-    log(message, level: 'info');
+    if (isTalkerRegistered()) {
+      final talker = mainTalker;
+      talker.logCustom(InfoLog(message));
+    }
   }
 
   /// Log warning message
   static void warning(String message) {
-    log(message, level: 'warning');
+    if (isTalkerRegistered()) {
+      final talker = mainTalker;
+      talker.logCustom(WarningLog(message));
+    }
   }
 
   /// Log error message
@@ -214,18 +228,33 @@ class LoggerDI {
     StackTrace? stackTrace,
   }) {
     if (isTalkerRegistered()) {
-      log(
-        message,
-        level: 'error',
-        exception: exception,
-        stackTrace: stackTrace,
-      );
+      final talker = mainTalker;
+      talker.logCustom(ErrorLog(message));
     }
   }
 
   /// Log verbose message
   static void verbose(String message) {
-    log(message, level: 'verbose');
+    if (isTalkerRegistered()) {
+      final talker = mainTalker;
+      talker.logCustom(InfoLog(message));
+    }
+  }
+
+  /// Log success message
+  static void success(String message) {
+    if (isTalkerRegistered()) {
+      final talker = mainTalker;
+      talker.logCustom(SuccessLog(message));
+    }
+  }
+
+  /// Log good message
+  static void good(String message) {
+    if (isTalkerRegistered()) {
+      final talker = mainTalker;
+      talker.logCustom(GoodLog(message));
+    }
   }
 
   /// Clear all logs

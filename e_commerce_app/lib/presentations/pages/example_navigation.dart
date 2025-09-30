@@ -24,7 +24,7 @@ class ExamplePage extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: EcAppBar(title: const EcTitleLargeText('E-Commerce Example')),
+      appBar: EcAppBar(titleText: 'E-Commerce Example'),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

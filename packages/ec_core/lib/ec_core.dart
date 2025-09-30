@@ -12,5 +12,7 @@ export 'fab_debug/fab_debug.dart';
 export 'feature_flags/feature_flags.dart';
 export 'logger/ui/presentation_widget.dart';
 export 'logger/utils/good_log.dart';
+export 'logger/utils/success_log.dart';
+export 'logger/utils/api_success_logger.dart';
 export 'mocked_backend/mock_backend.dart';
 export 'services/services.dart';

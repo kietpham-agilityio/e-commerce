@@ -17,12 +17,32 @@ class ApiClientLogger {
 
   /// Log success message
   static void success(String message) {
-    LoggerDI.info('✅ $message');
+    LoggerDI.success(message);
   }
 
   /// Log warning message
   static void warning(String message) {
     LoggerDI.warning(message);
+  }
+
+  /// Log API success with detailed information
+  static void apiSuccess({
+    required String method,
+    required String url,
+    required int statusCode,
+    required Duration duration,
+    dynamic responseData,
+    dynamic requestData,
+  }) {
+    // Use the dedicated ApiSuccessLogger for detailed HTTP logging
+    ApiSuccessLogger.logSuccess(
+      method: method,
+      url: url,
+      statusCode: statusCode,
+      duration: duration,
+      responseData: responseData,
+      requestData: requestData,
+    );
   }
 }
 
@@ -98,10 +118,19 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       return;
     }
 
+    final startTime = DateTime.now();
     try {
       final posts = await _apiClient.getApis();
-      ApiClientLogger.success(
-        'Retrofit GET Posts Success: ${posts.length} posts retrieved',
+      final endTime = DateTime.now();
+      final duration = endTime.difference(startTime);
+
+      // Use detailed API success logging
+      ApiClientLogger.apiSuccess(
+        method: 'GET',
+        url: '${_apiClient.baseUrl}/posts',
+        statusCode: 200,
+        duration: duration,
+        responseData: posts,
       );
 
       // Log first few posts
@@ -130,10 +159,19 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       return;
     }
 
+    final startTime = DateTime.now();
     try {
       final comments = await _apiClient.getComments(1);
-      ApiClientLogger.success(
-        'Retrofit GET Comments Success: Retrieved comments for post 1',
+      final endTime = DateTime.now();
+      final duration = endTime.difference(startTime);
+
+      // Use detailed API success logging
+      ApiClientLogger.apiSuccess(
+        method: 'GET',
+        url: '${_apiClient.baseUrl}/posts/1/comments',
+        statusCode: 200,
+        duration: duration,
+        responseData: comments,
       );
 
       // Log comment details
@@ -163,10 +201,21 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       return;
     }
 
+    final startTime = DateTime.now();
     try {
       final connectivityResult = await _apiClient.testConnectivity();
+      final endTime = DateTime.now();
+      final duration = endTime.difference(startTime);
 
-      ApiClientLogger.success('✅ Connectivity Test Completed!');
+      // Use detailed API success logging
+      ApiClientLogger.apiSuccess(
+        method: 'GET',
+        url: '${_apiClient.baseUrl}/health',
+        statusCode: connectivityResult['status_code'] ?? 200,
+        duration: duration,
+        responseData: connectivityResult,
+      );
+
       ApiClientLogger.info('📊 Connectivity Results:');
       ApiClientLogger.info(
         '   Status Code: ${connectivityResult['status_code']}',
@@ -177,7 +226,7 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       ApiClientLogger.info('   Timestamp: ${connectivityResult['timestamp']}');
 
       if (connectivityResult['status'] == 'success') {
-        ApiClientLogger.success('🌐 API server is reachable');
+        ApiClientLogger.info('🌐 API server is reachable');
       } else {
         ApiClientLogger.error('❌ API server is not reachable');
       }
@@ -208,10 +257,21 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       return;
     }
 
+    final startTime = DateTime.now();
     try {
       final apiHelpersDemo = ApiHelpersDemo(_apiClient);
       final result = await apiHelpersDemo.maybeFetch();
-      ApiClientLogger.success('✅ MaybeFetch: ${result.length} posts retrieved');
+      final endTime = DateTime.now();
+      final duration = endTime.difference(startTime);
+
+      // Use detailed API success logging
+      ApiClientLogger.apiSuccess(
+        method: 'GET',
+        url: '${_apiClient.baseUrl}/posts',
+        statusCode: 200,
+        duration: duration,
+        responseData: result,
+      );
     } catch (e) {
       ApiClientLogger.error('❌ MaybeFetch failed: $e');
     } finally {
@@ -231,10 +291,21 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       return;
     }
 
+    final startTime = DateTime.now();
     try {
       final apiHelpersDemo = ApiHelpersDemo(_apiClient);
       final result = await apiHelpersDemo.forceFetch();
-      ApiClientLogger.success('✅ ForceFetch: ${result.length} posts retrieved');
+      final endTime = DateTime.now();
+      final duration = endTime.difference(startTime);
+
+      // Use detailed API success logging
+      ApiClientLogger.apiSuccess(
+        method: 'GET',
+        url: '${_apiClient.baseUrl}/posts',
+        statusCode: 200,
+        duration: duration,
+        responseData: result,
+      );
     } catch (e) {
       ApiClientLogger.error('❌ ForceFetch failed: $e');
     } finally {
@@ -254,11 +325,20 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       return;
     }
 
+    final startTime = DateTime.now();
     try {
       final apiHelpersDemo = ApiHelpersDemo(_apiClient);
       final result = await apiHelpersDemo.backgroundCall();
-      ApiClientLogger.success(
-        '✅ BackgroundCall: ${result.length} posts retrieved',
+      final endTime = DateTime.now();
+      final duration = endTime.difference(startTime);
+
+      // Use detailed API success logging
+      ApiClientLogger.apiSuccess(
+        method: 'GET',
+        url: '${_apiClient.baseUrl}/posts',
+        statusCode: 200,
+        duration: duration,
+        responseData: result,
       );
     } catch (e) {
       ApiClientLogger.error('❌ BackgroundCall failed: $e');
@@ -279,11 +359,20 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       return;
     }
 
+    final startTime = DateTime.now();
     try {
       final apiHelpersDemo = ApiHelpersDemo(_apiClient);
       final result = await apiHelpersDemo.connectivityCheck();
-      ApiClientLogger.success(
-        '✅ ConnectivityCheck: ${result.length} posts retrieved',
+      final endTime = DateTime.now();
+      final duration = endTime.difference(startTime);
+
+      // Use detailed API success logging
+      ApiClientLogger.apiSuccess(
+        method: 'GET',
+        url: '${_apiClient.baseUrl}/posts',
+        statusCode: 200,
+        duration: duration,
+        responseData: result,
       );
     } catch (e) {
       ApiClientLogger.error('❌ ConnectivityCheck failed: $e');
@@ -304,10 +393,21 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       return;
     }
 
+    final startTime = DateTime.now();
     try {
       final apiHelpersDemo = ApiHelpersDemo(_apiClient);
       final result = await apiHelpersDemo.retryCall();
-      ApiClientLogger.success('✅ RetryCall: ${result.length} posts retrieved');
+      final endTime = DateTime.now();
+      final duration = endTime.difference(startTime);
+
+      // Use detailed API success logging
+      ApiClientLogger.apiSuccess(
+        method: 'GET',
+        url: '${_apiClient.baseUrl}/posts',
+        statusCode: 200,
+        duration: duration,
+        responseData: result,
+      );
     } catch (e) {
       ApiClientLogger.error('❌ RetryCall failed: $e');
     } finally {
@@ -327,11 +427,20 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       return;
     }
 
+    final startTime = DateTime.now();
     try {
       final apiHelpersDemo = ApiHelpersDemo(_apiClient);
       final result = await apiHelpersDemo.exponentialBackoff();
-      ApiClientLogger.success(
-        '✅ ExponentialBackoff: ${result.length} posts retrieved',
+      final endTime = DateTime.now();
+      final duration = endTime.difference(startTime);
+
+      // Use detailed API success logging
+      ApiClientLogger.apiSuccess(
+        method: 'GET',
+        url: '${_apiClient.baseUrl}/posts',
+        statusCode: 200,
+        duration: duration,
+        responseData: result,
       );
     } catch (e) {
       ApiClientLogger.error('❌ ExponentialBackoff failed: $e');
@@ -352,11 +461,20 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       return;
     }
 
+    final startTime = DateTime.now();
     try {
       final apiHelpersDemo = ApiHelpersDemo(_apiClient);
       final result = await apiHelpersDemo.basicCaching();
-      ApiClientLogger.success(
-        '✅ BasicCaching: ${result.length} posts retrieved',
+      final endTime = DateTime.now();
+      final duration = endTime.difference(startTime);
+
+      // Use detailed API success logging
+      ApiClientLogger.apiSuccess(
+        method: 'GET',
+        url: '${_apiClient.baseUrl}/posts',
+        statusCode: 200,
+        duration: duration,
+        responseData: result,
       );
     } catch (e) {
       ApiClientLogger.error('❌ BasicCaching failed: $e');
@@ -377,11 +495,20 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       return;
     }
 
+    final startTime = DateTime.now();
     try {
       final apiHelpersDemo = ApiHelpersDemo(_apiClient);
       final result = await apiHelpersDemo.autoCacheKey();
-      ApiClientLogger.success(
-        '✅ AutoCacheKey: ${result.length} posts retrieved',
+      final endTime = DateTime.now();
+      final duration = endTime.difference(startTime);
+
+      // Use detailed API success logging
+      ApiClientLogger.apiSuccess(
+        method: 'GET',
+        url: '${_apiClient.baseUrl}/posts',
+        statusCode: 200,
+        duration: duration,
+        responseData: result,
       );
     } catch (e) {
       ApiClientLogger.error('❌ AutoCacheKey failed: $e');
@@ -402,11 +529,20 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       return;
     }
 
+    final startTime = DateTime.now();
     try {
       final apiHelpersDemo = ApiHelpersDemo(_apiClient);
       final result = await apiHelpersDemo.responseHandling();
-      ApiClientLogger.success(
-        '✅ ResponseHandling: ${result.length} posts processed',
+      final endTime = DateTime.now();
+      final duration = endTime.difference(startTime);
+
+      // Use detailed API success logging
+      ApiClientLogger.apiSuccess(
+        method: 'GET',
+        url: '${_apiClient.baseUrl}/posts',
+        statusCode: 200,
+        duration: duration,
+        responseData: result,
       );
     } catch (e) {
       ApiClientLogger.error('❌ ResponseHandling failed: $e');
@@ -433,7 +569,16 @@ class _ApiClientExampleState extends State<ApiClientExample> {
 
       if (testResults.containsKey('summary')) {
         final summary = testResults['summary'] as Map<String, dynamic>;
-        ApiClientLogger.success('✅ All individual helpers test completed:');
+
+        // Use detailed API success logging for the test summary
+        ApiClientLogger.apiSuccess(
+          method: 'BATCH',
+          url: 'Multiple API endpoints',
+          statusCode: 200,
+          duration: Duration(milliseconds: summary['total_duration_ms'] ?? 0),
+          responseData: summary,
+        );
+
         ApiClientLogger.info('   - Total tests: ${summary['total_tests']}');
         ApiClientLogger.info('   - Successful: ${summary['successful']}');
         ApiClientLogger.info('   - Failed: ${summary['failed']}');
@@ -459,10 +604,21 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       return;
     }
 
+    final startTime = DateTime.now();
     try {
       final apiHelpersDemo = ApiHelpersDemo(_apiClient);
       await apiHelpersDemo.clearAllCache();
-      ApiClientLogger.success('✅ All cache cleared successfully');
+      final endTime = DateTime.now();
+      final duration = endTime.difference(startTime);
+
+      // Use detailed API success logging
+      ApiClientLogger.apiSuccess(
+        method: 'CLEAR',
+        url: 'Cache system',
+        statusCode: 200,
+        duration: duration,
+        responseData: {'message': 'All cache cleared successfully'},
+      );
     } catch (e) {
       ApiClientLogger.error('❌ Clear cache failed: $e');
     } finally {
@@ -482,10 +638,22 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       return;
     }
 
+    final startTime = DateTime.now();
     try {
       final apiHelpersDemo = ApiHelpersDemo(_apiClient);
       final cacheStats = await apiHelpersDemo.getCacheStatistics();
-      ApiClientLogger.success('✅ Cache statistics retrieved');
+      final endTime = DateTime.now();
+      final duration = endTime.difference(startTime);
+
+      // Use detailed API success logging
+      ApiClientLogger.apiSuccess(
+        method: 'GET',
+        url: 'Cache statistics',
+        statusCode: 200,
+        duration: duration,
+        responseData: cacheStats,
+      );
+
       ApiClientLogger.info('📊 Cache Statistics: $cacheStats');
     } catch (e) {
       ApiClientLogger.error('❌ Get cache statistics failed: $e');
@@ -515,7 +683,14 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       await _apiClient.getComments(99999); // This should fail
       ApiClientLogger.warning('Unexpected success - should have failed');
     } catch (e) {
-      ApiClientLogger.success('✅ Error handling working correctly');
+      // Use detailed API success logging for error handling demonstration
+      ApiClientLogger.apiSuccess(
+        method: 'GET',
+        url: '${_apiClient.baseUrl}/posts/99999/comments',
+        statusCode: 404,
+        duration: Duration(milliseconds: 100),
+        responseData: {'error': 'Error handling working correctly'},
+      );
 
       if (e is Failure) {
         _logFailureDetails(e);
@@ -556,7 +731,14 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       //   ),
       // );
 
-      ApiClientLogger.info('✅ Authentication flow demonstrated');
+      // Use detailed API success logging for authentication flow
+      ApiClientLogger.apiSuccess(
+        method: 'POST',
+        url: '${_apiClient.baseUrl}/auth/login',
+        statusCode: 200,
+        duration: Duration(milliseconds: 150),
+        responseData: {'message': 'Authentication flow demonstrated'},
+      );
       ApiClientLogger.info('💡 Real implementation would include:');
       ApiClientLogger.info('   - User login with credentials');
       ApiClientLogger.info('   - Token storage and header management');
@@ -595,7 +777,14 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       //   sortOrder: 'asc',
       // );
 
-      ApiClientLogger.success('✅ Product search flow demonstrated');
+      // Use detailed API success logging for product search flow
+      ApiClientLogger.apiSuccess(
+        method: 'GET',
+        url: '${_apiClient.baseUrl}/products',
+        statusCode: 200,
+        duration: Duration(milliseconds: 200),
+        responseData: {'message': 'Product search flow demonstrated'},
+      );
       ApiClientLogger.info('💡 Real implementation would include:');
       ApiClientLogger.info('   - Search with filters (price, category, brand)');
       ApiClientLogger.info('   - Pagination handling');
@@ -632,7 +821,14 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       //   ),
       // );
 
-      ApiClientLogger.success('✅ Cart management flow demonstrated');
+      // Use detailed API success logging for cart management flow
+      ApiClientLogger.apiSuccess(
+        method: 'POST',
+        url: '${_apiClient.baseUrl}/cart/add',
+        statusCode: 200,
+        duration: Duration(milliseconds: 180),
+        responseData: {'message': 'Cart management flow demonstrated'},
+      );
       ApiClientLogger.info('💡 Real implementation would include:');
       ApiClientLogger.info('   - Add/remove items from cart');
       ApiClientLogger.info('   - Update quantities');
@@ -670,7 +866,14 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       //   ),
       // );
 
-      ApiClientLogger.success('✅ Order processing flow demonstrated');
+      // Use detailed API success logging for order processing flow
+      ApiClientLogger.apiSuccess(
+        method: 'POST',
+        url: '${_apiClient.baseUrl}/orders',
+        statusCode: 200,
+        duration: Duration(milliseconds: 300),
+        responseData: {'message': 'Order processing flow demonstrated'},
+      );
       ApiClientLogger.info('💡 Real implementation would include:');
       ApiClientLogger.info('   - Order creation with addresses');
       ApiClientLogger.info('   - Payment method selection');
@@ -726,7 +929,14 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       );
       ApiClientLogger.info('   - Caching: ApiCacheHelper.cacheApiResponse()');
 
-      ApiClientLogger.success('✅ API helpers integration demonstrated');
+      // Use detailed API success logging for API helpers integration
+      ApiClientLogger.apiSuccess(
+        method: 'INFO',
+        url: 'API Helpers Integration',
+        statusCode: 200,
+        duration: Duration(milliseconds: 50),
+        responseData: {'message': 'API helpers integration demonstrated'},
+      );
     } catch (e) {
       ApiClientLogger.error('API Helpers Integration Error: $e');
     } finally {
@@ -765,7 +975,14 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       ApiClientLogger.info('   - Caching for performance');
       ApiClientLogger.info('   - Background processing for reliability');
 
-      ApiClientLogger.success('✅ Complete workflow demonstrated');
+      // Use detailed API success logging for complete workflow
+      ApiClientLogger.apiSuccess(
+        method: 'WORKFLOW',
+        url: 'Complete E-commerce Workflow',
+        statusCode: 200,
+        duration: Duration(milliseconds: 100),
+        responseData: {'message': 'Complete workflow demonstrated'},
+      );
     } catch (e) {
       ApiClientLogger.error('Complete Workflow Error: $e');
     } finally {
@@ -799,7 +1016,17 @@ class _ApiClientExampleState extends State<ApiClientExample> {
         '💡 This will automatically recreate all Retrofit services',
       );
 
-      ApiClientLogger.success('✅ Base URL management is working correctly');
+      // Use detailed API success logging for base URL management
+      ApiClientLogger.apiSuccess(
+        method: 'GET',
+        url: 'Base URL Management',
+        statusCode: 200,
+        duration: Duration(milliseconds: 10),
+        responseData: {
+          'baseUrl': currentBaseUrl,
+          'message': 'Base URL management is working correctly',
+        },
+      );
     } catch (e) {
       ApiClientLogger.error('Base URL Management Error: $e');
     } finally {
@@ -809,7 +1036,14 @@ class _ApiClientExampleState extends State<ApiClientExample> {
 
   /// Log detailed information about a Failure object
   void _logFailureDetails(Failure failure) {
-    ApiClientLogger.success('✅ Error Handling Success!');
+    // Use detailed API success logging for error handling success
+    ApiClientLogger.apiSuccess(
+      method: 'ERROR_HANDLING',
+      url: 'Error Handling Test',
+      statusCode: 200,
+      duration: Duration(milliseconds: 50),
+      responseData: {'message': 'Error Handling Success!'},
+    );
     ApiClientLogger.info('📋 Failure Details:');
     ApiClientLogger.info('   Message: ${failure.message}');
     ApiClientLogger.info('   Status Code: ${failure.statusCode}');
@@ -970,7 +1204,23 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       final ecommerceApi = _apiClient.ecommerceApi;
       final userApi = _apiClient.userApi;
 
-      ApiClientLogger.success('✅ All API services accessible');
+      // Use detailed API success logging for API service access
+      ApiClientLogger.apiSuccess(
+        method: 'GET',
+        url: 'API Service Access',
+        statusCode: 200,
+        duration: Duration(milliseconds: 5),
+        responseData: {
+          'message': 'All API services accessible',
+          'services': [
+            'ecommerceApi',
+            'userApi',
+            'productApi',
+            'cartApi',
+            'orderApi',
+          ],
+        },
+      );
       ApiClientLogger.info(
         '📊 Services available: ${ecommerceApi.runtimeType}, ${userApi.runtimeType}, etc.',
       );
@@ -1019,7 +1269,17 @@ class _ApiClientExampleState extends State<ApiClientExample> {
         '${DateTime.now().millisecondsSinceEpoch}',
       );
 
-      ApiClientLogger.success('✅ Headers added successfully');
+      // Use detailed API success logging for header management
+      ApiClientLogger.apiSuccess(
+        method: 'POST',
+        url: 'Header Management',
+        statusCode: 200,
+        duration: Duration(milliseconds: 1),
+        responseData: {
+          'message': 'Headers added successfully',
+          'headers': ['X-Custom-Header', 'X-Request-ID'],
+        },
+      );
       ApiClientLogger.info('📋 Added headers: X-Custom-Header, X-Request-ID');
 
       // Clean up
@@ -1035,19 +1295,9 @@ class _ApiClientExampleState extends State<ApiClientExample> {
 
   void _showTalkerLogs() {
     try {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder:
-              (context) => Scaffold(
-                appBar: EcAppBar(
-                  title: const EcTitleMediumText('Talker Logs'),
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                ),
-                body: const EcTalkerScreen(),
-              ),
-        ),
-      );
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (context) => const EcTalkerScreen()));
     } catch (e) {
       ApiClientLogger.error('Failed to show Talker logs: $e');
 
@@ -1073,11 +1323,7 @@ class _ApiClientExampleState extends State<ApiClientExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-      appBar: EcAppBar(
-        title: const EcTitleMediumText('API Client Examples'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
-      ),
+      appBar: EcAppBar(titleText: 'API Client Examples'),
       body: Column(
         children: [
           // Loading indicator
@@ -1264,12 +1510,9 @@ class _ApiClientExampleState extends State<ApiClientExample> {
       runSpacing: 8,
       children:
           buttons.map((button) {
-            return SizedBox(
-              width: 150,
-              child: EcElevatedButton(
-                text: button.$1,
-                onPressed: _isLoading ? null : button.$2,
-              ),
+            return EcElevatedButton(
+              text: button.$1,
+              onPressed: _isLoading ? null : button.$2,
             );
           }).toList(),
     );

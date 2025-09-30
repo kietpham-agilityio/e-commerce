@@ -1,3 +1,5 @@
+import 'package:ec_core/logger/ui/theme.dart' show talkerTheme;
+
 import 'package:flutter/material.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import '../../di/di.dart';
@@ -10,22 +12,17 @@ class EcTalkerScreen extends StatelessWidget {
     try {
       // Try to get the main Talker instance
       if (LoggerDI.isTalkerRegistered(instanceName: 'main')) {
-        return TalkerScreen(talker: LoggerDI.mainTalker);
+        return TalkerScreen(talker: LoggerDI.mainTalker, theme: talkerTheme);
       }
 
       // Fallback to any registered Talker instance
       if (DI.isRegistered<Talker>()) {
-        return TalkerScreen(talker: DI.get<Talker>());
+        return TalkerScreen(talker: DI.get<Talker>(), theme: talkerTheme);
       }
 
       // If no Talker is registered, show an error message
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('Talker Logs'),
-          backgroundColor: Colors.red,
-          foregroundColor: Colors.white,
-        ),
-        body: const Center(
+      return const Scaffold(
+        body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -47,11 +44,6 @@ class EcTalkerScreen extends StatelessWidget {
     } catch (e) {
       // Handle any other errors
       return Scaffold(
-        appBar: AppBar(
-          title: const Text('Talker Logs'),
-          backgroundColor: Colors.red,
-          foregroundColor: Colors.white,
-        ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

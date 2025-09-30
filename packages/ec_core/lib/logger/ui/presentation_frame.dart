@@ -135,7 +135,7 @@ class _LogsPreview extends StatelessWidget {
                   builder: (context, data) {
                     final reversedLogs = data.reversed.toList();
                     return Container(
-                      color: const Color(0xFF212121),
+                      color: Theme.of(context).colorScheme.surface,
                       child: CustomScrollView(
                         slivers: [
                           const SliverToBoxAdapter(child: SizedBox(height: 40)),
