@@ -1,9 +1,43 @@
 import 'package:ec_themes/ec_design.dart';
-import 'package:ec_themes/themes/app_sizing.dart';
 import 'package:ec_themes/themes/app_spacing.dart';
 import 'package:flutter/material.dart';
 
+/// {@template ec_product_card_in_bag}
+/// A card widget for displaying a product in the shopping bag/cart.
+///
+/// This widget shows the product image, title, color, size, price, quantity,
+/// and provides controls for incrementing/decrementing quantity and accessing
+/// more options. It is intended for use in a shopping bag or cart list.
+///
+/// Example usage:
+/// ```dart
+/// EcProductCardInBag(
+///   title: 'Pullover',
+///   imageUrl: 'https://example.com/image.jpg',
+///   isSoldOut: false,
+///   color: 'Black',
+///   size: 'L',
+///   quantity: 1,
+///   price: 51,
+///   onMinor: () {},
+///   onPlus: () {},
+///   onMore: () {},
+/// )
+/// ```
+///
+/// - [title]: The product name.
+/// - [isSoldOut]: Whether the product is sold out.
+/// - [imageUrl]: The product image URL.
+/// - [color]: The product color description.
+/// - [size]: The product size description.
+/// - [price]: The product price.
+/// - [quantity]: The current quantity in the bag.
+/// - [onMore]: Callback for the "more" button (optional).
+/// - [onMinor]: Callback for the decrement button (optional).
+/// - [onPlus]: Callback for the increment button (optional).
+/// {@endtemplate}
 class EcProductCardInBag extends StatelessWidget {
+  /// {@macro ec_product_card_in_bag}
   const EcProductCardInBag({
     required this.title,
     required this.isSoldOut,
@@ -13,17 +47,40 @@ class EcProductCardInBag extends StatelessWidget {
     required this.price,
     required this.quantity,
     this.onMore,
+    this.onMinor,
+    this.onPlus,
     super.key,
   });
 
+  /// The product name.
   final String title;
+
+  /// Whether the product is sold out.
   final bool isSoldOut;
+
+  /// The product image URL.
   final String imageUrl;
+
+  /// The product color description.
   final String color;
+
+  /// The product size description.
   final String size;
+
+  /// The product price.
   final int price;
+
+  /// The current quantity in the bag.
   final int quantity;
+
+  /// Callback for the "more" button (optional).
   final VoidCallback? onMore;
+
+  /// Callback for the decrement button (optional).
+  final VoidCallback? onMinor;
+
+  /// Callback for the increment button (optional).
+  final VoidCallback? onPlus;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +88,6 @@ class EcProductCardInBag extends StatelessWidget {
     final colorScheme = ecTheme.colorScheme;
     final themeExtension = Theme.of(context).extension<EcThemeExtension>()!;
     final spacing = AppSpacing(themeExtension.themeType);
-    final sizing = AppSizing(themeExtension.themeType);
 
     return EcCardInList(
       url: imageUrl,
@@ -42,18 +98,12 @@ class EcProductCardInBag extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: spacing.md),
-              EcTitleLargeText(
-                title,
-                fontWeight: FontWeight.bold,
-                letterSpacing: -0.3,
-              ),
+              EcTitleLargeText(title, fontWeight: FontWeight.bold),
               SizedBox(height: spacing.xxs),
               RichText(
                 text: TextSpan(
                   style: ecTheme.textTheme.labelSmall?.copyWith(
-                    letterSpacing: -1.3,
                     fontWeight: EcTypography.regular,
-                    height: 1,
                   ),
                   children: [
                     TextSpan(
@@ -78,31 +128,25 @@ class EcProductCardInBag extends StatelessWidget {
               ),
               SizedBox(height: spacing.lg),
               Row(
+                spacing: spacing.xl,
                 children: [
-                  Row(
-                    spacing: spacing.xl,
-                    children: [
-                      EcIconButton(
-                        showShadow: true,
-                        icon: EcAssets.minor(),
-                        onPressed: () {},
-                        size: 36,
-                        backgroundColor: Colors.white,
-                        iconColor: Colors.grey,
-                      ),
-                      EcBodyMediumText(
-                        '$quantity',
-                        height: EcTypography.normalHeight,
-                      ),
-                      EcIconButton(
-                        showShadow: true,
-                        icon: EcAssets.plus(),
-                        onPressed: () {},
-                        size: 36,
-                        backgroundColor: Colors.white,
-                        iconColor: Colors.grey,
-                      ),
-                    ],
+                  EcIconButton(
+                    showShadow: true,
+                    icon: EcAssets.minor(),
+                    onPressed: onMinor,
+                    backgroundColor: colorScheme.onSurface,
+                    iconColor: colorScheme.surface,
+                  ),
+                  EcBodyMediumText(
+                    '$quantity',
+                    height: EcTypography.normalHeight,
+                  ),
+                  EcIconButton(
+                    showShadow: true,
+                    icon: EcAssets.plus(),
+                    onPressed: onPlus,
+                    backgroundColor: colorScheme.onSurface,
+                    iconColor: colorScheme.surface,
                   ),
                 ],
               ),
@@ -114,12 +158,9 @@ class EcProductCardInBag extends StatelessWidget {
             children: [
               EcIconButton(
                 onPressed: onMore ?? () {},
-                icon: const Icon(Icons.more_vert),
-                size: 40,
+                icon: EcAssets.threeDots(),
                 backgroundColor: Colors.transparent,
-                iconColor: Colors.grey,
               ),
-
               Spacer(),
               EcTitleMediumText('$price\$', height: EcTypography.normalHeight),
               SizedBox(height: spacing.xxxl),
