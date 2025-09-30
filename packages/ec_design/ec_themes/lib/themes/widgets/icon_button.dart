@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../app_shadows.dart';
 import '../ec_theme_extension.dart';
 
@@ -71,7 +72,7 @@ class EcIconButton extends StatelessWidget {
     final sizing = ecTheme.sizing;
 
     // Determine button size
-    final buttonSize = size ?? sizing.iconButtonBig;
+    final buttonSize = size ?? sizing.iconButtonSmall;
 
     // Determine colors
     final bgColor = backgroundColor ?? colors.primary;
@@ -91,24 +92,11 @@ class EcIconButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(radius),
         boxShadow: showShadow ? [shadow] : null,
       ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(radius),
-          onTap: enabled ? onPressed : null,
-          focusNode: focusNode,
-          autofocus: autofocus,
-          child: IconTheme(
-            data: IconThemeData(
-              color:
-                  enabled
-                      ? iconColorValue
-                      : iconColorValue.withValues(alpha: 0.7),
-              size: sizing.icon,
-            ),
-            child: icon,
-          ),
-        ),
+      child: IconButton(
+        padding: EdgeInsets.zero,
+        onPressed: onPressed,
+        icon: icon,
+        disabledColor: iconColorValue.withValues(alpha: 0.7),
       ),
     );
 

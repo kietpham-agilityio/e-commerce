@@ -250,7 +250,7 @@ class EcTypography {
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: xs,
-      fontWeight: medium,
+      fontWeight: semiBold,
       height: baseHeight,
       letterSpacing: wideSpacing,
       color: colors.secondary,
