@@ -19,9 +19,9 @@ import 'package:flutter/material.dart';
 /// - [rating]: The rating value (e.g., 4.5). Should be between 0 and 5.
 /// - [totalReviews]: The total number of reviews to display.
 /// {@endtemplate}
-class RatingStarsView extends StatelessWidget {
+class EcRatingStarsView extends StatelessWidget {
   /// {@macro rating_stars_view}
-  const RatingStarsView({
+  const EcRatingStarsView({
     required this.rating,
     this.totalReviews = 0,
     super.key,
@@ -81,9 +81,9 @@ class RatingStarsView extends StatelessWidget {
 ///
 /// - [onChanged]: Callback that receives the new rating value when the user selects a star.
 /// {@endtemplate}
-class RatingStarsAction extends StatelessWidget {
+class EcRatingStarsAction extends StatelessWidget {
   /// {@macro rating_stars_action}
-  const RatingStarsAction({super.key, this.onChanged});
+  const EcRatingStarsAction({super.key, this.onChanged});
 
   /// Called when the user selects a new rating (1-5).
   final ValueChanged<int>? onChanged;
