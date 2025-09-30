@@ -7,6 +7,7 @@ export 'example_pages/example_pages.dart';
 export 'icon_button.dart';
 export 'image.dart';
 export 'label.dart';
+export 'rating_star.dart';
 export 'slide_range_filter.dart';
 export 'sliver_appbar.dart';
 export 'tab_bar.dart';
