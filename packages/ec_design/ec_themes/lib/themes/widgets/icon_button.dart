@@ -84,41 +84,6 @@ class EcIconButton extends StatelessWidget {
     // Determine shadow
     final shadow = customShadow ?? EcShadows.dropShadowMedium(context);
 
-    // Widget buttonWidget = Container(
-    //   width: buttonSize,
-    //   height: buttonSize,
-    //   decoration: BoxDecoration(
-    //     color: enabled ? bgColor : bgColor.withValues(alpha: 0.7),
-    //     borderRadius: BorderRadius.circular(radius),
-    //     boxShadow: showShadow ? [shadow] : null,
-    //   ),
-    //   child: IconButton(
-    //     onPressed: onPressed,
-    //     color: colors.primary,
-    //     icon: icon,
-    //     disabledColor: iconColorValue.withValues(alpha: 0.7),
-    //   ),
-    //   // child: Material(
-    //   //   color: Colors.transparent,
-    //   //   child: InkWell(
-    //   //     borderRadius: BorderRadius.circular(radius),
-    //   //     onTap: enabled ? onPressed : null,
-    //   //     focusNode: focusNode,
-    //   //     autofocus: autofocus,
-    //   //     child: IconTheme(
-    //   //       data: IconThemeData(
-    //   //         color:
-    //   //             enabled
-    //   //                 ? iconColorValue
-    //   //                 : iconColorValue.withValues(alpha: 0.7),
-    //   //         size: sizing.icon,
-    //   //       ),
-    //   //       child: icon,
-    //   //     ),
-    //   //   ),
-    //   // ),
-    // );
-
     Widget buttonWidget = Container(
       width: buttonSize,
       height: buttonSize,
