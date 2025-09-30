@@ -51,9 +51,9 @@ class EcSliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Obtain EC theme extension and sizing for consistent styling.
-    final ecTheme = Theme.of(context).extension<EcThemeExtension>()!;
-    final sizing = AppSizing(ecTheme.themeType);
-    final spacing = AppSpacing(ecTheme.themeType);
+    final themeExtension = Theme.of(context).extension<EcThemeExtension>()!;
+    final sizing = AppSizing(themeExtension.themeType);
+    final spacing = AppSpacing(themeExtension.themeType);
 
     final double maxExtentHeight = sizing.expandedAppBar;
     final double toolbarHeight = sizing.appBarHeight;

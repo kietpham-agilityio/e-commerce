@@ -47,22 +47,25 @@ class EcIconButton extends StatelessWidget {
   /// Whether the button should autofocus
   final bool autofocus;
 
+  final Color? highlightColor;
+
   const EcIconButton({
-    super.key,
     required this.icon,
-    this.onPressed,
+    this.autofocus = false,
     this.enabled = true,
+    this.showShadow = false,
+    this.onPressed,
     this.backgroundColor,
     this.iconColor,
     this.size,
     this.borderRadius,
-    this.showShadow = false,
     this.customShadow,
     this.iconPadding,
     this.tooltip,
     this.semanticsLabel,
     this.focusNode,
-    this.autofocus = false,
+    this.highlightColor,
+    super.key,
   });
 
   @override
@@ -93,6 +96,7 @@ class EcIconButton extends StatelessWidget {
         boxShadow: showShadow ? [shadow] : null,
       ),
       child: IconButton(
+        highlightColor: highlightColor,
         padding: EdgeInsets.zero,
         onPressed: onPressed,
         icon: icon,

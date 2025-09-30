@@ -256,6 +256,15 @@ class EcAssets {
   starFilled = _EcStarFilledIcon.new;
 
   static Widget Function({Color? color, double? width, double? height})
+  starHalf = _EcStarHalfIcon.new;
+
+  static Widget Function({Color? color, double? width, double? height})
+  starOutlinedBig = _EcStarOutLinedBigIcon.new;
+
+  static Widget Function({Color? color, double? width, double? height})
+  starFilledBig = _EcStarFilledBigIcon.new;
+
+  static Widget Function({Color? color, double? width, double? height})
   starOutlined = _EcStarOutlinedIcon.new;
 
   // Navigation & Location Icons
@@ -750,8 +759,8 @@ class _EcStarFilledIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Assets.icons.icStartFilled.svg(
       package: 'ec_themes',
-      width: width ?? 24,
-      height: height ?? 24,
+      width: width ?? 14,
+      height: height ?? 14,
       colorFilter:
           color != null ? ColorFilter.mode(color!, BlendMode.srcIn) : null,
     );
@@ -768,6 +777,63 @@ class _EcStarOutlinedIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Assets.icons.icStarOutlined.svg(
+      package: 'ec_themes',
+      width: width ?? 14,
+      height: height ?? 14,
+      colorFilter:
+          color != null ? ColorFilter.mode(color!, BlendMode.srcIn) : null,
+    );
+  }
+}
+
+class _EcStarHalfIcon extends StatelessWidget {
+  const _EcStarHalfIcon({this.color, this.width, this.height});
+
+  final Color? color;
+  final double? width;
+  final double? height;
+
+  @override
+  Widget build(BuildContext context) {
+    return Assets.icons.icStarHalf.svg(
+      package: 'ec_themes',
+      width: width ?? 14,
+      height: height ?? 14,
+      colorFilter:
+          color != null ? ColorFilter.mode(color!, BlendMode.srcIn) : null,
+    );
+  }
+}
+
+class _EcStarOutLinedBigIcon extends StatelessWidget {
+  const _EcStarOutLinedBigIcon({this.color, this.width, this.height});
+
+  final Color? color;
+  final double? width;
+  final double? height;
+
+  @override
+  Widget build(BuildContext context) {
+    return Assets.icons.icStarOutlinedBig.svg(
+      package: 'ec_themes',
+      width: width ?? 24,
+      height: height ?? 24,
+      colorFilter:
+          color != null ? ColorFilter.mode(color!, BlendMode.srcIn) : null,
+    );
+  }
+}
+
+class _EcStarFilledBigIcon extends StatelessWidget {
+  const _EcStarFilledBigIcon({this.color, this.width, this.height});
+
+  final Color? color;
+  final double? width;
+  final double? height;
+
+  @override
+  Widget build(BuildContext context) {
+    return Assets.icons.icStarFilledBig.svg(
       package: 'ec_themes',
       width: width ?? 24,
       height: height ?? 24,
