@@ -778,8 +778,8 @@ class _EcStarOutlinedIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Assets.icons.icStarOutlined.svg(
       package: 'ec_themes',
-      width: width ?? 14,
-      height: height ?? 14,
+      width: width ?? MediaQuery.of(context).textScaler.scale(14),
+      height: height ?? MediaQuery.of(context).textScaler.scale(14),
       colorFilter:
           color != null ? ColorFilter.mode(color!, BlendMode.srcIn) : null,
     );
