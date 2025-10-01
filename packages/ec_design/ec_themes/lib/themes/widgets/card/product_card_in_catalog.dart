@@ -23,8 +23,8 @@ import 'package:flutter/material.dart';
 ///   isSoldOut: false,
 ///   rating: 4.5,
 ///   totalReviews: 120,
-///   originalPrice: 99.99,
-///   discountedPrice: 79.99,
+///   originalPrice: 99.00.priceFormatter(),
+///   discountedPrice: 79.99.priceFormatter(),
 ///   isListView: true,
 ///   onFavorite: () {},
 ///   labelStyle: EcLabelStyle.primary,
@@ -47,8 +47,6 @@ class EcProductCardInCatalog extends StatelessWidget {
     this.isListView = true,
     this.labelStyle,
     this.labelText,
-    this.color,
-    this.size,
     this.originalPrice,
     this.discountedPrice,
     this.quantity,
@@ -67,12 +65,6 @@ class EcProductCardInCatalog extends StatelessWidget {
 
   /// The URL of the product image.
   final String imageUrl;
-
-  /// The color variant of the product (optional).
-  final String? color;
-
-  /// The size variant of the product (optional).
-  final String? size;
 
   /// The original price of the product (optional).
   final String? originalPrice;
