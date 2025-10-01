@@ -10,10 +10,20 @@ class FabDebugButton<T> extends StatelessWidget {
     super.key,
     required this.onSelectedMockBackend,
     this.debugToolsScenarios = const [],
+    this.onFeatureFlags,
+    this.onApiClientExample,
+    this.onDatabaseInspector,
+    this.onDebugOverlay,
+    this.enableMockBackend = true,
   });
 
   final ValueChanged<MockScenario<T>> onSelectedMockBackend;
   final List<DebugToolsItem> debugToolsScenarios;
+  final VoidCallback? onFeatureFlags;
+  final VoidCallback? onApiClientExample;
+  final VoidCallback? onDatabaseInspector;
+  final VoidCallback? onDebugOverlay;
+  final bool enableMockBackend;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +59,11 @@ class FabDebugButton<T> extends StatelessWidget {
                               Navigator.of(context).pop();
                             }
                           },
+                  onFeatureFlags: onFeatureFlags,
+                  onApiClientExample: onApiClientExample,
+                  onDatabaseInspector: onDatabaseInspector,
+                  onDebugOverlay: onDebugOverlay,
+                  enableMockBackend: enableMockBackend,
                   onMockedBackend: () async {
                     final result = await Navigator.of(
                       context,
@@ -85,10 +100,20 @@ class FabDebugPage extends StatelessWidget {
     super.key,
     required this.onMockedBackend,
     this.onDebugTools,
+    this.onFeatureFlags,
+    this.onApiClientExample,
+    this.onDatabaseInspector,
+    this.onDebugOverlay,
+    this.enableMockBackend = true,
   });
 
   final VoidCallback onMockedBackend;
   final VoidCallback? onDebugTools;
+  final VoidCallback? onFeatureFlags;
+  final VoidCallback? onApiClientExample;
+  final VoidCallback? onDatabaseInspector;
+  final VoidCallback? onDebugOverlay;
+  final bool enableMockBackend;
 
   @override
   Widget build(BuildContext context) {
@@ -108,12 +133,41 @@ class FabDebugPage extends StatelessWidget {
               onTap: onDebugTools,
               trailing: const Icon(Icons.chevron_right),
             ),
-          const Divider(height: 0),
-          ListTile(
-            title: const Text('Mocked Backend'),
-            onTap: onMockedBackend,
-            trailing: const Icon(Icons.chevron_right),
-          ),
+          if (onDebugTools != null) const Divider(height: 0),
+          if (onFeatureFlags != null)
+            ListTile(
+              title: const Text('Feature Flags'),
+              onTap: onFeatureFlags,
+              trailing: const Icon(Icons.chevron_right),
+            ),
+          if (onFeatureFlags != null) const Divider(height: 0),
+          if (onApiClientExample != null)
+            ListTile(
+              title: const Text('API Client Example'),
+              onTap: onApiClientExample,
+              trailing: const Icon(Icons.chevron_right),
+            ),
+          if (onApiClientExample != null) const Divider(height: 0),
+          if (onDatabaseInspector != null)
+            ListTile(
+              title: const Text('Database Inspector'),
+              onTap: onDatabaseInspector,
+              trailing: const Icon(Icons.chevron_right),
+            ),
+          if (onDatabaseInspector != null) const Divider(height: 0),
+          if (onDebugOverlay != null)
+            ListTile(
+              title: const Text('Debug Overlay'),
+              onTap: onDebugOverlay,
+              trailing: const Icon(Icons.chevron_right),
+            ),
+          if (onDebugOverlay != null) const Divider(height: 0),
+          if (enableMockBackend)
+            ListTile(
+              title: const Text('Mocked Backend'),
+              onTap: onMockedBackend,
+              trailing: const Icon(Icons.chevron_right),
+            ),
         ],
       ),
     );
