@@ -67,8 +67,8 @@ abstract class BaseEcText extends StatelessWidget {
       text,
       style: finalStyle,
       textAlign: textAlign,
-      overflow: overflow,
-      maxLines: maxLines,
+      overflow: overflow ?? TextOverflow.ellipsis,
+      maxLines: maxLines ?? 2,
       softWrap: softWrap,
       textDirection: textDirection,
     );

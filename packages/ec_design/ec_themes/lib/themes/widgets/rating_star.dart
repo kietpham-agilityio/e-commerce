@@ -38,10 +38,10 @@ class EcRatingStarsView extends StatelessWidget {
     final themeExtension = Theme.of(context).extension<EcThemeExtension>()!;
     final spacing = AppSpacing(themeExtension.themeType);
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        Row(
+        Wrap(
           children: List.generate(5, (index) {
             if (index < rating.floor()) {
               return EcAssets.starFilled();
