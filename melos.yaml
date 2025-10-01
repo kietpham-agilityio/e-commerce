@@ -24,6 +24,13 @@ scripts:
         - e_commerce_app
         - ec_themes
 
+  generate_l10n:
+    run: |
+      melos exec -- "puro flutter gen-l10n"
+    packageFilters:
+      scope:
+        - ec_l10n
+
   custom_lint_app:
     run: |
       melos exec -- "dart run custom_lint"
