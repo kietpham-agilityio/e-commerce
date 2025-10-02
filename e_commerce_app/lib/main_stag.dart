@@ -88,7 +88,10 @@ class ErrorApp extends StatelessWidget {
       localizationsDelegates: AppLocale.localizationsDelegates,
       home: Scaffold(
         appBar: AppBar(
-          title: Text(AppLocale.of(context)?.error ?? 'Initialization Error'),
+          title: Text(
+            AppLocale.of(context)?.errorRegistrationFailed ??
+                'Initialization Error',
+          ),
           backgroundColor: Colors.red,
           foregroundColor: Colors.white,
         ),
@@ -101,7 +104,7 @@ class ErrorApp extends StatelessWidget {
                 const Icon(Icons.error_outline, size: 64, color: Colors.red),
                 const SizedBox(height: 16),
                 Text(
-                  AppLocale.of(context)?.serverError ??
+                  AppLocale.of(context)?.errorServer ??
                       'Failed to initialize the application',
                   style: Theme.of(context).textTheme.headlineSmall,
                   textAlign: TextAlign.center,
@@ -114,7 +117,9 @@ class ErrorApp extends StatelessWidget {
                     // Restart the app
                     main();
                   },
-                  child: Text(AppLocale.of(context)?.retry ?? 'Retry'),
+                  child: Text(
+                    AppLocale.of(context)?.generalRetryBtn ?? 'Retry',
+                  ),
                 ),
               ],
             ),
