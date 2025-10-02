@@ -592,7 +592,14 @@ class EcDesignTheme {
 
   /// TBD: Build switch theme
   static SwitchThemeData _buildSwitchTheme(ECThemeType themeType, bool isDark) {
-    return const SwitchThemeData();
+    final colorScheme =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
+
+    return SwitchThemeData(
+      thumbColor: WidgetStatePropertyAll(colorScheme.primary),
+      trackColor: WidgetStatePropertyAll(colorScheme.outline),
+      trackOutlineColor: WidgetStatePropertyAll(colorScheme.surface),
+    );
   }
 
   /// TBD: Build checkbox theme

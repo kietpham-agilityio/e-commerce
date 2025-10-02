@@ -1,6 +1,8 @@
+import 'package:e_commerce_app/core/bloc/app_bloc.dart';
 import 'package:e_commerce_app/presentations/items/items_page.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/di/app_module.dart';
 
@@ -18,16 +20,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final flavor = EcFlavor.current;
 
-    return MaterialApp(
-      title: 'E-Commerce Dev - ${flavor.displayName}',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: flavor.isAdmin ? Colors.deepPurple : Colors.blue,
+    return BlocProvider(
+      create: (context) => AppBloc(featureFlagService: getFeatureFlagService()),
+      child: MaterialApp(
+        title: 'E-Commerce Dev - ${flavor.displayName}',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: flavor.isAdmin ? Colors.deepPurple : Colors.blue,
+          ),
+          useMaterial3: true,
         ),
-        useMaterial3: true,
+        // home: const MyHomePage(title: 'E-Commerce Dev - API Testing'),
+        home: const ItemsPage(),
       ),
-      // home: const MyHomePage(title: 'E-Commerce Dev - API Testing'),
-      home: const ItemsPage(),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/core/bloc/app_bloc.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_l10n/ec_l10n.dart';
@@ -5,6 +6,7 @@ import 'package:ec_themes/themes/themes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'core/di/app_module.dart';
@@ -59,14 +61,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final flavor = EcFlavor.current;
 
-    return MaterialApp.router(
-      title: 'E-Commerce Production - ${flavor.displayName}',
-      theme: EcDesignTheme.lightTheme,
-      darkTheme: EcDesignTheme.darkTheme,
-      themeMode: ThemeMode.system,
-      supportedLocales: AppLocale.supportedLocales,
-      localizationsDelegates: AppLocale.localizationsDelegates,
-      routerConfig: AppRouter.router,
+    return BlocProvider(
+      create: (context) => AppBloc(featureFlagService: getFeatureFlagService()),
+      child: MaterialApp.router(
+        title: 'E-Commerce Dev - ${flavor.displayName}',
+        theme: EcDesignTheme.lightTheme,
+        darkTheme: EcDesignTheme.darkTheme,
+        themeMode: ThemeMode.system,
+        supportedLocales: AppLocale.supportedLocales,
+        localizationsDelegates: AppLocale.localizationsDelegates,
+        routerConfig: AppRouter.router,
+      ),
     );
   }
 }
