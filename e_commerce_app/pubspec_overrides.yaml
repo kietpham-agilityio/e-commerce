@@ -6,3 +6,4 @@ dependency_overrides:
     path: ../packages/ec_lint
   ec_themes:
     path: ../packages/ec_design/ec_themes
+  intl: ^0.20.0

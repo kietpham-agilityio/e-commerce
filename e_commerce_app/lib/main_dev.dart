@@ -3,6 +3,7 @@ import 'package:e_commerce_app/core/di/service_module.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_core/services/ec_notifications/ec_notifications.dart';
+import 'package:ec_l10n/ec_l10n.dart';
 import 'package:ec_themes/themes/themes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -72,6 +73,8 @@ class MyApp extends StatelessWidget {
         theme: EcDesignTheme.lightTheme,
         darkTheme: EcDesignTheme.darkTheme,
         themeMode: ThemeMode.system,
+        supportedLocales: AppLocale.supportedLocales,
+        localizationsDelegates: AppLocale.localizationsDelegates,
         routerConfig: AppRouter.router,
       ),
     );
@@ -91,9 +94,14 @@ class ErrorApp extends StatelessWidget {
       theme: EcDesignTheme.lightTheme,
       darkTheme: EcDesignTheme.darkTheme,
       themeMode: ThemeMode.system,
+      supportedLocales: AppLocale.supportedLocales,
+      localizationsDelegates: AppLocale.localizationsDelegates,
       home: Scaffold(
         appBar: AppBar(
-          title: const EcTitleMediumText('Initialization Error'),
+          title: Text(
+            AppLocale.of(context)?.errorRegistrationFailed ??
+                'Initialization Error',
+          ),
           backgroundColor: Colors.red,
           foregroundColor: Colors.white,
         ),
@@ -105,19 +113,23 @@ class ErrorApp extends StatelessWidget {
               children: [
                 const Icon(Icons.error_outline, size: 64, color: Colors.red),
                 const SizedBox(height: 16),
-                const EcHeadlineSmallText(
-                  'Failed to initialize the application',
+                Text(
+                  AppLocale.of(context)?.errorServer ??
+                      'Failed to initialize the application',
+                  style: Theme.of(context).textTheme.headlineSmall,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
-                EcBodyMediumText('Error: $error', textAlign: TextAlign.center),
+                Text('Error: $error', textAlign: TextAlign.center),
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () {
                     // Restart the app
                     main();
                   },
-                  child: const EcLabelMediumText('Retry'),
+                  child: Text(
+                    AppLocale.of(context)?.generalRetryBtn ?? 'Retry',
+                  ),
                 ),
               ],
             ),

@@ -50,6 +50,9 @@ dependencies:
   ec_core:
     path: ../packages/ec_core
 
+  ec_l10n:
+    path: ../packages/ec_l10n
+
   ec_lint:
     path: ../packages/ec_lint
 
@@ -106,3 +109,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+dependency_overrides:
+  intl: ^0.20.0

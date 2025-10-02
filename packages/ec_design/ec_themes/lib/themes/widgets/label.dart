@@ -1,6 +1,5 @@
+import 'package:ec_themes/ec_design.dart';
 import 'package:flutter/material.dart';
-import '../ec_theme_extension.dart';
-import '../typography.dart';
 
 /// Different styles for the EcLabel widget
 enum EcLabelStyle {
@@ -76,18 +75,7 @@ class EcLabel extends StatelessWidget {
         color: effectiveBackgroundColor,
         borderRadius: BorderRadius.circular(effectiveBorderRadius),
       ),
-      child: Text(
-        text,
-        style: EcTypography.getUserLabelMedium(
-          ecTheme.themeType,
-          ecTheme.isDark,
-        ).copyWith(
-          color: effectiveTextColor,
-          fontSize: fontSize,
-          fontWeight: fontWeight,
-        ),
-        textAlign: TextAlign.center,
-      ),
+      child: EcLabelSmallText(text, color: effectiveTextColor),
     );
   }
 
