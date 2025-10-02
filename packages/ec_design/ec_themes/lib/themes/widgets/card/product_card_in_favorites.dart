@@ -30,7 +30,6 @@ import 'package:flutter/material.dart';
 ///   isListView: true,
 ///   onAddToCard: () {},
 ///   onClose: () {},
-///   labelStyle: EcLabelStyle.primary,
 ///   labelText: 'New',
 /// )
 /// ```
@@ -48,7 +47,6 @@ class EcProductCardInFavorites extends StatelessWidget {
     this.rating = 0,
     this.totalReviews = 0,
     this.isListView = true,
-    this.labelStyle,
     this.labelText,
     this.color,
     this.size,
@@ -90,9 +88,6 @@ class EcProductCardInFavorites extends StatelessWidget {
   /// Callback when the add-to-cart button is pressed (optional).
   final VoidCallback? onAddToCard;
 
-  /// The style of the label to display (optional).
-  final EcLabelStyle? labelStyle;
-
   /// The text of the label to display (optional).
   final String? labelText;
 
@@ -119,7 +114,6 @@ class EcProductCardInFavorites extends StatelessWidget {
       true => _ListView(
         imageUrl: imageUrl,
         isSoldOut: isSoldOut,
-        labelStyle: labelStyle,
         labelText: labelText,
         spacing: spacing,
         colorScheme: colorScheme,
@@ -138,7 +132,6 @@ class EcProductCardInFavorites extends StatelessWidget {
       false => _GridView(
         imageUrl: imageUrl,
         isSoldOut: isSoldOut,
-        labelStyle: labelStyle,
         labelText: labelText,
         spacing: spacing,
         colorScheme: colorScheme,
@@ -168,7 +161,6 @@ class _GridView extends StatelessWidget {
     required this.brand,
     required this.rating,
     required this.totalReviews,
-    this.labelStyle,
     this.labelText,
     this.onAddToCard,
     this.originalPrice,
@@ -183,9 +175,6 @@ class _GridView extends StatelessWidget {
 
   /// Whether the product is sold out.
   final bool isSoldOut;
-
-  /// The style of the label to display (optional).
-  final EcLabelStyle? labelStyle;
 
   /// The text of the label to display (optional).
   final String? labelText;
@@ -235,11 +224,14 @@ class _GridView extends StatelessWidget {
       isSoldOut: isSoldOut,
       onClose: onClose,
       actions: [
-        if (labelStyle != null && labelText != null)
+        if (labelText != null)
           Positioned(
             top: spacing.sm,
             left: spacing.sm,
-            child: EcLabel(text: labelText ?? '', style: labelStyle!),
+            child: EcLabel(
+              text: labelText ?? '',
+              style: getLabelStyle(labelText!),
+            ),
           ),
         Positioned(
           bottom: -16,
@@ -344,7 +336,6 @@ class _ListView extends StatelessWidget {
     required this.brand,
     required this.rating,
     required this.totalReviews,
-    this.labelStyle,
     this.labelText,
     this.onAddToCard,
     this.originalPrice,
@@ -359,9 +350,6 @@ class _ListView extends StatelessWidget {
 
   /// Whether the product is sold out.
   final bool isSoldOut;
-
-  /// The style of the label to display (optional).
-  final EcLabelStyle? labelStyle;
 
   /// The text of the label to display (optional).
   final String? labelText;
@@ -411,11 +399,14 @@ class _ListView extends StatelessWidget {
       isSoldOut: isSoldOut,
       onClose: onClose,
       actions: [
-        if (labelStyle != null && labelText != null)
+        if (labelText != null)
           Positioned(
             top: spacing.sm,
             left: spacing.sm,
-            child: EcLabel(text: labelText ?? '', style: labelStyle!),
+            child: EcLabel(
+              text: labelText ?? '',
+              style: getLabelStyle(labelText!),
+            ),
           ),
         Positioned(
           bottom: -12,

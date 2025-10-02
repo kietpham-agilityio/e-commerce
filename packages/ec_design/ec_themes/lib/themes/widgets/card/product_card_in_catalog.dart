@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 /// - If [isListView] is true, it displays the product in a list-style card.
 /// - If [isListView] is false, it displays the product in a grid-style card.
 ///
-/// The card displays product image, title, subtitle, rating, price (with optional
+/// The card displays product image, title, brand, rating, price (with optional
 /// discount), and an optional favorite button. It also supports showing a label
 /// (e.g., "New", "Sale") and a sold-out state.
 ///
@@ -18,7 +18,7 @@ import 'package:flutter/material.dart';
 /// ```dart
 /// EcProductCardInCatalog(
 ///   title: 'Product Name',
-///   subTitle: 'Category',
+///   brand: 'Category',
 ///   imageUrl: 'https://example.com/image.png',
 ///   isSoldOut: false,
 ///   rating: 4.5,
@@ -27,7 +27,6 @@ import 'package:flutter/material.dart';
 ///   discountedPrice: 79.99.priceFormatter(),
 ///   isListView: true,
 ///   onFavorite: () {},
-///   labelStyle: EcLabelStyle.primary,
 ///   labelText: 'New',
 /// )
 /// ```
@@ -39,13 +38,12 @@ class EcProductCardInCatalog extends StatelessWidget {
   /// product details and customization.
   const EcProductCardInCatalog({
     required this.title,
-    this.subTitle = '',
+    this.brand = '',
     this.imageUrl = '',
     this.isSoldOut = false,
     this.rating = 0,
     this.totalReviews = 0,
     this.isListView = true,
-    this.labelStyle,
     this.labelText,
     this.originalPrice,
     this.discountedPrice,
@@ -57,8 +55,8 @@ class EcProductCardInCatalog extends StatelessWidget {
   /// The main title of the product.
   final String title;
 
-  /// The subtitle or category of the product.
-  final String subTitle;
+  /// The brand or category of the product.
+  final String brand;
 
   /// Whether the product is sold out.
   final bool isSoldOut;
@@ -77,9 +75,6 @@ class EcProductCardInCatalog extends StatelessWidget {
 
   /// Callback when the favorite button is pressed (optional).
   final VoidCallback? onFavorite;
-
-  /// The style of the label to display (optional).
-  final EcLabelStyle? labelStyle;
 
   /// The text of the label to display (optional).
   final String? labelText;
@@ -104,13 +99,12 @@ class EcProductCardInCatalog extends StatelessWidget {
       true => _ListView(
         imageUrl: imageUrl,
         isSoldOut: isSoldOut,
-        labelStyle: labelStyle,
         labelText: labelText,
         spacing: spacing,
         colorScheme: colorScheme,
         onFavorite: onFavorite,
         title: title,
-        subTitle: subTitle,
+        brand: brand,
         rating: rating,
         totalReviews: totalReviews,
         originalPrice: originalPrice,
@@ -120,13 +114,12 @@ class EcProductCardInCatalog extends StatelessWidget {
       false => _GridView(
         imageUrl: imageUrl,
         isSoldOut: isSoldOut,
-        labelStyle: labelStyle,
         labelText: labelText,
         spacing: spacing,
         colorScheme: colorScheme,
         onFavorite: onFavorite,
         title: title,
-        subTitle: subTitle,
+        brand: brand,
         rating: rating,
         totalReviews: totalReviews,
         originalPrice: originalPrice,
@@ -144,10 +137,9 @@ class _GridView extends StatelessWidget {
     required this.spacing,
     required this.colorScheme,
     required this.title,
-    required this.subTitle,
+    required this.brand,
     required this.rating,
     required this.totalReviews,
-    this.labelStyle,
     this.labelText,
     this.onFavorite,
     this.originalPrice,
@@ -156,13 +148,12 @@ class _GridView extends StatelessWidget {
 
   final String imageUrl;
   final bool isSoldOut;
-  final EcLabelStyle? labelStyle;
   final String? labelText;
   final AppSpacing spacing;
   final ColorScheme colorScheme;
   final VoidCallback? onFavorite;
   final String title;
-  final String subTitle;
+  final String brand;
   final double rating;
   final int totalReviews;
   final String? originalPrice;
@@ -176,11 +167,14 @@ class _GridView extends StatelessWidget {
       url: imageUrl,
       isSoldOut: isSoldOut,
       actions: [
-        if (labelStyle != null && labelText != null)
+        if (labelText != null)
           Positioned(
             top: spacing.sm,
             left: spacing.sm,
-            child: EcLabel(text: labelText ?? '', style: labelStyle!),
+            child: EcLabel(
+              text: labelText ?? '',
+              style: getLabelStyle(labelText!),
+            ),
           ),
         Positioned(
           bottom: -16,
@@ -201,7 +195,7 @@ class _GridView extends StatelessWidget {
           EcRatingStarsView(rating: rating, totalReviews: totalReviews),
           SizedBox(height: spacing.xs),
           EcLabelSmallText(
-            subTitle,
+            brand,
             fontWeight: EcTypography.regular,
             color: colorScheme.surface,
           ),
@@ -255,10 +249,9 @@ class _ListView extends StatelessWidget {
     required this.spacing,
     required this.colorScheme,
     required this.title,
-    required this.subTitle,
+    required this.brand,
     required this.rating,
     required this.totalReviews,
-    this.labelStyle,
     this.labelText,
     this.onFavorite,
     this.originalPrice,
@@ -267,13 +260,12 @@ class _ListView extends StatelessWidget {
 
   final String imageUrl;
   final bool isSoldOut;
-  final EcLabelStyle? labelStyle;
   final String? labelText;
   final AppSpacing spacing;
   final ColorScheme colorScheme;
   final VoidCallback? onFavorite;
   final String title;
-  final String subTitle;
+  final String brand;
   final double rating;
   final int totalReviews;
   final String? originalPrice;
@@ -287,11 +279,14 @@ class _ListView extends StatelessWidget {
       url: imageUrl,
       isSoldOut: isSoldOut,
       actions: [
-        if (labelStyle != null && labelText != null)
+        if (labelText != null)
           Positioned(
             top: spacing.sm,
             left: spacing.sm,
-            child: EcLabel(text: labelText ?? '', style: labelStyle!),
+            child: EcLabel(
+              text: labelText ?? '',
+              style: getLabelStyle(labelText!),
+            ),
           ),
         Positioned(
           bottom: -10,
@@ -311,7 +306,7 @@ class _ListView extends StatelessWidget {
           EcTitleLargeText(title, fontWeight: EcTypography.bold),
           SizedBox(height: spacing.xxs),
           EcLabelSmallText(
-            subTitle,
+            brand,
             fontWeight: EcTypography.regular,
             color: colorScheme.surface,
           ),
