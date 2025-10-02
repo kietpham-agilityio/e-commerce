@@ -181,13 +181,13 @@ class WidgetExample extends StatelessWidget {
           title,
           style: TextStyle(
             fontWeight: FontWeight.w600,
-            color: enabled ? colors.onSurface : colors.onSurfaceVariant,
+            color: enabled ? colors.secondary : colors.onSurfaceVariant,
           ),
         ),
         subtitle: Text(
           subtitle,
           style: TextStyle(
-            color: enabled ? colors.onSurfaceVariant : colors.onSurfaceVariant,
+            color: enabled ? colors.secondary : colors.onSurfaceVariant,
           ),
         ),
         trailing:
