@@ -11,11 +11,13 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: EcAppBar(
-        title: EcHeadlineSmallText(AppLocale.of(context)?.appTitle ?? 'Home'),
+        title: EcHeadlineSmallText(
+          AppLocale.of(context)?.generalAppTitle ?? 'Home',
+        ),
       ),
       body: Center(
         child: EcElevatedButton(
-          text: AppLocale.of(context)?.appTitle ?? 'Home',
+          text: AppLocale.of(context)?.generalAppTitle ?? 'Home',
           onPressed: () {
             context.pushNamed(AppPaths.productDetails.name);
           },
