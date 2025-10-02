@@ -1,6 +1,9 @@
+import 'package:e_commerce_app/core/bloc/app_bloc.dart';
+import 'package:e_commerce_app/core/bloc/app_event.dart';
 import 'package:flutter/material.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_themes/themes/themes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Debug panel for runtime configuration of feature flags
 class FeatureFlagDebugPanel extends StatefulWidget {
@@ -26,6 +29,9 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
       _currentFlags = newFlags;
       _featureFlagService.updateFlags(newFlags);
     });
+
+    // Dispatch event to AppBloc to update global state
+    context.read<AppBloc>().add(AppFeatureFlagsUpdated(newFlags));
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(

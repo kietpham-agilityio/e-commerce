@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/di/api_client_module.dart';
 import '../comments/comments_page.dart';
-import '../pages/widgets/debug_fab.dart';
 import 'bloc/items_bloc.dart';
 
 class ItemsPage extends StatelessWidget {

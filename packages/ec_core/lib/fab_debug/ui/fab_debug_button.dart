@@ -30,7 +30,7 @@ class FabDebugButton<T> extends StatelessWidget {
     if (kReleaseMode) return const SizedBox.shrink();
 
     return FloatingActionButton(
-      heroTag: const ValueKey('mock_scenario_fab'),
+      heroTag: ValueKey('mock_scenario_fab_${key?.toString() ?? 'default'}'),
       onPressed: () async {
         Navigator.of(context).push(
           MaterialPageRoute(
