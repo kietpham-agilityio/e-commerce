@@ -21,7 +21,7 @@ class _ApiClientExampleState extends State<ApiClientExample> {
   void initState() {
     super.initState();
     _addLog('API Client Example initialized');
-    _addLog('Environment: ${EcFlavor.current.environment}');
+    _addLog('Environment: ${EcFlavor.currentEnvironment}');
     _addLog('Flavor: ${EcFlavor.current.displayName}');
 
     // Show current configuration

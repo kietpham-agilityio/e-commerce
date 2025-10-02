@@ -8,9 +8,9 @@ class AppModule {
   static final GetIt _getIt = GetIt.instance;
 
   /// Initialize all dependencies
-  static void initialize() {
-    // Register API client dependencies
-    ApiClientModule.registerDependencies();
+  static void initialize({String environment = 'dev'}) {
+    // Register API client dependencies with specific environment
+    ApiClientModule.registerDependencies(environment: environment);
 
     // Register service dependencies
     ServiceModule.registerServices();

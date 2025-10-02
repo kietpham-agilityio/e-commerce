@@ -5,33 +5,51 @@ import '../config/api_client_config.dart';
 /// Dependency injection module for API client configuration
 class ApiClientModule {
   /// Register API client dependencies
-  static void registerDependencies() {
+  static void registerDependencies({String environment = 'dev'}) {
     // Register our custom ApiClient with environment-based configuration
-    DI.registerService<ApiClient>(_createApiClient(), instanceName: 'main');
+    // Use override: true to replace any existing registration
+    DI.registerService<ApiClient>(
+      forEnvironment(environment: environment),
+      instanceName: 'main',
+      override: true,
+    );
+  }
+
+  /// Create API client for specific environment (defaults to 'dev')
+  static ApiClient forEnvironment({String environment = 'dev'}) {
+    return _createApiClient(environment: environment);
+  }
+
+  /// Create API client for specific flavor (defaults to 'user')
+  static ApiClient forFlavor({
+    EcFlavor flavor = EcFlavor.user,
+    String environment = 'dev',
+  }) {
+    return _createApiClient(flavor: flavor, environment: environment);
   }
 
   /// Create the main API client instance
-  static ApiClient _createApiClient() {
-    final flavor = EcFlavor.current;
-    final environment = flavor.environment;
+  static ApiClient _createApiClient({EcFlavor? flavor, String? environment}) {
+    final currentFlavor = flavor ?? EcFlavor.current;
+    final currentEnvironment = environment ?? 'dev';
 
     // Get base URL from environment variables
     final baseUrl =
-        flavor.isAdmin
-            ? ApiClientConfig.getAdminBaseUrl(environment)
-            : ApiClientConfig.getBaseUrl(environment);
+        currentFlavor.isAdmin
+            ? ApiClientConfig.getAdminBaseUrl(currentEnvironment)
+            : ApiClientConfig.getBaseUrl(currentEnvironment);
 
     // Get additional headers including API key
     final additionalHeaders =
-        flavor.isAdmin
-            ? ApiClientConfig.getAdminAdditionalHeaders(environment)
-            : ApiClientConfig.getAdditionalHeaders(environment);
+        currentFlavor.isAdmin
+            ? ApiClientConfig.getAdminAdditionalHeaders(currentEnvironment)
+            : ApiClientConfig.getAdditionalHeaders(currentEnvironment);
 
     // Add flavor and environment headers
     final headers = {
       ...additionalHeaders,
-      'X-Flavor': flavor.displayName,
-      'X-Environment': environment,
+      'X-Flavor': currentFlavor.displayName,
+      'X-Environment': currentEnvironment,
     };
 
     return ApiClientFactory.createWithCustomUrl(
@@ -45,33 +63,7 @@ class ApiClientModule {
 
   /// Create API client for specific environment
   static ApiClient createForEnvironment(String environment) {
-    final flavor = EcFlavor.current;
-
-    // Get base URL from environment variables
-    final baseUrl =
-        flavor.isAdmin
-            ? ApiClientConfig.getAdminBaseUrl(environment)
-            : ApiClientConfig.getBaseUrl(environment);
-
-    // Get additional headers including API key
-    final additionalHeaders =
-        flavor.isAdmin
-            ? ApiClientConfig.getAdminAdditionalHeaders(environment)
-            : ApiClientConfig.getAdditionalHeaders(environment);
-
-    // Add flavor and environment headers
-    final headers = {
-      ...additionalHeaders,
-      'X-Flavor': flavor.displayName,
-      'X-Environment': environment,
-    };
-
-    return ApiClientFactory.createWithCustomUrl(
-      baseUrl: baseUrl,
-      headers: headers,
-      connectTimeout: const Duration(seconds: 15),
-      receiveTimeout: const Duration(seconds: 15),
-    );
+    return _createApiClient(environment: environment);
   }
 
   /// Create API client for specific flavor
@@ -79,31 +71,7 @@ class ApiClientModule {
     EcFlavor flavor, {
     String environment = 'dev',
   }) {
-    // Get base URL from environment variables
-    final baseUrl =
-        flavor.isAdmin
-            ? ApiClientConfig.getAdminBaseUrl(environment)
-            : ApiClientConfig.getBaseUrl(environment);
-
-    // Get additional headers including API key
-    final additionalHeaders =
-        flavor.isAdmin
-            ? ApiClientConfig.getAdminAdditionalHeaders(environment)
-            : ApiClientConfig.getAdditionalHeaders(environment);
-
-    // Add flavor and environment headers
-    final headers = {
-      ...additionalHeaders,
-      'X-Flavor': flavor.displayName,
-      'X-Environment': environment,
-    };
-
-    return ApiClientFactory.createWithCustomUrl(
-      baseUrl: baseUrl,
-      headers: headers,
-      connectTimeout: const Duration(seconds: 15),
-      receiveTimeout: const Duration(seconds: 15),
-    );
+    return _createApiClient(flavor: flavor, environment: environment);
   }
 
   /// Get the registered ApiClient instance

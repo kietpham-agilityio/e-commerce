@@ -37,7 +37,7 @@ void main() async {
     );
 
     // Initialize app-specific dependencies (this will override the API client)
-    AppModule.initialize();
+    AppModule.initialize(environment: 'dev');
 
     await NotificationsService.setNotificationListeners();
     ServiceModule.notificationsService;

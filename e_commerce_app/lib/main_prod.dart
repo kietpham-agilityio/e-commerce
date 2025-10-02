@@ -35,7 +35,7 @@ void main() async {
     );
 
     // Initialize app-specific dependencies
-    AppModule.initialize();
+    AppModule.initialize(environment: 'production');
 
     runApp(
       AnnotatedRegion<SystemUiOverlayStyle>(
@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => AppBloc(featureFlagService: getFeatureFlagService()),
       child: MaterialApp.router(
-        title: 'E-Commerce Dev - ${flavor.displayName}',
+        title: 'E-Commerce Production - ${flavor.displayName}',
         theme: EcDesignTheme.lightTheme,
         darkTheme: EcDesignTheme.darkTheme,
         themeMode: ThemeMode.system,

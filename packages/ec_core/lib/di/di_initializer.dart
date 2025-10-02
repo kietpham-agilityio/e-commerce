@@ -274,6 +274,9 @@ class DependencyInjection {
     String? databaseName,
     bool enableDatabaseInspector = true,
   }) async {
+    // Set current environment for EcFlavor
+    EcFlavor.setEnvironment('dev');
+
     await initialize(
       flavor: flavor,
       environment: 'development',
@@ -299,6 +302,9 @@ class DependencyInjection {
     String? databaseName,
     bool enableDatabaseInspector = false,
   }) async {
+    // Set current environment for EcFlavor
+    EcFlavor.setEnvironment('staging');
+
     await initialize(
       flavor: flavor,
       environment: 'staging',
@@ -324,6 +330,9 @@ class DependencyInjection {
     String? databaseName,
     bool enableDatabaseInspector = false,
   }) async {
+    // Set current environment for EcFlavor
+    EcFlavor.setEnvironment('production');
+
     await initialize(
       flavor: flavor,
       environment: 'production',

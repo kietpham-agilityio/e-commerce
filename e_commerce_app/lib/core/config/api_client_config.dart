@@ -156,7 +156,9 @@ class ApiClientConfig {
 
   /// Get current environment configuration
   static Map<String, String> getCurrentEnvironmentConfig() {
-    final environment = EcFlavor.current.environment;
+    final environment =
+        EcFlavor
+            .currentEnvironment; // Use DI-set environment instead of flavor.environment
     final flavor = EcFlavor.current;
 
     return {
