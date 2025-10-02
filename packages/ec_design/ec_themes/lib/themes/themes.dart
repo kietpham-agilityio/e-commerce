@@ -2,11 +2,30 @@ import 'package:ec_themes/themes/app_sizing.dart';
 import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
+import 'ec_theme_extension.dart';
 import 'typography.dart';
 
 export 'app_shadows.dart';
-export 'icons.dart';
+export 'ec_theme_extension.dart';
+export 'widgets/app_bar.dart';
 export 'widgets/button.dart';
+export 'widgets/checkbox.dart';
+export 'widgets/example_pages/app_bar_example.dart';
+export 'widgets/example_pages/checkbox_example.dart';
+export 'widgets/example_pages/example_navigation.dart';
+export 'widgets/example_pages/icon_button_example.dart';
+export 'widgets/example_pages/tab_bar_example.dart';
+export 'widgets/example_pages/tag_example.dart';
+export 'widgets/icon_button.dart';
+export 'widgets/image.dart';
+export 'widgets/tab_bar.dart';
+export 'widgets/tag.dart';
+export 'widgets/text.dart';
+export 'widgets/textfield/big_input_text_field.dart';
+export 'widgets/textfield/form_input.dart';
+export 'widgets/textfield/ordinary_text_field.dart';
+export 'widgets/textfield/search_text_field.dart';
+export 'widgets/textfield/small_text_field.dart';
 
 /// Design system themes for the e-commerce app
 class EcDesignTheme {
@@ -19,6 +38,7 @@ class EcDesignTheme {
       useMaterial3: true,
       brightness: Brightness.light,
       fontFamily: EcTypography.fontFamily,
+      scaffoldBackgroundColor: EcColors.light(ECThemeType.user).surfaceDim,
 
       // Color scheme
       colorScheme: EcColors.light(ECThemeType.user),
@@ -99,6 +119,11 @@ class EcDesignTheme {
 
       // Expansion tile theme
       expansionTileTheme: _buildExpansionTileTheme(ECThemeType.user, false),
+
+      // EC Theme Extension
+      extensions: const [
+        EcThemeExtension(themeType: ECThemeType.user, isDark: false),
+      ],
     );
   }
 
@@ -189,6 +214,11 @@ class EcDesignTheme {
 
       // Expansion tile theme
       expansionTileTheme: _buildExpansionTileTheme(ECThemeType.user, true),
+
+      // EC Theme Extension
+      extensions: const [
+        EcThemeExtension(themeType: ECThemeType.user, isDark: true),
+      ],
     );
   }
 
@@ -242,6 +272,11 @@ class EcDesignTheme {
       popupMenuTheme: _buildPopupMenuTheme(ECThemeType.admin, false),
       bottomSheetTheme: _buildBottomSheetTheme(ECThemeType.admin, false),
       expansionTileTheme: _buildExpansionTileTheme(ECThemeType.admin, false),
+
+      // EC Theme Extension
+      extensions: const [
+        EcThemeExtension(themeType: ECThemeType.admin, isDark: false),
+      ],
     );
   }
 
@@ -292,6 +327,11 @@ class EcDesignTheme {
       popupMenuTheme: _buildPopupMenuTheme(ECThemeType.admin, true),
       bottomSheetTheme: _buildBottomSheetTheme(ECThemeType.admin, true),
       expansionTileTheme: _buildExpansionTileTheme(ECThemeType.admin, true),
+
+      // EC Theme Extension
+      extensions: const [
+        EcThemeExtension(themeType: ECThemeType.admin, isDark: true),
+      ],
     );
   }
 
@@ -328,12 +368,53 @@ class EcDesignTheme {
     );
   }
 
-  /// TBD: Build input decoration theme
+  /// Build input decoration theme
   static InputDecorationTheme _buildInputDecorationTheme(
     ECThemeType themeType,
     bool isDark,
   ) {
-    return const InputDecorationTheme();
+    final colors =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
+
+    return InputDecorationTheme(
+      // Default styling
+      filled: true,
+      fillColor: colors.primaryContainer,
+
+      // Border styling
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: colors.outline),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: colors.outline),
+      ),
+
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: colors.error),
+      ),
+
+      disabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: colors.outline.withValues(alpha: 0.3)),
+      ),
+
+      // Content padding
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+
+      // Text styles
+      hintStyle: EcTypography.getLabelMedium(
+        themeType,
+        isDark,
+      ).copyWith(color: colors.outline),
+      helperStyle: EcTypography.getBodySmall(themeType, isDark),
+      errorStyle: EcTypography.getBodySmall(
+        themeType,
+        isDark,
+      ).copyWith(color: colors.error),
+    );
   }
 
   /// Build elevated button theme
@@ -402,12 +483,29 @@ class EcDesignTheme {
 
   /// TBD: Build card theme
   static CardThemeData _buildCardTheme(ECThemeType themeType, bool isDark) {
-    return const CardThemeData();
+    final colorScheme =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
+
+    return CardThemeData(
+      color: colorScheme.surfaceDim,
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8)),
+      ),
+    );
   }
 
   /// TBD: Build app bar theme
   static AppBarTheme _buildAppBarTheme(ECThemeType themeType, bool isDark) {
-    return const AppBarTheme();
+    final colorScheme =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
+
+    return AppBarTheme(
+      scrolledUnderElevation: 1,
+      color: colorScheme.surfaceDim,
+      foregroundColor: colorScheme.secondary,
+      surfaceTintColor: colorScheme.surface,
+    );
   }
 
   /// TBD: Build bottom navigation bar theme
@@ -415,7 +513,23 @@ class EcDesignTheme {
     ECThemeType themeType,
     bool isDark,
   ) {
-    return const BottomNavigationBarThemeData();
+    final colorScheme =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
+
+    return BottomNavigationBarThemeData(
+      backgroundColor: colorScheme.onPrimary,
+      type: BottomNavigationBarType.fixed,
+      selectedLabelStyle: _buildTextTheme(
+        themeType,
+        isDark,
+      ).labelSmall?.copyWith(fontWeight: EcTypography.semiBold),
+      unselectedLabelStyle: _buildTextTheme(
+        themeType,
+        isDark,
+      ).labelSmall?.copyWith(fontWeight: EcTypography.regular),
+      selectedIconTheme: IconThemeData(color: colorScheme.primary),
+      unselectedIconTheme: IconThemeData(color: colorScheme.outline),
+    );
   }
 
   /// TBD: Build floating action button theme
@@ -449,7 +563,10 @@ class EcDesignTheme {
     ECThemeType themeType,
     bool isDark,
   ) {
-    return const DividerThemeData();
+    final colorScheme =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
+
+    return DividerThemeData(color: colorScheme.surface);
   }
 
   /// TBD: Build icon theme
@@ -462,7 +579,15 @@ class EcDesignTheme {
     ECThemeType themeType,
     bool isDark,
   ) {
-    return const ListTileThemeData();
+    final colorScheme =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
+
+    return ListTileThemeData(
+      tileColor: colorScheme.surfaceDim,
+      iconColor: colorScheme.secondary,
+      titleTextStyle: EcTypography.getTitleLarge(themeType, isDark),
+      subtitleTextStyle: EcTypography.getAdminBodyMedium(themeType, isDark),
+    );
   }
 
   /// TBD: Build switch theme

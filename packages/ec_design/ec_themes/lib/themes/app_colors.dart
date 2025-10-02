@@ -7,7 +7,7 @@ enum ECThemeType { user, admin }
 
 class EcColors {
   static ColorScheme light(ECThemeType app) => switch (app) {
-    ECThemeType.user => const ColorScheme(
+    ECThemeType.user => ColorScheme(
       brightness: Brightness.light,
       primary: EcLightPalette.ecRed,
       onPrimary: EcLightPalette.ecWhite,
@@ -19,9 +19,11 @@ class EcColors {
       onSurface: EcLightPalette.ecWhite,
       outline: EcLightPalette.ecGrey,
       primaryContainer: EcLightPalette.ecWhite,
-      surfaceContainerHighest: EcDarkPalette.ecGreen,
+      onPrimaryContainer: EcLightPalette.ecBlack,
+      surfaceDim: EcLightPalette.ecGrey[50]!,
+      tertiary: EcLightPalette.ecBlack[900]!,
     ),
-    ECThemeType.admin => const ColorScheme(
+    ECThemeType.admin => ColorScheme(
       brightness: Brightness.light,
       primary: EcLightPalette.ecOrange,
       onPrimary: EcLightPalette.ecWhite,
@@ -33,12 +35,14 @@ class EcColors {
       onSurface: EcLightPalette.ecWhite,
       outline: EcLightPalette.ecGrey,
       primaryContainer: EcLightPalette.ecWhite,
-      surfaceContainerHighest: EcDarkPalette.ecGreen,
+      onPrimaryContainer: EcLightPalette.ecBlack,
+      surfaceDim: EcLightPalette.ecGrey[50]!,
+      tertiary: EcLightPalette.ecBlack[900]!,
     ),
   };
 
   static ColorScheme dark(ECThemeType app) => switch (app) {
-    ECThemeType.user => const ColorScheme(
+    ECThemeType.user => ColorScheme(
       brightness: Brightness.dark,
       primary: EcDarkPalette.ecRed,
       onPrimary: EcDarkPalette.ecWhite,
@@ -50,9 +54,11 @@ class EcColors {
       onSurface: EcDarkPalette.ecWhite,
       outline: EcDarkPalette.ecGrey,
       primaryContainer: EcDarkPalette.ecWhite,
-      surfaceContainerHighest: EcDarkPalette.ecGreen,
+      onPrimaryContainer: EcLightPalette.ecBlack,
+      surfaceDim: EcLightPalette.ecGrey[700]!,
+      tertiary: EcLightPalette.ecWhite[900]!,
     ),
-    ECThemeType.admin => const ColorScheme(
+    ECThemeType.admin => ColorScheme(
       brightness: Brightness.dark,
       primary: EcDarkPalette.ecOrange,
       onPrimary: EcDarkPalette.ecWhite,
@@ -64,7 +70,9 @@ class EcColors {
       onSurface: EcDarkPalette.ecWhite,
       outline: EcDarkPalette.ecGrey,
       primaryContainer: EcDarkPalette.ecWhite,
-      surfaceContainerHighest: EcDarkPalette.ecGreen,
+      onPrimaryContainer: EcLightPalette.ecBlack,
+      surfaceDim: EcLightPalette.ecGrey[700]!,
+      tertiary: EcLightPalette.ecWhite[900]!,
     ),
   };
 }
