@@ -9,311 +9,314 @@ class AppLocaleEn extends AppLocale {
   AppLocaleEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'E-Commerce App';
+  String get generalAppTitle => 'E-Commerce App';
 
   @override
-  String get welcome => 'Welcome';
+  String get generalWelcome => 'Welcome';
 
   @override
-  String get login => 'Login';
+  String get generalEmail => 'Email';
 
   @override
-  String get logout => 'Logout';
+  String get generalPassword => 'Password';
 
   @override
-  String get register => 'Register';
+  String get generalConfirmPassword => 'Confirm Password';
 
   @override
-  String get email => 'Email';
+  String get generalSubmitBtn => 'Submit';
 
   @override
-  String get password => 'Password';
+  String get generalCancelBtn => 'Cancel';
 
   @override
-  String get confirmPassword => 'Confirm Password';
+  String get generalSaveBtn => 'Save';
 
   @override
-  String get forgotPassword => 'Forgot Password?';
+  String get generalDeleteBtn => 'Delete';
 
   @override
-  String get submit => 'Submit';
+  String get generalEditBtn => 'Edit';
 
   @override
-  String get cancel => 'Cancel';
+  String get generalAddBtn => 'Add';
 
   @override
-  String get save => 'Save';
+  String get generalSearch => 'Search';
 
   @override
-  String get delete => 'Delete';
+  String get generalFilterBtn => 'Filter';
 
   @override
-  String get edit => 'Edit';
+  String get generalSortBtn => 'Sort';
 
   @override
-  String get add => 'Add';
+  String get generalLoading => 'Loading...';
 
   @override
-  String get search => 'Search';
+  String get generalSuccess => 'Success';
 
   @override
-  String get filter => 'Filter';
+  String get generalRetryBtn => 'Retry';
 
   @override
-  String get sort => 'Sort';
+  String get generalBackBtn => 'Back';
 
   @override
-  String get loading => 'Loading...';
+  String get generalNextBtn => 'Next';
 
   @override
-  String get error => 'Error';
+  String get generalPreviousBtn => 'Previous';
 
   @override
-  String get success => 'Success';
+  String get generalDoneBtn => 'Done';
 
   @override
-  String get retry => 'Retry';
+  String get generalSkipBtn => 'Skip';
 
   @override
-  String get back => 'Back';
+  String get generalContinueBtn => 'Continue';
 
   @override
-  String get next => 'Next';
+  String get generalYesBtn => 'Yes';
 
   @override
-  String get previous => 'Previous';
+  String get generalNoBtn => 'No';
 
   @override
-  String get done => 'Done';
+  String get generalOkBtn => 'OK';
 
   @override
-  String get skip => 'Skip';
+  String get generalProduct => 'Product';
 
   @override
-  String get continueText => 'Continue';
+  String get generalProducts => 'Products';
 
   @override
-  String get yes => 'Yes';
+  String get generalPrice => 'Price';
 
   @override
-  String get no => 'No';
+  String get generalQuantity => 'Quantity';
 
   @override
-  String get ok => 'OK';
+  String get generalTotal => 'Total';
 
   @override
-  String get home => 'Home';
+  String get generalSubtotal => 'Subtotal';
 
   @override
-  String get shop => 'Shop';
+  String get generalTax => 'Tax';
 
   @override
-  String get bag => 'Bag';
+  String get generalShipping => 'Shipping';
 
   @override
-  String get favorites => 'Favorites';
+  String get generalDiscount => 'Discount';
 
   @override
-  String get profile => 'Profile';
+  String get generalCoupon => 'Coupon';
 
   @override
-  String get settings => 'Settings';
+  String get generalAddress => 'Address';
 
   @override
-  String get notifications => 'Notifications';
+  String get generalFirstName => 'First Name';
 
   @override
-  String get help => 'Help';
+  String get generalLastName => 'Last Name';
 
   @override
-  String get about => 'About';
+  String get generalPhoneNumber => 'Phone Number';
 
   @override
-  String get products => 'Products';
+  String get generalCity => 'City';
 
   @override
-  String get product => 'Product';
+  String get generalState => 'State';
 
   @override
-  String get productDetails => 'Product Details';
+  String get generalZipCode => 'ZIP Code';
 
   @override
-  String get addToCart => 'Add to Cart';
+  String get generalCountry => 'Country';
 
   @override
-  String get addToFavorites => 'Add to Favorites';
+  String get generalCardNumber => 'Card Number';
 
   @override
-  String get removeFromFavorites => 'Remove from Favorites';
+  String get generalExpiryDate => 'Expiry Date';
 
   @override
-  String get price => 'Price';
+  String get generalCvv => 'CVV';
 
   @override
-  String get quantity => 'Quantity';
+  String get generalCardholderName => 'Cardholder Name';
 
   @override
-  String get total => 'Total';
+  String get semanticGoBack => 'Go Back';
 
   @override
-  String get subtotal => 'Subtotal';
+  String get homeTitle => 'Home';
 
   @override
-  String get tax => 'Tax';
+  String get shopTitle => 'Shop';
 
   @override
-  String get shipping => 'Shipping';
+  String get bagTitle => 'Bag';
 
   @override
-  String get discount => 'Discount';
+  String get favoritesTitle => 'Favorites';
 
   @override
-  String get coupon => 'Coupon';
+  String get profileTitle => 'Profile';
 
   @override
-  String get applyCoupon => 'Apply Coupon';
+  String get settingsTitle => 'Settings';
 
   @override
-  String get checkout => 'Checkout';
+  String get notificationsTitle => 'Notifications';
 
   @override
-  String get orderSummary => 'Order Summary';
+  String get helpTitle => 'Help';
 
   @override
-  String get payment => 'Payment';
+  String get aboutTitle => 'About';
 
   @override
-  String get delivery => 'Delivery';
+  String get productDetailsTitle => 'Product Details';
 
   @override
-  String get orderHistory => 'Order History';
+  String get checkoutTitle => 'Checkout';
 
   @override
-  String get orderStatus => 'Order Status';
+  String get orderHistoryTitle => 'Order History';
 
   @override
-  String get orderTracking => 'Order Tracking';
+  String get orderStatusTitle => 'Order Status';
 
   @override
-  String get myAccount => 'My Account';
+  String get orderTrackingTitle => 'Order Tracking';
 
   @override
-  String get personalInfo => 'Personal Information';
+  String get myAccountTitle => 'My Account';
 
   @override
-  String get address => 'Address';
+  String get wishlistTitle => 'Wishlist';
 
   @override
-  String get paymentMethods => 'Payment Methods';
+  String get reviewsTitle => 'Reviews';
 
   @override
-  String get orderHistoryAccount => 'Order History';
+  String get supportTitle => 'Support';
 
   @override
-  String get wishlist => 'Wishlist';
+  String get loginTitle => 'Login';
 
   @override
-  String get reviews => 'Reviews';
+  String get loginBtn => 'Login';
 
   @override
-  String get support => 'Support';
+  String get loginForgotPasswordBtn => 'Forgot Password?';
 
   @override
-  String get firstName => 'First Name';
+  String get loginSuccessMessage => 'Login successful';
 
   @override
-  String get lastName => 'Last Name';
+  String get registerTitle => 'Register';
 
   @override
-  String get phoneNumber => 'Phone Number';
+  String get registerBtn => 'Register';
 
   @override
-  String get addressForm => 'Address';
+  String get registerSuccessMessage => 'Registration successful';
 
   @override
-  String get city => 'City';
+  String get productDetailsAddToCartBtn => 'Add to Cart';
 
   @override
-  String get state => 'State';
+  String get productDetailsAddToFavoritesBtn => 'Add to Favorites';
 
   @override
-  String get zipCode => 'ZIP Code';
+  String get productDetailsRemoveFromFavoritesBtn => 'Remove from Favorites';
 
   @override
-  String get country => 'Country';
+  String get checkoutApplyCouponBtn => 'Apply Coupon';
 
   @override
-  String get cardNumber => 'Card Number';
+  String get checkoutOrderSummaryTitle => 'Order Summary';
 
   @override
-  String get expiryDate => 'Expiry Date';
+  String get checkoutPaymentTitle => 'Payment';
 
   @override
-  String get cvv => 'CVV';
+  String get checkoutDeliveryTitle => 'Delivery';
 
   @override
-  String get cardholderName => 'Cardholder Name';
+  String get checkoutSuccessMessage => 'Order placed successfully';
 
   @override
-  String get loginSuccess => 'Login successful';
+  String get bagItemAddedSuccessMessage => 'Item added to cart';
 
   @override
-  String get loginFailed => 'Login failed';
+  String get bagItemRemovedSuccessMessage => 'Item removed from cart';
 
   @override
-  String get registrationSuccess => 'Registration successful';
+  String get favoritesItemAddedSuccessMessage => 'Item added to favorites';
 
   @override
-  String get registrationFailed => 'Registration failed';
+  String get favoritesItemRemovedSuccessMessage => 'Item removed from favorites';
 
   @override
-  String get passwordResetSent => 'Password reset email sent';
+  String get myAccountPersonalInfoTitle => 'Personal Information';
 
   @override
-  String get passwordResetFailed => 'Failed to send password reset email';
+  String get myAccountPaymentMethodsTitle => 'Payment Methods';
 
   @override
-  String get profileUpdated => 'Profile updated successfully';
+  String get myAccountUpdateSuccess => 'Profile updated successfully';
 
   @override
-  String get profileUpdateFailed => 'Failed to update profile';
+  String get settingsLogoutBtn => 'Logout';
 
   @override
-  String get orderPlaced => 'Order placed successfully';
+  String get forgotPasswordSuccessMessage => 'Password reset email sent';
 
   @override
-  String get orderFailed => 'Failed to place order';
+  String get errorUnknown => 'Error';
 
   @override
-  String get itemAddedToCart => 'Item added to cart';
+  String get errorLoginFailed => 'Login failed';
 
   @override
-  String get itemRemovedFromCart => 'Item removed from cart';
+  String get errorRegistrationFailed => 'Registration failed';
 
   @override
-  String get itemAddedToFavorites => 'Item added to favorites';
+  String get errorPasswordResetFailed => 'Failed to send password reset email';
 
   @override
-  String get itemRemovedFromFavorites => 'Item removed from favorites';
+  String get errorProfileUpdateFailed => 'Failed to update profile';
 
   @override
-  String get networkError => 'Network error. Please check your connection.';
+  String get errorOrderFailed => 'Failed to place order';
 
   @override
-  String get serverError => 'Server error. Please try again later.';
+  String get errorNetwork => 'Network error. Please check your connection.';
 
   @override
-  String get validationError => 'Validation error';
+  String get errorServer => 'Server error. Please try again later.';
 
   @override
-  String get invalidEmail => 'Please enter a valid email address';
+  String get errorValidation => 'Validation error';
 
   @override
-  String get passwordTooShort => 'Password must be at least 6 characters';
+  String get errorInvalidEmail => 'Please enter a valid email address';
 
   @override
-  String get passwordsDoNotMatch => 'Passwords do not match';
+  String get errorPasswordTooShort => 'Password must be at least 6 characters';
 
   @override
-  String get fieldRequired => 'This field is required';
+  String get errorPasswordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get errorFieldRequired => 'This field is required';
 }
