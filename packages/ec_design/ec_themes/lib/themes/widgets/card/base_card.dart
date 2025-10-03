@@ -1,5 +1,5 @@
+import 'package:ec_themes/ec_design.dart';
 import 'package:ec_themes/themes/app_spacing.dart';
-import 'package:ec_themes/themes/themes.dart';
 import 'package:flutter/material.dart';
 
 /// {@template ec_card_in_list}
@@ -279,7 +279,7 @@ class EcCardInGrid extends StatelessWidget {
                     bottomLeft: Radius.circular(8),
                     bottomRight: Radius.circular(8),
                   ),
-                  color: colorScheme.surface.withValues(alpha: 0.5),
+                  color: colorScheme.onPrimary.withValues(alpha: 0.4),
                 ),
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -309,4 +309,11 @@ class EcCardInGrid extends StatelessWidget {
       ),
     );
   }
+}
+
+EcLabelStyle getLabelStyle(String label) {
+  return switch (label) {
+    'NEW' => EcLabelStyle.secondary,
+    _ => EcLabelStyle.primary,
+  };
 }

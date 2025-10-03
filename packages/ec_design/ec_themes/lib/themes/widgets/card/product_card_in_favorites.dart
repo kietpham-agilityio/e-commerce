@@ -2,8 +2,8 @@ import 'package:ec_themes/ec_design.dart';
 import 'package:ec_themes/themes/app_spacing.dart';
 import 'package:flutter/material.dart';
 
-/// {@template ec_product_card_in_catalog}
-/// A product card widget for displaying product information in a catalog,
+/// {@template ec_product_card_in_favorites}
+/// A product card widget for displaying product information in the user's favorites list,
 /// supporting both list and grid view layouts.
 ///
 /// This widget adapts its layout based on the [isListView] flag:
@@ -11,32 +11,35 @@ import 'package:flutter/material.dart';
 /// - If [isListView] is false, it displays the product in a grid-style card.
 ///
 /// The card displays product image, title, brand, rating, price (with optional
-/// discount), and an optional favorite button. It also supports showing a label
-/// (e.g., "New", "Sale") and a sold-out state.
+/// discount), color, size, and an optional label (e.g., "New", "Sale").
+/// It also supports showing a sold-out state, an add-to-cart button, and a close button.
 ///
 /// Example usage:
 /// ```dart
-/// EcProductCardInCatalog(
+/// EcProductCardInFavorites(
 ///   title: 'Product Name',
-///   brand: 'Category',
+///   brand: 'Brand',
 ///   imageUrl: 'https://example.com/image.png',
 ///   isSoldOut: false,
 ///   rating: 4.5,
 ///   totalReviews: 120,
 ///   originalPrice: 99.00.priceFormatter(),
 ///   discountedPrice: 79.99.priceFormatter(),
+///   color: 'Red',
+///   size: 'M',
 ///   isListView: true,
-///   onFavorite: () {},
+///   onAddToCard: () {},
+///   onClose: () {},
 ///   labelText: 'New',
 /// )
 /// ```
 /// {@endtemplate}
-class EcProductCardInCatalog extends StatelessWidget {
-  /// Creates a product card for use in a catalog view.
+class EcProductCardInFavorites extends StatelessWidget {
+  /// Creates a product card for use in a favorites view.
   ///
   /// [title] is required. Other fields are optional and provide additional
   /// product details and customization.
-  const EcProductCardInCatalog({
+  const EcProductCardInFavorites({
     required this.title,
     this.brand = '',
     this.imageUrl = '',
@@ -45,17 +48,20 @@ class EcProductCardInCatalog extends StatelessWidget {
     this.totalReviews = 0,
     this.isListView = true,
     this.labelText,
+    this.color,
+    this.size,
     this.originalPrice,
     this.discountedPrice,
     this.quantity,
-    this.onFavorite,
+    this.onAddToCard,
+    this.onClose,
     super.key,
   });
 
   /// The main title of the product.
   final String title;
 
-  /// The brand or category of the product.
+  /// The brand of the product.
   final String brand;
 
   /// Whether the product is sold out.
@@ -63,6 +69,12 @@ class EcProductCardInCatalog extends StatelessWidget {
 
   /// The URL of the product image.
   final String imageUrl;
+
+  /// The color of the product (optional).
+  final String? color;
+
+  /// The size of the product (optional).
+  final String? size;
 
   /// The original price of the product (optional).
   final String? originalPrice;
@@ -73,8 +85,8 @@ class EcProductCardInCatalog extends StatelessWidget {
   /// The quantity of the product (optional).
   final int? quantity;
 
-  /// Callback when the favorite button is pressed (optional).
-  final VoidCallback? onFavorite;
+  /// Callback when the add-to-cart button is pressed (optional).
+  final VoidCallback? onAddToCard;
 
   /// The text of the label to display (optional).
   final String? labelText;
@@ -87,6 +99,9 @@ class EcProductCardInCatalog extends StatelessWidget {
 
   /// Whether to display the card in list view (true) or grid view (false).
   final bool isListView;
+
+  /// Callback when the close button is pressed (optional).
+  final VoidCallback? onClose;
 
   @override
   Widget build(BuildContext context) {
@@ -102,13 +117,16 @@ class EcProductCardInCatalog extends StatelessWidget {
         labelText: labelText,
         spacing: spacing,
         colorScheme: colorScheme,
-        onFavorite: onFavorite,
+        onAddToCard: onAddToCard,
         title: title,
         brand: brand,
         rating: rating,
         totalReviews: totalReviews,
         originalPrice: originalPrice,
         discountedPrice: discountedPrice,
+        color: color,
+        size: size,
+        onClose: onClose,
       ),
 
       false => _GridView(
@@ -117,19 +135,22 @@ class EcProductCardInCatalog extends StatelessWidget {
         labelText: labelText,
         spacing: spacing,
         colorScheme: colorScheme,
-        onFavorite: onFavorite,
+        onAddToCard: onAddToCard,
         title: title,
         brand: brand,
         rating: rating,
         totalReviews: totalReviews,
         originalPrice: originalPrice,
         discountedPrice: discountedPrice,
+        color: color,
+        size: size,
+        onClose: onClose,
       ),
     };
   }
 }
 
-/// A private widget for displaying the product card in grid view layout.
+/// {@macro ec_product_card_in_favorites}
 class _GridView extends StatelessWidget {
   const _GridView({
     required this.imageUrl,
@@ -141,23 +162,58 @@ class _GridView extends StatelessWidget {
     required this.rating,
     required this.totalReviews,
     this.labelText,
-    this.onFavorite,
+    this.onAddToCard,
     this.originalPrice,
     this.discountedPrice,
+    this.color,
+    this.size,
+    this.onClose,
   });
 
+  /// The URL of the product image.
   final String imageUrl;
+
+  /// Whether the product is sold out.
   final bool isSoldOut;
+
+  /// The text of the label to display (optional).
   final String? labelText;
+
+  /// The spacing tokens for the current theme.
   final AppSpacing spacing;
+
+  /// The color scheme for the current theme.
   final ColorScheme colorScheme;
-  final VoidCallback? onFavorite;
+
+  /// Callback when the add-to-cart button is pressed (optional).
+  final VoidCallback? onAddToCard;
+
+  /// The main title of the product.
   final String title;
+
+  /// The brand of the product.
   final String brand;
+
+  /// The product's rating (0-5).
   final double rating;
+
+  /// The total number of reviews for the product.
   final int totalReviews;
+
+  /// The original price of the product (optional).
   final String? originalPrice;
+
+  /// The discounted price of the product (optional).
   final String? discountedPrice;
+
+  /// The color of the product (optional).
+  final String? color;
+
+  /// The size of the product (optional).
+  final String? size;
+
+  /// Callback when the close button is pressed (optional).
+  final VoidCallback? onClose;
 
   @override
   Widget build(BuildContext context) {
@@ -166,6 +222,7 @@ class _GridView extends StatelessWidget {
     return EcCardInGrid(
       url: imageUrl,
       isSoldOut: isSoldOut,
+      onClose: onClose,
       actions: [
         if (labelText != null)
           Positioned(
@@ -181,10 +238,9 @@ class _GridView extends StatelessWidget {
           right: 0,
           child: EcIconButton(
             size: 36,
-            icon: EcAssets.heart(color: colorScheme.surface),
-            backgroundColor: colorScheme.primaryContainer,
+            icon: EcAssets.shoppingBag(color: colorScheme.onPrimary),
             showShadow: true,
-            onPressed: onFavorite,
+            onPressed: onAddToCard,
           ),
         ),
       ],
@@ -199,8 +255,36 @@ class _GridView extends StatelessWidget {
             fontWeight: EcTypography.regular,
             color: colorScheme.surface,
           ),
-          SizedBox(height: spacing.xs),
+          SizedBox(height: spacing.xxxs),
           EcTitleLargeText(title, fontWeight: EcTypography.bold),
+          SizedBox(height: spacing.xxs),
+          RichText(
+            textScaler: MediaQuery.of(context).textScaler,
+            text: TextSpan(
+              style: ecTheme.textTheme.labelSmall?.copyWith(
+                fontWeight: EcTypography.regular,
+              ),
+              children: [
+                TextSpan(
+                  // FIXME: use l10n
+                  text: 'Color: ',
+                  style: ecTheme.textTheme.labelSmall?.copyWith(
+                    color: colorScheme.surface,
+                  ),
+                ),
+                TextSpan(text: color),
+                WidgetSpan(child: SizedBox(width: spacing.md)),
+                TextSpan(
+                  // FIXME: use l10n
+                  text: 'Size: ',
+                  style: ecTheme.textTheme.labelSmall?.copyWith(
+                    color: colorScheme.surface,
+                  ),
+                ),
+                TextSpan(text: size),
+              ],
+            ),
+          ),
           SizedBox(height: spacing.xxs),
           if (discountedPrice == null)
             EcTitleMediumText(
@@ -241,7 +325,7 @@ class _GridView extends StatelessWidget {
   }
 }
 
-/// A private widget for displaying the product card in list view layout.
+/// {@macro ec_product_card_in_favorites}
 class _ListView extends StatelessWidget {
   const _ListView({
     required this.imageUrl,
@@ -253,23 +337,58 @@ class _ListView extends StatelessWidget {
     required this.rating,
     required this.totalReviews,
     this.labelText,
-    this.onFavorite,
+    this.onAddToCard,
     this.originalPrice,
     this.discountedPrice,
+    this.color,
+    this.size,
+    this.onClose,
   });
 
+  /// The URL of the product image.
   final String imageUrl;
+
+  /// Whether the product is sold out.
   final bool isSoldOut;
+
+  /// The text of the label to display (optional).
   final String? labelText;
+
+  /// The spacing tokens for the current theme.
   final AppSpacing spacing;
+
+  /// The color scheme for the current theme.
   final ColorScheme colorScheme;
-  final VoidCallback? onFavorite;
+
+  /// Callback when the add-to-cart button is pressed (optional).
+  final VoidCallback? onAddToCard;
+
+  /// The main title of the product.
   final String title;
+
+  /// The brand of the product.
   final String brand;
+
+  /// The product's rating (0-5).
   final double rating;
+
+  /// The total number of reviews for the product.
   final int totalReviews;
+
+  /// The original price of the product (optional).
   final String? originalPrice;
+
+  /// The discounted price of the product (optional).
   final String? discountedPrice;
+
+  /// The color of the product (optional).
+  final String? color;
+
+  /// The size of the product (optional).
+  final String? size;
+
+  /// Callback when the close button is pressed (optional).
+  final VoidCallback? onClose;
 
   @override
   Widget build(BuildContext context) {
@@ -278,6 +397,7 @@ class _ListView extends StatelessWidget {
     return EcCardInList(
       url: imageUrl,
       isSoldOut: isSoldOut,
+      onClose: onClose,
       actions: [
         if (labelText != null)
           Positioned(
@@ -289,63 +409,95 @@ class _ListView extends StatelessWidget {
             ),
           ),
         Positioned(
-          bottom: -10,
+          bottom: -12,
           right: 0,
           child: EcIconButton(
-            icon: EcAssets.heart(color: colorScheme.surface),
-            backgroundColor: colorScheme.primaryContainer,
+            icon: EcAssets.shoppingBag(color: colorScheme.onPrimary),
             showShadow: true,
-            onPressed: onFavorite,
+            onPressed: onAddToCard,
           ),
         ),
       ],
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: spacing.md),
-          EcTitleLargeText(title, fontWeight: EcTypography.bold),
-          SizedBox(height: spacing.xxs),
+          SizedBox(height: spacing.lg),
           EcLabelSmallText(
             brand,
             fontWeight: EcTypography.regular,
             color: colorScheme.surface,
           ),
-          SizedBox(height: spacing.sm),
-          EcRatingStarsView(rating: rating, totalReviews: totalReviews),
-          SizedBox(height: spacing.sm),
-          if (discountedPrice == null)
-            EcTitleMediumText(
-              '$originalPrice\$',
-              height: EcTypography.normalHeight,
-            )
-          else
-            RichText(
-              textScaler: MediaQuery.of(context).textScaler,
-              text: TextSpan(
-                style: ecTheme.textTheme.titleMedium?.copyWith(
-                  height: EcTypography.normalHeight,
-                ),
-                children: [
-                  TextSpan(
-                    text: '$originalPrice\$',
-                    style: ecTheme.textTheme.titleMedium?.copyWith(
-                      height: EcTypography.normalHeight,
-                      color: colorScheme.surface,
-                      decoration: TextDecoration.lineThrough,
-                      decorationColor: colorScheme.surface,
-                    ),
-                  ),
-                  WidgetSpan(child: SizedBox(width: spacing.xxs)),
-                  TextSpan(
-                    text: '$discountedPrice\$',
-                    style: ecTheme.textTheme.titleMedium?.copyWith(
-                      height: EcTypography.normalHeight,
-                      color: colorScheme.primary,
-                    ),
-                  ),
-                ],
+          SizedBox(height: spacing.xxxs),
+          EcTitleLargeText(title, fontWeight: EcTypography.bold),
+          SizedBox(height: spacing.xs),
+          RichText(
+            textScaler: MediaQuery.of(context).textScaler,
+            text: TextSpan(
+              style: ecTheme.textTheme.labelSmall?.copyWith(
+                fontWeight: EcTypography.regular,
               ),
+              children: [
+                TextSpan(
+                  // FIXME: use l10n
+                  text: 'Color: ',
+                  style: ecTheme.textTheme.labelSmall?.copyWith(
+                    color: colorScheme.surface,
+                  ),
+                ),
+                TextSpan(text: color),
+                WidgetSpan(child: SizedBox(width: spacing.md)),
+                TextSpan(
+                  // FIXME: use l10n
+                  text: 'Size: ',
+                  style: ecTheme.textTheme.labelSmall?.copyWith(
+                    color: colorScheme.surface,
+                  ),
+                ),
+                TextSpan(text: size),
+              ],
             ),
+          ),
+          SizedBox(height: spacing.sm),
+          Wrap(
+            children: [
+              if (discountedPrice == null)
+                EcTitleMediumText(
+                  '$originalPrice\$',
+                  height: EcTypography.normalHeight,
+                )
+              else
+                RichText(
+                  textScaler: MediaQuery.of(context).textScaler,
+                  text: TextSpan(
+                    style: ecTheme.textTheme.titleMedium?.copyWith(
+                      height: EcTypography.normalHeight,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: '$originalPrice\$',
+                        style: ecTheme.textTheme.titleMedium?.copyWith(
+                          height: EcTypography.normalHeight,
+                          color: colorScheme.surface,
+                          decoration: TextDecoration.lineThrough,
+                          decorationColor: colorScheme.surface,
+                        ),
+                      ),
+                      WidgetSpan(child: SizedBox(width: spacing.xxs)),
+                      TextSpan(
+                        text: '$discountedPrice\$',
+                        style: ecTheme.textTheme.titleMedium?.copyWith(
+                          height: EcTypography.normalHeight,
+                          color: colorScheme.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              SizedBox(width: 52),
+              EcRatingStarsView(rating: rating, totalReviews: totalReviews),
+            ],
+          ),
+
           SizedBox(height: spacing.sm),
         ],
       ),
