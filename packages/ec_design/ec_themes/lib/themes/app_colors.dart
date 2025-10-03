@@ -76,3 +76,17 @@ class EcColors {
     ),
   };
 }
+
+extension EcColorScheme on ColorScheme {
+  /// Success background color
+  Color get success =>
+      brightness == Brightness.light
+          ? EcLightPalette.ecGreen
+          : EcDarkPalette.ecGreen;
+
+  /// Text/icon color on top of success background
+  Color get onSuccess =>
+      brightness == Brightness.light
+          ? EcLightPalette.ecWhite
+          : EcDarkPalette.ecWhite;
+}

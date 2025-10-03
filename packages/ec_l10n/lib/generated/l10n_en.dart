@@ -153,6 +153,14 @@ class AppLocaleEn extends AppLocale {
   String get generalCardholderName => 'Cardholder Name';
 
   @override
+  String get generalApply => 'Apply';
+
+  @override
+  String generalDaysRemaining(int day) {
+    return '$day days remaining';
+  }
+
+  @override
   String get semanticGoBack => 'Go Back';
 
   @override
