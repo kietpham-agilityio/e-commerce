@@ -1,55 +1,64 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../enums/supabase_enums.dart';
 
 part 'product_dto.freezed.dart';
 part 'product_dto.g.dart';
 
-/// Product Data Transfer Object
+/// Product Data Transfer Object - matches Supabase products table
 @freezed
 class ProductDto with _$ProductDto {
   const factory ProductDto({
-    required String id,
+    required int id,
     required String name,
-    required String description,
-    required double price,
-    required String currency,
-    required String categoryId,
-    required String brandId,
-    required int stockQuantity,
-    required bool isActive,
-    required double rating,
-    required int reviewCount,
-    List<String>? images,
+    String? description,
+    required int? categoryId, // References categories.id
+    String? brand, // text from Supabase
+    required double price, // numeric from Supabase
+    required ProductStatus status, // product_status enum from Supabase
+    DateTime? createdAt, // timestamptz from Supabase
+    // Additional fields for UI display (computed from joins)
+    List<ProductImageDto>? images,
     List<ProductVariantDto>? variants,
-    List<ProductAttributeDto>? attributes,
-    ProductShippingDto? shipping,
-    ProductSeoDto? seo,
-    DateTime? createdAt,
-    DateTime? updatedAt,
+    double? averageRating,
+    int? reviewCount,
   }) = _ProductDto;
 
   factory ProductDto.fromJson(Map<String, dynamic> json) =>
       _$ProductDtoFromJson(json);
 }
 
-/// Product Variant Data Transfer Object
+/// Product Variant Data Transfer Object - matches Supabase product_variants table
 @freezed
 class ProductVariantDto with _$ProductVariantDto {
   const factory ProductVariantDto({
-    required String id,
-    required String productId,
-    required String name,
-    required String sku,
-    required double price,
-    required int stockQuantity,
-    required bool isActive,
-    Map<String, String>? attributes, // e.g., {"color": "red", "size": "M"}
-    List<String>? images,
-    DateTime? createdAt,
-    DateTime? updatedAt,
+    required int id,
+    required int? productId, // References products.id
+    SizeOption? size, // size_option enum from Supabase
+    ColorOption? color, // color_option enum from Supabase
+    String? sku, // text from Supabase
+    int? stockQty, // integer from Supabase
+    double? priceOverride, // numeric from Supabase
+    // Additional fields for UI display
+    String? variantName,
+    bool? isAvailable,
   }) = _ProductVariantDto;
 
   factory ProductVariantDto.fromJson(Map<String, dynamic> json) =>
       _$ProductVariantDtoFromJson(json);
+}
+
+/// Product Image Data Transfer Object - matches Supabase product_images table
+@freezed
+class ProductImageDto with _$ProductImageDto {
+  const factory ProductImageDto({
+    required int id,
+    required int? productId, // References products.id
+    required String imageUrl, // text from Supabase
+    bool? isPrimary, // boolean from Supabase (defaults to false)
+  }) = _ProductImageDto;
+
+  factory ProductImageDto.fromJson(Map<String, dynamic> json) =>
+      _$ProductImageDtoFromJson(json);
 }
 
 /// Product Attribute Data Transfer Object
@@ -98,38 +107,32 @@ class ProductSeoDto with _$ProductSeoDto {
       _$ProductSeoDtoFromJson(json);
 }
 
-/// Category Data Transfer Object
+/// Category Data Transfer Object - matches Supabase categories table
 @freezed
 class CategoryDto with _$CategoryDto {
   const factory CategoryDto({
-    required String id,
+    required int id,
     required String name,
-    required String description,
-    String? parentId,
-    String? image,
-    required int sortOrder,
-    required bool isActive,
+    String? description,
+    int? parentId, // References categories.id (self-reference)
+    // Additional fields for UI display (computed from joins)
     List<CategoryDto>? children,
-    DateTime? createdAt,
-    DateTime? updatedAt,
+    int? productCount,
+    String? image,
   }) = _CategoryDto;
 
   factory CategoryDto.fromJson(Map<String, dynamic> json) =>
       _$CategoryDtoFromJson(json);
 }
 
-/// Brand Data Transfer Object
+/// Brand Data Transfer Object - simplified for Supabase (brand is just text field in products)
 @freezed
 class BrandDto with _$BrandDto {
   const factory BrandDto({
-    required String id,
     required String name,
-    required String description,
+    int? productCount,
     String? logo,
     String? website,
-    required bool isActive,
-    DateTime? createdAt,
-    DateTime? updatedAt,
   }) = _BrandDto;
 
   factory BrandDto.fromJson(Map<String, dynamic> json) =>
@@ -190,17 +193,13 @@ class ProductReviewRequestDto with _$ProductReviewRequestDto {
 class CreateProductRequestDto with _$CreateProductRequestDto {
   const factory CreateProductRequestDto({
     required String name,
-    required String description,
-    required String categoryId,
-    required String brandId,
+    String? description,
+    required int? categoryId,
+    String? brand,
     required double price,
-    required int stock,
-    required String sku,
-    List<String>? images,
+    required ProductStatus status,
+    List<ProductImageDto>? images,
     List<ProductVariantDto>? variants,
-    ProductShippingDto? shipping,
-    ProductSeoDto? seo,
-    Map<String, String>? attributes,
   }) = _CreateProductRequestDto;
 
   factory CreateProductRequestDto.fromJson(Map<String, dynamic> json) =>
@@ -213,17 +212,12 @@ class UpdateProductRequestDto with _$UpdateProductRequestDto {
   const factory UpdateProductRequestDto({
     String? name,
     String? description,
-    String? categoryId,
-    String? brandId,
+    int? categoryId,
+    String? brand,
     double? price,
-    int? stock,
-    String? sku,
-    List<String>? images,
+    ProductStatus? status,
+    List<ProductImageDto>? images,
     List<ProductVariantDto>? variants,
-    ProductShippingDto? shipping,
-    ProductSeoDto? seo,
-    Map<String, String>? attributes,
-    bool? isActive,
   }) = _UpdateProductRequestDto;
 
   factory UpdateProductRequestDto.fromJson(Map<String, dynamic> json) =>
@@ -259,10 +253,9 @@ class BulkUpdateProductsRequestDto with _$BulkUpdateProductsRequestDto {
 class CreateCategoryRequestDto with _$CreateCategoryRequestDto {
   const factory CreateCategoryRequestDto({
     required String name,
-    required String description,
-    String? parentId,
+    String? description,
+    int? parentId,
     String? image,
-    bool? isActive,
   }) = _CreateCategoryRequestDto;
 
   factory CreateCategoryRequestDto.fromJson(Map<String, dynamic> json) =>
@@ -275,9 +268,8 @@ class UpdateCategoryRequestDto with _$UpdateCategoryRequestDto {
   const factory UpdateCategoryRequestDto({
     String? name,
     String? description,
-    String? parentId,
+    int? parentId,
     String? image,
-    bool? isActive,
   }) = _UpdateCategoryRequestDto;
 
   factory UpdateCategoryRequestDto.fromJson(Map<String, dynamic> json) =>
@@ -314,21 +306,33 @@ class UpdateBrandRequestDto with _$UpdateBrandRequestDto {
       _$UpdateBrandRequestDtoFromJson(json);
 }
 
-/// Product Review DTO
+/// Product Review DTO - matches Supabase reviews table
 @freezed
 class ProductReviewDto with _$ProductReviewDto {
   const factory ProductReviewDto({
-    required String id,
-    required String productId,
-    required String userId,
-    required String userName,
-    required int rating,
-    required String comment,
-    String? title,
-    required DateTime createdAt,
-    DateTime? updatedAt,
+    required int id,
+    required String? userId, // UUID from Supabase auth
+    required int? productId, // References products.id
+    required int? rating, // integer from Supabase
+    String? comment, // text from Supabase
+    DateTime? createdAt, // timestamptz from Supabase
+    // Additional fields for UI display (computed from joins)
+    String? userName,
+    String? productName,
   }) = _ProductReviewDto;
 
   factory ProductReviewDto.fromJson(Map<String, dynamic> json) =>
       _$ProductReviewDtoFromJson(json);
+}
+
+/// Product Review Request DTO
+@freezed
+class ProductReviewRequestDto with _$ProductReviewRequestDto {
+  const factory ProductReviewRequestDto({
+    required int rating,
+    String? comment,
+  }) = _ProductReviewRequestDto;
+
+  factory ProductReviewRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$ProductReviewRequestDtoFromJson(json);
 }

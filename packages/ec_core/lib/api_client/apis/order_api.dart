@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import '../dtos/order_dto.dart';
-import 'dtos/base_response.dart';
+import '../dtos/base_response.dart';
 
 part 'order_api.g.dart';
 
@@ -26,9 +26,7 @@ abstract class OrderApi {
 
   /// Get order by ID
   @GET('/orders/{orderId}')
-  Future<BaseResponseDto<OrderDto>> getOrderById(
-    @Path('orderId') String orderId,
-  );
+  Future<BaseResponseDto<OrderDto>> getOrderById(@Path('orderId') int orderId);
 
   /// Create new order
   @POST('/orders')
@@ -39,39 +37,39 @@ abstract class OrderApi {
   /// Cancel order
   @PUT('/orders/{orderId}/cancel')
   Future<BaseResponseDto<OrderDto>> cancelOrder(
-    @Path('orderId') String orderId,
+    @Path('orderId') int orderId,
     @Body() CancelOrderRequestDto request,
   );
 
   /// Request order return
   @POST('/orders/{orderId}/return')
   Future<BaseResponseDto<OrderDto>> requestReturn(
-    @Path('orderId') String orderId,
+    @Path('orderId') int orderId,
     @Body() ReturnOrderRequestDto request,
   );
 
   /// Get order tracking information
   @GET('/orders/{orderId}/tracking')
   Future<BaseResponseDto<OrderDto>> getOrderTracking(
-    @Path('orderId') String orderId,
+    @Path('orderId') int orderId,
   );
 
   /// Download order invoice
   @GET('/orders/{orderId}/invoice')
   @DioResponseType(ResponseType.bytes)
-  Future<List<int>> downloadOrderInvoice(@Path('orderId') String orderId);
+  Future<List<int>> downloadOrderInvoice(@Path('orderId') int orderId);
 
   /// Reorder items from previous order
   @POST('/orders/{orderId}/reorder')
   Future<BaseResponseDto<OrderDto>> reorderItems(
-    @Path('orderId') String orderId,
+    @Path('orderId') int orderId,
     @Body() ReorderItemsRequestDto request,
   );
 
   /// Get order history
   @GET('/orders/{orderId}/history')
   Future<BaseResponseDto<List<OrderStatusHistoryDto>>> getOrderHistory(
-    @Path('orderId') String orderId,
+    @Path('orderId') int orderId,
   );
 
   // ============================================================================
@@ -81,7 +79,7 @@ abstract class OrderApi {
   /// Process payment for order
   @POST('/orders/{orderId}/payment')
   Future<BaseResponseDto<OrderDto>> processPayment(
-    @Path('orderId') String orderId,
+    @Path('orderId') int orderId,
     @Body() PaymentRequestDto request,
   );
 
@@ -99,22 +97,10 @@ abstract class OrderApi {
   // SHIPPING ENDPOINTS
   // ============================================================================
 
-  /// Calculate shipping cost
-  @POST('/shipping/calculate')
-  Future<BaseResponseDto<OrderShippingDto>> calculateShipping(
-    @Body() ShippingCalculationRequestDto request,
-  );
-
-  /// Get shipping methods
-  @GET('/shipping/methods')
-  Future<BaseResponseDto<List<OrderShippingDto>>> getShippingMethods(
-    @Query('address') String? address,
-  );
-
   /// Update shipping address for order
   @PUT('/orders/{orderId}/shipping-address')
   Future<BaseResponseDto<OrderDto>> updateShippingAddress(
-    @Path('orderId') String orderId,
+    @Path('orderId') int orderId,
     @Body() UpdateShippingAddressRequestDto request,
   );
 
@@ -138,21 +124,21 @@ abstract class OrderApi {
   /// Update order status (Admin only)
   @PUT('/admin/orders/{orderId}/status')
   Future<BaseResponseDto<OrderDto>> updateOrderStatus(
-    @Path('orderId') String orderId,
+    @Path('orderId') int orderId,
     @Body() UpdateOrderStatusRequestDto request,
   );
 
   /// Update order details (Admin only)
   @PUT('/admin/orders/{orderId}')
   Future<BaseResponseDto<OrderDto>> updateOrder(
-    @Path('orderId') String orderId,
+    @Path('orderId') int orderId,
     @Body() UpdateOrderRequestDto request,
   );
 
   /// Add order note (Admin only)
   @POST('/admin/orders/{orderId}/notes')
   Future<BaseResponseDto<OrderDto>> addOrderNote(
-    @Path('orderId') String orderId,
+    @Path('orderId') int orderId,
     @Body() AddOrderNoteRequestDto request,
   );
 
@@ -180,7 +166,7 @@ abstract class OrderApi {
   /// Refund order payment (Admin only)
   @POST('/admin/orders/{orderId}/refund')
   Future<BaseResponseDto<OrderPaymentDto>> refundPayment(
-    @Path('orderId') String orderId,
+    @Path('orderId') int orderId,
     @Body() RefundPaymentRequestDto request,
   );
 

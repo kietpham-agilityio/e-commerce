@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import '../dtos/cart_dto.dart';
+import 'dtos/cart_dto.dart';
 import 'dtos/base_response.dart';
 
 part 'cart_api.g.dart';
@@ -31,15 +31,13 @@ abstract class CartApi {
   /// Update cart item quantity
   @PUT('/cart/items/{itemId}')
   Future<BaseResponseDto<CartDto>> updateCartItem(
-    @Path('itemId') String itemId,
+    @Path('itemId') int itemId,
     @Body() UpdateCartItemRequestDto request,
   );
 
   /// Remove item from cart
   @DELETE('/cart/items/{itemId}')
-  Future<BaseResponseDto<CartDto>> removeFromCart(
-    @Path('itemId') String itemId,
-  );
+  Future<BaseResponseDto<CartDto>> removeFromCart(@Path('itemId') int itemId);
 
   /// Clear entire cart
   @DELETE('/cart')

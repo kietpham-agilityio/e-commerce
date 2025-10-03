@@ -1,27 +1,25 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../enums/supabase_enums.dart';
 
 part 'user_dto.freezed.dart';
 part 'user_dto.g.dart';
 
-/// User Data Transfer Object
+/// User Profile Data Transfer Object - matches Supabase profiles table
 @freezed
 class UserDto with _$UserDto {
   const factory UserDto({
-    required String id,
-    required String email,
-    required String firstName,
-    required String lastName,
-    String? phoneNumber,
+    required String id, // UUID from Supabase auth
+    String? fullName, // text from Supabase
+    String? email, // text from Supabase
+    String? phone, // text from Supabase
+    required UserRole role, // user_role enum from Supabase
+    DateTime? createdAt, // timestamptz from Supabase
+    // Additional fields for UI display
     String? avatar,
     String? dateOfBirth,
     String? gender,
     bool? isEmailVerified,
     bool? isPhoneVerified,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    UserAddressDto? defaultAddress,
-    List<UserAddressDto>? addresses,
-    UserPreferencesDto? preferences,
   }) = _UserDto;
 
   factory UserDto.fromJson(Map<String, dynamic> json) =>
@@ -102,9 +100,8 @@ class RegisterRequestDto with _$RegisterRequestDto {
   const factory RegisterRequestDto({
     required String email,
     required String password,
-    required String firstName,
-    required String lastName,
-    String? phoneNumber,
+    required String fullName,
+    String? phone,
   }) = _RegisterRequestDto;
 
   factory RegisterRequestDto.fromJson(Map<String, dynamic> json) =>
@@ -153,13 +150,39 @@ class VerifyEmailRequestDto with _$VerifyEmailRequestDto {
       _$VerifyEmailRequestDtoFromJson(json);
 }
 
+/// Create User Request DTO
+@freezed
+class CreateUserRequestDto with _$CreateUserRequestDto {
+  const factory CreateUserRequestDto({
+    required String email,
+    required String password,
+    String? firstName,
+    String? lastName,
+    String? phoneNumber,
+    DateTime? dateOfBirth,
+    String? profileImageUrl,
+  }) = _CreateUserRequestDto;
+
+  factory CreateUserRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$CreateUserRequestDtoFromJson(json);
+}
+
+/// Reset Password Request DTO
+@freezed
+class ResetPasswordRequestDto with _$ResetPasswordRequestDto {
+  const factory ResetPasswordRequestDto({required String email}) =
+      _ResetPasswordRequestDto;
+
+  factory ResetPasswordRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$ResetPasswordRequestDtoFromJson(json);
+}
+
 /// Update Profile Request DTO
 @freezed
 class UpdateProfileRequestDto with _$UpdateProfileRequestDto {
   const factory UpdateProfileRequestDto({
-    String? firstName,
-    String? lastName,
-    String? phoneNumber,
+    String? fullName,
+    String? phone,
     String? dateOfBirth,
     String? profileImage,
   }) = _UpdateProfileRequestDto;
@@ -236,12 +259,10 @@ class UpdatePreferencesRequestDto with _$UpdatePreferencesRequestDto {
 @freezed
 class UpdateUserRequestDto with _$UpdateUserRequestDto {
   const factory UpdateUserRequestDto({
-    String? firstName,
-    String? lastName,
+    String? fullName,
     String? email,
-    String? phoneNumber,
-    String? status,
-    String? role,
+    String? phone,
+    UserRole? role,
   }) = _UpdateUserRequestDto;
 
   factory UpdateUserRequestDto.fromJson(Map<String, dynamic> json) =>
