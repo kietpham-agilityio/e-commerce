@@ -17,6 +17,11 @@ dependencies:
 
   flutter_gen: ^5.12.0
 
+  palette_generator: ^0.3.3+7
+
+  ec_l10n:
+    path: ../../ec_l10n
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

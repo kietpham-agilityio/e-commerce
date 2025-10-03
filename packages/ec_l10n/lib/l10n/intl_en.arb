@@ -48,6 +48,16 @@
   "generalExpiryDate": "Expiry Date",
   "generalCvv": "CVV",
   "generalCardholderName": "Cardholder Name",
+  "generalApply": "Apply",
+  "generalDaysRemaining": "{day} days remaining",
+  "@generalDaysRemaining": {
+    "placeholders": {
+      "day": {
+        "type": "int",
+        "example": "6"
+      }
+    }
+  },
   "semanticGoBack": "Go Back",
   "homeTitle": "Home",
   "shopTitle": "Shop",
