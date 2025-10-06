@@ -22,6 +22,8 @@ class EcColors {
       onPrimaryContainer: EcLightPalette.ecBlack,
       surfaceDim: EcLightPalette.ecGrey[50]!,
       tertiary: EcLightPalette.ecBlack[900]!,
+      tertiaryContainer: EcLightPalette.ecGreen,
+      onTertiaryContainer: EcLightPalette.ecWhite,
     ),
     ECThemeType.admin => ColorScheme(
       brightness: Brightness.light,
@@ -38,6 +40,8 @@ class EcColors {
       onPrimaryContainer: EcLightPalette.ecBlack,
       surfaceDim: EcLightPalette.ecGrey[50]!,
       tertiary: EcLightPalette.ecBlack[900]!,
+      tertiaryContainer: EcLightPalette.ecGreen,
+      onTertiaryContainer: EcLightPalette.ecWhite,
     ),
   };
 
@@ -54,9 +58,11 @@ class EcColors {
       onSurface: EcDarkPalette.ecWhite,
       outline: EcDarkPalette.ecGrey,
       primaryContainer: EcDarkPalette.ecWhite,
-      onPrimaryContainer: EcLightPalette.ecBlack,
-      surfaceDim: EcLightPalette.ecGrey[700]!,
-      tertiary: EcLightPalette.ecWhite[900]!,
+      onPrimaryContainer: EcDarkPalette.ecBlack,
+      surfaceDim: EcDarkPalette.ecGrey[700]!,
+      tertiary: EcDarkPalette.ecWhite[900]!,
+      tertiaryContainer: EcDarkPalette.ecGreen,
+      onTertiaryContainer: EcDarkPalette.ecWhite,
     ),
     ECThemeType.admin => ColorScheme(
       brightness: Brightness.dark,
@@ -70,9 +76,11 @@ class EcColors {
       onSurface: EcDarkPalette.ecWhite,
       outline: EcDarkPalette.ecGrey,
       primaryContainer: EcDarkPalette.ecWhite,
-      onPrimaryContainer: EcLightPalette.ecBlack,
-      surfaceDim: EcLightPalette.ecGrey[700]!,
-      tertiary: EcLightPalette.ecWhite[900]!,
+      onPrimaryContainer: EcDarkPalette.ecBlack,
+      surfaceDim: EcDarkPalette.ecGrey[700]!,
+      tertiary: EcDarkPalette.ecWhite[900]!,
+      tertiaryContainer: EcDarkPalette.ecGreen,
+      onTertiaryContainer: EcDarkPalette.ecWhite,
     ),
   };
 }

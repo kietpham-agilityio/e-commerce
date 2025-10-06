@@ -381,6 +381,18 @@ abstract class AppLocale {
   /// **'Cardholder Name'**
   String get generalCardholderName;
 
+  /// No description provided for @generalApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get generalApply;
+
+  /// Number of days remaining
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No days remaining} =1{1 day remaining} other{{count} days remaining}}'**
+  String generalDaysRemaining(int count);
+
   /// No description provided for @semanticGoBack.
   ///
   /// In en, this message translates to:
