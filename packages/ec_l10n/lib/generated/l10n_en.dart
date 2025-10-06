@@ -168,6 +168,15 @@ class AppLocaleEn extends AppLocale {
   }
 
   @override
+  String get generalTrackingNumber => 'Tracking number:';
+
+  @override
+  String get generalTotalAmount => 'Total Amount:';
+
+  @override
+  String get generalDetails => 'Details';
+
+  @override
   String get semanticGoBack => 'Go Back';
 
   @override
