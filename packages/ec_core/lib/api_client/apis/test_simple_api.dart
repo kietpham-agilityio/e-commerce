@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import '../dtos/base_response.dart';
+import 'dtos/base_response.dart';
 
 part 'test_simple_api.g.dart';
 

@@ -324,15 +324,3 @@ class ProductReviewDto with _$ProductReviewDto {
   factory ProductReviewDto.fromJson(Map<String, dynamic> json) =>
       _$ProductReviewDtoFromJson(json);
 }
-
-/// Product Review Request DTO
-@freezed
-class ProductReviewRequestDto with _$ProductReviewRequestDto {
-  const factory ProductReviewRequestDto({
-    required int rating,
-    String? comment,
-  }) = _ProductReviewRequestDto;
-
-  factory ProductReviewRequestDto.fromJson(Map<String, dynamic> json) =>
-      _$ProductReviewRequestDtoFromJson(json);
-}

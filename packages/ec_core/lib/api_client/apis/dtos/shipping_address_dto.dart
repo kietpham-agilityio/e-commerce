@@ -84,3 +84,19 @@ class AddressValidationResponseDto with _$AddressValidationResponseDto {
   factory AddressValidationResponseDto.fromJson(Map<String, dynamic> json) =>
       _$AddressValidationResponseDtoFromJson(json);
 }
+
+/// Shipping Address Analytics Response DTO
+@freezed
+class ShippingAddressAnalyticsDto with _$ShippingAddressAnalyticsDto {
+  const factory ShippingAddressAnalyticsDto({
+    required int totalAddresses,
+    required int activeAddresses,
+    required Map<String, int> addressesByCountry,
+    required Map<String, int> addressesByCity,
+    required double averageAddressesPerUser,
+    required Map<String, int> monthlyGrowth,
+  }) = _ShippingAddressAnalyticsDto;
+
+  factory ShippingAddressAnalyticsDto.fromJson(Map<String, dynamic> json) =>
+      _$ShippingAddressAnalyticsDtoFromJson(json);
+}

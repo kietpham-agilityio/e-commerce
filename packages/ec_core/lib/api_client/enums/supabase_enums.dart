@@ -225,3 +225,5 @@ enum WishlistItemStatus {
   @JsonValue('purchased')
   purchased,
 }
+
+

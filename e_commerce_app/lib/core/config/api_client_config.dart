@@ -4,84 +4,92 @@ import 'package:ec_core/ec_core.dart';
 
 /// App-specific API client configuration that uses environment variables
 class ApiClientConfig {
-  /// Get base URL from environment variables
+  /// Get base URL from environment variables (Supabase URL)
   static String getBaseUrl(String environment) {
     switch (environment.toLowerCase()) {
       case 'dev':
       case 'development':
-        return dotenv.env['API_BASE_URL'] ??
-            'https://jsonplaceholder.typicode.com';
+        return dotenv.env['SUPABASE_URL'] ?? '';
       case 'staging':
-        return dotenv.env['STAGING_API_BASE_URL'] ??
-            'https://staging-api.ecommerce.com';
+        return dotenv.env['SUPABASE_URL'] ?? '';
       case 'prod':
       case 'production':
-        return dotenv.env['PROD_API_BASE_URL'] ?? 'https://api.ecommerce.com';
+        return dotenv.env['SUPABASE_URL'] ?? '';
       default:
-        return dotenv.env['API_BASE_URL'] ?? 'https://dev-api.ecommerce.com';
+        return dotenv.env['SUPABASE_URL'] ?? '';
     }
   }
 
-  /// Get admin base URL from environment variables
+  /// Get admin base URL from environment variables (Admin Supabase URL)
   static String getAdminBaseUrl(String environment) {
     switch (environment.toLowerCase()) {
       case 'dev':
       case 'development':
-        return dotenv.env['ADMIN_API_BASE_URL'] ??
-            'https://jsonplaceholder.typicode.com';
+        return dotenv.env['ADMIN_SUPABASE_URL'] ??
+            dotenv.env['SUPABASE_URL'] ??
+            '';
       case 'staging':
-        return dotenv.env['STAGING_ADMIN_API_BASE_URL'] ??
-            'https://staging-admin-api.ecommerce.com';
+        return dotenv.env['ADMIN_SUPABASE_URL'] ??
+            dotenv.env['SUPABASE_URL'] ??
+            '';
       case 'prod':
       case 'production':
-        return dotenv.env['PROD_ADMIN_API_BASE_URL'] ??
-            'https://admin-api.ecommerce.com';
+        return dotenv.env['ADMIN_SUPABASE_URL'] ??
+            dotenv.env['SUPABASE_URL'] ??
+            '';
       default:
-        return dotenv.env['ADMIN_API_BASE_URL'] ??
-            'https://dev-admin-api.ecommerce.com';
+        return dotenv.env['ADMIN_SUPABASE_URL'] ??
+            dotenv.env['SUPABASE_URL'] ??
+            '';
     }
   }
 
-  /// Get API key from environment variables
+  /// Get Supabase anon key from environment variables
   static String? getApiKey(String environment) {
     switch (environment.toLowerCase()) {
       case 'dev':
       case 'development':
-        return dotenv.env['API_KEY'];
+        return dotenv.env['SUPABASE_ANON_KEY'];
       case 'staging':
-        return dotenv.env['STAGING_API_KEY'];
+        return dotenv.env['SUPABASE_ANON_KEY'];
       case 'prod':
       case 'production':
-        return dotenv.env['PROD_API_KEY'];
+        return dotenv.env['SUPABASE_ANON_KEY'];
       default:
-        return dotenv.env['API_KEY'];
+        return dotenv.env['SUPABASE_ANON_KEY'];
     }
   }
 
-  /// Get admin API key from environment variables
+  /// Get admin Supabase anon key from environment variables
   static String? getAdminApiKey(String environment) {
     switch (environment.toLowerCase()) {
       case 'dev':
       case 'development':
-        return dotenv.env['ADMIN_API_KEY'];
+        return dotenv.env['ADMIN_SUPABASE_ANON_KEY'] ??
+            dotenv.env['SUPABASE_ANON_KEY'];
       case 'staging':
-        return dotenv.env['STAGING_ADMIN_API_KEY'];
+        return dotenv.env['ADMIN_SUPABASE_ANON_KEY'] ??
+            dotenv.env['SUPABASE_ANON_KEY'];
       case 'prod':
       case 'production':
-        return dotenv.env['PROD_ADMIN_API_KEY'];
+        return dotenv.env['ADMIN_SUPABASE_ANON_KEY'] ??
+            dotenv.env['SUPABASE_ANON_KEY'];
       default:
-        return dotenv.env['ADMIN_API_KEY'];
+        return dotenv.env['ADMIN_SUPABASE_ANON_KEY'] ??
+            dotenv.env['SUPABASE_ANON_KEY'];
     }
   }
 
-  /// Get additional headers including API key
+  /// Get additional headers including Supabase anon key
   static Map<String, String> getAdditionalHeaders(String environment) {
     final headers = <String, String>{};
 
-    // Add API key if available
-    final apiKey = getApiKey(environment);
-    if (apiKey != null && apiKey.isNotEmpty) {
-      headers['X-API-Key'] = apiKey;
+    // Add Supabase anon key to apikey header
+    final anonKey = getApiKey(environment);
+    if (anonKey != null && anonKey.isNotEmpty) {
+      headers['apikey'] = anonKey;
+      // Also add it to Authorization header as Bearer token
+      headers['Authorization'] = 'Bearer $anonKey';
     }
 
     // Add app version from environment
@@ -96,14 +104,16 @@ class ApiClientConfig {
     return headers;
   }
 
-  /// Get admin additional headers including admin API key
+  /// Get admin additional headers including admin Supabase anon key
   static Map<String, String> getAdminAdditionalHeaders(String environment) {
     final headers = <String, String>{};
 
-    // Add admin API key if available
-    final adminApiKey = getAdminApiKey(environment);
-    if (adminApiKey != null && adminApiKey.isNotEmpty) {
-      headers['X-Admin-API-Key'] = adminApiKey;
+    // Add admin Supabase anon key to apikey header
+    final adminAnonKey = getAdminApiKey(environment);
+    if (adminAnonKey != null && adminAnonKey.isNotEmpty) {
+      headers['apikey'] = adminAnonKey;
+      // Also add it to Authorization header as Bearer token
+      headers['Authorization'] = 'Bearer $adminAnonKey';
     }
 
     // Add app version from environment
@@ -168,7 +178,7 @@ class ApiClientConfig {
           flavor.isAdmin
               ? getAdminBaseUrl(environment)
               : getBaseUrl(environment),
-      'apiKey':
+      'anonKey':
           flavor.isAdmin
               ? getAdminApiKey(environment) ?? 'N/A'
               : getApiKey(environment) ?? 'N/A',

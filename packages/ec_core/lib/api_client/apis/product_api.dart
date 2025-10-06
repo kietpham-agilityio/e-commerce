@@ -17,8 +17,8 @@ abstract class ProductApi {
   /// Get all products with pagination and filters
   @GET('/products')
   Future<PaginatedResponseDto<ProductDto>> getProducts(
-    @Query('page') int page,
-    @Query('limit') int limit,
+    // @Query('page') int page,
+    // @Query('limit') int limit,
     @Query('category') String? categoryId,
     @Query('brand') String? brandId,
     @Query('search') String? search,

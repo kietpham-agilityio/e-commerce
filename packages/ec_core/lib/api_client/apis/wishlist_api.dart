@@ -43,7 +43,7 @@ abstract class WishlistApi {
 
   /// Move wishlist item to cart
   @POST('/wishlist/{wishlistItemId}/move-to-cart')
-  Future<BaseResponseDto<Map<String, dynamic>>> moveToCart(
+  Future<BaseResponseDto<MoveToCartResponseDto>> moveToCart(
     @Path('wishlistItemId') int wishlistItemId,
   );
 

@@ -83,3 +83,20 @@ class DiscountValidationDto with _$DiscountValidationDto {
   factory DiscountValidationDto.fromJson(Map<String, dynamic> json) =>
       _$DiscountValidationDtoFromJson(json);
 }
+
+/// Discount Analytics Response DTO
+@freezed
+class DiscountAnalyticsDto with _$DiscountAnalyticsDto {
+  const factory DiscountAnalyticsDto({
+    required int totalDiscounts,
+    required int activeDiscounts,
+    required int expiredDiscounts,
+    required double totalSavings,
+    required double averageDiscountPercent,
+    required Map<String, int> usageByCode,
+    required Map<String, double> savingsByMonth,
+  }) = _DiscountAnalyticsDto;
+
+  factory DiscountAnalyticsDto.fromJson(Map<String, dynamic> json) =>
+      _$DiscountAnalyticsDtoFromJson(json);
+}

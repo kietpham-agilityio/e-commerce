@@ -69,7 +69,8 @@ abstract class ShippingAddressApi {
 
   /// Get shipping address analytics (Admin only)
   @GET('/admin/shipping-addresses/analytics')
-  Future<BaseResponseDto<Map<String, dynamic>>> getShippingAddressAnalytics(
+  Future<BaseResponseDto<ShippingAddressAnalyticsDto>>
+  getShippingAddressAnalytics(
     @Query('dateFrom') String? dateFrom,
     @Query('dateTo') String? dateTo,
   );

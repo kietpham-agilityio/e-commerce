@@ -29,7 +29,6 @@ void main() async {
       customHeaders: {
         'X-App-Version': dotenv.env['APP_VERSION'] ?? '1.0.0',
         'X-Platform': 'mobile',
-        'X-API-Key': dotenv.env['API_KEY'] ?? '',
       },
       databaseName: dotenv.env['DATABASE_NAME'] ?? 'e_commerce_dev.db',
       enableDatabaseInspector:

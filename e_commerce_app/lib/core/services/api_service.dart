@@ -33,31 +33,27 @@ class ApiService {
 
   /// Example method to fetch products using the Retrofit product API
   Future<List<dynamic>> fetchProducts({
-    int page = 1,
-    int limit = 20,
     String? category,
     String? brand,
     String? search,
     double? minPrice,
     double? maxPrice,
+    double? minRating,
     String? sortBy,
     String? sortOrder,
     bool? inStock,
-    bool? featured,
   }) async {
     try {
       final response = await _apiClient.productApi.getProducts(
-        page,
-        limit,
         category,
         brand,
         search,
         minPrice,
         maxPrice,
+        minRating,
         sortBy,
         sortOrder,
         inStock,
-        featured,
       );
       if (response.success) {
         return response.data.map((product) => product.toJson()).toList();

@@ -106,3 +106,17 @@ class UpdateWishlistRequestDto with _$UpdateWishlistRequestDto {
   factory UpdateWishlistRequestDto.fromJson(Map<String, dynamic> json) =>
       _$UpdateWishlistRequestDtoFromJson(json);
 }
+
+/// Move to Cart Response DTO
+@freezed
+class MoveToCartResponseDto with _$MoveToCartResponseDto {
+  const factory MoveToCartResponseDto({
+    required bool success,
+    required int cartItemId,
+    required int quantity,
+    String? message,
+  }) = _MoveToCartResponseDto;
+
+  factory MoveToCartResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$MoveToCartResponseDtoFromJson(json);
+}
