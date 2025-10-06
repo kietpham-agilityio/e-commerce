@@ -1,4 +1,6 @@
+import 'package:ec_themes/themes/app_spacing.dart';
 import 'package:flutter/material.dart';
+
 import 'app_colors.dart';
 import 'app_sizing.dart';
 
@@ -19,6 +21,9 @@ class EcThemeExtension extends ThemeExtension<EcThemeExtension> {
 
   /// Get the sizing for the current theme
   AppSizing get sizing => AppSizing(themeType);
+
+  /// Get the sizing for the current theme
+  AppSpacing get spacing => AppSpacing(themeType);
 
   @override
   EcThemeExtension copyWith({ECThemeType? themeType, bool? isDark}) {
