@@ -1,7 +1,5 @@
 import 'package:ec_l10n/generated/l10n.dart';
 import 'package:ec_themes/ec_design.dart';
-import 'package:ec_themes/themes/app_sizing.dart';
-import 'package:ec_themes/themes/app_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
 
@@ -59,9 +57,9 @@ class EcPromoCodeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocale.of(context)!;
     final themeExtension = Theme.of(context).extension<EcThemeExtension>()!;
-    final spacing = AppSpacing(themeExtension.themeType);
     final colorScheme = Theme.of(context).colorScheme;
-    final sizing = AppSizing(themeExtension.themeType);
+    final spacing = themeExtension.spacing;
+    final sizing = themeExtension.sizing;
 
     return Stack(
       children: [
