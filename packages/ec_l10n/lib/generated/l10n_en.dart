@@ -156,8 +156,15 @@ class AppLocaleEn extends AppLocale {
   String get generalApply => 'Apply';
 
   @override
-  String generalDaysRemaining(int day) {
-    return '$day days remaining';
+  String generalDaysRemaining(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days remaining',
+      one: '1 day remaining',
+      zero: 'No days remaining',
+    );
+    return '$_temp0';
   }
 
   @override

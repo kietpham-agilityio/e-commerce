@@ -387,11 +387,11 @@ abstract class AppLocale {
   /// **'Apply'**
   String get generalApply;
 
-  /// No description provided for @generalDaysRemaining.
+  /// Number of days remaining
   ///
   /// In en, this message translates to:
-  /// **'{day} days remaining'**
-  String generalDaysRemaining(int day);
+  /// **'{count, plural, =0{No days remaining} =1{1 day remaining} other{{count} days remaining}}'**
+  String generalDaysRemaining(int count);
 
   /// No description provided for @semanticGoBack.
   ///
