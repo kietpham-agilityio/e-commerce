@@ -72,7 +72,10 @@ class EcPromoCodeCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    EcTitleLargeText(nameCode),
+                    EcTitleLargeText(
+                      nameCode,
+                      height: EcTypography.tightHeight,
+                    ),
                     SizedBox(height: spacing.xxs),
                     EcLabelSmallText(
                       discountCode,
