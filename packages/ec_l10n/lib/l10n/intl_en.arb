@@ -58,6 +58,10 @@
       }
     }
   },
+  "generalTrackingNumber": "Tracking number:",
+  "generalTotalAmount": "Total Amount:",
+  "generalDetails": "Details",
+  "generalDelivered": "Delivered",
   "semanticGoBack": "Go Back",
   "homeTitle": "Home",
   "shopTitle": "Shop",

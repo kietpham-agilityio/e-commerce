@@ -393,6 +393,24 @@ abstract class AppLocale {
   /// **'{count, plural, =0{No days remaining} =1{1 day remaining} other{{count} days remaining}}'**
   String generalDaysRemaining(int count);
 
+  /// No description provided for @generalTrackingNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Tracking number:'**
+  String get generalTrackingNumber;
+
+  /// No description provided for @generalTotalAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Amount:'**
+  String get generalTotalAmount;
+
+  /// No description provided for @generalDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get generalDetails;
+
   /// No description provided for @semanticGoBack.
   ///
   /// In en, this message translates to:
