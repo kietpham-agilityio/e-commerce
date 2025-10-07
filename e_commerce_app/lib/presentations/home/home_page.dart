@@ -82,7 +82,7 @@ class HomePage extends StatelessWidget {
                       );
                     }
                     : null,
-            enableMockBackend: false, // Disable Mock Backend option
+            enableMockBackend: true,
           ),
         );
       },

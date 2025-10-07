@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:ec_core/mocked_backend/interceptors/mock_backend_interceptor.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
@@ -33,6 +34,8 @@ class ApiClient {
     if (talker != null) {
       _dio.interceptors.add(TalkerDioLogger(talker: talker));
     }
+
+    _dio.interceptors.add(MockBackendInterceptor());
 
     if (interceptors?.isNotEmpty ?? false) {
       _dio.interceptors.addAll(interceptors!);
