@@ -16,6 +16,14 @@ enum EcFlavor {
     environment: 'production',
   );
 
+  // Current environment from DI system
+  static String _currentEnvironment = 'dev';
+
+  // Set current environment (used by DI system)
+  static void setEnvironment(String environment) {
+    _currentEnvironment = environment;
+  }
+
   /// Constructor for EcFlavor
   const EcFlavor({
     required this.bundleId,
@@ -72,6 +80,9 @@ enum EcFlavor {
       orElse: () => EcFlavor.user,
     );
   }
+
+  /// Get current environment (from DI system, not flavor-specific)
+  static String get currentEnvironment => _currentEnvironment;
 
   /// Get all available flavors
   static List<EcFlavor> get all => EcFlavor.values;

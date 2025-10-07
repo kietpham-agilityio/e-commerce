@@ -4,6 +4,7 @@ import 'package:e_commerce_app/core/routes/app_router.dart';
 import 'package:e_commerce_app/presentations/pages/api_client_example.dart';
 import 'package:e_commerce_app/presentations/pages/database_inspector_page.dart';
 import 'package:e_commerce_app/presentations/pages/debug_overlay_page.dart';
+import 'package:e_commerce_app/presentations/pages/example_pages_navigation.dart';
 import 'package:e_commerce_app/presentations/pages/feature_flag_debug_panel.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_themes/ec_design.dart';
@@ -60,6 +61,13 @@ class HomePage extends StatelessWidget {
                 ),
               );
             },
+            onExamplePages: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const ExamplePagesNavigation(),
+                ),
+              );
+            },
             // Only enable Database Inspector if feature flag is on
             onDatabaseInspector:
                 flags.enableDatabaseInspector == true
@@ -82,7 +90,7 @@ class HomePage extends StatelessWidget {
                       );
                     }
                     : null,
-            enableMockBackend: false, // Disable Mock Backend option
+            enableMockBackend: false,
           ),
         );
       },

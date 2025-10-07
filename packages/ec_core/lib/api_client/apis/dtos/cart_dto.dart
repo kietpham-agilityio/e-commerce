@@ -1,48 +1,40 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../enums/supabase_enums.dart';
 
 part 'cart_dto.freezed.dart';
 part 'cart_dto.g.dart';
 
-/// Shopping Cart Data Transfer Object
+/// Shopping Cart Data Transfer Object - matches Supabase carts table
 @freezed
 class CartDto with _$CartDto {
   const factory CartDto({
-    required String id,
-    required String userId,
+    required int id,
+    required String? userId, // UUID from Supabase auth
     required List<CartItemDto> items,
-    required double subtotal,
-    required double taxAmount,
-    required double shippingAmount,
-    required double discountAmount,
-    required double totalAmount,
-    required String currency,
-    CartCouponDto? appliedCoupon,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    DateTime? expiresAt,
+    DateTime? createdAt, // timestamptz from Supabase
   }) = _CartDto;
 
   factory CartDto.fromJson(Map<String, dynamic> json) =>
       _$CartDtoFromJson(json);
 }
 
-/// Cart Item Data Transfer Object
+/// Cart Item Data Transfer Object - matches Supabase cart_items table
 @freezed
 class CartItemDto with _$CartItemDto {
   const factory CartItemDto({
-    required String id,
-    required String productId,
-    required String productName,
-    required String productSku,
-    required String productImage,
+    required int id,
+    required int? cartId, // References carts.id
+    required int? productVariantId, // References product_variants.id
     required int quantity,
-    required double unitPrice,
-    required double totalPrice,
-    String? variantId,
+    // Additional fields for UI display (computed from joins)
+    String? productName,
+    String? productSku,
+    String? productImage,
+    double? unitPrice,
+    double? totalPrice,
     Map<String, String>? variantAttributes,
     bool? isAvailable,
     int? availableStock,
-    DateTime? addedAt,
   }) = _CartItemDto;
 
   factory CartItemDto.fromJson(Map<String, dynamic> json) =>
@@ -70,9 +62,8 @@ class CartCouponDto with _$CartCouponDto {
 @freezed
 class AddToCartRequestDto with _$AddToCartRequestDto {
   const factory AddToCartRequestDto({
-    required String productId,
+    required int productVariantId, // References product_variants.id
     required int quantity,
-    String? variantId,
   }) = _AddToCartRequestDto;
 
   factory AddToCartRequestDto.fromJson(Map<String, dynamic> json) =>
@@ -92,8 +83,8 @@ class UpdateCartItemRequestDto with _$UpdateCartItemRequestDto {
 /// Apply Coupon Request DTO
 @freezed
 class ApplyCouponRequestDto with _$ApplyCouponRequestDto {
-  const factory ApplyCouponRequestDto({required String couponCode}) =
-      _ApplyCouponRequestDto;
+  const factory ApplyCouponRequestDto({required String code}) =
+      _ApplyCouponRequestDto; // Changed from couponCode to code to match discounts table
 
   factory ApplyCouponRequestDto.fromJson(Map<String, dynamic> json) =>
       _$ApplyCouponRequestDtoFromJson(json);
@@ -103,11 +94,9 @@ class ApplyCouponRequestDto with _$ApplyCouponRequestDto {
 @freezed
 class CartSummaryDto with _$CartSummaryDto {
   const factory CartSummaryDto({
-    required String id,
+    required int id,
     required int itemCount,
     required double totalAmount,
-    required String currency,
-    DateTime? expiresAt,
   }) = _CartSummaryDto;
 
   factory CartSummaryDto.fromJson(Map<String, dynamic> json) =>

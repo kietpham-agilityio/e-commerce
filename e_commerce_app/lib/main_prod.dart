@@ -24,13 +24,18 @@ void main() async {
     // Initialize dependency injection using ec_core DI system
     await DI.initializeProduction(
       flavor: EcFlavor.user, // or EcFlavor.admin for admin flavor
-      customHeaders: {'X-App-Version': '1.0.0', 'X-Platform': 'mobile'},
-      databaseName: 'e_commerce_prod.db',
-      enableDatabaseInspector: false,
+      customHeaders: {
+        'X-App-Version': dotenv.env['APP_VERSION'] ?? '1.0.0',
+        'X-Platform': 'mobile',
+        'X-API-Key': dotenv.env['API_KEY'] ?? '',
+      },
+      databaseName: dotenv.env['DATABASE_NAME'] ?? 'e_commerce_prod.db',
+      enableDatabaseInspector:
+          dotenv.env['ENABLE_DATABASE_INSPECTOR'] == 'true',
     );
 
     // Initialize app-specific dependencies
-    AppModule.initialize();
+    AppModule.initialize(environment: 'production');
 
     runApp(
       AnnotatedRegion<SystemUiOverlayStyle>(
@@ -64,7 +69,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => AppBloc(featureFlagService: getFeatureFlagService()),
       child: MaterialApp.router(
-        title: 'E-Commerce Dev - ${flavor.displayName}',
+        title: 'E-Commerce Production - ${flavor.displayName}',
         theme: EcDesignTheme.lightTheme,
         darkTheme: EcDesignTheme.darkTheme,
         themeMode: ThemeMode.system,

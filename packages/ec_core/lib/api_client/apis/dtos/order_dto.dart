@@ -1,50 +1,52 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../enums/supabase_enums.dart';
+import 'shipping_address_dto.dart';
 
 part 'order_dto.freezed.dart';
 part 'order_dto.g.dart';
 
-/// Order Data Transfer Object
+/// Order Data Transfer Object - matches Supabase orders table
 @freezed
 class OrderDto with _$OrderDto {
   const factory OrderDto({
-    required String id,
-    required String userId,
-    required String orderNumber,
-    required OrderStatus status,
-    required double subtotal,
-    required double taxAmount,
-    required double shippingAmount,
-    required double discountAmount,
-    required double totalAmount,
-    required String currency,
-    required OrderAddressDto shippingAddress,
-    required OrderAddressDto billingAddress,
+    required int id,
+    required String? userId, // UUID from Supabase auth
+    required OrderStatus orderStatus, // order_status enum from Supabase
+    required PaymentStatus paymentStatus, // payment_status enum from Supabase
+    required double totalAmount, // numeric from Supabase
+    required int? shippingAddressId, // References shipping_addresses.id
+    DateTime? createdAt, // timestamptz from Supabase
+    // Additional fields for UI display (computed from joins)
     required List<OrderItemDto> items,
     OrderPaymentDto? payment,
-    OrderShippingDto? shipping,
-    List<OrderStatusHistoryDto>? statusHistory,
-    String? notes,
-    DateTime? createdAt,
-    DateTime? updatedAt,
+    OrderShipmentDto? shipment,
+    ShippingAddressDto? shippingAddress,
+    String? orderNumber,
+    double? subtotal,
+    double? taxAmount,
+    double? shippingAmount,
+    double? discountAmount,
   }) = _OrderDto;
 
   factory OrderDto.fromJson(Map<String, dynamic> json) =>
       _$OrderDtoFromJson(json);
 }
 
-/// Order Item Data Transfer Object
+/// Order Item Data Transfer Object - matches Supabase order_items table
 @freezed
 class OrderItemDto with _$OrderItemDto {
   const factory OrderItemDto({
-    required String id,
-    required String productId,
-    required String productName,
-    required String productSku,
-    required String productImage,
-    required int quantity,
-    required double unitPrice,
-    required double totalPrice,
-    String? variantId,
+    required int id,
+    required int? orderId, // References orders.id
+    required int? productVariantId, // References product_variants.id
+    required double price, // numeric from Supabase
+    required int quantity, // integer from Supabase
+    // Additional fields for UI display (computed from joins)
+    String? productName,
+    String? productSku,
+    String? productImage,
+    double? unitPrice,
+    double? totalPrice,
     Map<String, String>? variantAttributes,
   }) = _OrderItemDto;
 
@@ -71,26 +73,47 @@ class OrderAddressDto with _$OrderAddressDto {
       _$OrderAddressDtoFromJson(json);
 }
 
-/// Order Payment Data Transfer Object
+/// Order Payment Data Transfer Object - matches Supabase payments table
 @freezed
 class OrderPaymentDto with _$OrderPaymentDto {
   const factory OrderPaymentDto({
-    required String id,
-    required PaymentMethod paymentMethod,
-    required PaymentStatus status,
-    required double amount,
-    required String currency,
-    String? transactionId,
+    required int id,
+    required int? orderId, // References orders.id
+    required PaymentMethod method, // payment_method enum from Supabase
+    required double amount, // numeric from Supabase
+    required PaymentStatus status, // payment_status enum from Supabase
+    String? transactionId, // text from Supabase
+    DateTime? createdAt, // timestamptz from Supabase
+    // Additional fields for UI display
     String? gatewayResponse,
     DateTime? processedAt,
-    DateTime? createdAt,
   }) = _OrderPaymentDto;
 
   factory OrderPaymentDto.fromJson(Map<String, dynamic> json) =>
       _$OrderPaymentDtoFromJson(json);
 }
 
-/// Order Shipping Data Transfer Object
+/// Order Shipment Data Transfer Object - matches Supabase shipments table
+@freezed
+class OrderShipmentDto with _$OrderShipmentDto {
+  const factory OrderShipmentDto({
+    required int id,
+    required int? orderId, // References orders.id
+    String? carrier, // text from Supabase
+    String? trackingNumber, // text from Supabase
+    required ShipmentStatus status, // shipment_status enum from Supabase
+    DateTime? shippedAt, // timestamptz from Supabase
+    // Additional fields for UI display
+    String? trackingUrl,
+    DateTime? deliveredAt,
+    DateTime? estimatedDelivery,
+  }) = _OrderShipmentDto;
+
+  factory OrderShipmentDto.fromJson(Map<String, dynamic> json) =>
+      _$OrderShipmentDtoFromJson(json);
+}
+
+/// Order Shipping Data Transfer Object (Legacy compatibility)
 @freezed
 class OrderShippingDto with _$OrderShippingDto {
   const factory OrderShippingDto({
@@ -127,10 +150,9 @@ class OrderStatusHistoryDto with _$OrderStatusHistoryDto {
 @freezed
 class CreateOrderRequestDto with _$CreateOrderRequestDto {
   const factory CreateOrderRequestDto({
-    required OrderAddressDto shippingAddress,
-    required OrderAddressDto billingAddress,
+    required int shippingAddressId, // References shipping_addresses.id
     required PaymentMethod paymentMethod,
-    required ShippingMethod shippingMethod,
+    required double totalAmount,
     String? notes,
     String? couponCode,
   }) = _CreateOrderRequestDto;
@@ -292,76 +314,4 @@ class RefundPaymentRequestDto with _$RefundPaymentRequestDto {
       _$RefundPaymentRequestDtoFromJson(json);
 }
 
-/// Order Status Enum
-enum OrderStatus {
-  @JsonValue('pending')
-  pending,
-  @JsonValue('confirmed')
-  confirmed,
-  @JsonValue('processing')
-  processing,
-  @JsonValue('shipped')
-  shipped,
-  @JsonValue('delivered')
-  delivered,
-  @JsonValue('cancelled')
-  cancelled,
-  @JsonValue('refunded')
-  refunded,
-}
-
-/// Payment Method Enum
-enum PaymentMethod {
-  @JsonValue('credit_card')
-  creditCard,
-  @JsonValue('debit_card')
-  debitCard,
-  @JsonValue('paypal')
-  paypal,
-  @JsonValue('bank_transfer')
-  bankTransfer,
-  @JsonValue('cash_on_delivery')
-  cashOnDelivery,
-}
-
-/// Payment Status Enum
-enum PaymentStatus {
-  @JsonValue('pending')
-  pending,
-  @JsonValue('processing')
-  processing,
-  @JsonValue('completed')
-  completed,
-  @JsonValue('failed')
-  failed,
-  @JsonValue('refunded')
-  refunded,
-}
-
-/// Shipping Method Enum
-enum ShippingMethod {
-  @JsonValue('standard')
-  standard,
-  @JsonValue('express')
-  express,
-  @JsonValue('overnight')
-  overnight,
-  @JsonValue('pickup')
-  pickup,
-}
-
-/// Shipping Status Enum
-enum ShippingStatus {
-  @JsonValue('pending')
-  pending,
-  @JsonValue('processing')
-  processing,
-  @JsonValue('shipped')
-  shipped,
-  @JsonValue('in_transit')
-  inTransit,
-  @JsonValue('delivered')
-  delivered,
-  @JsonValue('failed')
-  failed,
-}
+// Enums are now defined in ../enums/supabase_enums.dart

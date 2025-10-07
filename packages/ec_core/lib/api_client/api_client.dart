@@ -13,10 +13,10 @@ export 'apis/cart_api.dart';
 export 'apis/order_api.dart';
 
 // DTOs
-export 'dtos/user_dto.dart';
-export 'dtos/product_dto.dart';
-export 'dtos/order_dto.dart';
-export 'dtos/cart_dto.dart';
+export 'apis/dtos/user_dto.dart';
+export 'apis/dtos/product_dto.dart';
+export 'apis/dtos/order_dto.dart';
+export 'apis/dtos/cart_dto.dart';
 
 // Error handling and utilities
 export 'apis/api_client_error.dart';

@@ -1,36 +1,60 @@
 import 'package:ec_core/ec_core.dart';
 
-import '../api_config_override.dart';
+import '../config/api_client_config.dart';
 
 /// Dependency injection module for API client configuration
 class ApiClientModule {
-  static final GetIt _getIt = GetIt.instance;
-
   /// Register API client dependencies
-  static void registerDependencies() {
-    // Register ApiClient as singleton
-    _getIt.registerLazySingleton<ApiClient>(() => _createApiClient());
+  static void registerDependencies({String environment = 'dev'}) {
+    // Register our custom ApiClient with environment-based configuration
+    // Use override: true to replace any existing registration
+    DI.registerService<ApiClient>(
+      forEnvironment(environment: environment),
+      instanceName: 'main',
+      override: true,
+    );
+  }
 
-    // Register ApiClientFactory for creating different configurations
-    _getIt.registerLazySingleton<ApiClientFactory>(() => ApiClientFactory());
+  /// Create API client for specific environment (defaults to 'dev')
+  static ApiClient forEnvironment({String environment = 'dev'}) {
+    return _createApiClient(environment: environment);
+  }
+
+  /// Create API client for specific flavor (defaults to 'user')
+  static ApiClient forFlavor({
+    EcFlavor flavor = EcFlavor.user,
+    String environment = 'dev',
+  }) {
+    return _createApiClient(flavor: flavor, environment: environment);
   }
 
   /// Create the main API client instance
-  static ApiClient _createApiClient() {
-    final flavor = EcFlavor.current;
+  static ApiClient _createApiClient({EcFlavor? flavor, String? environment}) {
+    final currentFlavor = flavor ?? EcFlavor.current;
+    final currentEnvironment = environment ?? 'dev';
+
+    // Get base URL from environment variables
     final baseUrl =
-        flavor.isAdmin
-            ? ApiConfigOverride.getAdminBaseUrl('dev')
-            : ApiConfigOverride.getBaseUrl('dev');
+        currentFlavor.isAdmin
+            ? ApiClientConfig.getAdminBaseUrl(currentEnvironment)
+            : ApiClientConfig.getBaseUrl(currentEnvironment);
+
+    // Get additional headers including API key
+    final additionalHeaders =
+        currentFlavor.isAdmin
+            ? ApiClientConfig.getAdminAdditionalHeaders(currentEnvironment)
+            : ApiClientConfig.getAdditionalHeaders(currentEnvironment);
+
+    // Add flavor and environment headers
+    final headers = {
+      ...additionalHeaders,
+      'X-Flavor': currentFlavor.displayName,
+      'X-Environment': currentEnvironment,
+    };
 
     return ApiClientFactory.createWithCustomUrl(
       baseUrl: baseUrl,
-      headers: {
-        'X-App-Version': '1.0.0',
-        'X-Platform': 'flutter',
-        'X-Flavor': flavor.displayName,
-        'X-Environment': 'dev',
-      },
+      headers: headers,
       connectTimeout: const Duration(seconds: 15),
       receiveTimeout: const Duration(seconds: 15),
       interceptors: [MockBackendInterceptor()],
@@ -39,23 +63,7 @@ class ApiClientModule {
 
   /// Create API client for specific environment
   static ApiClient createForEnvironment(String environment) {
-    final flavor = EcFlavor.current;
-    final baseUrl =
-        flavor.isAdmin
-            ? ApiConfigOverride.getAdminBaseUrl(environment)
-            : ApiConfigOverride.getBaseUrl(environment);
-
-    return ApiClientFactory.createWithCustomUrl(
-      baseUrl: baseUrl,
-      headers: {
-        'X-App-Version': '1.0.0',
-        'X-Platform': 'flutter',
-        'X-Flavor': flavor.displayName,
-        'X-Environment': environment,
-      },
-      connectTimeout: const Duration(seconds: 15),
-      receiveTimeout: const Duration(seconds: 15),
-    );
+    return _createApiClient(environment: environment);
   }
 
   /// Create API client for specific flavor
@@ -63,35 +71,13 @@ class ApiClientModule {
     EcFlavor flavor, {
     String environment = 'dev',
   }) {
-    final baseUrl =
-        flavor.isAdmin
-            ? ApiConfigOverride.getAdminBaseUrl(environment)
-            : ApiConfigOverride.getBaseUrl(environment);
-
-    return ApiClientFactory.createWithCustomUrl(
-      baseUrl: baseUrl,
-      headers: {
-        'X-App-Version': '1.0.0',
-        'X-Platform': 'flutter',
-        'X-Flavor': flavor.displayName,
-        'X-Environment': environment,
-      },
-      connectTimeout: const Duration(seconds: 15),
-      receiveTimeout: const Duration(seconds: 15),
-    );
+    return _createApiClient(flavor: flavor, environment: environment);
   }
 
   /// Get the registered ApiClient instance
-  static ApiClient get apiClient => _getIt<ApiClient>();
-
-  /// Get the registered ApiClientFactory instance
-  static ApiClientFactory get apiClientFactory => _getIt<ApiClientFactory>();
-
-  /// Reset all dependencies (useful for testing)
-  static void reset() {
-    _getIt.reset();
-  }
+  static ApiClient get apiClient => DI.get<ApiClient>(instanceName: 'main');
 
   /// Check if dependencies are registered
-  static bool get isRegistered => _getIt.isRegistered<ApiClient>();
+  static bool get isRegistered =>
+      DI.isRegistered<ApiClient>(instanceName: 'main');
 }

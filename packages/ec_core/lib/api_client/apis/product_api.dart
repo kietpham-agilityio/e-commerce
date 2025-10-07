@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import '../dtos/product_dto.dart';
+import 'dtos/product_dto.dart';
 import 'dtos/base_response.dart';
 
 part 'product_api.g.dart';
@@ -17,8 +17,8 @@ abstract class ProductApi {
   /// Get all products with pagination and filters
   @GET('/products')
   Future<PaginatedResponseDto<ProductDto>> getProducts(
-    @Query('page') int page,
-    @Query('limit') int limit,
+    // @Query('page') int page,
+    // @Query('limit') int limit,
     @Query('category') String? categoryId,
     @Query('brand') String? brandId,
     @Query('search') String? search,
@@ -33,7 +33,7 @@ abstract class ProductApi {
   /// Get product by ID
   @GET('/products/{productId}')
   Future<BaseResponseDto<ProductDto>> getProductById(
-    @Path('productId') String productId,
+    @Path('productId') int productId,
   );
 
   /// Search products
@@ -51,14 +51,14 @@ abstract class ProductApi {
   /// Get related products
   @GET('/products/{productId}/related')
   Future<BaseResponseDto<List<ProductDto>>> getRelatedProducts(
-    @Path('productId') String productId,
+    @Path('productId') int productId,
     @Query('limit') int? limit,
   );
 
   /// Get product reviews
   @GET('/products/{productId}/reviews')
   Future<PaginatedResponseDto<ProductReviewDto>> getProductReviews(
-    @Path('productId') String productId,
+    @Path('productId') int productId,
     @Query('page') int page,
     @Query('limit') int limit,
     @Query('rating') int? rating,
@@ -67,7 +67,7 @@ abstract class ProductApi {
   /// Add product review
   @POST('/products/{productId}/reviews')
   Future<BaseResponseDto<ProductReviewDto>> addProductReview(
-    @Path('productId') String productId,
+    @Path('productId') int productId,
     @Body() ProductReviewRequestDto request,
   );
 
@@ -85,13 +85,13 @@ abstract class ProductApi {
   /// Get category by ID
   @GET('/categories/{categoryId}')
   Future<BaseResponseDto<CategoryDto>> getCategoryById(
-    @Path('categoryId') String categoryId,
+    @Path('categoryId') int categoryId,
   );
 
   /// Get category products
   @GET('/categories/{categoryId}/products')
   Future<PaginatedResponseDto<ProductDto>> getCategoryProducts(
-    @Path('categoryId') String categoryId,
+    @Path('categoryId') int categoryId,
     @Query('page') int page,
     @Query('limit') int limit,
     @Query('sortBy') String? sortBy,
@@ -108,16 +108,16 @@ abstract class ProductApi {
     @Query('active') bool? active,
   );
 
-  /// Get brand by ID
-  @GET('/brands/{brandId}')
-  Future<BaseResponseDto<BrandDto>> getBrandById(
-    @Path('brandId') String brandId,
+  /// Get brand by name
+  @GET('/brands/{brandName}')
+  Future<BaseResponseDto<BrandDto>> getBrandByName(
+    @Path('brandName') String brandName,
   );
 
   /// Get brand products
-  @GET('/brands/{brandId}/products')
+  @GET('/brands/{brandName}/products')
   Future<PaginatedResponseDto<ProductDto>> getBrandProducts(
-    @Path('brandId') String brandId,
+    @Path('brandName') String brandName,
     @Query('page') int page,
     @Query('limit') int limit,
     @Query('sortBy') String? sortBy,
@@ -137,18 +137,18 @@ abstract class ProductApi {
   /// Update product (Admin only)
   @PUT('/admin/products/{productId}')
   Future<BaseResponseDto<ProductDto>> updateProduct(
-    @Path('productId') String productId,
+    @Path('productId') int productId,
     @Body() UpdateProductRequestDto request,
   );
 
   /// Delete product (Admin only)
   @DELETE('/admin/products/{productId}')
-  Future<SuccessResponseDto> deleteProduct(@Path('productId') String productId);
+  Future<SuccessResponseDto> deleteProduct(@Path('productId') int productId);
 
   /// Update product stock (Admin only)
   @PUT('/admin/products/{productId}/stock')
   Future<BaseResponseDto<ProductDto>> updateProductStock(
-    @Path('productId') String productId,
+    @Path('productId') int productId,
     @Body() UpdateProductStockRequestDto request,
   );
 
@@ -171,15 +171,13 @@ abstract class ProductApi {
   /// Update category (Admin only)
   @PUT('/admin/categories/{categoryId}')
   Future<BaseResponseDto<CategoryDto>> updateCategory(
-    @Path('categoryId') String categoryId,
+    @Path('categoryId') int categoryId,
     @Body() UpdateCategoryRequestDto request,
   );
 
   /// Delete category (Admin only)
   @DELETE('/admin/categories/{categoryId}')
-  Future<SuccessResponseDto> deleteCategory(
-    @Path('categoryId') String categoryId,
-  );
+  Future<SuccessResponseDto> deleteCategory(@Path('categoryId') int categoryId);
 
   // ============================================================================
   // ADMIN BRAND MANAGEMENT ENDPOINTS
@@ -192,13 +190,13 @@ abstract class ProductApi {
   );
 
   /// Update brand (Admin only)
-  @PUT('/admin/brands/{brandId}')
+  @PUT('/admin/brands/{brandName}')
   Future<BaseResponseDto<BrandDto>> updateBrand(
-    @Path('brandId') String brandId,
+    @Path('brandName') String brandName,
     @Body() UpdateBrandRequestDto request,
   );
 
   /// Delete brand (Admin only)
-  @DELETE('/admin/brands/{brandId}')
-  Future<SuccessResponseDto> deleteBrand(@Path('brandId') String brandId);
+  @DELETE('/admin/brands/{brandName}')
+  Future<SuccessResponseDto> deleteBrand(@Path('brandName') String brandName);
 }
