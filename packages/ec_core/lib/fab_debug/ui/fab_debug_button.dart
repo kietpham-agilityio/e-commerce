@@ -14,6 +14,7 @@ class FabDebugButton<T> extends StatelessWidget {
     this.onApiClientExample,
     this.onDatabaseInspector,
     this.onDebugOverlay,
+    this.onExamplePages,
     this.enableMockBackend = true,
   });
 
@@ -23,6 +24,7 @@ class FabDebugButton<T> extends StatelessWidget {
   final VoidCallback? onApiClientExample;
   final VoidCallback? onDatabaseInspector;
   final VoidCallback? onDebugOverlay;
+  final VoidCallback? onExamplePages;
   final bool enableMockBackend;
 
   @override
@@ -63,6 +65,7 @@ class FabDebugButton<T> extends StatelessWidget {
                   onApiClientExample: onApiClientExample,
                   onDatabaseInspector: onDatabaseInspector,
                   onDebugOverlay: onDebugOverlay,
+                  onExamplePages: onExamplePages,
                   enableMockBackend: enableMockBackend,
                   onMockedBackend: () async {
                     final result = await Navigator.of(
@@ -104,6 +107,7 @@ class FabDebugPage extends StatelessWidget {
     this.onApiClientExample,
     this.onDatabaseInspector,
     this.onDebugOverlay,
+    this.onExamplePages,
     this.enableMockBackend = true,
   });
 
@@ -113,6 +117,7 @@ class FabDebugPage extends StatelessWidget {
   final VoidCallback? onApiClientExample;
   final VoidCallback? onDatabaseInspector;
   final VoidCallback? onDebugOverlay;
+  final VoidCallback? onExamplePages;
   final bool enableMockBackend;
 
   @override
@@ -162,6 +167,13 @@ class FabDebugPage extends StatelessWidget {
               trailing: const Icon(Icons.chevron_right),
             ),
           if (onDebugOverlay != null) const Divider(height: 0),
+          if (onExamplePages != null)
+            ListTile(
+              title: const Text('Example Pages'),
+              onTap: onExamplePages,
+              trailing: const Icon(Icons.chevron_right),
+            ),
+          if (onExamplePages != null) const Divider(height: 0),
           if (enableMockBackend)
             ListTile(
               title: const Text('Mocked Backend'),
