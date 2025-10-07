@@ -177,6 +177,9 @@ class AppLocaleEn extends AppLocale {
   String get generalDetails => 'Details';
 
   @override
+  String get generalDelivered => 'Delivered';
+
+  @override
   String get semanticGoBack => 'Go Back';
 
   @override

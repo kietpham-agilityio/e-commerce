@@ -7,6 +7,7 @@ import 'package:e_commerce_app/presentations/pages/debug_overlay_page.dart';
 import 'package:e_commerce_app/presentations/pages/feature_flag_debug_panel.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_themes/ec_design.dart';
+import 'package:ec_themes/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -82,6 +83,11 @@ class HomePage extends StatelessWidget {
                       );
                     }
                     : null,
+            onWidgetExamples: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const WidgetExample()),
+              );
+            },
             enableMockBackend: false, // Disable Mock Backend option
           ),
         );

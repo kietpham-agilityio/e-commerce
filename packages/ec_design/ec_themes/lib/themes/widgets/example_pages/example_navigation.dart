@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'icon_button_example.dart';
 import 'form_input_example.dart';
+import 'dropdown_example.dart';
 import 'tab_bar_example.dart';
 import 'app_bar_example.dart';
 import 'tag_example.dart';
@@ -8,6 +9,7 @@ import 'checkbox_example.dart';
 import 'label_example.dart';
 import 'slide_range_filter_example.dart';
 import '../app_bar.dart';
+import '../text.dart';
 
 /// Navigation page that lists all example pages
 class WidgetExample extends StatelessWidget {
@@ -47,6 +49,14 @@ class WidgetExample extends StatelessWidget {
                 icon: Icons.edit,
                 onTap:
                     () => _navigateToPage(context, const FormInputExamples()),
+              ),
+              _buildExampleTile(
+                context,
+                title: 'Dropdown',
+                subtitle: 'Dropdown with search, async data, and validation',
+                icon: Icons.arrow_drop_down_circle,
+                onTap:
+                    () => _navigateToPage(context, const EcDropdownExample()),
               ),
               _buildExampleTile(
                 context,
@@ -137,10 +147,7 @@ class WidgetExample extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
+        EcHeadlineMediumText(title, fontWeight: FontWeight.bold),
         const SizedBox(height: 16),
         ...children,
       ],
@@ -177,18 +184,17 @@ class WidgetExample extends StatelessWidget {
             size: 24,
           ),
         ),
-        title: Text(
+        title: EcTitleMediumText(
           title,
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            color: enabled ? colors.onSurface : colors.onSurfaceVariant,
-          ),
+          fontWeight: FontWeight.w600,
+          color:
+              enabled
+                  ? colors.secondary
+                  : colors.secondary.withValues(alpha: 0.5),
         ),
-        subtitle: Text(
+        subtitle: EcBodyMediumText(
           subtitle,
-          style: TextStyle(
-            color: enabled ? colors.onSurfaceVariant : colors.onSurfaceVariant,
-          ),
+          color: enabled ? colors.surface : colors.onSurfaceVariant,
         ),
         trailing:
             enabled

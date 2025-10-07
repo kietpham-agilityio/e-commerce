@@ -411,6 +411,12 @@ abstract class AppLocale {
   /// **'Details'**
   String get generalDetails;
 
+  /// No description provided for @generalDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get generalDelivered;
+
   /// No description provided for @semanticGoBack.
   ///
   /// In en, this message translates to:

@@ -80,6 +80,20 @@ class ExamplePage extends StatelessWidget {
 
           _buildNavigationCard(
             context,
+            title: 'Widget Examples',
+            description: 'Demonstrate widget examples',
+            icon: Icons.api,
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const WidgetExample()),
+              );
+            },
+          ),
+
+          const SizedBox(height: 12),
+
+          _buildNavigationCard(
+            context,
             title: 'Feature Flag Demo',
             description: 'See feature flags in action with real examples',
             icon: Icons.play_circle,
@@ -131,25 +145,21 @@ class ExamplePage extends StatelessWidget {
     required IconData icon,
     required VoidCallback onTap,
   }) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Material(
       elevation: 4,
-      shadowColor: Theme.of(
-        context,
-      ).colorScheme.onSecondary.withValues(alpha: 0.9),
+
       borderRadius: BorderRadius.circular(8),
       child: ListTile(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        tileColor: Theme.of(context).colorScheme.onSecondary,
+        tileColor: colorScheme.onSecondary,
         leading: Icon(icon),
-        title: EcTitleLargeText(title),
+        title: EcTitleLargeText(title, color: colorScheme.secondary),
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 6),
-          child: EcBodyMediumText(
-            description,
-            color: Theme.of(context).colorScheme.surface,
-          ),
+          child: EcBodyMediumText(description, color: colorScheme.secondary),
         ),
-        trailing: const Icon(Icons.chevron_right),
+        trailing: Icon(Icons.chevron_right, color: colorScheme.secondary),
         onTap: onTap,
       ),
     );
