@@ -171,10 +171,21 @@ class AppLocaleEn extends AppLocale {
   String get generalTrackingNumber => 'Tracking number:';
 
   @override
+  String generalFullAddress(String city, String state, String zipcode, String country) {
+    return '$city, $state $zipcode, $country';
+  }
+
+  @override
+  String get generalTitleOfCheckboxShipping => 'Use as the shipping address';
+
+  @override
   String get generalTotalAmount => 'Total Amount:';
 
   @override
   String get generalDetails => 'Details';
+
+  @override
+  String get generalDelivered => 'Delivered';
 
   @override
   String get semanticGoBack => 'Go Back';

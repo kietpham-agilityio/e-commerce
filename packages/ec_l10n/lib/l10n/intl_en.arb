@@ -59,6 +59,25 @@
     }
   },
   "generalTrackingNumber": "Tracking number:",
+  "generalFullAddress": "{city}, {state} {zipcode}, {country}",
+  "@generalFullAddress": {
+    "description": "Full Address",
+    "placeholders": {
+      "city": {
+        "type": "String"
+      },
+      "state": {
+        "type": "String"
+      },
+      "zipcode": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "generalTitleOfCheckboxShipping": "Use as the shipping address",
   "generalTotalAmount": "Total Amount:",
   "generalDetails": "Details",
   "generalDelivered": "Delivered",

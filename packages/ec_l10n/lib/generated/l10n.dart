@@ -399,6 +399,18 @@ abstract class AppLocale {
   /// **'Tracking number:'**
   String get generalTrackingNumber;
 
+  /// Full Address
+  ///
+  /// In en, this message translates to:
+  /// **'{city}, {state} {zipcode}, {country}'**
+  String generalFullAddress(String city, String state, String zipcode, String country);
+
+  /// No description provided for @generalTitleOfCheckboxShipping.
+  ///
+  /// In en, this message translates to:
+  /// **'Use as the shipping address'**
+  String get generalTitleOfCheckboxShipping;
+
   /// No description provided for @generalTotalAmount.
   ///
   /// In en, this message translates to:
@@ -410,6 +422,12 @@ abstract class AppLocale {
   /// In en, this message translates to:
   /// **'Details'**
   String get generalDetails;
+
+  /// No description provided for @generalDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get generalDelivered;
 
   /// No description provided for @semanticGoBack.
   ///
