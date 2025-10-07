@@ -1,8 +1,6 @@
 import 'dart:ui';
 
 import 'package:ec_themes/ec_design.dart';
-import 'package:ec_themes/themes/app_sizing.dart';
-import 'package:ec_themes/themes/app_spacing.dart';
 import 'package:flutter/material.dart';
 
 /// A customizable sliver app bar widget that adapts to the EC design system.
@@ -52,8 +50,8 @@ class EcSliverAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     // Obtain EC theme extension and sizing for consistent styling.
     final themeExtension = Theme.of(context).extension<EcThemeExtension>()!;
-    final sizing = AppSizing(themeExtension.themeType);
-    final spacing = AppSpacing(themeExtension.themeType);
+    final sizing = themeExtension.sizing;
+    final spacing = themeExtension.spacing;
 
     final double maxExtentHeight = sizing.expandedAppBar;
     final double toolbarHeight = sizing.appBarHeight;

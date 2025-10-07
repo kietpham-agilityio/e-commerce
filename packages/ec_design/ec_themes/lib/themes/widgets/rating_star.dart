@@ -1,6 +1,4 @@
 import 'package:ec_themes/ec_design.dart';
-import 'package:ec_themes/themes/app_sizing.dart';
-import 'package:ec_themes/themes/app_spacing.dart';
 import 'package:flutter/material.dart';
 
 /// {@template rating_stars_view}
@@ -36,7 +34,7 @@ class EcRatingStarsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeExtension = Theme.of(context).extension<EcThemeExtension>()!;
-    final spacing = AppSpacing(themeExtension.themeType);
+    final spacing = themeExtension.spacing;
 
     return Wrap(
       crossAxisAlignment: WrapCrossAlignment.center,
@@ -93,7 +91,7 @@ class EcRatingStarsAction extends StatelessWidget {
     // Holds the current selected rating value.
     final ValueNotifier<int> rating = ValueNotifier(0);
     final themeExtension = Theme.of(context).extension<EcThemeExtension>()!;
-    final sizing = AppSizing(themeExtension.themeType);
+    final sizing = themeExtension.sizing;
 
     return ValueListenableBuilder<int>(
       valueListenable: rating,

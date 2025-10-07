@@ -93,7 +93,7 @@ class EcProductCardInCatalog extends StatelessWidget {
     final ecTheme = Theme.of(context);
     final colorScheme = ecTheme.colorScheme;
     final themeExtension = Theme.of(context).extension<EcThemeExtension>()!;
-    final spacing = AppSpacing(themeExtension.themeType);
+    final spacing = themeExtension.spacing;
 
     return switch (isListView) {
       true => _ListView(

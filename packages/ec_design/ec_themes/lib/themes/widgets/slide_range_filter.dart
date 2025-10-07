@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+
 import '../ec_theme_extension.dart';
-import '../app_spacing.dart';
 import 'text.dart';
 
 /// A customizable slide range filter widget for selecting a range of values.
@@ -129,9 +129,9 @@ class _EcSlideRangeFilterState extends State<EcSlideRangeFilter> {
 
   @override
   Widget build(BuildContext context) {
-    final ecTheme = Theme.of(context).extension<EcThemeExtension>()!;
-    final colors = ecTheme.colors;
-    final spacing = AppSpacing(ecTheme.themeType);
+    final themeExtension = Theme.of(context).extension<EcThemeExtension>()!;
+    final colors = themeExtension.colors;
+    final spacing = themeExtension.spacing;
 
     // Get effective colors
     final effectiveActiveColor = widget.activeColor ?? colors.primary;

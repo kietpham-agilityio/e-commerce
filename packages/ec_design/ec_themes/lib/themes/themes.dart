@@ -478,7 +478,21 @@ class EcDesignTheme {
     ECThemeType themeType,
     bool isDark,
   ) {
-    return const TextButtonThemeData();
+    final colorScheme =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
+
+    return TextButtonThemeData(
+      style: ButtonStyle(
+        foregroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return colorScheme.primary.withValues(alpha: 0.7);
+          }
+          return colorScheme.primary;
+        }),
+        overlayColor: WidgetStateProperty.all(Colors.transparent),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+    );
   }
 
   /// TBD: Build card theme
