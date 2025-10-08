@@ -81,6 +81,8 @@
   "generalTotalAmount": "Total Amount:",
   "generalDetails": "Details",
   "generalDelivered": "Delivered",
+  "generalAddToFavorites": "Add to favorites",
+  "generalDeleteFromTheList": "Delete from the list",
   "semanticGoBack": "Go Back",
   "homeTitle": "Home",
   "shopTitle": "Shop",

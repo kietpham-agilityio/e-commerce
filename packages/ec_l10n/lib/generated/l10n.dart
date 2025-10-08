@@ -429,6 +429,18 @@ abstract class AppLocale {
   /// **'Delivered'**
   String get generalDelivered;
 
+  /// No description provided for @generalAddToFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to favorites'**
+  String get generalAddToFavorites;
+
+  /// No description provided for @generalDeleteFromTheList.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete from the list'**
+  String get generalDeleteFromTheList;
+
   /// No description provided for @semanticGoBack.
   ///
   /// In en, this message translates to:
