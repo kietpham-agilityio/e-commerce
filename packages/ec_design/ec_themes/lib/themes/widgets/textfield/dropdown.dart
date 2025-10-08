@@ -1,3 +1,4 @@
+import 'package:ec_themes/themes/widgets/image.dart';
 import 'package:flutter/material.dart';
 import '../../typography.dart';
 import '../../app_colors.dart';
@@ -75,7 +76,6 @@ class EcDropdown<T> extends StatefulWidget {
     this.label,
     this.hintText,
     this.errorText,
-    this.helperText,
     this.semanticsLabel,
     this.enabled = true,
     this.required = false,
@@ -115,9 +115,6 @@ class EcDropdown<T> extends StatefulWidget {
 
   /// Error text displayed when validation fails
   final String? errorText;
-
-  /// Helper text displayed below the dropdown
-  final String? helperText;
 
   /// Semantic label for accessibility
   final String? semanticsLabel;
@@ -559,7 +556,6 @@ class _EcDropdownState<T> extends State<EcDropdown<T>> {
               decoration: InputDecoration(
                 hintText: widget.hintText,
                 errorText: widget.errorText,
-                helperText: widget.helperText,
                 prefixIcon: widget.prefixIcon,
                 suffixIcon:
                     widget.showIcon
@@ -567,9 +563,9 @@ class _EcDropdownState<T> extends State<EcDropdown<T>> {
                           onTap: () => _toggleDropdown(),
                           child: Icon(
                             _state.isExpanded
-                                ? Icons.arrow_drop_up
-                                : Icons.arrow_drop_down,
-                            color: colors.onSurface,
+                                ? Icons.arrow_drop_up_outlined
+                                : Icons.arrow_drop_down_outlined,
+                            color: colors.secondary,
                           ),
                         )
                         : null,
@@ -581,21 +577,18 @@ class _EcDropdownState<T> extends State<EcDropdown<T>> {
                   ecTheme.themeType,
                   ecTheme.isDark,
                 ).copyWith(color: colors.outline),
-                helperStyle: EcTypography.getBodySmall(
-                  ecTheme.themeType,
-                  ecTheme.isDark,
-                ),
+
                 errorStyle: EcTypography.getBodySmall(
                   ecTheme.themeType,
                   ecTheme.isDark,
                 ).copyWith(color: colors.error),
                 filled: true,
                 fillColor: colors.primaryContainer,
-                border: _buildBorder(),
-                enabledBorder: _buildBorder(),
-                focusedBorder: _buildBorder(color: colors.primary),
+                border: _buildBorder(color: colors.outline),
+                enabledBorder: _buildBorder(color: colors.outline),
+                focusedBorder: _buildBorder(color: colors.outline),
                 errorBorder: _buildBorder(color: colors.error),
-                disabledBorder: _buildBorder(),
+                disabledBorder: _buildBorder(color: colors.outline),
               ),
             ),
           ),
