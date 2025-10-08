@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../typography.dart';
-import '../app_spacing.dart';
+
 import '../ec_theme_extension.dart';
+import '../typography.dart';
 
 /// Common tab bar widget with 3 tabs
 class EcTabBar extends StatefulWidget {
@@ -79,10 +79,10 @@ class _EcTabBarState extends State<EcTabBar>
 
   @override
   Widget build(BuildContext context) {
-    final ecTheme = Theme.of(context).extension<EcThemeExtension>()!;
-    final colors = ecTheme.colors;
-    final sizing = ecTheme.sizing;
-    final spacing = AppSpacing(ecTheme.themeType);
+    final themeExtension = Theme.of(context).extension<EcThemeExtension>()!;
+    final colors = themeExtension.colors;
+    final sizing = themeExtension.sizing;
+    final spacing = themeExtension.spacing;
 
     return Container(
       margin: widget.margin,
@@ -105,15 +105,15 @@ class _EcTabBarState extends State<EcTabBar>
         labelColor: widget.labelColor ?? colors.secondary,
         unselectedLabelColor: widget.unselectedLabelColor ?? colors.secondary,
         labelStyle: EcTypography.getBodyLarge(
-          ecTheme.themeType,
-          ecTheme.isDark,
+          themeExtension.themeType,
+          themeExtension.isDark,
         ).copyWith(
           color: widget.labelColor ?? colors.secondary,
           fontWeight: FontWeight.bold,
         ),
         unselectedLabelStyle: EcTypography.getBodyLarge(
-          ecTheme.themeType,
-          ecTheme.isDark,
+          themeExtension.themeType,
+          themeExtension.isDark,
         ).copyWith(color: widget.unselectedLabelColor ?? colors.secondary),
         tabs:
             widget.tabs

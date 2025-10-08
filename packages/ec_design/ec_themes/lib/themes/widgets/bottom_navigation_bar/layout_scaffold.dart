@@ -1,9 +1,6 @@
 import 'package:ec_themes/ec_design.dart';
-import 'package:ec_themes/themes/app_sizing.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import 'ec_bottom_navigation_item.dart';
 
 class LayoutScaffold extends StatelessWidget {
   const LayoutScaffold({required this.navigationShell, Key? key})
@@ -15,7 +12,7 @@ class LayoutScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeExt = Theme.of(context).extension<EcThemeExtension>()!;
     final ecTheme = Theme.of(context);
-    final sizing = AppSizing(themeExt.themeType);
+    final sizing = themeExt.sizing;
 
     return Scaffold(
       body: navigationShell,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+
 import '../ec_theme_extension.dart';
-import '../app_sizing.dart';
 import 'text.dart';
 
 /// A customizable checkbox widget with text support that follows the design system.
@@ -111,9 +111,9 @@ class EcCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ecTheme = Theme.of(context).extension<EcThemeExtension>()!;
-    final colors = ecTheme.colors;
-    final sizing = AppSizing(ecTheme.themeType);
+    final themeExtension = Theme.of(context).extension<EcThemeExtension>()!;
+    final colors = themeExtension.colors;
+    final sizing = themeExtension.sizing;
 
     // Get effective values
     final effectiveSize = size ?? sizing.checkbox;
@@ -126,15 +126,12 @@ class EcCheckbox extends StatelessWidget {
       tristate: tristate,
       activeColor: activeColor ?? colors.primary,
       checkColor: checkColor ?? colors.onPrimary,
-      fillColor:
-          fillColor != null
-              ? WidgetStateProperty.all(fillColor)
-              : WidgetStateProperty.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) {
-                  return colors.primary;
-                }
-                return Colors.transparent;
-              }),
+      fillColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return fillColor ?? colors.primary;
+        }
+        return Colors.transparent;
+      }),
       side: side ?? BorderSide(color: colors.outline, width: 2.0),
       splashRadius: splashRadius ?? effectiveSize * 0.5,
       focusNode: focusNode,
