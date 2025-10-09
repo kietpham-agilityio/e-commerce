@@ -1,4 +1,5 @@
 import 'package:ec_themes/ec_design.dart';
+import 'package:ec_themes/themes/widgets/floating_menu.dart';
 import 'package:flutter/material.dart';
 
 /// {@template ec_product_card_in_bag}
@@ -149,17 +150,14 @@ class EcProductCardInBag extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(height: spacing.md),
             ],
           ),
           Spacer(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              EcIconButton(
-                onPressed: onMore ?? () {},
-                icon: EcAssets.threeDots(),
-                backgroundColor: Colors.transparent,
-              ),
+              EcFloatingMenu(),
               Spacer(),
               EcTitleMediumText('$price\$', height: EcTypography.normalHeight),
               SizedBox(height: spacing.xxxl),

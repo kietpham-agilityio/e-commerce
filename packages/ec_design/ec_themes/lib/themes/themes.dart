@@ -120,6 +120,8 @@ class EcDesignTheme {
       // Expansion tile theme
       expansionTileTheme: _buildExpansionTileTheme(ECThemeType.user, false),
 
+      menuTheme: _buildMenuBarThemeData(ECThemeType.user, false),
+
       // EC Theme Extension
       extensions: const [
         EcThemeExtension(themeType: ECThemeType.user, isDark: false),
@@ -215,6 +217,8 @@ class EcDesignTheme {
       // Expansion tile theme
       expansionTileTheme: _buildExpansionTileTheme(ECThemeType.user, true),
 
+      menuBarTheme: _buildMenuBarThemeData(ECThemeType.user, true),
+
       // EC Theme Extension
       extensions: const [
         EcThemeExtension(themeType: ECThemeType.user, isDark: true),
@@ -273,6 +277,8 @@ class EcDesignTheme {
       bottomSheetTheme: _buildBottomSheetTheme(ECThemeType.admin, false),
       expansionTileTheme: _buildExpansionTileTheme(ECThemeType.admin, false),
 
+      menuBarTheme: _buildMenuBarThemeData(ECThemeType.admin, false),
+
       // EC Theme Extension
       extensions: const [
         EcThemeExtension(themeType: ECThemeType.admin, isDark: false),
@@ -327,6 +333,8 @@ class EcDesignTheme {
       popupMenuTheme: _buildPopupMenuTheme(ECThemeType.admin, true),
       bottomSheetTheme: _buildBottomSheetTheme(ECThemeType.admin, true),
       expansionTileTheme: _buildExpansionTileTheme(ECThemeType.admin, true),
+
+      menuBarTheme: _buildMenuBarThemeData(ECThemeType.admin, true),
 
       // EC Theme Extension
       extensions: const [
@@ -468,6 +476,32 @@ class EcDesignTheme {
         ),
         shape: WidgetStatePropertyAll(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+        ),
+      ),
+    );
+  }
+
+  static MenuBarThemeData _buildMenuBarThemeData(
+    ECThemeType themeType,
+    bool isDark,
+  ) {
+    final colorScheme =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
+
+    return MenuBarThemeData(
+      style: MenuStyle(
+        shape: WidgetStateProperty.all(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+        padding: WidgetStateProperty.all(EdgeInsets.zero),
+        backgroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return colorScheme.surface.withValues(alpha: 0.1);
+          }
+          return colorScheme.onSurface;
+        }),
+        shadowColor: WidgetStateProperty.all(
+          colorScheme.surface.withValues(alpha: 0.2),
         ),
       ),
     );

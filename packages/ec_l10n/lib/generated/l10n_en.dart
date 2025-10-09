@@ -188,6 +188,12 @@ class AppLocaleEn extends AppLocale {
   String get generalDelivered => 'Delivered';
 
   @override
+  String get generalAddToFavorites => 'Add to favorites';
+
+  @override
+  String get generalDeleteFromTheList => 'Delete from the list';
+
+  @override
   String get semanticGoBack => 'Go Back';
 
   @override
