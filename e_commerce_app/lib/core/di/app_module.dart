@@ -9,19 +9,15 @@ class AppModule {
   static final GetIt _getIt = GetIt.instance;
 
   /// Initialize all dependencies
-  static void initialize({
-    String environment = 'dev',
-    AuthImplementation authImplementation = AuthImplementation.mock,
-  }) {
+  static void initialize({String environment = 'dev'}) {
     // Register API client dependencies with specific environment
     ApiClientModule.registerDependencies(environment: environment);
 
     // Register service dependencies
     ServiceModule.registerServices();
 
-    // Register authentication dependencies
-    // Use Supabase for staging/production, mock for development
-    AuthModule.registerDependencies(implementation: authImplementation);
+    // Register authentication dependencies with Supabase
+    AuthModule.registerDependencies();
 
     // Register other dependencies here as needed
     // Example:

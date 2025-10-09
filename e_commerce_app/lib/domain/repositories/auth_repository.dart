@@ -30,3 +30,4 @@ abstract class AuthRepository {
   /// Check if user is authenticated
   Future<bool> isAuthenticated();
 }
+
