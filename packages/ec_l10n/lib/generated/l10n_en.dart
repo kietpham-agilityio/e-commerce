@@ -48,6 +48,9 @@ class AppLocaleEn extends AppLocale {
   String get generalFilterBtn => 'Filter';
 
   @override
+  String get generalFiltersBtn => 'Filters';
+
+  @override
   String get generalSortBtn => 'Sort';
 
   @override
