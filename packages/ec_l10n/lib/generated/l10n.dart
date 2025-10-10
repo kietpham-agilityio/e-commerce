@@ -171,6 +171,12 @@ abstract class AppLocale {
   /// **'Filter'**
   String get generalFilterBtn;
 
+  /// No description provided for @generalFiltersBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get generalFiltersBtn;
+
   /// No description provided for @generalSortBtn.
   ///
   /// In en, this message translates to:
