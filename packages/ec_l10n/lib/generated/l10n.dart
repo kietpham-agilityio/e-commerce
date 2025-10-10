@@ -447,6 +447,24 @@ abstract class AppLocale {
   /// **'Delete from the list'**
   String get generalDeleteFromTheList;
 
+  /// No description provided for @generalSale.
+  ///
+  /// In en, this message translates to:
+  /// **'Sale'**
+  String get generalSale;
+
+  /// No description provided for @generalNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get generalNew;
+
+  /// No description provided for @generalViewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View all'**
+  String get generalViewAll;
+
   /// No description provided for @semanticGoBack.
   ///
   /// In en, this message translates to:

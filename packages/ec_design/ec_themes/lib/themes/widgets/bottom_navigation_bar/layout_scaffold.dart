@@ -15,6 +15,7 @@ class LayoutScaffold extends StatelessWidget {
     final sizing = themeExt.sizing;
 
     return Scaffold(
+      extendBody: true,
       body: navigationShell,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(

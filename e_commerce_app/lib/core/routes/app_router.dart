@@ -24,6 +24,11 @@ class AppRouter {
         path: AppPaths.login.path,
         builder: (context, state) => const LoginPage(),
       ),
+      GoRoute(
+        name: AppPaths.productDetails.name,
+        path: AppPaths.productDetails.path,
+        builder: (context, state) => const ProductDetailsPage(),
+      ),
       StatefulShellRoute.indexedStack(
         builder:
             (context, state, navigationShell) =>
@@ -35,13 +40,6 @@ class AppRouter {
                 name: AppPaths.home.name,
                 path: AppPaths.home.path,
                 builder: (context, state) => const HomePage(),
-                routes: [
-                  GoRoute(
-                    name: AppPaths.productDetails.name,
-                    path: AppPaths.productDetails.path,
-                    builder: (context, state) => const ProductDetailsPage(),
-                  ),
-                ],
               ),
             ],
           ),
