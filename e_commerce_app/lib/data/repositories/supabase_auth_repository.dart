@@ -14,8 +14,10 @@ class SupabaseAuthRepository implements AuthRepository {
   SupabaseAuthRepository({
     required ApiClient apiClient,
     required UserSessionBox userSessionBox,
+    required SupabaseClient supabaseClient,
   }) : _apiClient = apiClient,
-       _userSessionBox = userSessionBox {
+       _userSessionBox = userSessionBox,
+       _supabase = supabaseClient {
     // Load tokens from local storage on initialization
     _loadStoredSession();
 
@@ -25,9 +27,7 @@ class SupabaseAuthRepository implements AuthRepository {
 
   final ApiClient _apiClient;
   final UserSessionBox _userSessionBox;
-
-  /// Get Supabase client instance
-  SupabaseClient get _supabase => Supabase.instance.client;
+  final SupabaseClient _supabase;
 
   User? _currentUser;
 

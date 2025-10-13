@@ -183,15 +183,10 @@ class _ForgotPasswordButton extends StatelessWidget {
           children: [
             EcBodySmallText(
               'Forgot your password?',
-              color: colorScheme.onSurface,
-              fontWeight: FontWeight.w400,
+              color: colorScheme.secondary,
             ),
             const SizedBox(width: 4),
-            EcAssets.arrowRight(
-              color: colorScheme.primary,
-              width: 12,
-              height: 12,
-            ),
+            EcAssets.arrowRightFilled(color: colorScheme.primary),
           ],
         ),
       ),

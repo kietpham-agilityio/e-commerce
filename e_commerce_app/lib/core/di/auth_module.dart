@@ -1,5 +1,6 @@
 import 'package:ec_core/ec_core.dart';
 import 'package:get_it/get_it.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../data/repositories/supabase_auth_repository.dart';
 import '../../domain/repositories/auth_repository.dart';
@@ -18,6 +19,7 @@ class AuthModule {
         apiClient: DI.get<ApiClient>(instanceName: 'main'),
         userSessionBox:
             DI.get<EcLocalDatabase>(instanceName: 'main').userSessionBox,
+        supabaseClient: DI.get<SupabaseClient>(),
       ),
     );
 

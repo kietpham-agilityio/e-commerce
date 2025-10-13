@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:ec_core/services/ec_notifications/ec_notifications.dart';
 import 'package:get_it/get_it.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../services/api_service.dart';
 
@@ -11,6 +12,11 @@ class ServiceModule {
 
   /// Register all services
   static void registerServices() {
+    // Register Supabase client as singleton
+    _getIt.registerLazySingleton<SupabaseClient>(
+      () => Supabase.instance.client,
+    );
+
     // Register ApiService as singleton
     _getIt.registerLazySingleton<ApiService>(() => ApiService());
 
@@ -49,7 +55,9 @@ class ServiceModule {
       _getIt<NotificationsService>();
 
   /// Check if services are registered
-  static bool get isRegistered => _getIt.isRegistered<ApiService>();
+  static bool get isRegistered =>
+      _getIt.isRegistered<SupabaseClient>() &&
+      _getIt.isRegistered<ApiService>();
 
   /// Reset all services (useful for testing)
   static void reset() {
