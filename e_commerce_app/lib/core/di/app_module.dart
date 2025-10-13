@@ -1,6 +1,8 @@
 import 'package:get_it/get_it.dart';
 
 import 'api_client_module.dart';
+import 'auth_module.dart';
+import 'bloc_module.dart';
 import 'service_module.dart';
 
 /// Main dependency injection module for the application
@@ -15,9 +17,14 @@ class AppModule {
     // Register service dependencies
     ServiceModule.registerServices();
 
+    // Register authentication dependencies with Supabase
+    AuthModule.registerDependencies();
+
+    // Register BLoC dependencies (including AppBloc and FeatureFlagService)
+    BlocModule.registerBlocs();
+
     // Register other dependencies here as needed
     // Example:
-    // AuthModule.registerDependencies();
     // DatabaseModule.registerDependencies();
     // RepositoryModule.registerDependencies();
   }
@@ -32,5 +39,8 @@ class AppModule {
 
   /// Check if all dependencies are registered
   static bool get isInitialized =>
-      ApiClientModule.isRegistered && ServiceModule.isRegistered;
+      ApiClientModule.isRegistered &&
+      ServiceModule.isRegistered &&
+      AuthModule.isRegistered &&
+      BlocModule.isRegistered;
 }
