@@ -23,121 +23,123 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocale.of(context)!;
+    final ecTheme = Theme.of(context);
+    final ecThemeExt = ecTheme.extension<EcThemeExtension>()!;
+    final spacing = ecThemeExt.spacing;
 
-    return BlocConsumer<AppBloc, AppState>(
-      listenWhen: (previous, current) {
-        // Listen when Database Inspector flag changes from true to false
-        return previous.flags.enableDatabaseInspector !=
-            current.flags.enableDatabaseInspector;
-      },
-      listener: (context, state) {
-        // Navigate back to first route when Database Inspector is turned off
-        Navigator.of(context).popUntil((route) => route.isFirst);
-      },
-      builder: (context, state) {
-        final flags = state.flags;
-
-        return Scaffold(
-          body: RefreshIndicator(
-            onRefresh: () async {
-              await Future.delayed(Duration(seconds: 2));
-            },
-            child: CustomScrollView(
-              slivers: [
-                EcSliverAppBar(
-                  title: l10n.homeTitle,
-                  maxHeight: 196,
-                  expandedPaddingBottom: 26,
-                  background: Image.network(
-                    'https://i.guim.co.uk/img/media/1cc4877b9591dd8b9cc783722fd97b00b87ee162/0_143_6016_3610/master/6016.jpg?width=465&dpr=1&s=none&crop=none',
-                    width: double.infinity,
-                    height: 250,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                SliverSafeArea(
-                  top: false,
-                  sliver: SliverList(
-                    delegate: SliverChildListDelegate([
-                      const SizedBox(height: 24),
-                      _CategoryHeader(
-                        title: l10n.generalSale,
-                        onViewall: () {
-                          // TODO: handle redirect sale page
-                          log('onViewall sale');
-                        },
-                      ),
-                      const SizedBox(height: 18),
-                      SizedBox(
-                        height: MediaQuery.of(context).textScaler.scale(269),
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          itemCount: 10,
-                          separatorBuilder:
-                              (_, __) => const SizedBox(width: 16),
-                          itemBuilder: (context, index) {
-                            return EcProductCardInMain(
-                              title: 'Pullover',
-                              brand: 'Mango',
-                              imageUrl:
-                                  'https://static.vecteezy.com/system/resources/thumbnails/057/068/323/small/single-fresh-red-strawberry-on-table-green-background-food-fruit-sweet-macro-juicy-plant-image-photo.jpg',
-                              isSoldOut: false,
-                              originalPrice: 51.0.priceFormatter(),
-                              discountedPrice: 20.55.priceFormatter(),
-                              labelText: '-20%',
-                              onTap: () {
-                                // TODO: handle redirect product details
-                                log('ontap sale $index');
-                                context.pushNamed(AppPaths.productDetails.name);
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                      _CategoryHeader(
-                        title: l10n.generalNew,
-                        onViewall: () {
-                          // TODO: handle redirect sale page
-                          log('onViewall New');
-                        },
-                      ),
-                      const SizedBox(height: 18),
-                      SizedBox(
-                        height: MediaQuery.of(context).textScaler.scale(269),
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          itemCount: 10,
-                          separatorBuilder:
-                              (_, __) => const SizedBox(width: 16),
-                          itemBuilder: (context, index) {
-                            return EcProductCardInMain(
-                              title: 'Pullover',
-                              brand: 'Mango',
-                              imageUrl:
-                                  'https://static.vecteezy.com/system/resources/thumbnails/057/068/323/small/single-fresh-red-strawberry-on-table-green-background-food-fruit-sweet-macro-juicy-plant-image-photo.jpg',
-                              isSoldOut: false,
-                              originalPrice: 51.0.priceFormatter(),
-                              discountedPrice: 20.55.priceFormatter(),
-                              labelText: 'NEW',
-                              onTap: () {
-                                // TODO: handle redirect product details
-                                log('ontap new $index');
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                    ]),
-                  ),
-                ),
-              ],
+    return Scaffold(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          // TODO: handle pull to refresh
+          await Future.delayed(Duration(seconds: 2));
+        },
+        child: CustomScrollView(
+          slivers: [
+            EcSliverAppBar(
+              title: l10n.homeTitle,
+              maxHeight: 196,
+              expandedPaddingBottom: 26,
+              background: Image.network(
+                'https://i.guim.co.uk/img/media/1cc4877b9591dd8b9cc783722fd97b00b87ee162/0_143_6016_3610/master/6016.jpg?width=465&dpr=1&s=none&crop=none',
+                width: double.infinity,
+                height: 250,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          floatingActionButton: FabDebugButton(
+            SliverSafeArea(
+              top: false,
+              sliver: SliverList(
+                delegate: SliverChildListDelegate([
+                  SizedBox(height: spacing.huge),
+                  _CategoryHeader(
+                    title: l10n.generalSale,
+                    onViewall: () {
+                      // TODO: handle redirect sale page
+                      log('onViewall sale');
+                    },
+                  ),
+                  SizedBox(height: spacing.xxl),
+                  SizedBox(
+                    height: MediaQuery.of(context).textScaler.scale(269),
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.symmetric(horizontal: spacing.xl),
+                      itemCount: 10,
+                      separatorBuilder: (_, __) => SizedBox(width: spacing.xl),
+                      itemBuilder: (context, index) {
+                        return EcProductCardInMain(
+                          title: 'Pullover',
+                          brand: 'Mango',
+                          imageUrl:
+                              'https://static.vecteezy.com/system/resources/thumbnails/057/068/323/small/single-fresh-red-strawberry-on-table-green-background-food-fruit-sweet-macro-juicy-plant-image-photo.jpg',
+                          isSoldOut: false,
+                          originalPrice: 51.0.priceFormatter(),
+                          discountedPrice: 20.55.priceFormatter(),
+                          labelText: '-20%',
+                          onTap: () {
+                            // TODO: handle redirect product details
+                            log('ontap sale $index');
+                            context.pushNamed(AppPaths.productDetails.name);
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(height: spacing.giant),
+                  _CategoryHeader(
+                    title: l10n.generalNew,
+                    onViewall: () {
+                      // TODO: handle redirect sale page
+                      log('onViewall New');
+                    },
+                  ),
+                  SizedBox(height: spacing.xxl),
+                  SizedBox(
+                    height: MediaQuery.of(context).textScaler.scale(269),
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.symmetric(horizontal: spacing.xl),
+                      itemCount: 10,
+                      separatorBuilder: (_, __) => SizedBox(width: spacing.xl),
+                      itemBuilder: (context, index) {
+                        return EcProductCardInMain(
+                          title: 'Pullover',
+                          brand: 'Mango',
+                          imageUrl:
+                              'https://static.vecteezy.com/system/resources/thumbnails/057/068/323/small/single-fresh-red-strawberry-on-table-green-background-food-fruit-sweet-macro-juicy-plant-image-photo.jpg',
+                          isSoldOut: false,
+                          originalPrice: 51.0.priceFormatter(),
+                          discountedPrice: 20.55.priceFormatter(),
+                          labelText: 'NEW',
+                          onTap: () {
+                            // TODO: handle redirect product details
+                            log('ontap new $index');
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(height: spacing.huge),
+                ]),
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: BlocConsumer<AppBloc, AppState>(
+        listenWhen: (previous, current) {
+          // Listen when Database Inspector flag changes from true to false
+          return previous.flags.enableDatabaseInspector !=
+              current.flags.enableDatabaseInspector;
+        },
+        listener: (context, state) {
+          // Navigate back to first route when Database Inspector is turned off
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        },
+        builder: (context, state) {
+          final flags = state.flags;
+
+          return FabDebugButton(
             key: ValueKey(
               'fab_debug_${flags.enableDatabaseInspector}_${flags.enableDebugOverlay}',
             ),
@@ -188,9 +190,9 @@ class HomePage extends StatelessWidget {
                     }
                     : null,
             enableMockBackend: false,
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
@@ -206,9 +208,11 @@ class _CategoryHeader extends StatelessWidget {
     final ecTheme = Theme.of(context);
     final colorScheme = ecTheme.colorScheme;
     final l10n = AppLocale.of(context)!;
+    final ecThemeExt = ecTheme.extension<EcThemeExtension>()!;
+    final spacing = ecThemeExt.spacing;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: spacing.xl),
       child: IntrinsicWidth(
         child: Wrap(
           alignment: WrapAlignment.spaceBetween,
