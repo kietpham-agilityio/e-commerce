@@ -41,6 +41,7 @@ class EcCardInList extends StatelessWidget {
     this.isSoldOut = false,
     this.actions = const [],
     this.onClose,
+    this.onTap,
     super.key,
   });
 
@@ -62,6 +63,8 @@ class EcCardInList extends StatelessWidget {
   /// Callback for the close button. If null, no close button is shown.
   final VoidCallback? onClose;
 
+  final VoidCallback? onTap;
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -70,51 +73,54 @@ class EcCardInList extends StatelessWidget {
       spacing: 7,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Card(
-              color: colorScheme.primaryContainer,
-              clipBehavior: Clip.antiAlias,
-              child: IntrinsicHeight(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    EcCachedNetworkImage(
-                      width: sizeImage,
-                      boxFit: BoxFit.cover,
-                      url: url,
-                    ),
-                    SizedBox(width: 12),
-                    Expanded(child: content),
-                  ],
-                ),
-              ),
-            ),
-            if (actions.isNotEmpty && !isSoldOut) ...actions,
-            if (isSoldOut)
-              Positioned.fill(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: colorScheme.surfaceDim.withValues(alpha: 0.7),
+        GestureDetector(
+          onTap: isSoldOut ? null : onTap,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Card(
+                color: colorScheme.primaryContainer,
+                clipBehavior: Clip.antiAlias,
+                child: IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      EcCachedNetworkImage(
+                        width: sizeImage,
+                        boxFit: BoxFit.cover,
+                        url: url,
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(child: content),
+                    ],
                   ),
+                ),
+              ),
+              if (actions.isNotEmpty && !isSoldOut) ...actions,
+              if (isSoldOut)
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: colorScheme.surfaceDim.withValues(alpha: 0.7),
+                    ),
 
-                  alignment: Alignment.center,
+                    alignment: Alignment.center,
+                  ),
                 ),
-              ),
-            if (onClose != null)
-              Positioned(
-                top: 0,
-                right: 0,
-                child: EcIconButton(
-                  icon: EcAssets.close(color: colorScheme.surface),
-                  size: 40,
-                  backgroundColor: Colors.transparent,
-                  onPressed: onClose,
+              if (onClose != null)
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: EcIconButton(
+                    icon: EcAssets.close(color: colorScheme.surface),
+                    size: 40,
+                    backgroundColor: Colors.transparent,
+                    onPressed: onClose,
+                  ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
         if (isSoldOut)
           EcLabelSmallText(
@@ -181,6 +187,7 @@ class EcCardInGrid extends StatelessWidget {
     this.actions = const [],
     this.isSoldOut = false,
     this.onClose,
+    this.onTap,
     super.key,
   });
 
@@ -205,106 +212,111 @@ class EcCardInGrid extends StatelessWidget {
   /// Callback for the close button. If null, no close button is shown.
   final VoidCallback? onClose;
 
+  final VoidCallback? onTap;
+
   @override
   Widget build(BuildContext context) {
     final themeExtension = Theme.of(context).extension<EcThemeExtension>()!;
     final spacing = themeExtension.spacing;
     final colorScheme = Theme.of(context).colorScheme;
 
-    return SizedBox(
-      width: imageWidth,
-      child: Stack(
-        children: [
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(8),
-                topRight: Radius.circular(8),
+    return GestureDetector(
+      onTap: isSoldOut ? null : onTap,
+      child: SizedBox(
+        width: imageWidth,
+        child: Stack(
+          children: [
+            Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(8),
+                  topRight: Radius.circular(8),
+                ),
               ),
-            ),
-            shadowColor: Colors.transparent,
-            clipBehavior: Clip.antiAlias,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              spacing: spacing.sm,
-              children: [
-                Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Container(
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(8),
-                          bottomRight: Radius.circular(8),
+              shadowColor: Colors.transparent,
+              clipBehavior: Clip.antiAlias,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                spacing: spacing.sm,
+                children: [
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(8),
+                            bottomRight: Radius.circular(8),
+                          ),
+                        ),
+                        child: EcCachedNetworkImage(
+                          height: imageHeight,
+                          width: imageWidth,
+                          boxFit: BoxFit.cover,
+                          url: url,
                         ),
                       ),
-                      child: EcCachedNetworkImage(
-                        height: imageHeight,
-                        width: imageWidth,
-                        boxFit: BoxFit.cover,
-                        url: url,
-                      ),
+                      if (actions.isNotEmpty && !isSoldOut) ...actions,
+                    ],
+                  ),
+                  content,
+                ],
+              ),
+            ),
+            if (isSoldOut)
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8),
                     ),
-                    if (actions.isNotEmpty && !isSoldOut) ...actions,
-                  ],
-                ),
-                content,
-              ],
-            ),
-          ),
-          if (isSoldOut)
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    topRight: Radius.circular(8),
+                    color: colorScheme.surfaceDim.withValues(alpha: 0.6),
                   ),
-                  color: colorScheme.surfaceDim.withValues(alpha: 0.6),
+                  alignment: Alignment.center,
                 ),
-                alignment: Alignment.center,
               ),
-            ),
-          if (isSoldOut)
-            Positioned(
-              top: imageHeight - 36,
-              child: Container(
-                width: imageWidth,
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(8),
-                    bottomRight: Radius.circular(8),
+            if (isSoldOut)
+              Positioned(
+                top: imageHeight - 36,
+                child: Container(
+                  width: imageWidth,
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(8),
+                      bottomRight: Radius.circular(8),
+                    ),
+                    color: colorScheme.onPrimary.withValues(alpha: 0.4),
                   ),
-                  color: colorScheme.onPrimary.withValues(alpha: 0.4),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: EcLabelSmallText(
-                    // FIXME: use l10n
-                    'Sorry, this item is currently sold out',
-                    height: 1.2,
-                    letterSpacing: 0,
-                    fontWeight: FontWeight.w400,
-                    color: colorScheme.secondary,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: EcLabelSmallText(
+                      // FIXME: use l10n
+                      'Sorry, this item is currently sold out',
+                      height: 1.2,
+                      letterSpacing: 0,
+                      fontWeight: FontWeight.w400,
+                      color: colorScheme.secondary,
+                    ),
                   ),
                 ),
               ),
-            ),
-          if (onClose != null)
-            Positioned(
-              top: 0,
-              right: 0,
-              child: EcIconButton(
-                icon: EcAssets.close(color: colorScheme.surface),
-                size: 40,
-                backgroundColor: Colors.transparent,
-                onPressed: onClose,
+            if (onClose != null)
+              Positioned(
+                top: 0,
+                right: 0,
+                child: EcIconButton(
+                  icon: EcAssets.close(color: colorScheme.surface),
+                  size: 40,
+                  backgroundColor: Colors.transparent,
+                  onPressed: onClose,
+                ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

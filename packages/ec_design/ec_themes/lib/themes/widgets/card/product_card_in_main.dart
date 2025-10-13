@@ -43,8 +43,8 @@ class EcProductCardInMain extends StatelessWidget {
     this.labelText,
     this.originalPrice,
     this.discountedPrice,
-    this.quantity,
     this.onFavorite,
+    this.onTap,
     super.key,
   });
 
@@ -66,9 +66,6 @@ class EcProductCardInMain extends StatelessWidget {
   /// The discounted price of the product, as a formatted string.
   final String? discountedPrice;
 
-  /// The available quantity of the product (optional).
-  final int? quantity;
-
   /// Callback for the favorite button (optional).
   final VoidCallback? onFavorite;
 
@@ -81,6 +78,8 @@ class EcProductCardInMain extends StatelessWidget {
   /// The total number of reviews for the product.
   final int totalReviews;
 
+  final VoidCallback? onTap;
+
   @override
   Widget build(BuildContext context) {
     final ecTheme = Theme.of(context);
@@ -89,6 +88,7 @@ class EcProductCardInMain extends StatelessWidget {
     final spacing = themeExtension.spacing;
 
     return EcCardInGrid(
+      onTap: onTap,
       imageWidth: 148,
       url: imageUrl,
       isSoldOut: isSoldOut,

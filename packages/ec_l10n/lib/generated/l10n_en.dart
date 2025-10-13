@@ -197,6 +197,15 @@ class AppLocaleEn extends AppLocale {
   String get generalDeleteFromTheList => 'Delete from the list';
 
   @override
+  String get generalSale => 'Sale';
+
+  @override
+  String get generalNew => 'New';
+
+  @override
+  String get generalViewAll => 'View all';
+
+  @override
   String get semanticGoBack => 'Go Back';
 
   @override
