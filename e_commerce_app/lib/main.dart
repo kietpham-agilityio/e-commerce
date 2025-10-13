@@ -1,10 +1,9 @@
-import 'package:e_commerce_app/core/bloc/app_bloc.dart';
 import 'package:e_commerce_app/presentations/items/items_page.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'core/di/app_module.dart';
+import 'core/di/di.dart';
 
 void main() {
   // Initialize dependency injection
@@ -21,7 +20,7 @@ class MyApp extends StatelessWidget {
     final flavor = EcFlavor.current;
 
     return BlocProvider(
-      create: (context) => AppBloc(featureFlagService: getFeatureFlagService()),
+      create: (context) => BlocModule.appBloc,
       child: MaterialApp(
         title: 'E-Commerce Dev - ${flavor.displayName}',
         theme: ThemeData(

@@ -1,5 +1,3 @@
-import 'package:e_commerce_app/core/bloc/app_bloc.dart';
-import 'package:e_commerce_app/core/di/service_module.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_core/services/ec_notifications/ec_notifications.dart';
@@ -12,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'core/di/app_module.dart';
+import 'core/di/di.dart';
 
 void main() async {
   // Ensure Flutter binding is initialized
@@ -78,7 +76,7 @@ class MyApp extends StatelessWidget {
     final flavor = EcFlavor.current;
 
     return BlocProvider(
-      create: (context) => AppBloc(featureFlagService: getFeatureFlagService()),
+      create: (context) => BlocModule.appBloc,
       child: MaterialApp.router(
         title: 'E-Commerce Dev - ${flavor.displayName}',
         theme: EcDesignTheme.lightTheme,
