@@ -87,6 +87,27 @@
   "generalSale": "Sale",
   "generalNew": "New",
   "generalViewAll": "View all",
+  "generalCurrentOfTotal": "{current} of {total}",
+  "@generalCurrentOfTotal": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "generalShippingInfo": "Shipping info",
+  "generalYouCanAlsoLikeThis": "You can also like this",
+  "generalTotalItem": "{total} items",
+  "@generalTotalItem": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "semanticGoBack": "Go Back",
   "homeTitle": "Home",
   "shopTitle": "Shop",
