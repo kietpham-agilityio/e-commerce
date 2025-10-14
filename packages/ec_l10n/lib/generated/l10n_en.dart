@@ -206,6 +206,22 @@ class AppLocaleEn extends AppLocale {
   String get generalViewAll => 'View all';
 
   @override
+  String generalCurrentOfTotal(int current, int total) {
+    return '$current of $total';
+  }
+
+  @override
+  String get generalShippingInfo => 'Shipping info';
+
+  @override
+  String get generalYouCanAlsoLikeThis => 'You can also like this';
+
+  @override
+  String generalTotalItem(int total) {
+    return '$total items';
+  }
+
+  @override
   String get semanticGoBack => 'Go Back';
 
   @override

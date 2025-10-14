@@ -465,6 +465,30 @@ abstract class AppLocale {
   /// **'View all'**
   String get generalViewAll;
 
+  /// No description provided for @generalCurrentOfTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} of {total}'**
+  String generalCurrentOfTotal(int current, int total);
+
+  /// No description provided for @generalShippingInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Shipping info'**
+  String get generalShippingInfo;
+
+  /// No description provided for @generalYouCanAlsoLikeThis.
+  ///
+  /// In en, this message translates to:
+  /// **'You can also like this'**
+  String get generalYouCanAlsoLikeThis;
+
+  /// No description provided for @generalTotalItem.
+  ///
+  /// In en, this message translates to:
+  /// **'{total} items'**
+  String generalTotalItem(int total);
+
   /// No description provided for @semanticGoBack.
   ///
   /// In en, this message translates to:

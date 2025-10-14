@@ -39,11 +39,12 @@ class HomePage extends StatelessWidget {
               title: l10n.homeTitle,
               maxHeight: 196,
               expandedPaddingBottom: 26,
-              background: Image.network(
-                'https://i.guim.co.uk/img/media/1cc4877b9591dd8b9cc783722fd97b00b87ee162/0_143_6016_3610/master/6016.jpg?width=465&dpr=1&s=none&crop=none',
+              background: EcCachedNetworkImage(
+                url:
+                    'https://i.guim.co.uk/img/media/1cc4877b9591dd8b9cc783722fd97b00b87ee162/0_143_6016_3610/master/6016.jpg?width=465&dpr=1&s=none&crop=none',
                 width: double.infinity,
+                boxFit: BoxFit.cover,
                 height: 250,
-                fit: BoxFit.cover,
               ),
             ),
             SliverSafeArea(
@@ -70,8 +71,7 @@ class HomePage extends StatelessWidget {
                         return EcProductCardInMain(
                           title: 'Pullover',
                           brand: 'Mango',
-                          imageUrl:
-                              'https://static.vecteezy.com/system/resources/thumbnails/057/068/323/small/single-fresh-red-strawberry-on-table-green-background-food-fruit-sweet-macro-juicy-plant-image-photo.jpg',
+                          imageUrl: 'https://picsum.photos/id/237/800/1000',
                           isSoldOut: false,
                           originalPrice: 51.0.priceFormatter(),
                           discountedPrice: 20.55.priceFormatter(),
@@ -105,8 +105,7 @@ class HomePage extends StatelessWidget {
                         return EcProductCardInMain(
                           title: 'Pullover',
                           brand: 'Mango',
-                          imageUrl:
-                              'https://static.vecteezy.com/system/resources/thumbnails/057/068/323/small/single-fresh-red-strawberry-on-table-green-background-food-fruit-sweet-macro-juicy-plant-image-photo.jpg',
+                          imageUrl: 'https://picsum.photos/id/237/800/1000',
                           isSoldOut: false,
                           originalPrice: 51.0.priceFormatter(),
                           discountedPrice: 20.55.priceFormatter(),
