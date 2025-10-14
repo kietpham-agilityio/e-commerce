@@ -26,6 +26,8 @@ class EcEmailInput {
     if (value.isEmpty) return EcValidationError.empty;
     return _emailRegex.hasMatch(value) ? null : EcValidationError.invalidFormat;
   }
+
+  bool get isValid => displayError == null;
 }
 
 /// Password input validation class
@@ -52,6 +54,8 @@ class EcPasswordInput {
         ? null
         : EcValidationError.invalidFormat;
   }
+
+  bool get isValid => displayError == null;
 }
 
 /// Name input validation class
@@ -72,6 +76,8 @@ class EcNameInput {
     if (value.length < 2) return EcValidationError.tooShort;
     return null;
   }
+
+  bool get isValid => displayError == null;
 }
 
 /// Phone number input validation class
@@ -132,6 +138,31 @@ class EcTextInput {
     if (value == null || value.isEmpty) return EcValidationError.empty;
     return null;
   }
+}
+
+/// Confirm password input validation class
+class EcConfirmPasswordInput {
+  const EcConfirmPasswordInput.pure([this.value = '', this.password = ''])
+    : isPure = true;
+  const EcConfirmPasswordInput.dirty([this.value = '', this.password = ''])
+    : isPure = false;
+
+  final String value;
+  final String password;
+  final bool isPure;
+
+  EcValidationError? get displayError {
+    if (isPure) return null;
+    return validator(value, password);
+  }
+
+  EcValidationError? validator(String? value, String? password) {
+    if (value == null || value.isEmpty) return EcValidationError.empty;
+    if (value != password) return EcValidationError.invalid;
+    return null;
+  }
+
+  bool get isValid => displayError == null;
 }
 
 /// Common email input widget using EcTextField

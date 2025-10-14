@@ -163,12 +163,23 @@ class SupabaseAuthRepository implements AuthRepository {
 
   /// Convert Supabase user to UserDto
   UserDto _convertSupabaseUserToDto(supabase.User user) {
+    // Extract role from user metadata, default to customer if not set
+    UserRole role = UserRole.customer;
+    final roleString = user.userMetadata?['role'] as String?;
+    if (roleString != null) {
+      if (roleString == 'admin') {
+        role = UserRole.admin;
+      } else if (roleString == 'customer') {
+        role = UserRole.customer;
+      }
+    }
+
     return UserDto(
       id: user.id,
       email: user.email,
       fullName: user.userMetadata?['full_name'] as String?,
       phone: user.phone,
-      role: UserRole.customer,
+      role: role,
       createdAt: DateTime.parse(user.createdAt),
       avatar: user.userMetadata?['avatar_url'] as String?,
       isEmailVerified: user.emailConfirmedAt != null,

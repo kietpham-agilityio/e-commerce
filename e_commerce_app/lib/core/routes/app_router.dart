@@ -1,4 +1,5 @@
 import 'package:e_commerce_app/core/routes/router_guard.dart';
+import 'package:e_commerce_app/presentations/admin/admin_dashboard_page.dart';
 import 'package:e_commerce_app/presentations/bag/bag_page.dart';
 import 'package:e_commerce_app/presentations/favorites/favorites_page.dart';
 import 'package:e_commerce_app/presentations/home/home_page.dart';
@@ -23,6 +24,11 @@ class AppRouter {
         name: AppPaths.login.name,
         path: AppPaths.login.path,
         builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        name: AppPaths.adminDashboard.name,
+        path: AppPaths.adminDashboard.path,
+        builder: (context, state) => const AdminDashboardPage(),
       ),
       GoRoute(
         name: AppPaths.productDetails.name,
@@ -93,6 +99,7 @@ class AppRouter {
 
 enum AppPaths {
   login(name: 'login', path: '/login'),
+  adminDashboard(name: 'adminDashboard', path: '/admin'),
   home(name: 'home', path: '/home'),
   shop(name: 'shop', path: '/shop'),
   bag(name: 'bag', path: '/bag'),

@@ -1,4 +1,5 @@
 import 'package:ec_core/api_client/apis/failure.dart';
+import 'package:ec_core/api_client/enums/supabase_enums.dart';
 import '../entities/user.dart';
 
 /// Authentication repository interface
@@ -30,4 +31,3 @@ abstract class AuthRepository {
   /// Check if user is authenticated
   Future<bool> isAuthenticated();
 }
-
