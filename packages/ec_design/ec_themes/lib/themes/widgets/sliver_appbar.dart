@@ -58,7 +58,8 @@ class EcSliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Obtain EC theme extension and sizing for consistent styling.
-    final themeExtension = Theme.of(context).extension<EcThemeExtension>()!;
+    final ecTheme = Theme.of(context);
+    final themeExtension = ecTheme.extension<EcThemeExtension>()!;
     final sizing = themeExtension.sizing;
     final spacing = themeExtension.spacing;
 
@@ -77,15 +78,6 @@ class EcSliverAppBar extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           if (background != null) background!,
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.black26, Colors.black54],
-              ),
-            ),
-          ),
           LayoutBuilder(
             builder: (context, constraints) {
               final double currentHeight = constraints.biggest.height;
@@ -116,8 +108,15 @@ class EcSliverAppBar extends StatelessWidget {
                       title,
                       maxLines: titleMaxLines,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.displayMedium
-                          ?.copyWith(fontSize: fontSize, color: Colors.white),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.displayMedium?.copyWith(
+                        fontSize: fontSize,
+                        color:
+                            background != null
+                                ? ecTheme.colorScheme.onSecondary
+                                : null,
+                      ),
                     ),
                   ),
                 ),

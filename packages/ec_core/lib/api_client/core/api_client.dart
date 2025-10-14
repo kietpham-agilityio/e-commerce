@@ -1,17 +1,18 @@
 import 'package:dio/dio.dart';
+import 'package:ec_core/api_client/apis/home_api.dart';
 import 'package:ec_core/mocked_backend/interceptors/mock_backend_interceptor.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
-import '../apis/ecommerce_api.dart';
-import '../apis/user_api.dart';
-import '../apis/product_api.dart';
 import '../apis/cart_api.dart';
-import '../apis/order_api.dart';
 import '../apis/discount_api.dart';
+import '../apis/ecommerce_api.dart';
+import '../apis/order_api.dart';
+import '../apis/product_api.dart';
 import '../apis/review_api.dart';
-import '../apis/wishlist_api.dart';
 import '../apis/shipping_address_api.dart';
+import '../apis/user_api.dart';
+import '../apis/wishlist_api.dart';
 
 /// Basic HTTP API client using Retrofit services
 class ApiClient {
@@ -51,6 +52,7 @@ class ApiClient {
     _reviewApi = ReviewApi(_dio);
     _wishlistApi = WishlistApi(_dio);
     _shippingAddressApi = ShippingAddressApi(_dio);
+    _homeApi = HomeApi(_dio);
   }
 
   final BaseOptions options;
@@ -67,6 +69,7 @@ class ApiClient {
   late ReviewApi _reviewApi;
   late WishlistApi _wishlistApi;
   late ShippingAddressApi _shippingAddressApi;
+  late HomeApi _homeApi;
 
   // ============================================================================
   // HEADER MANAGEMENT
@@ -126,6 +129,7 @@ class ApiClient {
     _reviewApi = ReviewApi(_dio, baseUrl: baseUrl);
     _wishlistApi = WishlistApi(_dio, baseUrl: baseUrl);
     _shippingAddressApi = ShippingAddressApi(_dio, baseUrl: baseUrl);
+    _homeApi = HomeApi(_dio, baseUrl: baseUrl);
   }
 
   /// Get base URL
@@ -161,6 +165,8 @@ class ApiClient {
 
   /// Get Shipping Address API service
   ShippingAddressApi get shippingAddressApi => _shippingAddressApi;
+
+  HomeApi get homeApi => _homeApi;
 
   // ============================================================================
   // TEST API METHODS

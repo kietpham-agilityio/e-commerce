@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/core/di/home_module.dart';
 import 'package:get_it/get_it.dart';
 
 import 'api_client_module.dart';
@@ -23,6 +24,8 @@ class AppModule {
     // Register BLoC dependencies (including AppBloc and FeatureFlagService)
     BlocModule.registerBlocs();
 
+    HomeModule.registerDependencies();
+
     // Register other dependencies here as needed
     // Example:
     // DatabaseModule.registerDependencies();
@@ -42,5 +45,6 @@ class AppModule {
       ApiClientModule.isRegistered &&
       ServiceModule.isRegistered &&
       AuthModule.isRegistered &&
-      BlocModule.isRegistered;
+      BlocModule.isRegistered &&
+      HomeModule.isRegistered;
 }
