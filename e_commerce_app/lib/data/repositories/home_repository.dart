@@ -6,6 +6,7 @@ import 'package:ec_core/api_client/apis/failure.dart';
 import 'package:ec_core/api_client/apis/home_api.dart';
 import 'package:ec_core/api_client/core/api_client.dart';
 import 'package:ec_core/services/ec_local_store/boxes/user_session_box.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class HomeRepositoryImpl extends HomeRepository {
   HomeRepositoryImpl({
@@ -37,7 +38,7 @@ class HomeRepositoryImpl extends HomeRepository {
       //         .toList();
 
       // FIXME: use _apiClient after fixing
-      final baseUrl = 'https://ljicqrmblcyidcyqecdf.supabase.co';
+      final baseUrl = dotenv.env['SUPABASE_URL'] ?? '';
       Dio();
 
       final dio = Dio();
@@ -45,10 +46,8 @@ class HomeRepositoryImpl extends HomeRepository {
       dio.options = BaseOptions(
         baseUrl: baseUrl,
         headers: {
-          'apikey':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxqaWNxcm1ibGN5aWRjeXFlY2RmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4NzYzNjgsImV4cCI6MjA3NDQ1MjM2OH0.QPVhCPTL0qyRQDXAWC_yc168MCgweYpPNw5OoQuMVvg',
-          'Authorization':
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxqaWNxcm1ibGN5aWRjeXFlY2RmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4NzYzNjgsImV4cCI6MjA3NDQ1MjM2OH0.QPVhCPTL0qyRQDXAWC_yc168MCgweYpPNw5OoQuMVvg',
+          'apikey': dotenv.env['SUPABASE_ANON_KEY'],
+          'Authorization': 'Bearer ${dotenv.env['SUPABASE_ANON_KEY']}',
         },
       );
 
@@ -73,7 +72,7 @@ class HomeRepositoryImpl extends HomeRepository {
         newProducts: newProducts,
       );
     } catch (e) {
-      throw Failure('Failed to fetch home data: ${e.toString()}');
+      throw Failure('Failed to fetch home data');
     }
   }
 }

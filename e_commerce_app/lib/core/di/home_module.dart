@@ -10,7 +10,6 @@ import 'package:get_it/get_it.dart';
 class HomeModule {
   static final GetIt _getIt = GetIt.instance;
 
-  /// Register authentication dependencies with Supabase
   static void registerDependencies() {
     // Register Supabase repository
     _getIt.registerLazySingleton<HomeRepository>(
