@@ -598,7 +598,14 @@ class EcDesignTheme {
     ECThemeType themeType,
     bool isDark,
   ) {
-    return const SnackBarThemeData();
+    final colorScheme =
+        isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
+
+    return SnackBarThemeData(
+      backgroundColor: colorScheme.error,
+      contentTextStyle: TextStyle(color: colorScheme.onError),
+      behavior: SnackBarBehavior.floating,
+    );
   }
 
   /// TBD: Build chip theme

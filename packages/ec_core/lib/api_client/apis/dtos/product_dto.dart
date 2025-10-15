@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+
 import '../../enums/supabase_enums.dart';
 
 part 'product_dto.freezed.dart';
@@ -14,13 +15,15 @@ class ProductDto with _$ProductDto {
     required int? categoryId, // References categories.id
     String? brand, // text from Supabase
     required double price, // numeric from Supabase
-    required ProductStatus status, // product_status enum from Supabase
-    DateTime? createdAt, // timestamptz from Supabase
     // Additional fields for UI display (computed from joins)
-    List<ProductImageDto>? images,
+    @JsonKey(name: 'image_urls') List<String>? images,
     List<ProductVariantDto>? variants,
+    @JsonKey(name: 'final_price') double? finalPrice,
     double? averageRating,
     int? reviewCount,
+    String? label,
+    int? discount,
+    @Default(0) int quantity,
   }) = _ProductDto;
 
   factory ProductDto.fromJson(Map<String, dynamic> json) =>
@@ -45,20 +48,6 @@ class ProductVariantDto with _$ProductVariantDto {
 
   factory ProductVariantDto.fromJson(Map<String, dynamic> json) =>
       _$ProductVariantDtoFromJson(json);
-}
-
-/// Product Image Data Transfer Object - matches Supabase product_images table
-@freezed
-class ProductImageDto with _$ProductImageDto {
-  const factory ProductImageDto({
-    required int id,
-    required int? productId, // References products.id
-    required String imageUrl, // text from Supabase
-    bool? isPrimary, // boolean from Supabase (defaults to false)
-  }) = _ProductImageDto;
-
-  factory ProductImageDto.fromJson(Map<String, dynamic> json) =>
-      _$ProductImageDtoFromJson(json);
 }
 
 /// Product Attribute Data Transfer Object
@@ -198,7 +187,7 @@ class CreateProductRequestDto with _$CreateProductRequestDto {
     String? brand,
     required double price,
     required ProductStatus status,
-    List<ProductImageDto>? images,
+    List<String>? images,
     List<ProductVariantDto>? variants,
   }) = _CreateProductRequestDto;
 
@@ -216,7 +205,7 @@ class UpdateProductRequestDto with _$UpdateProductRequestDto {
     String? brand,
     double? price,
     ProductStatus? status,
-    List<ProductImageDto>? images,
+    List<String>? images,
     List<ProductVariantDto>? variants,
   }) = _UpdateProductRequestDto;
 

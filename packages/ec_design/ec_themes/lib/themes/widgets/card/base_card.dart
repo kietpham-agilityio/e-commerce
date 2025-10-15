@@ -235,9 +235,10 @@ class EcCardInGrid extends StatelessWidget {
               ),
               shadowColor: Colors.transparent,
               clipBehavior: Clip.antiAlias,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
+              child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.start,
+                direction: Axis.vertical,
+                // mainAxisSize: MainAxisSize.min,
                 spacing: spacing.sm,
                 children: [
                   Stack(
