@@ -1,0 +1,14 @@
+import 'package:e_commerce_app/domain/entities/product_entities.dart';
+import 'package:e_commerce_app/domain/repositories/product_details_repository.dart';
+
+class ProductDetailsUseCase {
+  const ProductDetailsUseCase({
+    required ProductDetailsRepository productDetailsRepository,
+  }) : _productDetailsRepository = productDetailsRepository;
+
+  final ProductDetailsRepository _productDetailsRepository;
+
+  Future<EcProductDetails> fetchProductDetails(int id) async {
+    return await _productDetailsRepository.fetchProductDetails(id);
+  }
+}

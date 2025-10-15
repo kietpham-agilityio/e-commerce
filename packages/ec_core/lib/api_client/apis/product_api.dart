@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:ec_core/api_client/apis/dtos/product_details_dto.dart';
 import 'package:retrofit/retrofit.dart';
-import 'dtos/product_dto.dart';
+
 import 'dtos/base_response.dart';
+import 'dtos/product_dto.dart';
 
 part 'product_api.g.dart';
 
@@ -47,6 +49,11 @@ abstract class ProductApi {
   Future<BaseResponseDto<List<ProductDto>>> getFeaturedProducts(
     @Query('limit') int? limit,
   );
+
+  @GET('/rest/v1/products')
+  Future<BaseResponseDto<ProductDetailsDto>> getProductDetails({
+    @Query('id') required int id,
+  });
 
   /// Get related products
   @GET('/products/{productId}/related')

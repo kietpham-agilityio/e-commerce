@@ -38,3 +38,14 @@ extension ProductDtoMapper on ProductDto {
     );
   }
 }
+
+@freezed
+class EcProductDetails with _$EcProductDetails {
+  factory EcProductDetails({
+    required EcProduct product,
+    @Default(<EcProduct>[]) List<EcProduct> relatedProducts,
+  }) = _EcProductDetails;
+
+  factory EcProductDetails.fromJson(Map<String, dynamic> json) =>
+      _$EcProductDetailsFromJson(json);
+}
