@@ -160,6 +160,7 @@ class _EcImageLoader extends StatelessWidget {
           fit: boxFit,
           width: width,
           height: height,
+          cacheKey: url,
           errorWidget: (BuildContext context, String url, dynamic error) {
             log('Image $url load failed. Error: $error');
             return errorBuilder ?? Icon(Icons.broken_image, size: width);

@@ -14,7 +14,8 @@ class EcProduct with _$EcProduct {
     @Default(0.0) double price,
     @Default(0) int discount,
     @Default(0) int quantity,
-    @Default(<String>[]) List<String> imageUrl,
+    @JsonKey(name: 'image_urls') @Default(<String>[]) List<String> imageUrl,
+    @JsonKey(name: 'final_price') double? finalPrice,
     String? label,
   }) = _EcProduct;
 

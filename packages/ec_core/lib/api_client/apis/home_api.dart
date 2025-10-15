@@ -17,6 +17,5 @@ abstract class HomeApi {
 
   /// Get current user's cart
   @GET('/rest/v1/rpc/get_home_products')
-  // @GET('/rest/v1/products?id=eq.100')
   Future<BaseResponseDto<HomeDto>> getHome();
 }

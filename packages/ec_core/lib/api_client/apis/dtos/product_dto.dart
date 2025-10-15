@@ -15,11 +15,10 @@ class ProductDto with _$ProductDto {
     required int? categoryId, // References categories.id
     String? brand, // text from Supabase
     required double price, // numeric from Supabase
-    required ProductStatus status, // product_status enum from Supabase
-    DateTime? createdAt, // timestamptz from Supabase
     // Additional fields for UI display (computed from joins)
-    List<String>? images,
+    @JsonKey(name: 'image_urls') List<String>? images,
     List<ProductVariantDto>? variants,
+    @JsonKey(name: 'final_price') double? finalPrice,
     double? averageRating,
     int? reviewCount,
     String? label,

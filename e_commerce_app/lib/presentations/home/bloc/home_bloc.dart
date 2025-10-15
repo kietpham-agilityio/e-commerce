@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:e_commerce_app/domain/entities/product_entities.dart';
 import 'package:e_commerce_app/domain/usecases/home_usecase.dart';
 import 'package:equatable/equatable.dart';
@@ -43,7 +45,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeRefreshRequested event,
     Emitter<HomeState> emit,
   ) async {
-    add(const HomeLoadRequested());
+    try {
+      add(const HomeLoadRequested());
+    } finally {
+      event.completer.complete();
+    }
   }
 
   Future<void> _onDebugScenarioRequested(

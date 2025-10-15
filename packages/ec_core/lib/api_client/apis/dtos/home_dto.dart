@@ -8,12 +8,13 @@ part 'home_dto.g.dart';
 
 @freezed
 class HomeDto with _$HomeDto {
+  @JsonSerializable(explicitToJson: true)
   factory HomeDto({
     @Default(<ProductDto>[])
-    @ValueKey('new_products')
+    @JsonKey(name: 'new_products')
     List<ProductDto> newProducts,
     @Default(<ProductDto>[])
-    @ValueKey('discount_products')
+    @JsonKey(name: 'discount_products')
     List<ProductDto> discountProducts,
   }) = _HomeDto;
 

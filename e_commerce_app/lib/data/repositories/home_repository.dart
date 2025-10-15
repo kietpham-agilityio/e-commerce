@@ -62,21 +62,15 @@ class HomeRepositoryImpl extends HomeRepository {
               .toList();
 
       final newProducts =
-          response.data.discountProducts
+          response.data.newProducts
               .asMap()
               .entries
               .map((entry) => entry.value.toEcProduct())
               .toList();
 
-      // final homeEntities = EcHomeEntities.fromJson(response.data ?? {});
-
-      // return homeEntities;
-
       return EcHomeEntities(
         discountProducts: discountProducts,
         newProducts: newProducts,
-        // discountProducts: discountProducts,
-        // newProducts: newProducts,
       );
     } catch (e) {
       throw Failure('Failed to fetch home data: ${e.toString()}');

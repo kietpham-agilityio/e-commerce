@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:e_commerce_app/core/bloc/app_bloc.dart';
@@ -27,11 +28,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late HomeBloc blocProvier;
+  late HomeBloc homeBloc;
 
   @override
   void initState() {
-    blocProvier = AppModule.getIt<HomeBloc>()..add(HomeLoadRequested());
+    homeBloc = AppModule.getIt<HomeBloc>()..add(HomeLoadRequested());
 
     super.initState();
   }
@@ -44,12 +45,14 @@ class _HomePageState extends State<HomePage> {
     final spacing = ecThemeExt.spacing;
 
     return BlocProvider(
-      create: (context) => blocProvier,
+      create: (_) => homeBloc,
       child: Scaffold(
         body: RefreshIndicator(
           onRefresh: () async {
-            // context.read<HomeBloc>().add(const HomeRefreshRequested());
-            AppModule.getIt<HomeBloc>().add(HomeLoadRequested());
+            final completer = Completer<void>();
+            homeBloc.add(HomeRefreshRequested(completer));
+            return completer.future;
+            // context.read<HomeBloc>().add(HomeRefreshRequested());
           },
           child: CustomScrollView(
             slivers: [
@@ -81,11 +84,15 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: MediaQuery.of(context).textScaler.scale(269),
                       child: BlocBuilder<HomeBloc, HomeState>(
-                        // buildWhen:
-                        //     (previous, current) =>
-                        //         previous.discountProducts !=
-                        //         current.discountProducts,
+                        buildWhen:
+                            (previous, current) =>
+                                previous.discountProducts !=
+                                current.discountProducts,
                         builder: (context, state) {
+                          if (state.status == HomeStatus.initial) {
+                            return SizedBox();
+                          }
+
                           return ListView.separated(
                             scrollDirection: Axis.horizontal,
                             padding: EdgeInsets.symmetric(
@@ -103,7 +110,8 @@ class _HomePageState extends State<HomePage> {
                                 imageUrl: item.imageUrl.first,
                                 isSoldOut: item.quantity == 0,
                                 originalPrice: item.price.priceFormatter(),
-                                discountedPrice: 20.55.priceFormatter(),
+                                discountedPrice:
+                                    item.finalPrice?.priceFormatter(),
                                 labelText: '-${item.label}',
                                 onTap: () {
                                   // TODO: handle redirect product details
@@ -129,24 +137,41 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(height: spacing.xxl),
                     SizedBox(
                       height: MediaQuery.of(context).textScaler.scale(269),
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        padding: EdgeInsets.symmetric(horizontal: spacing.xl),
-                        itemCount: 10,
-                        separatorBuilder:
-                            (_, __) => SizedBox(width: spacing.xl),
-                        itemBuilder: (context, index) {
-                          return EcProductCardInMain(
-                            title: 'Pullover',
-                            brand: 'Mango',
-                            imageUrl: 'https://picsum.photos/id/237/800/1000',
-                            isSoldOut: false,
-                            originalPrice: 51.0.priceFormatter(),
-                            discountedPrice: 20.55.priceFormatter(),
-                            labelText: 'NEW',
-                            onTap: () {
-                              // TODO: handle redirect product details
-                              log('ontap new $index');
+                      child: BlocBuilder<HomeBloc, HomeState>(
+                        buildWhen:
+                            (previous, current) =>
+                                previous.newProducts != current.newProducts,
+                        builder: (context, state) {
+                          if (state.status == HomeStatus.initial) {
+                            return SizedBox();
+                          }
+
+                          return ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: spacing.xl,
+                            ),
+                            itemCount: state.newProducts.length,
+                            separatorBuilder:
+                                (_, __) => SizedBox(width: spacing.xl),
+                            itemBuilder: (context, index) {
+                              final item = state.newProducts[index];
+
+                              return EcProductCardInMain(
+                                title: item.name,
+                                brand: item.brand,
+                                imageUrl: item.imageUrl.first,
+                                isSoldOut: item.quantity == 0,
+                                originalPrice: item.price.priceFormatter(),
+                                labelText: item.label,
+                                onTap: () {
+                                  // TODO: handle redirect product details
+                                  log('ontap sale $index');
+                                  context.pushNamed(
+                                    AppPaths.productDetails.name,
+                                  );
+                                },
+                              );
                             },
                           );
                         },
