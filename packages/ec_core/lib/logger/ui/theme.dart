@@ -28,10 +28,23 @@ final talkerTheme = TalkerScreenTheme(
   backgroundColor: Colors.white,
   cardColor: Colors.grey[200]!,
   logColors: {
-    GoodLog.getKey: const Color(0xff4CAF50), // Green for good logs
+    // Custom log types
+    GoodLog.getKey: const Color(0xff1B5E20), // Green for good logs
     ErrorLog.getKey: const Color(0xffF44336), // Red for error logs
     WarningLog.getKey: const Color(0xffFF9800), // Orange for warning logs
     InfoLog.getKey: const Color(0xff2196F3), // Blue for info logs
-    SuccessLog.getKey: const Color(0xff2E7D32), // Dark green for success logs
+    SuccessLog.getKey: const Color(0xff1B5E20), // Darker green
+    // Built-in Talker log types (using string keys)
+    'http-response': const Color(0xff1B5E20), // Green for HTTP responses
+    'http-request': Colors.black, // Blue for HTTP requests
+    'http-error': const Color(0xffF44336), // Red for HTTP errors
+    'error': const Color(0xffF44336), // Red for errors
+    'critical': const Color(0xffB71C1C), // Dark red for critical errors
+    'warning': const Color(0xffFF9800), // Orange for warnings
+    'info': const Color(0xff2196F3), // Blue for info
+    'debug': const Color(0xff9E9E9E), // Gray for debug
+    'verbose': const Color(0xff757575), // Light gray for verbose
+    'good': const Color(0xff1B5E20), // Green for good logs
+    'route': const Color(0xff9C27B0), // Purple for route logs
   },
 );

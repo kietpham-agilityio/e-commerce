@@ -32,6 +32,7 @@ class ApiClientModule {
   /// Creates API client with BaseOptions containing only:
   /// - baseUrl: Supabase URL from environment variables
   /// - headers: Only 'apikey' header
+  /// - Talker logging enabled for all API calls
   static ApiClient _createApiClient({EcFlavor? flavor, String? environment}) {
     final currentFlavor = flavor ?? EcFlavor.current;
     final currentEnvironment = environment ?? 'dev';
@@ -48,14 +49,19 @@ class ApiClientModule {
             ? ApiClientConfig.getAdminAdditionalHeaders(currentEnvironment)
             : ApiClientConfig.getAdditionalHeaders(currentEnvironment);
 
-    // Create API client with simplified BaseOptions:
-    // - No default headers (Content-Type, Accept, User-Agent)
-    // - No timeout configurations
-    // - Only baseUrl and apikey header
+    // Get Talker instance from DI for logging
+    final talker =
+        LoggerDI.isTalkerRegistered(instanceName: 'main')
+            ? LoggerDI.mainTalker
+            : null;
+
+    // Create API client with Talker logging enabled
+    // This will log all HTTP requests/responses to EcTalker
     final apiClient = ApiClientFactory.createWithCustomUrl(
       baseUrl: baseUrl,
       headers: headers,
       interceptors: [MockBackendInterceptor()],
+      talker: talker,
     );
 
     return apiClient;

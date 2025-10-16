@@ -189,6 +189,9 @@ class LoggerDI {
       case 'error':
         talker.error(message, exception, stackTrace);
         break;
+      case 'success':
+        talker.logCustom(SuccessLog(message));
+        break;
       case 'verbose':
         talker.verbose(message);
         break;
