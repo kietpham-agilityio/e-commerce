@@ -117,6 +117,8 @@ class DependencyInjection {
     required bool enableCrashReporting,
   }) {
     // Register main Talker instance early
+    // Note: UI theme colors are handled by TalkerScreen widget via talkerTheme
+    // Console colors (AnsiPen) are handled by custom log classes (SuccessLog, ErrorLog, etc.)
     final settings = TalkerSettings(
       useConsoleLogs: true,
       useHistory: true,

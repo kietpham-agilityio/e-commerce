@@ -1,6 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:dio/dio.dart';
 import 'package:ec_core/ec_core.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 /// App-specific API client configuration that uses environment variables
 class ApiClientConfig {
@@ -130,6 +131,12 @@ class ApiClientConfig {
             ? getAdminAdditionalHeaders(environment)
             : getAdditionalHeaders(environment);
 
+    // Get Talker instance from DI for logging if enabled
+    Talker? talker;
+    if (enableLogging && LoggerDI.isTalkerRegistered(instanceName: 'main')) {
+      talker = LoggerDI.mainTalker;
+    }
+
     // Create API client using the factory
     return ApiClientFactory.createWithCustomUrl(
       baseUrl: baseUrl,
@@ -138,7 +145,7 @@ class ApiClientConfig {
       receiveTimeout: receiveTimeout,
       sendTimeout: sendTimeout,
       interceptors: customInterceptors,
-      talker: enableLogging ? null : null, // Will be set by DI
+      talker: talker,
     );
   }
 
@@ -156,10 +163,7 @@ class ApiClientConfig {
           flavor.isAdmin
               ? getAdminBaseUrl(environment)
               : getBaseUrl(environment),
-      'anonKey':
-          flavor.isAdmin
-              ? getAdminApiKey(environment) ?? 'N/A'
-              : getApiKey(environment) ?? 'N/A',
+
       'appVersion': dotenv.env['APP_VERSION'] ?? 'N/A',
     };
   }
