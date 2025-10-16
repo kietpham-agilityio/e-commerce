@@ -29,6 +29,9 @@ class ApiClientModule {
   }
 
   /// Create the main API client instance
+  /// Creates API client with BaseOptions containing only:
+  /// - baseUrl: Supabase URL from environment variables
+  /// - headers: Only 'apikey' header
   static ApiClient _createApiClient({EcFlavor? flavor, String? environment}) {
     final currentFlavor = flavor ?? EcFlavor.current;
     final currentEnvironment = environment ?? 'dev';
@@ -39,26 +42,23 @@ class ApiClientModule {
             ? ApiClientConfig.getAdminBaseUrl(currentEnvironment)
             : ApiClientConfig.getBaseUrl(currentEnvironment);
 
-    // Get additional headers including API key
-    final additionalHeaders =
+    // Get headers with only 'apikey'
+    final headers =
         currentFlavor.isAdmin
             ? ApiClientConfig.getAdminAdditionalHeaders(currentEnvironment)
             : ApiClientConfig.getAdditionalHeaders(currentEnvironment);
 
-    // Add flavor and environment headers
-    final headers = {
-      ...additionalHeaders,
-      'X-Flavor': currentFlavor.displayName,
-      'X-Environment': currentEnvironment,
-    };
-
-    return ApiClientFactory.createWithCustomUrl(
+    // Create API client with simplified BaseOptions:
+    // - No default headers (Content-Type, Accept, User-Agent)
+    // - No timeout configurations
+    // - Only baseUrl and apikey header
+    final apiClient = ApiClientFactory.createWithCustomUrl(
       baseUrl: baseUrl,
       headers: headers,
-      connectTimeout: const Duration(seconds: 15),
-      receiveTimeout: const Duration(seconds: 15),
       interceptors: [MockBackendInterceptor()],
     );
+
+    return apiClient;
   }
 
   /// Create API client for specific environment

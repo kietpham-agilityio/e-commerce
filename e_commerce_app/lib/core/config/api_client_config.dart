@@ -84,22 +84,11 @@ class ApiClientConfig {
   static Map<String, String> getAdditionalHeaders(String environment) {
     final headers = <String, String>{};
 
-    // Add Supabase anon key to apikey header
+    // Add Supabase anon key to apikey header only
     final anonKey = getApiKey(environment);
     if (anonKey != null && anonKey.isNotEmpty) {
       headers['apikey'] = anonKey;
-      // Also add it to Authorization header as Bearer token
-      headers['Authorization'] = 'Bearer $anonKey';
     }
-
-    // Add app version from environment
-    final appVersion = dotenv.env['APP_VERSION'];
-    if (appVersion != null && appVersion.isNotEmpty) {
-      headers['X-App-Version'] = appVersion;
-    }
-
-    // Add platform header
-    headers['X-Platform'] = 'mobile';
 
     return headers;
   }
@@ -108,22 +97,11 @@ class ApiClientConfig {
   static Map<String, String> getAdminAdditionalHeaders(String environment) {
     final headers = <String, String>{};
 
-    // Add admin Supabase anon key to apikey header
+    // Add admin Supabase anon key to apikey header only
     final adminAnonKey = getAdminApiKey(environment);
     if (adminAnonKey != null && adminAnonKey.isNotEmpty) {
       headers['apikey'] = adminAnonKey;
-      // Also add it to Authorization header as Bearer token
-      headers['Authorization'] = 'Bearer $adminAnonKey';
     }
-
-    // Add app version from environment
-    final appVersion = dotenv.env['APP_VERSION'];
-    if (appVersion != null && appVersion.isNotEmpty) {
-      headers['X-App-Version'] = appVersion;
-    }
-
-    // Add platform header
-    headers['X-Platform'] = 'mobile';
 
     return headers;
   }
