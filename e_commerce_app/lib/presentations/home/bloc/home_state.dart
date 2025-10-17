@@ -25,7 +25,7 @@ class HomeState extends Equatable {
       status: status ?? this.status,
       discountProducts: discountProducts ?? this.discountProducts,
       newProducts: newProducts ?? this.newProducts,
-      errorMessage: errorMessage,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 

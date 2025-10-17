@@ -1,4 +1,5 @@
 import 'package:e_commerce_app/core/di/home_module.dart';
+import 'package:e_commerce_app/core/di/product_details.dart';
 import 'package:get_it/get_it.dart';
 
 import 'api_client_module.dart';
@@ -26,6 +27,8 @@ class AppModule {
 
     HomeModule.registerDependencies();
 
+    ProductDetailsModule.registerDependencies();
+
     // Register other dependencies here as needed
     // Example:
     // DatabaseModule.registerDependencies();
@@ -46,5 +49,6 @@ class AppModule {
       ServiceModule.isRegistered &&
       AuthModule.isRegistered &&
       BlocModule.isRegistered &&
-      HomeModule.isRegistered;
+      HomeModule.isRegistered &&
+      ProductDetailsModule.isRegistered;
 }
