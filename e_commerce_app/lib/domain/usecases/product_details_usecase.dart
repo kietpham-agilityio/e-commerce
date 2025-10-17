@@ -8,7 +8,7 @@ class ProductDetailsUseCase {
 
   final ProductDetailsRepository _productDetailsRepository;
 
-  Future<EcProductDetails> fetchProductDetails(int id) async {
+  Future<EcProductDetails> fetchProductDetails(String id) async {
     return await _productDetailsRepository.fetchProductDetails(id);
   }
 }

@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:e_commerce_app/domain/entities/product_entities.dart';
 import 'package:e_commerce_app/domain/repositories/product_details_repository.dart';
+import 'package:ec_core/api_client/apis/dtos/product_details_request_body.dart';
 import 'package:ec_core/api_client/apis/failure.dart';
-import 'package:ec_core/api_client/apis/product_api.dart';
 import 'package:ec_core/api_client/core/api_client.dart';
 import 'package:ec_core/services/ec_local_store/boxes/user_session_box.dart';
 
@@ -17,7 +17,7 @@ class ProductDetailsRepositoryImpl extends ProductDetailsRepository {
   final UserSessionBox _userSessionBox;
 
   @override
-  Future<EcProductDetails> fetchProductDetails(int id) async {
+  Future<EcProductDetails> fetchProductDetails(String id) async {
     try {
       final baseUrl = 'https://ljicqrmblcyidcyqecdf.supabase.co';
 
@@ -33,7 +33,9 @@ class ProductDetailsRepositoryImpl extends ProductDetailsRepository {
         },
       );
 
-      final response = await ProductApi(dio).getProductDetails(id: id);
+      final response = await _apiClient.productApi.getProductDetails(
+        body: ProductDetailsRequestBodyDto(id: id),
+      );
 
       final product = response.data.product.toEcProduct();
       final relatedProducts =

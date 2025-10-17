@@ -31,6 +31,7 @@ extension ProductDtoMapper on ProductDto {
       description: description ?? '',
       brand: brand ?? '',
       price: price,
+      finalPrice: finalPrice,
       discount: discount ?? 0,
       quantity: quantity,
       imageUrl: images ?? <String>[],

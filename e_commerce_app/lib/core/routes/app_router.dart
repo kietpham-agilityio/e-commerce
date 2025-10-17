@@ -27,7 +27,11 @@ class AppRouter {
       GoRoute(
         name: AppPaths.productDetails.name,
         path: AppPaths.productDetails.path,
-        builder: (context, state) => const ProductDetailsPage(),
+        builder: (context, state) {
+          final productId = state.uri.queryParameters['productId'];
+
+          return ProductDetailsPage(productId: productId ?? '');
+        },
       ),
       StatefulShellRoute.indexedStack(
         builder:

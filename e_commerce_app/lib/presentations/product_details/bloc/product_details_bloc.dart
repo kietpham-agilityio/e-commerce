@@ -11,10 +11,37 @@ class ProductDetailsBloc
   ProductDetailsBloc({required ProductDetailsUseCase productDetailsUseCase})
     : _productDetailsUseCase = productDetailsUseCase,
       super(const ProductDetailsState()) {
-    on<ProductDetailsEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<ProductDetailsLoadRequested>(_onLoadRequested);
   }
 
   final ProductDetailsUseCase _productDetailsUseCase;
+
+  Future<void> _onLoadRequested(
+    ProductDetailsLoadRequested event,
+    Emitter<ProductDetailsState> emit,
+  ) async {
+    emit(state.copyWith(status: ProductDetailsStatus.loading));
+
+    try {
+      final response = await _productDetailsUseCase.fetchProductDetails(
+        event.id,
+      );
+
+      emit(
+        state.copyWith(
+          status: ProductDetailsStatus.success,
+          products: response.product,
+          relatedProducts: response.relatedProducts,
+        ),
+      );
+    } catch (e) {
+      final String message = e.toString();
+      emit(
+        state.copyWith(
+          status: ProductDetailsStatus.failure,
+          errorMessage: message,
+        ),
+      );
+    }
+  }
 }
