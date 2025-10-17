@@ -24,7 +24,7 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
     _currentFlags = _featureFlagService.flags;
   }
 
-  void _updateFlag(EcFeatureFlag newFlags) {
+  void _updateFlag(EcFeatureFlag newFlags, {bool navigateToHome = false}) {
     setState(() {
       _currentFlags = newFlags;
       _featureFlagService.updateFlags(newFlags);
@@ -34,11 +34,25 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
     context.read<AppBloc>().add(AppFeatureFlagsUpdated(newFlags));
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Feature flag updated successfully'),
-        duration: Duration(seconds: 1),
+      SnackBar(
+        content: Text(
+          navigateToHome
+              ? 'Feature flag updated - navigating to home'
+              : 'Feature flag updated successfully',
+        ),
+        duration: const Duration(seconds: 1),
       ),
     );
+
+    // Navigate to home to see the changes in action
+    if (navigateToHome) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) {
+          // Pop all routes until we reach the root (home)
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        }
+      });
+    }
   }
 
   void _resetToDefaults() {
@@ -59,12 +73,22 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
       _currentFlags = _featureFlagService.flags;
     });
 
+    // Dispatch event to AppBloc to update global state
+    context.read<AppBloc>().add(AppFeatureFlagsUpdated(_currentFlags));
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Debug mode enabled'),
-        duration: Duration(seconds: 2),
+        content: Text('Debug mode enabled - navigating to home'),
+        duration: Duration(seconds: 1),
       ),
     );
+
+    // Navigate to home to see the changes in action
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      }
+    });
   }
 
   void _enableProductionMode() {
@@ -73,12 +97,22 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
       _currentFlags = _featureFlagService.flags;
     });
 
+    // Dispatch event to AppBloc to update global state
+    context.read<AppBloc>().add(AppFeatureFlagsUpdated(_currentFlags));
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Production mode enabled'),
-        duration: Duration(seconds: 2),
+        content: Text('Production mode enabled - navigating to home'),
+        duration: Duration(seconds: 1),
       ),
     );
+
+    // Navigate to home to see the changes in action
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      }
+    });
   }
 
   @override
@@ -141,7 +175,10 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
                   subtitle: 'Enable debug mode features',
                   value: _currentFlags.enableDebugMode ?? false,
                   onChanged: (value) {
-                    _updateFlag(_currentFlags.copyWith(enableDebugMode: value));
+                    _updateFlag(
+                      _currentFlags.copyWith(enableDebugMode: value),
+                      navigateToHome: true,
+                    );
                   },
                 ),
                 _buildFlagToggle(
@@ -163,6 +200,7 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
                   onChanged: (value) {
                     _updateFlag(
                       _currentFlags.copyWith(enableMockBackend: value),
+                      navigateToHome: true,
                     );
                   },
                 ),
@@ -174,6 +212,7 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
                   onChanged: (value) {
                     _updateFlag(
                       _currentFlags.copyWith(enableDatabaseInspector: value),
+                      navigateToHome: true,
                     );
                   },
                 ),
@@ -185,6 +224,7 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
                   onChanged: (value) {
                     _updateFlag(
                       _currentFlags.copyWith(enableDebugOverlay: value),
+                      navigateToHome: true,
                     );
                   },
                 ),
@@ -206,6 +246,7 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
                   onChanged: (value) {
                     _updateFlag(
                       _currentFlags.copyWith(enableAdminDebugPanel: value),
+                      navigateToHome: true,
                     );
                   },
                 ),
@@ -298,7 +339,10 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
                   subtitle: 'Enable dark theme',
                   value: _currentFlags.enableDarkMode ?? false,
                   onChanged: (value) {
-                    _updateFlag(_currentFlags.copyWith(enableDarkMode: value));
+                    _updateFlag(
+                      _currentFlags.copyWith(enableDarkMode: value),
+                      navigateToHome: true,
+                    );
                   },
                 ),
                 _buildFlagToggle(
@@ -358,6 +402,11 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
               ],
             ),
 
+            const SizedBox(height: 16),
+
+            // Page Scenarios for Demo
+            _buildPageScenariosSection(context),
+
             const SizedBox(height: 24),
           ],
         ),
@@ -416,6 +465,98 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildPageScenariosSection(BuildContext context) {
+    return _buildFlagSection(
+      context,
+      title: '📱 Page Scenarios Demo',
+      children: [
+        _buildFlagToggle(
+          context,
+          title: 'Show Home Page',
+          subtitle: 'Display home page in demo',
+          value: _currentFlags.enableHomePage ?? false,
+          onChanged: (value) {
+            _updateFlag(_currentFlags.copyWith(enableHomePage: value));
+          },
+        ),
+        _buildFlagToggle(
+          context,
+          title: 'Show Shop Page',
+          subtitle: 'Display shop page in demo',
+          value: _currentFlags.enableShopPage ?? false,
+          onChanged: (value) {
+            _updateFlag(_currentFlags.copyWith(enableShopPage: value));
+          },
+        ),
+        _buildFlagToggle(
+          context,
+          title: 'Show Items Page',
+          subtitle: 'Display items listing page in demo',
+          value: _currentFlags.enableItemsPage ?? false,
+          onChanged: (value) {
+            _updateFlag(_currentFlags.copyWith(enableItemsPage: value));
+          },
+        ),
+        _buildFlagToggle(
+          context,
+          title: 'Show Product Details',
+          subtitle: 'Display product details page in demo',
+          value: _currentFlags.enableProductDetailsPage ?? false,
+          onChanged: (value) {
+            _updateFlag(
+              _currentFlags.copyWith(enableProductDetailsPage: value),
+            );
+          },
+        ),
+        _buildFlagToggle(
+          context,
+          title: 'Show Shopping Bag',
+          subtitle: 'Display shopping bag page in demo',
+          value: _currentFlags.enableBagPage ?? false,
+          onChanged: (value) {
+            _updateFlag(_currentFlags.copyWith(enableBagPage: value));
+          },
+        ),
+        _buildFlagToggle(
+          context,
+          title: 'Show Favorites',
+          subtitle: 'Display favorites page in demo',
+          value: _currentFlags.enableFavoritesPage ?? false,
+          onChanged: (value) {
+            _updateFlag(_currentFlags.copyWith(enableFavoritesPage: value));
+          },
+        ),
+        _buildFlagToggle(
+          context,
+          title: 'Show Login Page',
+          subtitle: 'Display login page in demo',
+          value: _currentFlags.enableLoginPage ?? false,
+          onChanged: (value) {
+            _updateFlag(_currentFlags.copyWith(enableLoginPage: value));
+          },
+        ),
+        _buildFlagToggle(
+          context,
+          title: 'Show Profile Page',
+          subtitle: 'Display user profile page in demo',
+          value: _currentFlags.enableProfilePage ?? false,
+          onChanged: (value) {
+            _updateFlag(_currentFlags.copyWith(enableProfilePage: value));
+          },
+        ),
+        _buildFlagToggle(
+          context,
+          title: 'Show Comments Page',
+          subtitle: 'Display comments page in demo',
+          value: _currentFlags.enableCommentsPage ?? false,
+          onChanged: (value) {
+            _updateFlag(_currentFlags.copyWith(enableCommentsPage: value));
+          },
+        ),
+      ],
     );
   }
 }

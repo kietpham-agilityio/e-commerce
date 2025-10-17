@@ -79,6 +79,24 @@ class FeatureFlagService {
         return flags.enableSocialLogin ?? false;
       case 'push_notifications':
         return flags.enablePushNotifications ?? false;
+      case 'home_page':
+        return flags.enableHomePage ?? false;
+      case 'shop_page':
+        return flags.enableShopPage ?? false;
+      case 'items_page':
+        return flags.enableItemsPage ?? false;
+      case 'product_details_page':
+        return flags.enableProductDetailsPage ?? false;
+      case 'bag_page':
+        return flags.enableBagPage ?? false;
+      case 'favorites_page':
+        return flags.enableFavoritesPage ?? false;
+      case 'login_page':
+        return flags.enableLoginPage ?? false;
+      case 'profile_page':
+        return flags.enableProfilePage ?? false;
+      case 'comments_page':
+        return flags.enableCommentsPage ?? false;
       default:
         return false;
     }

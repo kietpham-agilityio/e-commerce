@@ -1,6 +1,5 @@
 import 'package:e_commerce_app/presentations/comments/comments_page.dart';
 import 'package:e_commerce_app/presentations/pages/api_client_example.dart';
-import 'package:e_commerce_app/presentations/pages/feature_flag_demo_page.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_themes/themes/themes.dart';
 import 'package:flutter/material.dart';
@@ -71,22 +70,6 @@ class ExamplePage extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const ApiClientExample(),
-                ),
-              );
-            },
-          ),
-
-          const SizedBox(height: 12),
-
-          _buildNavigationCard(
-            context,
-            title: 'Feature Flag Demo',
-            description: 'See feature flags in action with real examples',
-            icon: Icons.play_circle,
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const FeatureFlagDemoWidget(),
                 ),
               );
             },

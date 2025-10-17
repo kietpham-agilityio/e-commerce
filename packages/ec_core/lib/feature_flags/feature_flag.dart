@@ -19,6 +19,15 @@ class EcFeatureFlag {
     this.enableNewCheckoutFlow,
     this.enableSocialLogin,
     this.enablePushNotifications,
+    this.enableHomePage,
+    this.enableShopPage,
+    this.enableItemsPage,
+    this.enableProductDetailsPage,
+    this.enableBagPage,
+    this.enableFavoritesPage,
+    this.enableLoginPage,
+    this.enableProfilePage,
+    this.enableCommentsPage,
   });
 
   factory EcFeatureFlag.withEnvironment() {
@@ -39,6 +48,15 @@ class EcFeatureFlag {
       enableNewCheckoutFlow: EcEnv.enableNewCheckoutFlow,
       enableSocialLogin: EcEnv.enableSocialLogin,
       enablePushNotifications: EcEnv.enablePushNotifications,
+      enableHomePage: false,
+      enableShopPage: false,
+      enableItemsPage: false,
+      enableProductDetailsPage: false,
+      enableBagPage: false,
+      enableFavoritesPage: false,
+      enableLoginPage: false,
+      enableProfilePage: false,
+      enableCommentsPage: false,
     );
   }
 
@@ -70,6 +88,17 @@ class EcFeatureFlag {
   bool? enableSocialLogin;
   bool? enablePushNotifications;
 
+  // Page Scenarios for Demo
+  bool? enableHomePage;
+  bool? enableShopPage;
+  bool? enableItemsPage;
+  bool? enableProductDetailsPage;
+  bool? enableBagPage;
+  bool? enableFavoritesPage;
+  bool? enableLoginPage;
+  bool? enableProfilePage;
+  bool? enableCommentsPage;
+
   EcFeatureFlag copyWith({
     bool? enableDebugMode,
     bool? enableApiLogging,
@@ -87,6 +116,15 @@ class EcFeatureFlag {
     bool? enableNewCheckoutFlow,
     bool? enableSocialLogin,
     bool? enablePushNotifications,
+    bool? enableHomePage,
+    bool? enableShopPage,
+    bool? enableItemsPage,
+    bool? enableProductDetailsPage,
+    bool? enableBagPage,
+    bool? enableFavoritesPage,
+    bool? enableLoginPage,
+    bool? enableProfilePage,
+    bool? enableCommentsPage,
   }) {
     return EcFeatureFlag(
       enableDebugMode: enableDebugMode ?? this.enableDebugMode,
@@ -111,6 +149,16 @@ class EcFeatureFlag {
       enableSocialLogin: enableSocialLogin ?? this.enableSocialLogin,
       enablePushNotifications:
           enablePushNotifications ?? this.enablePushNotifications,
+      enableHomePage: enableHomePage ?? this.enableHomePage,
+      enableShopPage: enableShopPage ?? this.enableShopPage,
+      enableItemsPage: enableItemsPage ?? this.enableItemsPage,
+      enableProductDetailsPage:
+          enableProductDetailsPage ?? this.enableProductDetailsPage,
+      enableBagPage: enableBagPage ?? this.enableBagPage,
+      enableFavoritesPage: enableFavoritesPage ?? this.enableFavoritesPage,
+      enableLoginPage: enableLoginPage ?? this.enableLoginPage,
+      enableProfilePage: enableProfilePage ?? this.enableProfilePage,
+      enableCommentsPage: enableCommentsPage ?? this.enableCommentsPage,
     );
   }
 
@@ -154,6 +202,15 @@ class EcFeatureFlag {
       - Enable New Checkout Flow: $enableNewCheckoutFlow
       - Enable Social Login: $enableSocialLogin
       - Enable Push Notifications: $enablePushNotifications
+      - Enable Home Page: $enableHomePage
+      - Enable Shop Page: $enableShopPage
+      - Enable Items Page: $enableItemsPage
+      - Enable Product Details Page: $enableProductDetailsPage
+      - Enable Bag Page: $enableBagPage
+      - Enable Favorites Page: $enableFavoritesPage
+      - Enable Login Page: $enableLoginPage
+      - Enable Profile Page: $enableProfilePage
+      - Enable Comments Page: $enableCommentsPage
     ''';
   }
 }
