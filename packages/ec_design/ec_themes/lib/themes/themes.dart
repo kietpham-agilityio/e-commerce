@@ -621,7 +621,7 @@ class EcDesignTheme {
     final colorScheme =
         isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
 
-    return DividerThemeData(color: colorScheme.surface);
+    return DividerThemeData(color: colorScheme.surface, thickness: 0, space: 0);
   }
 
   /// TBD: Build icon theme

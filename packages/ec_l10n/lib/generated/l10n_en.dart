@@ -228,9 +228,6 @@ class AppLocaleEn extends AppLocale {
   String get homeTitle => 'Home';
 
   @override
-  String get shopTitle => 'Shop';
-
-  @override
   String get bagTitle => 'Bag';
 
   @override
@@ -298,6 +295,15 @@ class AppLocaleEn extends AppLocale {
 
   @override
   String get registerSuccessMessage => 'Registration successful';
+
+  @override
+  String get shopTitle => 'Categories';
+
+  @override
+  String get shopSubtitle => 'Choose category';
+
+  @override
+  String get shopViewAllItemsBtn => 'VIEW ALL ITEMS';
 
   @override
   String get productDetailsAddToCartBtn => 'Add to Cart';
