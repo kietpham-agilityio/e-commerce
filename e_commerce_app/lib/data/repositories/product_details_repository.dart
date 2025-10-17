@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:e_commerce_app/domain/entities/product_entities.dart';
 import 'package:e_commerce_app/domain/repositories/product_details_repository.dart';
 import 'package:ec_core/api_client/apis/dtos/product_details_request_body.dart';
@@ -19,20 +18,6 @@ class ProductDetailsRepositoryImpl extends ProductDetailsRepository {
   @override
   Future<EcProductDetails> fetchProductDetails(String id) async {
     try {
-      final baseUrl = 'https://ljicqrmblcyidcyqecdf.supabase.co';
-
-      final dio = Dio();
-      // dio.options.baseUrl = baseUrl;
-      dio.options = BaseOptions(
-        baseUrl: baseUrl,
-        headers: {
-          'apikey':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxqaWNxcm1ibGN5aWRjeXFlY2RmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4NzYzNjgsImV4cCI6MjA3NDQ1MjM2OH0.QPVhCPTL0qyRQDXAWC_yc168MCgweYpPNw5OoQuMVvg',
-          'Authorization':
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxqaWNxcm1ibGN5aWRjeXFlY2RmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4NzYzNjgsImV4cCI6MjA3NDQ1MjM2OH0.QPVhCPTL0qyRQDXAWC_yc168MCgweYpPNw5OoQuMVvg',
-        },
-      );
-
       final response = await _apiClient.productApi.getProductDetails(
         body: ProductDetailsRequestBodyDto(id: id),
       );
