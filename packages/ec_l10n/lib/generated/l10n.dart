@@ -501,12 +501,6 @@ abstract class AppLocale {
   /// **'Home'**
   String get homeTitle;
 
-  /// No description provided for @shopTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Shop'**
-  String get shopTitle;
-
   /// No description provided for @bagTitle.
   ///
   /// In en, this message translates to:
@@ -644,6 +638,24 @@ abstract class AppLocale {
   /// In en, this message translates to:
   /// **'Registration successful'**
   String get registerSuccessMessage;
+
+  /// No description provided for @shopTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Categories'**
+  String get shopTitle;
+
+  /// No description provided for @shopSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose category'**
+  String get shopSubtitle;
+
+  /// No description provided for @shopViewAllItemsBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'VIEW ALL ITEMS'**
+  String get shopViewAllItemsBtn;
 
   /// No description provided for @productDetailsAddToCartBtn.
   ///
