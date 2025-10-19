@@ -19,8 +19,6 @@ class FeatureFlagService {
     _featureFlags = EcFeatureFlag.withEnvironment();
     if (kDebugMode) {
       print('🎯 Feature flags initialized successfully');
-      print('📊 Debug Mode: ${_featureFlags?.enableDebugMode}');
-      print('🔍 API Logging: ${_featureFlags?.enableApiLogging}');
     }
   }
 
@@ -47,54 +45,23 @@ class FeatureFlagService {
     if (flags == null) return false;
 
     switch (featureName.toLowerCase()) {
-      case 'debug_mode':
-        return flags.enableDebugMode ?? false;
-      case 'api_logging':
-        return flags.enableApiLogging ?? false;
-      case 'mock_backend':
-        return flags.enableMockBackend ?? false;
-      case 'database_inspector':
-        return flags.enableDatabaseInspector ?? false;
-      case 'admin_debug_panel':
-        return flags.enableAdminDebugPanel ?? false;
-      case 'user_impersonation':
-        return flags.enableUserImpersonation ?? false;
-      case 'analytics':
-        return flags.enableAnalytics ?? false;
-      case 'crash_reporting':
-        return flags.enableCrashReporting ?? false;
-      case 'performance_monitoring':
-        return flags.enablePerformanceMonitoring ?? false;
-      case 'api_cache':
-        return flags.enableApiCache ?? false;
-      case 'dark_mode':
-        return flags.enableDarkMode ?? false;
-      case 'animations':
-        return flags.enableAnimations ?? false;
-      case 'debug_overlay':
-        return flags.enableDebugOverlay ?? false;
-      case 'new_checkout_flow':
-        return flags.enableNewCheckoutFlow ?? false;
-      case 'social_login':
-        return flags.enableSocialLogin ?? false;
-      case 'push_notifications':
-        return flags.enablePushNotifications ?? false;
+      case 'shop_page':
+        return flags.enableShopPage ?? true;
+      case 'items_page':
+        return flags.enableItemsPage ?? true;
+      case 'product_details_page':
+        return flags.enableProductDetailsPage ?? true;
+      case 'bag_page':
+        return flags.enableBagPage ?? true;
+      case 'favorites_page':
+        return flags.enableFavoritesPage ?? true;
+
+      case 'profile_page':
+        return flags.enableProfilePage ?? true;
+      case 'comments_page':
+        return flags.enableCommentsPage ?? true;
       default:
         return false;
-    }
-  }
-
-  /// Enable debug mode
-  void enableDebugMode() {
-    if (_featureFlags != null) {
-      _featureFlags!.setDebugMode(enable: true);
-    }
-  }
-
-  /// Enable production mode
-  void enableProductionMode() {
-    if (_featureFlags != null) {
-      _featureFlags!.setProductionMode(enable: true);
     }
   }
 }

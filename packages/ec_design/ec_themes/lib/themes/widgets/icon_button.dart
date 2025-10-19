@@ -20,8 +20,14 @@ class EcIconButton extends StatelessWidget {
   /// Custom icon color override
   final Color? iconColor;
 
-  /// Button size (width and height)
+  /// Button size (width and height) - used when width/height are not specified
   final double? size;
+
+  /// Button width (falls back to size if null)
+  final double? width;
+
+  /// Button height (falls back to size if null)
+  final double? height;
 
   /// Border radius for the button
   final double? borderRadius;
@@ -31,9 +37,6 @@ class EcIconButton extends StatelessWidget {
 
   /// Custom shadow to use
   final BoxShadow? customShadow;
-
-  /// Padding around the icon
-  final EdgeInsetsGeometry? iconPadding;
 
   /// Tooltip text for accessibility
   final String? tooltip;
@@ -58,9 +61,10 @@ class EcIconButton extends StatelessWidget {
     this.backgroundColor,
     this.iconColor,
     this.size,
+    this.width,
+    this.height,
     this.borderRadius,
     this.customShadow,
-    this.iconPadding,
     this.tooltip,
     this.semanticsLabel,
     this.focusNode,
@@ -74,8 +78,10 @@ class EcIconButton extends StatelessWidget {
     final colors = ecTheme.colors;
     final sizing = ecTheme.sizing;
 
-    // Determine button size
-    final buttonSize = size ?? sizing.iconButtonSmall;
+    // Determine button size - width and height can fall back to size
+    final defaultSize = size ?? sizing.iconButtonSmall;
+    final buttonWidth = width ?? defaultSize;
+    final buttonHeight = height ?? defaultSize;
 
     // Determine colors
     final bgColor = backgroundColor ?? colors.primary;
@@ -88,8 +94,8 @@ class EcIconButton extends StatelessWidget {
     final shadow = customShadow ?? EcShadows.dropShadowMedium(context);
 
     Widget buttonWidget = Container(
-      width: buttonSize,
-      height: buttonSize,
+      width: buttonWidth,
+      height: buttonHeight,
       decoration: BoxDecoration(
         color: enabled ? bgColor : bgColor.withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(radius),

@@ -179,6 +179,11 @@ class _EcImageLoader extends StatelessWidget {
 
 /// Contains all SVG icons for the e-commerce application.
 class EcAssets {
+  static Widget Function({Color? color, double? width, double? height}) google =
+      _EcGoogleIcon.new;
+  static Widget Function({Color? color, double? width, double? height})
+  facebook = _EcFacebookIcon.new;
+
   // Navigation Icons
   static Widget Function({Color? color, double? width, double? height})
   arrowLeft = _EcArrowLeftIcon.new;
@@ -311,6 +316,40 @@ class EcAssets {
 }
 
 // Private widget classes for each SVG icon
+
+class _EcGoogleIcon extends StatelessWidget {
+  const _EcGoogleIcon({this.color, this.width, this.height});
+
+  final Color? color;
+  final double? width;
+  final double? height;
+
+  @override
+  Widget build(BuildContext context) {
+    return Assets.icons.icGoogle.image(
+      package: 'ec_themes',
+      width: width ?? 24,
+      height: height ?? 24,
+    );
+  }
+}
+
+class _EcFacebookIcon extends StatelessWidget {
+  const _EcFacebookIcon({this.color, this.width, this.height});
+
+  final Color? color;
+  final double? width;
+  final double? height;
+
+  @override
+  Widget build(BuildContext context) {
+    return Assets.icons.icFacebook.image(
+      package: 'ec_themes',
+      width: width ?? 24,
+      height: height ?? 24,
+    );
+  }
+}
 
 class _EcArrowLeftIcon extends StatelessWidget {
   const _EcArrowLeftIcon({this.color, this.width, this.height});

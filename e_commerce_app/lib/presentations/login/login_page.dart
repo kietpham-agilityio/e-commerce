@@ -63,39 +63,48 @@ class _LoginViewState extends State<LoginView> {
           automaticallyImplyLeading: false,
           backgroundColor: colorScheme.surfaceDim,
           elevation: 0,
-          leading: IconButton(
-            icon: EcAssets.arrowLeft(color: colorScheme.secondary),
-            onPressed: () => Navigator.of(context).pop(),
+
+          title: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: EcHeadlineLargeText('Login', fontWeight: FontWeight.bold),
           ),
-          title: EcHeadlineLargeText('Login', fontWeight: FontWeight.bold),
           centerTitle: false,
         ),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: 40),
+        body: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            // Unfocus all text fields when tapping outside
+            FocusScope.of(context).unfocus();
+          },
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // const SizedBox(height: 40),
+                  Spacer(),
 
-                // Email and password form
-                const _EmailInput(),
-                const SizedBox(height: 20),
-                const _PasswordInput(),
-                const SizedBox(height: 16),
+                  // Email and password form
+                  const _EmailInput(),
+                  // const SizedBox(height: 20),
+                  const _PasswordInput(),
+                  const SizedBox(height: 16),
 
-                // Forgot password link
-                const _ForgotPasswordButton(),
-                const SizedBox(height: 32),
+                  // Forgot password link
+                  const _ForgotPasswordButton(),
+                  const SizedBox(height: 32),
 
-                // Login button
-                const _LoginButton(),
-                const SizedBox(height: 40),
+                  // Login button
+                  const _LoginButton(),
+                  Spacer(),
 
-                // Social login section
-                const _SocialLoginSection(),
-              ],
+                  // Social login section
+                  const _SocialLoginSection(),
+                  const SizedBox(height: 20),
+                ],
+              ),
             ),
           ),
         ),
@@ -243,45 +252,40 @@ class _SocialLoginSection extends StatelessWidget {
 
         return Column(
           children: [
-            EcBodyMediumText(
-              'Or login with social account',
-              color: colorScheme.onSurface,
-              fontWeight: FontWeight.w400,
-              textAlign: TextAlign.center,
-            ),
+            EcBodyMediumText('Or login with social account'),
             const SizedBox(height: 24),
 
             // Social login buttons
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: EcIconButton(
-                    icon: const Icon(Icons.social_distance),
-                    onPressed:
-                        isLoading
-                            ? null
-                            : () => context.read<LoginBloc>().add(
-                              const LoginWithGooglePressed(),
-                            ),
-                    size: 56,
-                    borderRadius: 24,
-                    backgroundColor: colorScheme.onPrimary,
-                  ),
+                EcIconButton(
+                  icon: EcAssets.google(),
+                  onPressed:
+                      isLoading
+                          ? null
+                          : () => context.read<LoginBloc>().add(
+                            const LoginWithGooglePressed(),
+                          ),
+                  width: 92,
+                  height: 64,
+                  borderRadius: 24,
+                  backgroundColor: colorScheme.onPrimary,
                 ),
                 const SizedBox(width: 16),
-                Expanded(
-                  child: EcIconButton(
-                    icon: const Icon(Icons.facebook),
-                    onPressed:
-                        isLoading
-                            ? null
-                            : () => context.read<LoginBloc>().add(
-                              const LoginWithFacebookPressed(),
-                            ),
-                    size: 56,
-                    borderRadius: 24,
-                    backgroundColor: colorScheme.onPrimary,
-                  ),
+                EcIconButton(
+                  icon: EcAssets.facebook(),
+                  onPressed:
+                      isLoading
+                          ? null
+                          : () => context.read<LoginBloc>().add(
+                            const LoginWithFacebookPressed(),
+                          ),
+                  // size: 56,
+                  borderRadius: 24,
+                  backgroundColor: colorScheme.onPrimary,
+                  width: 92,
+                  height: 64,
                 ),
               ],
             ),
