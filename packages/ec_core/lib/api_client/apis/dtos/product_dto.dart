@@ -103,6 +103,7 @@ class CategoryDto with _$CategoryDto {
     required int id,
     required String name,
     String? description,
+    @JsonKey(name: 'parent_id')
     int? parentId, // References categories.id (self-reference)
     // Additional fields for UI display (computed from joins)
     List<CategoryDto>? children,

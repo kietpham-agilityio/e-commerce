@@ -1,5 +1,6 @@
 import 'package:e_commerce_app/core/di/home_module.dart';
 import 'package:e_commerce_app/core/di/product_details.dart';
+import 'package:e_commerce_app/core/di/shop_module.dart';
 import 'package:get_it/get_it.dart';
 
 import 'api_client_module.dart';
@@ -28,6 +29,8 @@ class AppModule {
     HomeModule.registerDependencies();
 
     ProductDetailsModule.registerDependencies();
+
+    ShopModule.registerDependencies();
 
     // Register other dependencies here as needed
     // Example:
