@@ -43,7 +43,10 @@ class ApiClient {
     }
 
     // Initialize Retrofit API clients
-    _ecommerceApi = EcommerceApi(_dio);
+    _ecommerceApi = EcommerceApi(
+      _dio,
+      baseUrl: 'https://jsonplaceholder.typicode.com/',
+    );
     _userApi = UserApi(_dio);
     _productApi = ProductApi(_dio);
     _cartApi = CartApi(_dio);
