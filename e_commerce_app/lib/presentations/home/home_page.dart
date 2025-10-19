@@ -208,8 +208,42 @@ class _HomePageState extends State<HomePage> {
                 builder: (context, state) {
                   return FabDebugButton(
                     onSelectedMockBackend: (scenario) {
-                      // Handle mock backend scenario selection if needed
+                      if (ApiHome.values.contains(scenario.payload)) {
+                        homeBloc.add(const HomeLoadRequested());
+                      }
                     },
+                    debugToolsScenarios: [
+                      DebugToolsItem(
+                        name: 'Success Scenario',
+                        onTap: () {
+                          homeBloc.add(
+                            const DebugScenarioRequested(
+                              DebugToolScenarios.success,
+                            ),
+                          );
+                        },
+                      ),
+                      DebugToolsItem(
+                        name: 'Error Scenario',
+                        onTap: () {
+                          homeBloc.add(
+                            const DebugScenarioRequested(
+                              DebugToolScenarios.error,
+                            ),
+                          );
+                        },
+                      ),
+                      DebugToolsItem(
+                        name: 'Api Scenario',
+                        onTap: () {
+                          homeBloc.add(
+                            const DebugScenarioRequested(
+                              DebugToolScenarios.api,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                     onFeatureFlags: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
@@ -232,7 +266,7 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
 
-                    enableMockBackend: false,
+                    enableMockBackend: true,
                   );
                 },
               ),
