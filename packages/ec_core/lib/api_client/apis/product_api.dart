@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:ec_core/api_client/apis/dtos/product_details_dto.dart';
+import 'package:ec_core/api_client/apis/dtos/product_details_request_body.dart';
 import 'package:retrofit/retrofit.dart';
-import 'dtos/product_dto.dart';
+
 import 'dtos/base_response.dart';
+import 'dtos/product_dto.dart';
 
 part 'product_api.g.dart';
 
@@ -47,6 +50,11 @@ abstract class ProductApi {
   Future<BaseResponseDto<List<ProductDto>>> getFeaturedProducts(
     @Query('limit') int? limit,
   );
+
+  @POST('/rest/v1/rpc/get_product_with_related')
+  Future<BaseResponseDto<ProductDetailsDto>> getProductDetails({
+    @Body() required ProductDetailsRequestBodyDto body,
+  });
 
   /// Get related products
   @GET('/products/{productId}/related')

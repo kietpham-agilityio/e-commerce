@@ -31,10 +31,22 @@ extension ProductDtoMapper on ProductDto {
       description: description ?? '',
       brand: brand ?? '',
       price: price,
+      finalPrice: finalPrice,
       discount: discount ?? 0,
       quantity: quantity,
       imageUrl: images ?? <String>[],
       label: label,
     );
   }
+}
+
+@freezed
+class EcProductDetails with _$EcProductDetails {
+  factory EcProductDetails({
+    required EcProduct product,
+    @Default(<EcProduct>[]) List<EcProduct> relatedProducts,
+  }) = _EcProductDetails;
+
+  factory EcProductDetails.fromJson(Map<String, dynamic> json) =>
+      _$EcProductDetailsFromJson(json);
 }
