@@ -1,6 +1,5 @@
 import 'package:e_commerce_app/presentations/comments/comments_page.dart';
 import 'package:e_commerce_app/presentations/pages/api_client_example.dart';
-import 'package:ec_core/ec_core.dart';
 import 'package:ec_themes/themes/themes.dart';
 import 'package:flutter/material.dart';
 
@@ -14,10 +13,7 @@ class ExamplePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Test feature flag service
     try {
-      final featureFlagService = getFeatureFlagService();
-      final flags = featureFlagService.flags;
       debugPrint('🎯 Feature flags loaded successfully');
-      debugPrint('📊 Debug Mode: ${flags.enableDebugMode}');
     } catch (e) {
       debugPrint('❌ Feature flag error: $e');
     }
