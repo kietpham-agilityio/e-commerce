@@ -121,10 +121,11 @@ class _HomePageState extends State<HomePage> {
                                       item.finalPrice?.priceFormatter(),
                                   labelText: '-${item.label}',
                                   onTap: () {
-                                    // TODO: handle redirect product details
-                                    log('ontap sale $index');
                                     context.pushNamed(
                                       AppPaths.productDetails.name,
+                                      queryParameters: {
+                                        "productId": "${item.id}",
+                                      },
                                     );
                                   },
                                 );
@@ -172,10 +173,11 @@ class _HomePageState extends State<HomePage> {
                                   originalPrice: item.price.priceFormatter(),
                                   labelText: item.label,
                                   onTap: () {
-                                    // TODO: handle redirect product details
-                                    log('ontap sale $index');
                                     context.pushNamed(
                                       AppPaths.productDetails.name,
+                                      queryParameters: {
+                                        "productId": "${item.id}",
+                                      },
                                     );
                                   },
                                 );
