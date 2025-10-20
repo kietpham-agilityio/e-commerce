@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/config/env_config.dart';
 import 'package:e_commerce_app/core/bloc/app_bloc.dart';
 import 'package:e_commerce_app/core/bloc/app_state.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
@@ -123,45 +124,50 @@ class _ShopPageState extends State<ShopPage> {
                     ),
                   ],
                 ),
-                floatingActionButton: FabDebugButton(
-                  onSelectedMockBackend: (scenario) {
-                    if (ApiShop.values.contains(scenario.payload)) {
-                      shopBloc.add(ShopFetchCategories());
-                    }
-                  },
-                  debugToolsScenarios: [
-                    DebugToolsItem(
-                      name: 'Success Scenario',
-                      onTap: () {
-                        shopBloc.add(
-                          const DebugScenarioRequested(
-                            DebugToolScenarios.success,
-                          ),
-                        );
-                      },
-                    ),
-                    DebugToolsItem(
-                      name: 'Error Scenario',
-                      onTap: () {
-                        shopBloc.add(
-                          const DebugScenarioRequested(
-                            DebugToolScenarios.error,
-                          ),
-                        );
-                      },
-                    ),
-                    DebugToolsItem(
-                      name: 'Api Scenario',
-                      onTap: () {
-                        shopBloc.add(
-                          const DebugScenarioRequested(DebugToolScenarios.api),
-                        );
-                      },
-                    ),
-                  ],
+                floatingActionButton:
+                    EnvConfig.isDebugModeEnabled
+                        ? FabDebugButton(
+                          onSelectedMockBackend: (scenario) {
+                            if (ApiShop.values.contains(scenario.payload)) {
+                              shopBloc.add(ShopFetchCategories());
+                            }
+                          },
+                          debugToolsScenarios: [
+                            DebugToolsItem(
+                              name: 'Success Scenario',
+                              onTap: () {
+                                shopBloc.add(
+                                  const DebugScenarioRequested(
+                                    DebugToolScenarios.success,
+                                  ),
+                                );
+                              },
+                            ),
+                            DebugToolsItem(
+                              name: 'Error Scenario',
+                              onTap: () {
+                                shopBloc.add(
+                                  const DebugScenarioRequested(
+                                    DebugToolScenarios.error,
+                                  ),
+                                );
+                              },
+                            ),
+                            DebugToolsItem(
+                              name: 'Api Scenario',
+                              onTap: () {
+                                shopBloc.add(
+                                  const DebugScenarioRequested(
+                                    DebugToolScenarios.api,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
 
-                  enableMockBackend: true,
-                ),
+                          enableMockBackend: true,
+                        )
+                        : null,
               ),
             ),
           ),

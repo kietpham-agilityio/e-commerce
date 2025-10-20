@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/config/env_config.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_l10n/ec_l10n.dart';
@@ -6,7 +7,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/di/di.dart';
@@ -16,28 +16,28 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Load environment variables
-  await dotenv.load(fileName: ".env.stag");
+  await EnvConfig.load('.env.stag');
 
   // Initialize Supabase
-  await Supabase.initialize(
-    url: dotenv.env['SUPABASE_URL'] ?? '',
-    anonKey: dotenv.env['SUPABASE_ANON_KEY'] ?? '',
-  );
+  if (EnvConfig.hasSupabaseCredentials) {
+    await Supabase.initialize(
+      url: EnvConfig.supabaseUrl!,
+      anonKey: EnvConfig.supabaseAnonKey!,
+    );
+  }
 
   await Firebase.initializeApp();
 
   try {
     // Initialize dependency injection using ec_core DI system
-    await DI.initializeStaging(
+    await DI.initializeWithEnvironment(
+      environment: 'stag',
       flavor: EcFlavor.user, // or EcFlavor.admin for admin flavor
-      customHeaders: {
-        'X-App-Version': dotenv.env['APP_VERSION'] ?? '1.0.0',
-        'X-Platform': 'mobile',
-        'X-API-Key': dotenv.env['API_KEY'] ?? '',
-      },
-      databaseName: dotenv.env['DATABASE_NAME'] ?? 'e_commerce_stag.db',
-      enableDatabaseInspector:
-          dotenv.env['ENABLE_DATABASE_INSPECTOR'] == 'true',
+      customHeaders: EnvConfig.customHeaders(),
+      databaseName: EnvConfig.databaseName('stag'),
+      enableDatabaseInspector: EnvConfig.enableDatabaseInspector('stag'),
+      enableLogging: EnvConfig.enableApiLogging('stag'),
+      enableDebugMode: EnvConfig.enableDebugMode('stag'),
     );
 
     // Initialize app-specific dependencies
