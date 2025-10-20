@@ -29,4 +29,4 @@ class DebugScenarioRequested extends HomeEvent {
   List<Object?> get props => [scenario];
 }
 
-enum DebugToolScenarios { success, empty, error, api }
+enum DebugToolScenarios { success, error, api }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:e_commerce_app/data/mocks/items_mock.dart';
 import 'package:e_commerce_app/domain/entities/product_entities.dart';
 import 'package:e_commerce_app/domain/usecases/home_usecase.dart';
 import 'package:equatable/equatable.dart';
@@ -58,26 +59,29 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     emit(state.copyWith(status: HomeStatus.loading));
 
-    // switch (event.scenario) {
-    //   case DebugToolScenarios.success:
-    //     final mockItems = EcMockedData.generateMockItems(5);
+    switch (event.scenario) {
+      case DebugToolScenarios.success:
+        final mockHomeEntities = EcMockedData.generateHomeData();
 
-    //     emit(state.copyWith(status: HomeStatus.success, items: mockItems));
-    //     break;
-    //   case DebugToolScenarios.empty:
-    //     emit(state.copyWith(status: HomeStatus.success, items: <dynamic>[]));
-    //     break;
-    //   case DebugToolScenarios.error:
-    //     emit(
-    //       state.copyWith(
-    //         status: HomeStatus.failure,
-    //         errorMessage: 'Debug scenario: Simulated error occurred',
-    //       ),
-    //     );
-    //     break;
-    //   default:
-    //     // Fallback to normal load
-    //     add(const LoadRequested());
-    // }
+        emit(
+          state.copyWith(
+            status: HomeStatus.success,
+            newProducts: mockHomeEntities.newProducts,
+            discountProducts: mockHomeEntities.discountProducts,
+          ),
+        );
+        break;
+      case DebugToolScenarios.error:
+        emit(
+          state.copyWith(
+            status: HomeStatus.failure,
+            errorMessage: 'Debug scenario: Simulated error occurred',
+          ),
+        );
+        break;
+      default:
+        // Fallback to normal load
+        add(const HomeLoadRequested());
+    }
   }
 }

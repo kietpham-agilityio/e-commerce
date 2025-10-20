@@ -1,7 +1,11 @@
+import 'package:e_commerce_app/config/env_config.dart';
 import 'package:e_commerce_app/core/bloc/app_bloc.dart';
 import 'package:e_commerce_app/core/bloc/app_state.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/presentations/shop/bloc/shop_bloc.dart';
+import 'package:ec_core/debug_tools/ui/debug_tools_picker.dart';
+import 'package:ec_core/fab_debug/ui/fab_debug_button.dart';
+import 'package:ec_core/mocked_backend/interceptors/mock_backend_interceptor.dart';
 import 'package:ec_l10n/generated/l10n.dart';
 import 'package:ec_themes/ec_design.dart';
 import 'package:flutter/material.dart';
@@ -120,6 +124,50 @@ class _ShopPageState extends State<ShopPage> {
                     ),
                   ],
                 ),
+                floatingActionButton:
+                    EnvConfig.isDebugModeEnabled
+                        ? FabDebugButton(
+                          onSelectedMockBackend: (scenario) {
+                            if (ApiShop.values.contains(scenario.payload)) {
+                              shopBloc.add(ShopFetchCategories());
+                            }
+                          },
+                          debugToolsScenarios: [
+                            DebugToolsItem(
+                              name: 'Success Scenario',
+                              onTap: () {
+                                shopBloc.add(
+                                  const DebugScenarioRequested(
+                                    DebugToolScenarios.success,
+                                  ),
+                                );
+                              },
+                            ),
+                            DebugToolsItem(
+                              name: 'Error Scenario',
+                              onTap: () {
+                                shopBloc.add(
+                                  const DebugScenarioRequested(
+                                    DebugToolScenarios.error,
+                                  ),
+                                );
+                              },
+                            ),
+                            DebugToolsItem(
+                              name: 'Api Scenario',
+                              onTap: () {
+                                shopBloc.add(
+                                  const DebugScenarioRequested(
+                                    DebugToolScenarios.api,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+
+                          enableMockBackend: true,
+                        )
+                        : null,
               ),
             ),
           ),

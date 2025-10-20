@@ -201,51 +201,80 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              floatingActionButton:
-                  EnvConfig.isDebugModeEnabled
-                      ? BlocConsumer<AppBloc, AppState>(
-                        listener: (context, state) {
-                          // Navigate back to first route when Database Inspector is turned off
-                          Navigator.of(
-                            context,
-                          ).popUntil((route) => route.isFirst);
+              floatingActionButton: BlocConsumer<AppBloc, AppState>(
+                listener: (context, state) {
+                  // Navigate back to first route when Database Inspector is turned off
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                },
+                builder: (context, state) {
+                  return EnvConfig.isDebugModeEnabled
+                      ? FabDebugButton(
+                        onSelectedMockBackend: (scenario) {
+                          if (ApiHome.values.contains(scenario.payload)) {
+                            homeBloc.add(const HomeLoadRequested());
+                          }
                         },
-                        builder: (context, state) {
-                          return FabDebugButton(
-                            onSelectedMockBackend: (scenario) {
-                              // Handle mock backend scenario selection if needed
-                            },
-                            onFeatureFlags: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder:
-                                      (context) =>
-                                          const FeatureFlagDebugPanel(),
+                        debugToolsScenarios: [
+                          DebugToolsItem(
+                            name: 'Success Scenario',
+                            onTap: () {
+                              homeBloc.add(
+                                const DebugScenarioRequested(
+                                  DebugToolScenarios.success,
                                 ),
                               );
                             },
-                            onApiClientExample: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder:
-                                      (context) => const ApiClientExample(),
+                          ),
+                          DebugToolsItem(
+                            name: 'Error Scenario',
+                            onTap: () {
+                              homeBloc.add(
+                                const DebugScenarioRequested(
+                                  DebugToolScenarios.error,
                                 ),
                               );
                             },
-                            onExamplePages: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder:
-                                      (context) =>
-                                          const ExamplePagesNavigation(),
+                          ),
+                          DebugToolsItem(
+                            name: 'Api Scenario',
+                            onTap: () {
+                              homeBloc.add(
+                                const DebugScenarioRequested(
+                                  DebugToolScenarios.api,
                                 ),
                               );
                             },
-                            enableMockBackend: false,
+                          ),
+                        ],
+                        onFeatureFlags: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => const FeatureFlagDebugPanel(),
+                            ),
                           );
                         },
+                        onApiClientExample: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const ApiClientExample(),
+                            ),
+                          );
+                        },
+                        onExamplePages: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => const ExamplePagesNavigation(),
+                            ),
+                          );
+                        },
+
+                        enableMockBackend: true,
                       )
-                      : null,
+                      : SizedBox.shrink();
+                },
+              ),
             );
           },
         ),

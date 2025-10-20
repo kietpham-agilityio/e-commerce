@@ -73,6 +73,54 @@ class MockApiService {
         ),
       ],
     ),
+    const MockApi<ApiHome>(
+      name: 'Home',
+      path: '/rest/v1/rpc/get_home_products',
+      scenarios: [
+        MockScenario<ApiHome>(
+          name: 'Real API',
+          description: 'Use real API endpoint',
+          payload: ApiHome.real,
+          apiMode: ApiMode.real,
+        ),
+        MockScenario<ApiHome>(
+          name: 'Mock Success',
+          description: 'Mock successful response with data',
+          payload: ApiHome.mockSuccess,
+          apiMode: ApiMode.mock,
+        ),
+        MockScenario<ApiHome>(
+          name: 'Mock Error',
+          description: 'Mock error response',
+          payload: ApiHome.mockError,
+          apiMode: ApiMode.mock,
+        ),
+      ],
+    ),
+    const MockApi<ApiShop>(
+      name: 'Shop',
+      path: '/rest/v1/categories',
+      scenarios: [
+        MockScenario<ApiShop>(
+          name: 'Real API',
+          description: 'Use real API endpoint',
+          payload: ApiShop.real,
+          apiMode: ApiMode.real,
+        ),
+        MockScenario<ApiShop>(
+          name: 'Mock Success',
+          description: 'Mock successful response with data',
+          payload: ApiShop.mockSuccess,
+          apiMode: ApiMode.mock,
+        ),
+        MockScenario<ApiShop>(
+          name: 'Mock Error',
+          description: 'Mock error response',
+          payload: ApiShop.mockError,
+          apiMode: ApiMode.mock,
+        ),
+      ],
+    ),
   ];
 
   /// Get all available mock APIs
