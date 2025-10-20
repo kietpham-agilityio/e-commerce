@@ -84,11 +84,11 @@ abstract class ProductApi {
   // ============================================================================
 
   /// Get all categories
-  @GET('/categories')
-  Future<BaseResponseDto<List<CategoryDto>>> getCategories(
+  @GET('/rest/v1/categories')
+  Future<List<CategoryDto>> getCategories({
     @Query('parentId') String? parentId,
     @Query('includeChildren') bool? includeChildren,
-  );
+  });
 
   /// Get category by ID
   @GET('/categories/{categoryId}')
