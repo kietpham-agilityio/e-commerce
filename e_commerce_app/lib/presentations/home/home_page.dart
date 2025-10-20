@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:e_commerce_app/config/env_config.dart';
 import 'package:e_commerce_app/core/bloc/app_bloc.dart';
 import 'package:e_commerce_app/core/bloc/app_state.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
@@ -200,42 +201,51 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              floatingActionButton: BlocConsumer<AppBloc, AppState>(
-                listener: (context, state) {
-                  // Navigate back to first route when Database Inspector is turned off
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                },
-                builder: (context, state) {
-                  return FabDebugButton(
-                    onSelectedMockBackend: (scenario) {
-                      // Handle mock backend scenario selection if needed
-                    },
-                    onFeatureFlags: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const FeatureFlagDebugPanel(),
-                        ),
-                      );
-                    },
-                    onApiClientExample: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const ApiClientExample(),
-                        ),
-                      );
-                    },
-                    onExamplePages: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const ExamplePagesNavigation(),
-                        ),
-                      );
-                    },
-
-                    enableMockBackend: false,
-                  );
-                },
-              ),
+              floatingActionButton:
+                  EnvConfig.isDebugModeEnabled
+                      ? BlocConsumer<AppBloc, AppState>(
+                        listener: (context, state) {
+                          // Navigate back to first route when Database Inspector is turned off
+                          Navigator.of(
+                            context,
+                          ).popUntil((route) => route.isFirst);
+                        },
+                        builder: (context, state) {
+                          return FabDebugButton(
+                            onSelectedMockBackend: (scenario) {
+                              // Handle mock backend scenario selection if needed
+                            },
+                            onFeatureFlags: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) =>
+                                          const FeatureFlagDebugPanel(),
+                                ),
+                              );
+                            },
+                            onApiClientExample: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => const ApiClientExample(),
+                                ),
+                              );
+                            },
+                            onExamplePages: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) =>
+                                          const ExamplePagesNavigation(),
+                                ),
+                              );
+                            },
+                            enableMockBackend: false,
+                          );
+                        },
+                      )
+                      : null,
             );
           },
         ),

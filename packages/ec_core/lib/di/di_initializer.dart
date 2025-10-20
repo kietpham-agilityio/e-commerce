@@ -269,88 +269,65 @@ class DependencyInjection {
   // CONVENIENCE INITIALIZATION METHODS
   // ============================================================================
 
-  /// Initialize with development configuration
-  static Future<void> initializeDevelopment({
+  /// Unified initialization method for all environments
+  /// Automatically configures based on environment parameter
+  static Future<void> initializeWithEnvironment({
+    required String environment,
     EcFlavor? flavor,
     Map<String, String>? customHeaders,
     String? databaseName,
-    bool enableDatabaseInspector = true,
+    bool? enableDatabaseInspector,
+    bool? enableLogging,
+    bool? enableFileLogging,
+    bool? enableCrashReporting,
+    bool? enableDebugMode,
+    Duration? connectTimeout,
+    Duration? receiveTimeout,
   }) async {
     // Set current environment for EcFlavor
-    EcFlavor.setEnvironment('dev');
+    final envLower = environment.toLowerCase();
+    EcFlavor.setEnvironment(envLower);
+
+    // Environment-specific defaults
+    final isDev = envLower == 'dev' || envLower == 'development';
+    final isStaging = envLower == 'stag' || envLower == 'staging';
+    final isProd = envLower == 'prod' || envLower == 'production';
+
+    // Apply environment-specific defaults if not explicitly provided
+    final logging = enableLogging ?? (isProd ? false : true);
+    final fileLogging = enableFileLogging ?? true;
+    final crashReporting = enableCrashReporting ?? (isDev ? false : true);
+    final dbInspector = enableDatabaseInspector ?? (isProd ? false : isDev);
+    final debugMode = enableDebugMode ?? isDev;
+
+    // Environment-specific timeouts
+    const defaultConnectTimeout = Duration(seconds: 60);
+
+    const defaultReceiveTimeout = Duration(seconds: 60);
 
     await initialize(
       flavor: flavor,
-      environment: 'development',
-      enableLogging: true,
-      enableFileLogging: true,
-      enableCrashReporting: false,
+      environment:
+          isDev ? 'development' : (isStaging ? 'staging' : 'production'),
+      enableLogging: logging,
+      enableFileLogging: fileLogging,
+      enableCrashReporting: crashReporting,
       customHeaders: {
         ...?customHeaders,
-        'X-Environment': 'development',
-        'X-Debug': 'true',
+        'X-Environment':
+            isDev ? 'development' : (isStaging ? 'staging' : 'production'),
+        'X-Debug': debugMode.toString(),
       },
-      connectTimeout: const Duration(seconds: 60),
-      receiveTimeout: const Duration(seconds: 60),
+      connectTimeout: connectTimeout ?? defaultConnectTimeout,
+      receiveTimeout: receiveTimeout ?? defaultReceiveTimeout,
       databaseName: databaseName,
-      enableDatabaseInspector: enableDatabaseInspector,
+      enableDatabaseInspector: dbInspector,
     );
-  }
 
-  /// Initialize with staging configuration
-  static Future<void> initializeStaging({
-    EcFlavor? flavor,
-    Map<String, String>? customHeaders,
-    String? databaseName,
-    bool enableDatabaseInspector = false,
-  }) async {
-    // Set current environment for EcFlavor
-    EcFlavor.setEnvironment('staging');
-
-    await initialize(
-      flavor: flavor,
-      environment: 'staging',
-      enableLogging: true,
-      enableFileLogging: true,
-      enableCrashReporting: true,
-      customHeaders: {
-        ...?customHeaders,
-        'X-Environment': 'staging',
-        'X-Debug': 'false',
-      },
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
-      databaseName: databaseName,
-      enableDatabaseInspector: enableDatabaseInspector,
-    );
-  }
-
-  /// Initialize with production configuration
-  static Future<void> initializeProduction({
-    EcFlavor? flavor,
-    Map<String, String>? customHeaders,
-    String? databaseName,
-    bool enableDatabaseInspector = false,
-  }) async {
-    // Set current environment for EcFlavor
-    EcFlavor.setEnvironment('production');
-
-    await initialize(
-      flavor: flavor,
-      environment: 'production',
-      enableLogging: false,
-      enableFileLogging: true,
-      enableCrashReporting: true,
-      customHeaders: {
-        ...?customHeaders,
-        'X-Environment': 'production',
-        'X-Debug': 'false',
-      },
-      connectTimeout: const Duration(seconds: 15),
-      receiveTimeout: const Duration(seconds: 15),
-      databaseName: databaseName,
-      enableDatabaseInspector: enableDatabaseInspector,
-    );
+    // Log debug mode status
+    if (debugMode) {
+      _logInfo('Debug mode is ENABLED for $environment environment');
+    }
   }
 
   /// Initialize with admin flavor
