@@ -24,7 +24,8 @@ class ProductDetailsBloc
 
     try {
       final response = await _productDetailsUseCase.fetchProductDetails(
-        event.id,
+        productId: event.productId,
+        categoryId: event.categoryId,
       );
 
       emit(

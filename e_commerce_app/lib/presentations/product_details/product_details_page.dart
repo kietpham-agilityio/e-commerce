@@ -16,9 +16,14 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 class ProductDetailsPage extends StatefulWidget {
-  const ProductDetailsPage({super.key, required this.productId});
+  const ProductDetailsPage({
+    super.key,
+    required this.productId,
+    required this.categoryId,
+  });
 
   final String productId;
+  final String categoryId;
 
   @override
   State<ProductDetailsPage> createState() => _ProductDetailsPageState();
@@ -30,8 +35,12 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   void initState() {
     _bloc =
-        AppModule.getIt<ProductDetailsBloc>()
-          ..add(ProductDetailsLoadRequested(widget.productId));
+        AppModule.getIt<ProductDetailsBloc>()..add(
+          ProductDetailsLoadRequested(
+            productId: widget.productId,
+            categoryId: widget.categoryId,
+          ),
+        );
     super.initState();
   }
 

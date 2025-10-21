@@ -128,6 +128,7 @@ class _HomePageState extends State<HomePage> {
                                           AppPaths.productDetails.name,
                                           queryParameters: {
                                             "productId": "${item.id}",
+                                            "categoryId": "${item.categoryId}",
                                           },
                                         );
                                       },
@@ -184,6 +185,7 @@ class _HomePageState extends State<HomePage> {
                                           AppPaths.productDetails.name,
                                           queryParameters: {
                                             "productId": "${item.id}",
+                                            "categoryId": "${item.categoryId}",
                                           },
                                         );
                                       },
