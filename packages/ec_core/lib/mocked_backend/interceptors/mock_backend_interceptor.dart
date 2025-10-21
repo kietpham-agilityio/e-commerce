@@ -51,6 +51,12 @@ class MockBackendInterceptor extends Interceptor {
       return;
     }
 
+    if (path.startsWith('/rest/v1/feature_flags')) {
+      _handleFeatureFlagsApi(options, handler, scenario);
+
+      return;
+    }
+
     // No mock available, call real API
     super.onRequest(options, handler);
   }
@@ -433,6 +439,66 @@ class MockBackendInterceptor extends Interceptor {
       Response(requestOptions: options, statusCode: 200, data: data),
     );
   }
+
+  /// Handle mock responses for Feature Flags API
+  void _handleFeatureFlagsApi(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+    String scenario,
+  ) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    if (scenario == ApiFeatureFlags.mockError.toString()) {
+      handler.reject(
+        DioException(
+          requestOptions: options,
+          type: DioExceptionType.badResponse,
+          response: Response(
+            requestOptions: options,
+            statusCode: 500,
+            data: {
+              'error': 'Mocked feature flags error',
+              'code': 'MOCK_FEATURE_FLAGS_ERROR',
+              'message': 'A mocked feature flags error occurred',
+            },
+          ),
+        ),
+      );
+
+      return;
+    }
+
+    List<Map<String, dynamic>> data;
+
+    if (scenario == ApiFeatureFlags.mockEmpty.toString()) {
+      data = [];
+    } else if (scenario == ApiFeatureFlags.mockSuccess.toString()) {
+      // Return mock feature flags
+      data = [
+        {
+          "id": "1",
+          "user_id": "mock-user-123",
+          "enable_shop_page": true,
+          "enable_items_page": true,
+          "enable_product_details_page": false,
+          "enable_bag_page": true,
+          "enable_favorites_page": false,
+          "enable_profile_page": true,
+          "enable_comments_page": false,
+          "updated_at": DateTime.now().toIso8601String(),
+          "created_at": DateTime.now().toIso8601String(),
+        },
+      ];
+    } else {
+      // Real API call
+      super.onRequest(options, handler);
+      return;
+    }
+
+    handler.resolve(
+      Response(requestOptions: options, statusCode: 200, data: data),
+    );
+  }
 }
 
 enum ApiPosts { real, mockSuccess, mockEmpty, mockError }
@@ -442,3 +508,5 @@ enum ApiComments { real, mockSuccess, mockEmpty, mockError }
 enum ApiHome { real, mockSuccess, mockError }
 
 enum ApiShop { real, mockSuccess, mockError }
+
+enum ApiFeatureFlags { real, mockSuccess, mockEmpty, mockError }

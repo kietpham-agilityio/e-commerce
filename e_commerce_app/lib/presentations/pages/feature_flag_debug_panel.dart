@@ -1,9 +1,11 @@
 import 'package:e_commerce_app/core/bloc/app_bloc.dart';
 import 'package:e_commerce_app/core/bloc/app_event.dart';
+import 'package:e_commerce_app/domain/usecases/save_feature_flags_use_case.dart';
 import 'package:flutter/material.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_themes/themes/themes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 /// Debug panel for runtime configuration of feature flags
 class FeatureFlagDebugPanel extends StatefulWidget {
@@ -15,12 +17,15 @@ class FeatureFlagDebugPanel extends StatefulWidget {
 
 class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
   late FeatureFlagService _featureFlagService;
+  late SaveFeatureFlagsUseCase _saveFeatureFlagsUseCase;
   late EcFeatureFlag _currentFlags;
+  bool _isSaving = false;
 
   @override
   void initState() {
     super.initState();
     _featureFlagService = getFeatureFlagService();
+    _saveFeatureFlagsUseCase = GetIt.instance<SaveFeatureFlagsUseCase>();
     _currentFlags = _featureFlagService.flags;
   }
 
@@ -29,30 +34,57 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
     bool navigateToFirstRoute = true,
     String? flagName,
     bool? flagValue,
-  }) {
+  }) async {
     setState(() {
       _currentFlags = newFlags;
       _featureFlagService.updateFlags(newFlags);
+      _isSaving = true;
     });
 
     // Dispatch event to AppBloc to update global state
     context.read<AppBloc>().add(AppFeatureFlagsUpdated(newFlags));
 
-    // Show specific feedback about what changed
-    final statusText = flagValue == true ? 'enabled ✅' : 'disabled ❌';
-    final message =
-        flagName != null
-            ? '$flagName $statusText'
-            : 'Feature flag updated successfully';
+    // Save flags to server
+    try {
+      await _saveFeatureFlagsUseCase.execute(newFlags);
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 1),
-        backgroundColor:
-            flagValue == true ? Colors.green.shade700 : Colors.orange.shade700,
-      ),
-    );
+      if (!mounted) return;
+
+      // Show specific feedback about what changed
+      final statusText = flagValue == true ? 'enabled ✅' : 'disabled ❌';
+      final message =
+          flagName != null
+              ? '$flagName $statusText (saved)'
+              : 'Feature flag updated and saved successfully';
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          duration: const Duration(seconds: 1),
+          backgroundColor:
+              flagValue == true
+                  ? Colors.green.shade700
+                  : Colors.orange.shade700,
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+
+      // Show error message but keep the local changes
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Flag updated locally but failed to save to server'),
+          duration: const Duration(seconds: 2),
+          backgroundColor: Colors.orange.shade700,
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSaving = false;
+        });
+      }
+    }
 
     // Navigate to home to see the changes in action
     if (navigateToFirstRoute) {

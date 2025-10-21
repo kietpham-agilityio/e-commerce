@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'api_client_module.dart';
 import 'auth_module.dart';
 import 'bloc_module.dart';
+import 'feature_flag_module.dart';
 import 'service_module.dart';
 
 /// Main dependency injection module for the application
@@ -25,6 +26,9 @@ class AppModule {
 
     // Register BLoC dependencies (including AppBloc and FeatureFlagService)
     BlocModule.registerBlocs();
+
+    // Register feature flag dependencies
+    FeatureFlagModule.registerDependencies();
 
     HomeModule.registerDependencies();
 
@@ -52,6 +56,7 @@ class AppModule {
       ServiceModule.isRegistered &&
       AuthModule.isRegistered &&
       BlocModule.isRegistered &&
+      FeatureFlagModule.isRegistered &&
       HomeModule.isRegistered &&
       ProductDetailsModule.isRegistered;
 }

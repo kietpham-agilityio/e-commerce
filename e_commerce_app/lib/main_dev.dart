@@ -1,5 +1,6 @@
 import 'package:e_commerce_app/config/env_config.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
+import 'package:e_commerce_app/domain/usecases/fetch_feature_flags_use_case.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_core/services/ec_notifications/ec_notifications.dart';
 import 'package:ec_l10n/ec_l10n.dart';
@@ -8,6 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/di/di.dart';
@@ -44,6 +46,9 @@ void main() async {
     // Initialize app-specific dependencies (this will override the API client)
     AppModule.initialize(environment: 'dev');
 
+    // Fetch feature flags from server
+    await _fetchFeatureFlagsFromServer();
+
     await NotificationsService.setNotificationListeners();
     ServiceModule.notificationsService;
 
@@ -66,6 +71,23 @@ void main() async {
 
     // Run app anyway with error handling
     runApp(ErrorApp(error: e));
+  }
+}
+
+/// Fetch feature flags from server and update the service
+Future<void> _fetchFeatureFlagsFromServer() async {
+  try {
+    final fetchUseCase = GetIt.instance<FetchFeatureFlagsUseCase>();
+    final featureFlagService = getFeatureFlagService();
+
+    final flags = await fetchUseCase.execute();
+    featureFlagService.updateFlags(flags);
+
+    debugPrint('🎯 Feature flags fetched from server successfully');
+  } catch (e) {
+    // If fetching fails, use default flags (already set during initialization)
+    debugPrint('⚠️ Failed to fetch feature flags from server: $e');
+    debugPrint('Using default feature flags');
   }
 }
 

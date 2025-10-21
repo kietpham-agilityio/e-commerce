@@ -121,6 +121,36 @@ class MockApiService {
         ),
       ],
     ),
+    const MockApi<ApiFeatureFlags>(
+      name: 'Feature Flags',
+      path: '/rest/v1/feature_flags',
+      scenarios: [
+        MockScenario<ApiFeatureFlags>(
+          name: 'Real API',
+          description: 'Use real API endpoint',
+          payload: ApiFeatureFlags.real,
+          apiMode: ApiMode.real,
+        ),
+        MockScenario<ApiFeatureFlags>(
+          name: 'Mock Success',
+          description: 'Mock successful response with feature flags',
+          payload: ApiFeatureFlags.mockSuccess,
+          apiMode: ApiMode.mock,
+        ),
+        MockScenario<ApiFeatureFlags>(
+          name: 'Mock Empty',
+          description: 'Mock empty response (no flags)',
+          payload: ApiFeatureFlags.mockEmpty,
+          apiMode: ApiMode.mock,
+        ),
+        MockScenario<ApiFeatureFlags>(
+          name: 'Mock Error',
+          description: 'Mock error response',
+          payload: ApiFeatureFlags.mockError,
+          apiMode: ApiMode.mock,
+        ),
+      ],
+    ),
   ];
 
   /// Get all available mock APIs
