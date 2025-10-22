@@ -1,10 +1,14 @@
 import 'dart:developer';
 
+import 'package:e_commerce_app/config/env_config.dart';
 import 'package:e_commerce_app/core/bloc/app_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
 import 'package:e_commerce_app/core/utils/price_formatter.dart';
 import 'package:e_commerce_app/presentations/product_details/bloc/product_details_bloc.dart';
+import 'package:ec_core/debug_tools/ui/debug_tools_picker.dart';
+import 'package:ec_core/fab_debug/ui/fab_debug_button.dart';
+import 'package:ec_core/mocked_backend/interceptors/mock_backend_interceptor.dart';
 import 'package:ec_l10n/generated/l10n.dart';
 import 'package:ec_themes/ec_design.dart';
 import 'package:ec_themes/themes/widgets/card/product_card_in_main.dart';
@@ -300,6 +304,69 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       SizedBox(height: spacing.massive),
                     ],
                   ),
+                ),
+                floatingActionButton: BlocConsumer<AppBloc, AppState>(
+                  listener: (context, state) {
+                    // Navigate back to first route when Database Inspector is turned off
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                  },
+                  builder: (context, state) {
+                    return EnvConfig.isDebugModeEnabled
+                        ? FabDebugButton(
+                          onSelectedMockBackend: (scenario) {
+                            if (ApiProductDetails.values.contains(
+                                  scenario.payload,
+                                ) ||
+                                ApiRelatedProducts.values.contains(
+                                  scenario.payload,
+                                )) {
+                              _bloc.add(
+                                ProductDetailsLoadRequested(
+                                  productId: widget.productId,
+                                  categoryId: widget.categoryId,
+                                ),
+                              );
+                            }
+                          },
+                          debugToolsScenarios: [
+                            DebugToolsItem(
+                              name: 'Success Scenario',
+                              onTap: () {
+                                _bloc.add(
+                                  const DebugScenarioRequested(
+                                    scenario: DebugToolScenarios.success,
+                                  ),
+                                );
+                              },
+                            ),
+                            DebugToolsItem(
+                              name: 'Error Scenario',
+                              onTap: () {
+                                _bloc.add(
+                                  const DebugScenarioRequested(
+                                    scenario: DebugToolScenarios.error,
+                                  ),
+                                );
+                              },
+                            ),
+                            DebugToolsItem(
+                              name: 'Api Scenario',
+                              onTap: () {
+                                _bloc.add(
+                                  DebugScenarioRequested(
+                                    scenario: DebugToolScenarios.api,
+                                    productId: widget.productId,
+                                    categoryId: widget.categoryId,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+
+                          enableMockBackend: true,
+                        )
+                        : SizedBox.shrink();
+                  },
                 ),
               ),
             ),

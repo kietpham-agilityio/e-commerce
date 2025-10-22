@@ -51,6 +51,18 @@ class MockBackendInterceptor extends Interceptor {
       return;
     }
 
+    if (path.startsWith('/rest/v1/products')) {
+      _handleProductDetailsApi(options, handler, scenario);
+
+      return;
+    }
+
+    if (path.startsWith('/rest/v1/rpc/get_related_products')) {
+      _handleRelatedProductsApi(options, handler, scenario);
+
+      return;
+    }
+
     // No mock available, call real API
     super.onRequest(options, handler);
   }
@@ -433,6 +445,190 @@ class MockBackendInterceptor extends Interceptor {
       Response(requestOptions: options, statusCode: 200, data: data),
     );
   }
+
+  /// Handle mock responses for Product Details API
+  void _handleProductDetailsApi(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+    String scenario,
+  ) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    if (scenario == ApiProductDetails.mockError.toString()) {
+      handler.reject(
+        DioException(
+          requestOptions: options,
+          type: DioExceptionType.badResponse,
+          response: Response(
+            requestOptions: options,
+            statusCode: 500,
+            data: {
+              'error': 'Mocked comments error',
+              'code': 'MOCK_COMMENTS_ERROR',
+              'message': 'A mocked comments error occurred',
+            },
+          ),
+        ),
+      );
+
+      return;
+    }
+
+    List<Map<String, dynamic>> data;
+    if (scenario == ApiProductDetails.mockSuccess.toString()) {
+      data = [
+        {
+          "id": 6,
+          "name": "Floral Summer Dress",
+          "description":
+              "Lightweight floral dress with a flattering A-line cut, perfect for warm weather.",
+          "category_id": 1,
+          "brand": "ZARA",
+          "price": 59.99,
+          "created_at": "2025-10-14T02:17:44.46308+00:00",
+          "discount": 0,
+          "quantity": 30,
+          "image_urls": [
+            "https://images.pexels.com/photos/1055691/pexels-photo-1055691.jpeg",
+            "https://images.pexels.com/photos/1488463/pexels-photo-1488463.jpeg",
+            "https://images.pexels.com/photos/1988681/pexels-photo-1988681.jpeg",
+            "https://images.pexels.com/photos/1488467/pexels-photo-1488467.jpeg",
+          ],
+          "label": "NEW",
+        },
+      ];
+    } else {
+      // Real API call
+      super.onRequest(options, handler);
+
+      return;
+    }
+
+    handler.resolve(
+      Response(requestOptions: options, statusCode: 200, data: data),
+    );
+  }
+
+  /// Handle mock responses for Related Products API
+  void _handleRelatedProductsApi(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+    String scenario,
+  ) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    if (scenario == ApiRelatedProducts.mockError.toString()) {
+      handler.reject(
+        DioException(
+          requestOptions: options,
+          type: DioExceptionType.badResponse,
+          response: Response(
+            requestOptions: options,
+            statusCode: 500,
+            data: {
+              'error': 'Mocked comments error',
+              'code': 'MOCK_COMMENTS_ERROR',
+              'message': 'A mocked comments error occurred',
+            },
+          ),
+        ),
+      );
+
+      return;
+    }
+
+    Map<String, dynamic> data;
+    if (scenario == ApiRelatedProducts.mockSuccess.toString()) {
+      data = {
+        "data": {
+          "related_products": [
+            {
+              "id": 6,
+              "name": "Floral Summer Dress",
+              "description":
+                  "Lightweight floral dress with a flattering A-line cut, perfect for warm weather.",
+              "category_id": 1,
+              "brand": "ZARA",
+              "price": 59.99,
+              "created_at": "2025-10-14T02:17:44.46308+00:00",
+              "discount": 0,
+              "quantity": 30,
+              "image_urls": [
+                "https://images.pexels.com/photos/1055691/pexels-photo-1055691.jpeg",
+                "https://images.pexels.com/photos/1488463/pexels-photo-1488463.jpeg",
+                "https://images.pexels.com/photos/1988681/pexels-photo-1988681.jpeg",
+                "https://images.pexels.com/photos/1488467/pexels-photo-1488467.jpeg",
+              ],
+              "label": "NEW",
+            },
+            {
+              "id": 7,
+              "name": "Evening Satin Gown",
+              "description":
+                  "Elegant long satin gown with open back and slim fit design for formal occasions.",
+              "category_id": 1,
+              "brand": "H&M",
+              "price": 120,
+              "created_at": "2025-10-14T02:17:44.46308+00:00",
+              "discount": 0,
+              "quantity": 12,
+              "image_urls": [
+                "https://images.pexels.com/photos/2909096/pexels-photo-2909096.jpeg",
+                "https://images.pexels.com/photos/2909117/pexels-photo-2909117.jpeg",
+                "https://images.pexels.com/photos/2909103/pexels-photo-2909103.jpeg",
+              ],
+              "label": "NEW",
+            },
+            {
+              "id": 9,
+              "name": "Leather Ankle Boots",
+              "description":
+                  "Premium leather ankle boots with non-slip soles and side zippers.",
+              "category_id": 2,
+              "brand": "Dr. Martens",
+              "price": 150,
+              "created_at": "2025-10-14T02:17:44.46308+00:00",
+              "discount": 0,
+              "quantity": 40,
+              "image_urls": [
+                "https://images.pexels.com/photos/1456706/pexels-photo-1456706.jpeg",
+                "https://images.pexels.com/photos/1456708/pexels-photo-1456708.jpeg",
+                "https://images.pexels.com/photos/1456709/pexels-photo-1456709.jpeg",
+              ],
+              "label": "NEW",
+            },
+            {
+              "id": 11,
+              "name": "Travel Backpack",
+              "description":
+                  "Durable and spacious travel backpack with multiple compartments and laptop sleeve.",
+              "category_id": 3,
+              "brand": "The North Face",
+              "price": 110,
+              "created_at": "2025-10-14T02:17:44.46308+00:00",
+              "discount": 0,
+              "quantity": 50,
+              "image_urls": [
+                "https://images.pexels.com/photos/374906/pexels-photo-374906.jpeg",
+                "https://images.pexels.com/photos/1334597/pexels-photo-1334597.jpeg",
+                "https://images.pexels.com/photos/267202/pexels-photo-267202.jpeg",
+              ],
+              "label": "NEW",
+            },
+          ],
+        },
+      };
+    } else {
+      // Real API call
+      super.onRequest(options, handler);
+
+      return;
+    }
+
+    handler.resolve(
+      Response(requestOptions: options, statusCode: 200, data: data),
+    );
+  }
 }
 
 enum ApiPosts { real, mockSuccess, mockEmpty, mockError }
@@ -442,3 +638,7 @@ enum ApiComments { real, mockSuccess, mockEmpty, mockError }
 enum ApiHome { real, mockSuccess, mockError }
 
 enum ApiShop { real, mockSuccess, mockError }
+
+enum ApiProductDetails { real, mockSuccess, mockError }
+
+enum ApiRelatedProducts { real, mockSuccess, mockError }

@@ -19,3 +19,20 @@ class ProductDetailsLoadRequested extends ProductDetailsEvent {
   @override
   List<Object?> get props => [productId, categoryId];
 }
+
+class DebugScenarioRequested extends ProductDetailsEvent {
+  const DebugScenarioRequested({
+    required this.scenario,
+    this.categoryId,
+    this.productId,
+  });
+
+  final DebugToolScenarios scenario;
+  final String? productId;
+  final String? categoryId;
+
+  @override
+  List<Object?> get props => [scenario, productId, categoryId];
+}
+
+enum DebugToolScenarios { success, error, api }
