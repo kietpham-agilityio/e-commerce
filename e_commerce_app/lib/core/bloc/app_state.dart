@@ -4,8 +4,9 @@ import 'package:equatable/equatable.dart';
 /// App state
 class AppState extends Equatable {
   final EcFeatureFlag flags;
+  final String? error;
 
-  const AppState({required this.flags});
+  const AppState({required this.flags, this.error});
 
   /// Initial state with default flags
   factory AppState.initial() {
@@ -13,10 +14,10 @@ class AppState extends Equatable {
   }
 
   /// Copy with new values
-  AppState copyWith({EcFeatureFlag? flags}) {
-    return AppState(flags: flags ?? this.flags);
+  AppState copyWith({EcFeatureFlag? flags, String? error}) {
+    return AppState(flags: flags ?? this.flags, error: error);
   }
 
   @override
-  List<Object?> get props => [flags];
+  List<Object?> get props => [flags, error];
 }

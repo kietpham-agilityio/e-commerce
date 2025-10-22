@@ -36,7 +36,14 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
     });
 
     // Dispatch event to AppBloc to update global state
-    context.read<AppBloc>().add(AppFeatureFlagsUpdated(newFlags));
+    context.read<AppBloc>().add(
+      AppFeatureFlagsUpdated(
+        newFlags,
+        flagName: flagName,
+        oldValue: flagValue == true ? false : true,
+        newValue: flagValue,
+      ),
+    );
 
     // Show specific feedback about what changed
     final statusText = flagValue == true ? 'enabled ✅' : 'disabled ❌';

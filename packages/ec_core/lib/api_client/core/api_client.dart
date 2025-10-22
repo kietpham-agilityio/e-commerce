@@ -7,6 +7,7 @@ import 'package:talker_flutter/talker_flutter.dart';
 import '../apis/cart_api.dart';
 import '../apis/discount_api.dart';
 import '../apis/ecommerce_api.dart';
+import '../apis/feature_flag_api.dart';
 import '../apis/order_api.dart';
 import '../apis/product_api.dart';
 import '../apis/review_api.dart';
@@ -56,6 +57,7 @@ class ApiClient {
     _wishlistApi = WishlistApi(_dio);
     _shippingAddressApi = ShippingAddressApi(_dio);
     _homeApi = HomeApi(_dio);
+    _featureFlagApi = FeatureFlagApi(_dio);
   }
 
   final BaseOptions options;
@@ -73,6 +75,7 @@ class ApiClient {
   late WishlistApi _wishlistApi;
   late ShippingAddressApi _shippingAddressApi;
   late HomeApi _homeApi;
+  late FeatureFlagApi _featureFlagApi;
 
   // ============================================================================
   // HEADER MANAGEMENT
@@ -133,6 +136,7 @@ class ApiClient {
     _wishlistApi = WishlistApi(_dio, baseUrl: baseUrl);
     _shippingAddressApi = ShippingAddressApi(_dio, baseUrl: baseUrl);
     _homeApi = HomeApi(_dio, baseUrl: baseUrl);
+    _featureFlagApi = FeatureFlagApi(_dio, baseUrl: baseUrl);
   }
 
   /// Get base URL
@@ -170,6 +174,9 @@ class ApiClient {
   ShippingAddressApi get shippingAddressApi => _shippingAddressApi;
 
   HomeApi get homeApi => _homeApi;
+
+  /// Get Feature Flag API service
+  FeatureFlagApi get featureFlagApi => _featureFlagApi;
 
   // ============================================================================
   // TEST API METHODS

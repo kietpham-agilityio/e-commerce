@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/core/di/feature_flag_module.dart';
 import 'package:e_commerce_app/core/di/home_module.dart';
 import 'package:e_commerce_app/core/di/product_details.dart';
 import 'package:e_commerce_app/core/di/shop_module.dart';
@@ -26,6 +27,9 @@ class AppModule {
     // Register BLoC dependencies (including AppBloc and FeatureFlagService)
     BlocModule.registerBlocs();
 
+    // Register feature flag dependencies
+    FeatureFlagModule.registerDependencies();
+
     HomeModule.registerDependencies();
 
     ProductDetailsModule.registerDependencies();
@@ -52,6 +56,7 @@ class AppModule {
       ServiceModule.isRegistered &&
       AuthModule.isRegistered &&
       BlocModule.isRegistered &&
+      FeatureFlagModule.isRegistered &&
       HomeModule.isRegistered &&
       ProductDetailsModule.isRegistered;
 }

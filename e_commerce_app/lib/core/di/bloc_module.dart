@@ -1,6 +1,7 @@
 import 'package:ec_core/ec_core.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../domain/usecases/feature_flag_usecase.dart';
 import '../bloc/app_bloc.dart';
 
 /// BLoC module for registering application BLoCs
@@ -17,7 +18,11 @@ class BlocModule {
     // Register AppBloc as factory (new instance each time)
     // This allows multiple BlocProvider to create their own instances
     _getIt.registerFactory<AppBloc>(
-      () => AppBloc(featureFlagService: _getIt<FeatureFlagService>()),
+      () => AppBloc(
+        featureFlagService: _getIt<FeatureFlagService>(),
+        updateFeatureFlagUseCase: _getIt<UpdateFeatureFlagUseCase>(),
+        logFeatureFlagChangeUseCase: _getIt<LogFeatureFlagChangeUseCase>(),
+      ),
     );
   }
 

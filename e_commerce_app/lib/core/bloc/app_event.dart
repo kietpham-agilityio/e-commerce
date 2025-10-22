@@ -13,8 +13,16 @@ class AppFeatureFlagsLoaded extends AppEvent {
 /// Event to update feature flags
 class AppFeatureFlagsUpdated extends AppEvent {
   final EcFeatureFlag flags;
+  final String? flagName;
+  final bool? oldValue;
+  final bool? newValue;
 
-  const AppFeatureFlagsUpdated(this.flags);
+  const AppFeatureFlagsUpdated(
+    this.flags, {
+    this.flagName,
+    this.oldValue,
+    this.newValue,
+  });
 }
 
 /// Event to refresh feature flags from service
