@@ -1,5 +1,4 @@
 import 'package:e_commerce_app/core/bloc/app_bloc.dart';
-import 'package:e_commerce_app/core/bloc/app_event.dart';
 import 'package:flutter/material.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_themes/themes/themes.dart';
@@ -14,29 +13,21 @@ class FeatureFlagDebugPanel extends StatefulWidget {
 }
 
 class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
-  late FeatureFlagService _featureFlagService;
-  late EcFeatureFlag _currentFlags;
-
-  @override
-  void initState() {
-    super.initState();
-    _featureFlagService = getFeatureFlagService();
-    _currentFlags = _featureFlagService.flags;
-  }
-
   void _updateFlag(
     EcFeatureFlag newFlags, {
     bool navigateToFirstRoute = true,
     String? flagName,
     bool? flagValue,
   }) {
-    setState(() {
-      _currentFlags = newFlags;
-      _featureFlagService.updateFlags(newFlags);
-    });
-
     // Dispatch event to AppBloc to update global state
-    context.read<AppBloc>().add(AppFeatureFlagsUpdated(newFlags));
+    BlocProvider.of<AppBloc>(context).add(
+      AppFeatureFlagsUpdated(
+        newFlags,
+        flagName: flagName,
+        oldValue: flagValue == true ? false : true,
+        newValue: flagValue,
+      ),
+    );
 
     // Show specific feedback about what changed
     final statusText = flagValue == true ? 'enabled ✅' : 'disabled ❌';
@@ -72,19 +63,25 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
       appBar: EcAppBar(
         title: const EcTitleMediumText('🛠️ Feature Flag Debug Panel'),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Debug & Development Features
+      body: BlocBuilder<AppBloc, AppState>(
+        builder: (context, appState) {
+          final currentFlags = appState.flags;
 
-            // Page Scenarios for Demo
-            _buildPageScenariosSection(context),
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Debug & Development Features
 
-            const SizedBox(height: 24),
-          ],
-        ),
+                // Page Scenarios for Demo
+                _buildPageScenariosSection(context, currentFlags),
+
+                const SizedBox(height: 24),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -143,7 +140,10 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
     );
   }
 
-  Widget _buildPageScenariosSection(BuildContext context) {
+  Widget _buildPageScenariosSection(
+    BuildContext context,
+    EcFeatureFlag currentFlags,
+  ) {
     return _buildFlagSection(
       context,
       title: '📱 Page Scenarios Demo',
@@ -152,10 +152,10 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
           context,
           title: 'Show Shop Page',
           subtitle: 'Display shop page in demo',
-          value: _currentFlags.enableShopPage ?? false,
+          value: currentFlags.enableShopPage ?? false,
           onChanged: (value) {
             _updateFlag(
-              _currentFlags.copyWith(enableShopPage: value),
+              currentFlags.copyWith(enableShopPage: value),
               flagName: 'Show Shop Page',
               flagValue: value,
             );
@@ -165,10 +165,10 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
           context,
           title: 'Show Items Page',
           subtitle: 'Display items listing page in demo',
-          value: _currentFlags.enableItemsPage ?? false,
+          value: currentFlags.enableItemsPage ?? false,
           onChanged: (value) {
             _updateFlag(
-              _currentFlags.copyWith(enableItemsPage: value),
+              currentFlags.copyWith(enableItemsPage: value),
               flagName: 'Show Items Page',
               flagValue: value,
             );
@@ -178,10 +178,10 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
           context,
           title: 'Show Product Details',
           subtitle: 'Display product details page in demo',
-          value: _currentFlags.enableProductDetailsPage ?? false,
+          value: currentFlags.enableProductDetailsPage ?? false,
           onChanged: (value) {
             _updateFlag(
-              _currentFlags.copyWith(enableProductDetailsPage: value),
+              currentFlags.copyWith(enableProductDetailsPage: value),
               flagName: 'Show Product Details',
               flagValue: value,
             );
@@ -191,10 +191,10 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
           context,
           title: 'Show Shopping Bag',
           subtitle: 'Display shopping bag page in demo',
-          value: _currentFlags.enableBagPage ?? false,
+          value: currentFlags.enableBagPage ?? false,
           onChanged: (value) {
             _updateFlag(
-              _currentFlags.copyWith(enableBagPage: value),
+              currentFlags.copyWith(enableBagPage: value),
               flagName: 'Show Shopping Bag',
               flagValue: value,
             );
@@ -204,10 +204,10 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
           context,
           title: 'Show Favorites',
           subtitle: 'Display favorites page in demo',
-          value: _currentFlags.enableFavoritesPage ?? false,
+          value: currentFlags.enableFavoritesPage ?? false,
           onChanged: (value) {
             _updateFlag(
-              _currentFlags.copyWith(enableFavoritesPage: value),
+              currentFlags.copyWith(enableFavoritesPage: value),
               flagName: 'Show Favorites',
               flagValue: value,
             );
@@ -218,10 +218,10 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
           context,
           title: 'Show Profile Page',
           subtitle: 'Display user profile page in demo',
-          value: _currentFlags.enableProfilePage ?? false,
+          value: currentFlags.enableProfilePage ?? false,
           onChanged: (value) {
             _updateFlag(
-              _currentFlags.copyWith(enableProfilePage: value),
+              currentFlags.copyWith(enableProfilePage: value),
               flagName: 'Show Profile Page',
               flagValue: value,
             );
@@ -231,10 +231,10 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
           context,
           title: 'Show Comments Page',
           subtitle: 'Display comments page in demo',
-          value: _currentFlags.enableCommentsPage ?? false,
+          value: currentFlags.enableCommentsPage ?? false,
           onChanged: (value) {
             _updateFlag(
-              _currentFlags.copyWith(enableCommentsPage: value),
+              currentFlags.copyWith(enableCommentsPage: value),
               flagName: 'Show Comments Page',
               flagValue: value,
             );

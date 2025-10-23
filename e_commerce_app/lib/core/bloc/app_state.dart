@@ -1,11 +1,12 @@
-import 'package:ec_core/ec_core.dart';
-import 'package:equatable/equatable.dart';
+part of 'app_bloc.dart';
 
 /// App state
 class AppState extends Equatable {
   final EcFeatureFlag flags;
+  final String? error;
+  final bool isLoading;
 
-  const AppState({required this.flags});
+  const AppState({required this.flags, this.error, this.isLoading = false});
 
   /// Initial state with default flags
   factory AppState.initial() {
@@ -13,10 +14,14 @@ class AppState extends Equatable {
   }
 
   /// Copy with new values
-  AppState copyWith({EcFeatureFlag? flags}) {
-    return AppState(flags: flags ?? this.flags);
+  AppState copyWith({EcFeatureFlag? flags, String? error, bool? isLoading}) {
+    return AppState(
+      flags: flags ?? this.flags,
+      error: error,
+      isLoading: isLoading ?? this.isLoading,
+    );
   }
 
   @override
-  List<Object?> get props => [flags];
+  List<Object?> get props => [flags, error, isLoading];
 }

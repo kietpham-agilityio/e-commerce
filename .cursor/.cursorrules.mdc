@@ -1,0 +1,182 @@
+# Flutter App Expert .cursorrules
+
+// Flexibility Notice
+
+// Note: This is a recommended project structure, but be flexible and adapt to existing project structures.
+// Do not enforce these structural patterns if the project follows a different organization.
+// Focus on maintaining consistency with the existing project architecture while applying Flutter best practices.
+
+// Flutter Best Practices
+
+const flutterBestPractices = [
+"Adapt to existing project architecture while maintaining clean code principles",
+"Use Flutter 3.x features and Material 3 design",
+"Implement clean architecture with BLoC pattern",
+"Follow proper state management principles",
+"Use proper dependency injection",
+"Implement proper error handling",
+"Follow platform-specific design guidelines",
+"Use proper localization techniques",
+];
+
+// Coding Guidelines
+
+const codingGuidelines = `
+
+1. Use proper null safety practices
+2. Implement proper error handling with Either type
+3. Follow proper naming conventions
+4. Use proper widget composition
+5. Implement proper routing using GoRouter
+6. Use proper form validation
+7. Follow proper state management with BLoC
+8. Implement proper dependency injection using GetIt
+9. Use proper asset management
+10. Follow proper testing practices
+    `;
+
+// Widget Guidelines
+
+const widgetGuidelines = `
+
+1. Keep widgets small and focused
+2. Use const constructors when possible
+3. Implement proper widget keys
+4. Follow proper layout principles
+5. Use proper widget lifecycle methods
+6. Implement proper error boundaries
+7. Use proper performance optimization techniques
+8. Follow proper accessibility guidelines
+   `;
+
+// Performance Guidelines
+
+const performanceGuidelines = `
+
+1. Use proper image caching
+2. Implement proper list view optimization
+3. Use proper build methods optimization
+4. Follow proper state management patterns
+5. Implement proper memory management
+6. Use proper platform channels when needed
+7. Follow proper compilation optimization techniques
+   `;
+
+// BLoC State Management Guidelines (Based on bloclibrary.dev)
+
+const blocStateManagementGuidelines = `
+
+## BLoC Pattern Implementation
+
+1. **BLoC Structure**
+
+   - Use BlocProvider for dependency injection
+   - Use BlocListener for side effects (navigation, snackbars, etc.)
+   - Use BlocBuilder for UI updates based on state changes
+   - Use BlocConsumer when you need both listener and builder functionality
+
+2. **Event Definition**
+
+   - Events should be immutable and extend Equatable
+   - Use descriptive names that represent user actions or system events
+   - Keep events simple and focused on a single action
+   - Use const constructors for better performance
+   - Example: class LoginSubmitted extends LoginEvent with EquatableMixin
+
+3. **State Definition**
+
+   - States should be immutable and extend Equatable
+   - Use sealed classes or abstract classes for state hierarchies
+   - Include all necessary data for UI rendering
+   - Use copyWith methods for state updates
+   - Example: class LoginState extends Equatable { final bool isLoading; }
+
+4. **BLoC Implementation**
+
+   - Keep BLoCs focused on a single feature or screen
+   - Use async/await for asynchronous operations
+   - Handle errors gracefully and emit error states
+   - Use add() method to dispatch events
+   - Use emit() method to emit new states
+   - Example: void \_onLoginSubmitted(LoginSubmitted event, Emitter&lt;LoginState&gt; emit) async
+
+5. **Dependency Injection**
+
+   - Register BLoCs as factories for multiple instances
+   - Register BLoCs as singletons for global state
+   - Use GetIt or similar DI container
+   - Inject dependencies through constructor
+   - Example: BlocProvider(create: (context) => LoginBloc(authRepository: context.read&lt;AuthRepository&gt;()))
+
+6. **Error Handling**
+
+   - Always handle exceptions in BLoC event handlers
+   - Emit error states instead of throwing exceptions
+   - Use Failure classes for structured error handling
+   - Provide meaningful error messages to users
+   - Example: emit(state.copyWith(status: LoginStatus.failure, errorMessage: 'Login failed'))
+
+7. **Testing BLoCs**
+
+   - Write unit tests for BLoC event handlers
+   - Test state transitions and side effects
+   - Mock external dependencies
+   - Use blocTest for comprehensive BLoC testing
+   - Example: blocTest<LoginBloc, LoginState>('emits [loading, success] when login succeeds')
+
+8. **Performance Optimization**
+
+   - Use BlocBuilder with buildWhen to prevent unnecessary rebuilds
+   - Use BlocListener with listenWhen to prevent unnecessary side effects
+   - Avoid creating BLoC instances in build methods
+   - Use const constructors where possible
+   - Example: BlocBuilder<LoginBloc, LoginState>(buildWhen: (previous, current) => previous.status != current.status)
+
+9. **Navigation with BLoC**
+
+   - Use BlocListener for navigation side effects
+   - Avoid navigation logic in BLoC event handlers
+   - Use GoRouter or similar for declarative routing
+   - Example: BlocListener<LoginBloc, LoginState>(listener: (context, state) { if (state.status == LoginStatus.success) context.go('/home'); })
+
+10. **State Persistence**
+
+    - Use HydratedBloc for automatic state persistence
+    - Implement proper serialization/deserialization
+    - Handle state migration for app updates
+    - Example: class AppBloc extends HydratedBloc<AppEvent, AppState>
+
+11. **Multi-BLoC Communication**
+
+    - Use BlocProvider.value for sharing BLoC instances
+    - Use Repository pattern for data sharing
+    - Avoid direct BLoC-to-BLoC communication
+    - Use events for loose coupling
+    - Example: BlocProvider.value(value: context.read&lt;AppBloc&gt;(), child: ChildWidget())
+
+12. **Code Organization**
+
+    - Keep BLoC files in dedicated bloc/ directories
+    - Use barrel exports for clean imports
+    - Separate events, states, and BLoC implementation
+    - Use meaningful file names: login_bloc.dart, login_event.dart, login_state.dart
+    - Example: lib/presentations/login/bloc/login_bloc.dart
+
+13. **Best Practices** - Always dispose BLoCs properly - Use close() method for cleanup - Avoid memory leaks with proper subscription management - Use sealed classes for type safety - Follow single responsibility principle - Example: @override void close() { \_subscription?.cancel(); super.close(); }
+    `;
+
+// Testing Guidelines
+
+const testingTestingGuidelines = `
+
+1. Write unit tests for business logic
+2. Implement widget tests for UI components
+3. Use integration tests for feature testing
+4. Implement proper mocking strategies
+5. Use proper test coverage tools
+6. Follow proper test naming conventions
+7. Implement proper CI/CD testing
+8. Write comprehensive BLoC tests using blocTest
+9. Test state transitions and side effects
+10. Mock external dependencies in BLoC tests
+    `;

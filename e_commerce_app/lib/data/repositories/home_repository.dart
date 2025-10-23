@@ -9,11 +9,9 @@ class HomeRepositoryImpl extends HomeRepository {
   HomeRepositoryImpl({
     required ApiClient apiClient,
     required UserSessionBox userSessionBox,
-  }) : _apiClient = apiClient,
-       _userSessionBox = userSessionBox;
+  }) : _apiClient = apiClient;
 
   final ApiClient _apiClient;
-  final UserSessionBox _userSessionBox;
 
   @override
   Future<EcHomeEntities> fetchHomeData() async {

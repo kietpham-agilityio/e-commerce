@@ -1,5 +1,4 @@
 import 'package:e_commerce_app/core/bloc/app_bloc.dart';
-import 'package:e_commerce_app/core/bloc/app_state.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_themes/ec_design.dart';
 import 'package:flutter/material.dart';
@@ -62,9 +61,9 @@ class _ItemsView extends StatelessWidget {
                       IconButton(
                         icon: const Icon(Icons.refresh),
                         onPressed:
-                            () => context.read<ItemsBloc>().add(
-                              const LoadRequested(),
-                            ),
+                            () => BlocProvider.of<ItemsBloc>(
+                              context,
+                            ).add(const LoadRequested()),
                         tooltip: 'Refresh data',
                       ),
 
@@ -150,14 +149,14 @@ class _ItemsView extends StatelessWidget {
           floatingActionButton: FabDebugButton(
             onSelectedMockBackend: (scenario) {
               if (ApiPosts.values.contains(scenario.payload)) {
-                context.read<ItemsBloc>().add(const LoadRequested());
+                BlocProvider.of<ItemsBloc>(context).add(const LoadRequested());
               }
             },
             debugToolsScenarios: [
               DebugToolsItem(
                 name: 'Success Scenario',
                 onTap: () {
-                  context.read<ItemsBloc>().add(
+                  BlocProvider.of<ItemsBloc>(context).add(
                     const DebugScenarioRequested(DebugToolScenarios.success),
                   );
                 },
@@ -165,25 +164,25 @@ class _ItemsView extends StatelessWidget {
               DebugToolsItem(
                 name: 'Empty Scenario',
                 onTap: () {
-                  context.read<ItemsBloc>().add(
-                    const DebugScenarioRequested(DebugToolScenarios.empty),
-                  );
+                  BlocProvider.of<ItemsBloc>(
+                    context,
+                  ).add(const DebugScenarioRequested(DebugToolScenarios.empty));
                 },
               ),
               DebugToolsItem(
                 name: 'Error Scenario',
                 onTap: () {
-                  context.read<ItemsBloc>().add(
-                    const DebugScenarioRequested(DebugToolScenarios.error),
-                  );
+                  BlocProvider.of<ItemsBloc>(
+                    context,
+                  ).add(const DebugScenarioRequested(DebugToolScenarios.error));
                 },
               ),
               DebugToolsItem(
                 name: 'Api Scenario',
                 onTap: () {
-                  context.read<ItemsBloc>().add(
-                    const DebugScenarioRequested(DebugToolScenarios.api),
-                  );
+                  BlocProvider.of<ItemsBloc>(
+                    context,
+                  ).add(const DebugScenarioRequested(DebugToolScenarios.api));
                 },
               ),
             ],
@@ -234,7 +233,9 @@ class _FailureWidget extends StatelessWidget {
             const SizedBox(height: 12),
             ElevatedButton(
               onPressed:
-                  () => context.read<ItemsBloc>().add(const LoadRequested()),
+                  () => BlocProvider.of<ItemsBloc>(
+                    context,
+                  ).add(const LoadRequested()),
               child: const Text('Try again!'),
             ),
           ],

@@ -57,6 +57,9 @@ class SupabaseAuthRepository implements AuthRepository {
     final userDto = _convertSupabaseUserToDto(user);
     _currentUser = _toDomainUser(userDto);
 
+    // Set authorization header for API client
+    // _apiClient.setAuthorizationHeader('Bearer ${session.accessToken}');
+
     // Save session to local storage
     await _saveSession(
       accessToken: session.accessToken,
@@ -82,6 +85,12 @@ class SupabaseAuthRepository implements AuthRepository {
           email: session.email ?? '',
           fullName: session.displayName,
         );
+
+        // Set authorization header for API client if we have a valid token
+        final accessToken = session.sessionToken?.accessToken;
+        if (accessToken != null && accessToken.isNotEmpty) {
+          _apiClient.setAuthorizationHeader('Bearer $accessToken');
+        }
       }
     } catch (e) {
       // If loading fails, just start fresh

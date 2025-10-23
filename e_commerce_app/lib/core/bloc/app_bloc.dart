@@ -1,17 +1,31 @@
 import 'package:ec_core/ec_core.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'app_event.dart';
-import 'app_state.dart';
+import '../../domain/usecases/feature_flag_usecase.dart';
+
+part 'app_event.dart';
+part 'app_state.dart';
 
 /// AppBloc manages global app state including feature flags
 class AppBloc extends Bloc<AppEvent, AppState> {
   final FeatureFlagService _featureFlagService;
+  final GetFeatureFlagUseCase _getFeatureFlagUseCase;
+  final UpdateFeatureFlagUseCase _updateFeatureFlagUseCase;
+  final LogFeatureFlagChangeUseCase _logFeatureFlagChangeUseCase;
 
-  AppBloc({required FeatureFlagService featureFlagService})
-    : _featureFlagService = featureFlagService,
-      super(AppState.initial()) {
+  AppBloc({
+    required FeatureFlagService featureFlagService,
+    required GetFeatureFlagUseCase getFeatureFlagUseCase,
+    required UpdateFeatureFlagUseCase updateFeatureFlagUseCase,
+    required LogFeatureFlagChangeUseCase logFeatureFlagChangeUseCase,
+  }) : _featureFlagService = featureFlagService,
+       _getFeatureFlagUseCase = getFeatureFlagUseCase,
+       _updateFeatureFlagUseCase = updateFeatureFlagUseCase,
+       _logFeatureFlagChangeUseCase = logFeatureFlagChangeUseCase,
+       super(AppState.initial()) {
     on<AppFeatureFlagsLoaded>(_onFeatureFlagsLoaded);
+    on<AppFeatureFlagsFetchedFromApi>(_onFeatureFlagsFetchedFromApi);
     on<AppFeatureFlagsUpdated>(_onFeatureFlagsUpdated);
     on<AppFeatureFlagsRefreshed>(_onFeatureFlagsRefreshed);
 
@@ -27,15 +41,65 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     emit(state.copyWith(flags: flags));
   }
 
+  void _onFeatureFlagsFetchedFromApi(
+    AppFeatureFlagsFetchedFromApi event,
+    Emitter<AppState> emit,
+  ) async {
+    try {
+      // Set loading state
+      emit(state.copyWith(isLoading: true, error: null));
+
+      // Fetch feature flags from API
+      final flags = await _getFeatureFlagUseCase();
+
+      // Update the service with fetched flags
+      _featureFlagService.updateFlags(flags);
+
+      // Emit success state
+      emit(state.copyWith(flags: flags, isLoading: false, error: null));
+    } catch (e) {
+      // Emit error state
+      emit(
+        state.copyWith(
+          isLoading: false,
+          error: 'Failed to fetch feature flags: ${e.toString()}',
+        ),
+      );
+    }
+  }
+
   void _onFeatureFlagsUpdated(
     AppFeatureFlagsUpdated event,
     Emitter<AppState> emit,
-  ) {
-    // Update the service
-    _featureFlagService.updateFlags(event.flags);
+  ) async {
+    try {
+      // Update the service first
+      _featureFlagService.updateFlags(event.flags);
 
-    // Emit new state
-    emit(state.copyWith(flags: event.flags));
+      // Emit new state immediately for UI responsiveness
+      emit(state.copyWith(flags: event.flags));
+
+      // Post to database in background
+      await _updateFeatureFlagUseCase(event.flags);
+
+      // Log the change if we have specific flag information
+      if (event.flagName != null) {
+        await _logFeatureFlagChangeUseCase(
+          flagName: event.flagName!,
+          oldValue: event.oldValue,
+          newValue: event.newValue,
+        );
+      }
+    } catch (e) {
+      // If database update fails, still keep the local changes
+      // but emit an error state
+      emit(
+        state.copyWith(
+          flags: event.flags,
+          error: 'Failed to sync feature flags to database: ${e.toString()}',
+        ),
+      );
+    }
   }
 
   void _onFeatureFlagsRefreshed(
