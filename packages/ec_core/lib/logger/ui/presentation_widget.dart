@@ -12,12 +12,20 @@ class EcTalkerScreen extends StatelessWidget {
     try {
       // Try to get the main Talker instance
       if (LoggerDI.isTalkerRegistered(instanceName: 'main')) {
-        return TalkerScreen(talker: LoggerDI.mainTalker, theme: talkerTheme);
+        return TalkerScreen(
+          talker: LoggerDI.mainTalker,
+          theme: talkerTheme,
+          appBarTitle: 'Network Logs',
+        );
       }
 
       // Fallback to any registered Talker instance
       if (DI.isRegistered<Talker>()) {
-        return TalkerScreen(talker: DI.get<Talker>(), theme: talkerTheme);
+        return TalkerScreen(
+          talker: DI.get<Talker>(),
+          theme: talkerTheme,
+          appBarTitle: 'Network Logs',
+        );
       }
 
       // If no Talker is registered, show an error message
