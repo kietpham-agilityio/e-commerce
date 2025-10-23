@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../enums/supabase_enums.dart';
 
 part 'discount_dto.freezed.dart';
 part 'discount_dto.g.dart';

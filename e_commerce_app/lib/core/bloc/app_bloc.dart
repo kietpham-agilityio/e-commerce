@@ -12,17 +12,14 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   final FeatureFlagService _featureFlagService;
   final GetFeatureFlagUseCase _getFeatureFlagUseCase;
   final UpdateFeatureFlagUseCase _updateFeatureFlagUseCase;
-  final LogFeatureFlagChangeUseCase _logFeatureFlagChangeUseCase;
 
   AppBloc({
     required FeatureFlagService featureFlagService,
     required GetFeatureFlagUseCase getFeatureFlagUseCase,
     required UpdateFeatureFlagUseCase updateFeatureFlagUseCase,
-    required LogFeatureFlagChangeUseCase logFeatureFlagChangeUseCase,
   }) : _featureFlagService = featureFlagService,
        _getFeatureFlagUseCase = getFeatureFlagUseCase,
        _updateFeatureFlagUseCase = updateFeatureFlagUseCase,
-       _logFeatureFlagChangeUseCase = logFeatureFlagChangeUseCase,
        super(AppState.initial()) {
     on<AppFeatureFlagsLoaded>(_onFeatureFlagsLoaded);
     on<AppFeatureFlagsFetchedFromApi>(_onFeatureFlagsFetchedFromApi);
@@ -81,15 +78,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
       // Post to database in background
       await _updateFeatureFlagUseCase(event.flags);
-
-      // Log the change if we have specific flag information
-      if (event.flagName != null) {
-        await _logFeatureFlagChangeUseCase(
-          flagName: event.flagName!,
-          oldValue: event.oldValue,
-          newValue: event.newValue,
-        );
-      }
     } catch (e) {
       // If database update fails, still keep the local changes
       // but emit an error state

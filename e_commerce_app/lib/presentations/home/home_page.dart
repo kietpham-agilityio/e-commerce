@@ -309,7 +309,7 @@ class _CategoryHeader extends StatelessWidget {
               child: EcLabelSmallText(
                 l10n.generalViewAll,
                 fontWeight: EcTypography.regular,
-                color: colorScheme.surface,
+                color: colorScheme.secondary,
               ),
             ),
           ],

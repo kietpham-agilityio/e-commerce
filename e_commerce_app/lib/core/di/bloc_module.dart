@@ -1,5 +1,4 @@
 import 'package:ec_core/ec_core.dart';
-import 'package:get_it/get_it.dart';
 
 import '../../domain/usecases/feature_flag_usecase.dart';
 import '../bloc/app_bloc.dart';
@@ -22,7 +21,6 @@ class BlocModule {
         featureFlagService: _getIt<FeatureFlagService>(),
         getFeatureFlagUseCase: _getIt<GetFeatureFlagUseCase>(),
         updateFeatureFlagUseCase: _getIt<UpdateFeatureFlagUseCase>(),
-        logFeatureFlagChangeUseCase: _getIt<LogFeatureFlagChangeUseCase>(),
       ),
     );
   }
