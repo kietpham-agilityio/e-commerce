@@ -319,6 +319,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 ) ||
                                 ApiRelatedProducts.values.contains(
                                   scenario.payload,
+                                ) ||
+                                MockFeatureProductDetails.values.contains(
+                                  scenario.payload,
                                 )) {
                               _bloc.add(
                                 ProductDetailsLoadRequested(
