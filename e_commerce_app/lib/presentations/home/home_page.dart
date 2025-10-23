@@ -70,6 +70,11 @@ class _HomePageState extends State<HomePage> {
                       context.loaderOverlay.show();
                     } else if (state.status == HomeStatus.failure) {
                       context.loaderOverlay.hide();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(state.errorMessage!)),
+                      );
+                    } else {
+                      context.loaderOverlay.hide();
                     }
                   },
                   child: RefreshIndicator(
