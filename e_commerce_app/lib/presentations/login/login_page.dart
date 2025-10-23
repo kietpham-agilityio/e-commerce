@@ -1,5 +1,6 @@
 import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
+import 'package:e_commerce_app/core/bloc/app_bloc.dart';
 import 'package:ec_themes/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,6 +47,11 @@ class _LoginViewState extends State<LoginView> {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state.status == LoginStatus.success) {
+          // Fetch feature flags from API after successful login
+          BlocProvider.of<AppBloc>(
+            context,
+          ).add(const AppFeatureFlagsFetchedFromApi());
+
           // Navigate to home on successful login
           context.pushReplacementNamed(AppPaths.home.name);
         } else if (state.status == LoginStatus.failure) {
@@ -129,10 +135,13 @@ class _EmailInput extends StatelessWidget {
           semanticsLabel: 'Email input field',
           errorMessage: state.email.displayError?.getEmailMessage(),
           onChanged:
-              (email) =>
-                  context.read<LoginBloc>().add(LoginEmailChanged(email)),
+              (email) => BlocProvider.of<LoginBloc>(
+                context,
+              ).add(LoginEmailChanged(email)),
           onValidation:
-              () => context.read<LoginBloc>().add(const LoginEmailUnfocused()),
+              () => BlocProvider.of<LoginBloc>(
+                context,
+              ).add(const LoginEmailUnfocused()),
           textInputAction: TextInputAction.next,
         );
       },
@@ -156,11 +165,13 @@ class _PasswordInput extends StatelessWidget {
           semanticsLabel: 'Password input field',
           errorMessage: state.password.displayError?.getPasswordMessage(),
           onChanged:
-              (password) =>
-                  context.read<LoginBloc>().add(LoginPasswordChanged(password)),
+              (password) => BlocProvider.of<LoginBloc>(
+                context,
+              ).add(LoginPasswordChanged(password)),
           onValidation:
-              () =>
-                  context.read<LoginBloc>().add(const LoginPasswordUnfocused()),
+              () => BlocProvider.of<LoginBloc>(
+                context,
+              ).add(const LoginPasswordUnfocused()),
           textInputAction: TextInputAction.done,
         );
       },
@@ -181,7 +192,9 @@ class _ForgotPasswordButton extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           // TODO: Navigate to forgot password page
-          context.read<LoginBloc>().add(const LoginForgotPasswordPressed());
+          BlocProvider.of<LoginBloc>(
+            context,
+          ).add(const LoginForgotPasswordPressed());
         },
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -218,7 +231,9 @@ class _LoginButton extends StatelessWidget {
           text: 'LOGIN',
           onPressed:
               isValid
-                  ? () => context.read<LoginBloc>().add(const LoginSubmitted())
+                  ? () => BlocProvider.of<LoginBloc>(
+                    context,
+                  ).add(const LoginSubmitted())
                   : null,
           child:
               isLoading
@@ -264,9 +279,9 @@ class _SocialLoginSection extends StatelessWidget {
                   onPressed:
                       isLoading
                           ? null
-                          : () => context.read<LoginBloc>().add(
-                            const LoginWithGooglePressed(),
-                          ),
+                          : () => BlocProvider.of<LoginBloc>(
+                            context,
+                          ).add(const LoginWithGooglePressed()),
                   width: 92,
                   height: 64,
                   borderRadius: 24,
@@ -278,9 +293,9 @@ class _SocialLoginSection extends StatelessWidget {
                   onPressed:
                       isLoading
                           ? null
-                          : () => context.read<LoginBloc>().add(
-                            const LoginWithFacebookPressed(),
-                          ),
+                          : () => BlocProvider.of<LoginBloc>(
+                            context,
+                          ).add(const LoginWithFacebookPressed()),
                   // size: 56,
                   borderRadius: 24,
                   backgroundColor: colorScheme.onPrimary,

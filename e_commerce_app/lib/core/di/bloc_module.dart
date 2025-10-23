@@ -20,6 +20,7 @@ class BlocModule {
     _getIt.registerFactory<AppBloc>(
       () => AppBloc(
         featureFlagService: _getIt<FeatureFlagService>(),
+        getFeatureFlagUseCase: _getIt<GetFeatureFlagUseCase>(),
         updateFeatureFlagUseCase: _getIt<UpdateFeatureFlagUseCase>(),
         logFeatureFlagChangeUseCase: _getIt<LogFeatureFlagChangeUseCase>(),
       ),

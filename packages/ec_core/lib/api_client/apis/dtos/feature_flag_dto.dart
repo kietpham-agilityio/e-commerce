@@ -21,13 +21,28 @@ class FeatureFlagDto {
 
   Map<String, dynamic> toJson() => _$FeatureFlagDtoToJson(this);
 
+  @JsonKey(name: 'enable_shop_page')
   final bool? enableShopPage;
+
+  @JsonKey(name: 'enable_items_page')
   final bool? enableItemsPage;
+
+  @JsonKey(name: 'enable_product_details_page')
   final bool? enableProductDetailsPage;
+
+  @JsonKey(name: 'enable_bag_page')
   final bool? enableBagPage;
+
+  @JsonKey(name: 'enable_favorites_page')
   final bool? enableFavoritesPage;
+
+  @JsonKey(name: 'enable_profile_page')
   final bool? enableProfilePage;
+
+  @JsonKey(name: 'enable_comments_page')
   final bool? enableCommentsPage;
+
+  @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
 }
 
@@ -49,12 +64,25 @@ class UpdateFeatureFlagRequestDto {
 
   Map<String, dynamic> toJson() => _$UpdateFeatureFlagRequestDtoToJson(this);
 
+  @JsonKey(name: 'p_enable_shop_page')
   final bool? enableShopPage;
+
+  @JsonKey(name: 'p_enable_items_page')
   final bool? enableItemsPage;
+
+  @JsonKey(name: 'p_enable_product_details_page')
   final bool? enableProductDetailsPage;
+
+  @JsonKey(name: 'p_enable_bag_page')
   final bool? enableBagPage;
+
+  @JsonKey(name: 'p_enable_favorites_page')
   final bool? enableFavoritesPage;
+
+  @JsonKey(name: 'p_enable_profile_page')
   final bool? enableProfilePage;
+
+  @JsonKey(name: 'p_enable_comments_page')
   final bool? enableCommentsPage;
 }
 

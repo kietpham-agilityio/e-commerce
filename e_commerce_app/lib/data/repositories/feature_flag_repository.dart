@@ -19,7 +19,13 @@ class FeatureFlagRepositoryImpl extends FeatureFlagRepository {
   Future<EcFeatureFlag> getFeatureFlags() async {
     try {
       final response = await _apiClient.featureFlagApi.getFeatureFlags();
-      return _mapDtoToEntity(response.data);
+      // RPC returns a list, take the first item
+      if (response.isNotEmpty) {
+        return _mapDtoToEntity(response.first);
+      } else {
+        // Return default flags if no data
+        return EcFeatureFlag.withEnvironment();
+      }
     } catch (e) {
       throw Failure('Failed to fetch feature flags: ${e.toString()}');
     }
@@ -41,7 +47,13 @@ class FeatureFlagRepositoryImpl extends FeatureFlagRepository {
       final response = await _apiClient.featureFlagApi.updateFeatureFlags(
         request,
       );
-      return _mapDtoToEntity(response.data);
+      // RPC returns a list, take the first item
+      if (response.isNotEmpty) {
+        return _mapDtoToEntity(response.first);
+      } else {
+        // Return the original flags if no response
+        return flags;
+      }
     } catch (e) {
       throw Failure('Failed to update feature flags: ${e.toString()}');
     }

@@ -1,5 +1,4 @@
 import 'package:e_commerce_app/core/bloc/app_bloc.dart';
-import 'package:e_commerce_app/core/bloc/app_state.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_themes/ec_design.dart';
 import 'package:flutter/material.dart';
@@ -58,9 +57,9 @@ class _CommentsView extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.refresh),
                 onPressed:
-                    () => context.read<CommentsBloc>().add(
-                      LoadCommentsRequested(postId: postId),
-                    ),
+                    () => BlocProvider.of<CommentsBloc>(
+                      context,
+                    ).add(LoadCommentsRequested(postId: postId)),
                 tooltip: 'Refresh comments',
               ),
             ],
@@ -87,9 +86,9 @@ class _CommentsView extends StatelessWidget {
                         const SizedBox(height: 12),
                         ElevatedButton(
                           onPressed:
-                              () => context.read<CommentsBloc>().add(
-                                LoadCommentsRequested(postId: postId),
-                              ),
+                              () => BlocProvider.of<CommentsBloc>(
+                                context,
+                              ).add(LoadCommentsRequested(postId: postId)),
                           child: const Text('Try again!'),
                         ),
                       ],
@@ -186,16 +185,16 @@ class _CommentsView extends StatelessWidget {
           floatingActionButton: FabDebugButton(
             onSelectedMockBackend: (scenario) {
               if (ApiComments.values.contains(scenario.payload)) {
-                context.read<CommentsBloc>().add(
-                  LoadCommentsRequested(postId: postId),
-                );
+                BlocProvider.of<CommentsBloc>(
+                  context,
+                ).add(LoadCommentsRequested(postId: postId));
               }
             },
             debugToolsScenarios: [
               DebugToolsItem(
                 name: 'Success Scenario',
                 onTap: () {
-                  context.read<CommentsBloc>().add(
+                  BlocProvider.of<CommentsBloc>(context).add(
                     const DebugScenarioRequested(DebugToolScenarios.success),
                   );
                 },
@@ -203,25 +202,25 @@ class _CommentsView extends StatelessWidget {
               DebugToolsItem(
                 name: 'Empty Scenario',
                 onTap: () {
-                  context.read<CommentsBloc>().add(
-                    const DebugScenarioRequested(DebugToolScenarios.empty),
-                  );
+                  BlocProvider.of<CommentsBloc>(
+                    context,
+                  ).add(const DebugScenarioRequested(DebugToolScenarios.empty));
                 },
               ),
               DebugToolsItem(
                 name: 'Error Scenario',
                 onTap: () {
-                  context.read<CommentsBloc>().add(
-                    const DebugScenarioRequested(DebugToolScenarios.error),
-                  );
+                  BlocProvider.of<CommentsBloc>(
+                    context,
+                  ).add(const DebugScenarioRequested(DebugToolScenarios.error));
                 },
               ),
               DebugToolsItem(
                 name: 'Api Scenario',
                 onTap: () {
-                  context.read<CommentsBloc>().add(
-                    const DebugScenarioRequested(DebugToolScenarios.api),
-                  );
+                  BlocProvider.of<CommentsBloc>(
+                    context,
+                  ).add(const DebugScenarioRequested(DebugToolScenarios.api));
                 },
               ),
             ],

@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'dtos/feature_flag_dto.dart';
-import 'dtos/base_response.dart';
 
 part 'feature_flag_api.g.dart';
 
@@ -14,19 +13,17 @@ abstract class FeatureFlagApi {
   // FEATURE FLAG ENDPOINTS
   // ============================================================================
 
-  /// Get current feature flags for user
-  @GET('/feature-flags')
-  Future<BaseResponseDto<FeatureFlagDto>> getFeatureFlags();
+  /// Get current feature flags for user using RPC with GET
+  @GET('/rest/v1/rpc/get_user_feature_flags')
+  Future<List<FeatureFlagDto>> getFeatureFlags();
 
-  /// Update feature flags for user
-  @POST('/feature-flags')
-  Future<BaseResponseDto<FeatureFlagDto>> updateFeatureFlags(
+  /// Update feature flags for user using RPC
+  @POST('/rest/v1/rpc/update_user_feature_flags')
+  Future<List<FeatureFlagDto>> updateFeatureFlags(
     @Body() UpdateFeatureFlagRequestDto request,
   );
 
-  /// Log feature flag change event
-  @POST('/feature-flags/log')
-  Future<SuccessResponseDto> logFeatureFlagChange(
-    @Body() FeatureFlagLogRequestDto request,
-  );
+  /// Log feature flag change event using RPC
+  @POST('/rest/v1/rpc/log_feature_flag_change')
+  Future<String> logFeatureFlagChange(@Body() FeatureFlagLogRequestDto request);
 }

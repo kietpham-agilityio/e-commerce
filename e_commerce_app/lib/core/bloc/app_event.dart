@@ -1,4 +1,4 @@
-import 'package:ec_core/ec_core.dart';
+part of 'app_bloc.dart';
 
 /// Base class for App events
 abstract class AppEvent {
@@ -28,4 +28,9 @@ class AppFeatureFlagsUpdated extends AppEvent {
 /// Event to refresh feature flags from service
 class AppFeatureFlagsRefreshed extends AppEvent {
   const AppFeatureFlagsRefreshed();
+}
+
+/// Event to fetch feature flags from API after login
+class AppFeatureFlagsFetchedFromApi extends AppEvent {
+  const AppFeatureFlagsFetchedFromApi();
 }

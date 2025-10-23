@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:e_commerce_app/core/bloc/app_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
 import 'package:e_commerce_app/core/utils/price_formatter.dart';
@@ -43,221 +44,258 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
     return BlocProvider(
       create: (context) => _bloc,
-      child: LoaderOverlay(
-        child: BlocListener<ProductDetailsBloc, ProductDetailsState>(
-          listener: (context, state) {
-            if (state.status == ProductDetailsStatus.loading) {
-              context.loaderOverlay.show();
-            }
-            if (state.status == ProductDetailsStatus.failure) {
-              context.loaderOverlay.hide();
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
-            } else {
-              context.loaderOverlay.hide();
-            }
-          },
-          child: Scaffold(
-            appBar: EcAppBar(
-              title: EcHeadlineSmallText(l10n.productDetailsTitle),
-            ),
-            bottomNavigationBar: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: spacing.xl,
-                vertical: spacing.xxxl,
-              ),
-              decoration: BoxDecoration(
-                color: ecTheme.colorScheme.onSecondary,
-                boxShadow: [
-                  EcShadows.customShadow(
-                    context,
-                    offset: Offset(0, -4),
-                    blurRadius: 8,
-                    opacity: 0.1,
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  EcElevatedButton(
-                    text: l10n.productDetailsAddToCartBtn,
-                    onPressed: () {
-                      // TODO: handle add to cart
-                      log('ADD ITEM TO CART');
-                    },
-                  ),
-                  SizedBox(height: spacing.massive),
-                ],
-              ),
-            ),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
-                    builder: (context, state) {
-                      return _ImageCarousel(
-                        images: state.products?.imageUrl ?? [],
-                      );
-                    },
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: spacing.xl),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: Wrap(
-                            alignment: WrapAlignment.spaceBetween,
-                            children: [
-                              Container(),
-                              Container(),
-                              EcIconButton(
-                                icon: EcAssets.heart(),
-                                backgroundColor:
-                                    ecTheme.colorScheme.onSecondary,
-                                showShadow: true,
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: spacing.huge),
-                        SizedBox(
-                          width: double.infinity,
-                          child: Wrap(
-                            alignment: WrapAlignment.spaceBetween,
-                            children: [
-                              BlocBuilder<
-                                ProductDetailsBloc,
-                                ProductDetailsState
-                              >(
-                                builder: (context, state) {
-                                  return EcHeadlineLargeText(
-                                    state.products?.brand ?? '',
-                                    height: EcTypography.tightHeight,
-                                  );
-                                },
-                              ),
-                              BlocBuilder<
-                                ProductDetailsBloc,
-                                ProductDetailsState
-                              >(
-                                builder: (context, state) {
-                                  return EcHeadlineLargeText(
-                                    '\$${state.products?.price ?? 0}',
-                                    height: EcTypography.tightHeight,
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                        BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
-                          builder: (context, state) {
-                            return EcLabelSmallText(
-                              state.products?.name ?? '',
-                              color: ecTheme.colorScheme.surface,
-                              fontWeight: EcTypography.regular,
-                            );
-                          },
-                        ),
-                        SizedBox(height: spacing.sm),
-                        EcRatingStarsView(rating: 5, totalReviews: 10),
-                        SizedBox(height: spacing.xl),
-                        BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
-                          builder: (context, state) {
-                            return EcBodyMediumText(
-                              state.products?.description ?? '',
-                              maxLines: 10,
-                            );
-                          },
-                        ),
-                        SizedBox(height: spacing.xl),
-                        Divider(height: 0, thickness: 0),
-                        ListTile(
-                          title: EcBodyLargeText(l10n.generalShippingInfo),
-                          trailing: EcAssets.arrowRight(),
-                          contentPadding: EdgeInsets.zero,
-                          onTap: () {
-                            // TODO: handle shipping info
-                          },
-                        ),
-                        Divider(height: 0, thickness: 0),
-                        ListTile(
-                          title: EcBodyLargeText(l10n.supportTitle),
-                          trailing: EcAssets.arrowRight(),
-                          contentPadding: EdgeInsets.zero,
-                          onTap: () {
-                            // TODO: handle support
-                          },
-                        ),
-                        Divider(height: 0, thickness: 0),
-                        SizedBox(height: spacing.huge),
-                        SizedBox(
-                          width: double.infinity,
-                          child: Wrap(
-                            alignment: WrapAlignment.spaceBetween,
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: [
-                              EcHeadlineSmallText(
-                                l10n.generalYouCanAlsoLikeThis,
-                                height: EcTypography.tightHeight,
-                              ),
-                              EcLabelSmallText(
-                                l10n.generalTotalItem(12),
-                                fontWeight: EcTypography.regular,
-                                color: ecTheme.colorScheme.surface,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: spacing.huge),
-                  SizedBox(
-                    height: MediaQuery.of(context).textScaler.scale(269),
-                    child: BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
-                      builder: (context, state) {
-                        return ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: state.relatedProducts.length,
-                          padding: EdgeInsets.symmetric(horizontal: spacing.xl),
-                          separatorBuilder:
-                              (BuildContext context, int index) =>
-                                  SizedBox(width: spacing.md),
-                          itemBuilder: (context, index) {
-                            final item = state.relatedProducts[index];
+      child: BlocBuilder<AppBloc, AppState>(
+        builder: (context, appState) {
+          final isProductDetailsEnabled =
+              appState.flags.enableProductDetailsPage ?? false;
 
-                            return EcProductCardInMain(
-                              title: item.name,
-                              brand: item.brand,
-                              imageUrl: item.imageUrl.first,
-                              isSoldOut: item.quantity == 0,
-                              originalPrice: item.price.priceFormatter(),
-                              discountedPrice:
-                                  item.finalPrice?.priceFormatter(),
-                              labelText: item.label,
+          if (!isProductDetailsEnabled) {
+            return Scaffold(
+              appBar: EcAppBar(
+                title: EcHeadlineSmallText(l10n.productDetailsTitle),
+              ),
+              body: const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(24),
+                  child: EcBodyLargeText(
+                    'The Product Details feature is not available for now',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            );
+          }
+
+          return LoaderOverlay(
+            child: BlocListener<ProductDetailsBloc, ProductDetailsState>(
+              listener: (context, state) {
+                if (state.status == ProductDetailsStatus.loading) {
+                  context.loaderOverlay.show();
+                }
+                if (state.status == ProductDetailsStatus.failure) {
+                  context.loaderOverlay.hide();
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+                } else {
+                  context.loaderOverlay.hide();
+                }
+              },
+              child: Scaffold(
+                appBar: EcAppBar(
+                  title: EcHeadlineSmallText(l10n.productDetailsTitle),
+                ),
+                bottomNavigationBar: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: spacing.xl,
+                    vertical: spacing.xxxl,
+                  ),
+                  decoration: BoxDecoration(
+                    color: ecTheme.colorScheme.onSecondary,
+                    boxShadow: [
+                      EcShadows.customShadow(
+                        context,
+                        offset: Offset(0, -4),
+                        blurRadius: 8,
+                        opacity: 0.1,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      EcElevatedButton(
+                        text: l10n.productDetailsAddToCartBtn,
+                        onPressed: () {
+                          // TODO: handle add to cart
+                          log('ADD ITEM TO CART');
+                        },
+                      ),
+                      SizedBox(height: spacing.massive),
+                    ],
+                  ),
+                ),
+                body: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
+                        builder: (context, state) {
+                          return _ImageCarousel(
+                            images: state.products?.imageUrl ?? [],
+                          );
+                        },
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: spacing.xl),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: double.infinity,
+                              child: Wrap(
+                                alignment: WrapAlignment.spaceBetween,
+                                children: [
+                                  Container(),
+                                  Container(),
+                                  EcIconButton(
+                                    icon: EcAssets.heart(),
+                                    backgroundColor:
+                                        ecTheme.colorScheme.onSecondary,
+                                    showShadow: true,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: spacing.huge),
+                            SizedBox(
+                              width: double.infinity,
+                              child: Wrap(
+                                alignment: WrapAlignment.spaceBetween,
+                                children: [
+                                  BlocBuilder<
+                                    ProductDetailsBloc,
+                                    ProductDetailsState
+                                  >(
+                                    builder: (context, state) {
+                                      return EcHeadlineLargeText(
+                                        state.products?.brand ?? '',
+                                        height: EcTypography.tightHeight,
+                                      );
+                                    },
+                                  ),
+                                  BlocBuilder<
+                                    ProductDetailsBloc,
+                                    ProductDetailsState
+                                  >(
+                                    builder: (context, state) {
+                                      return EcHeadlineLargeText(
+                                        '\$${state.products?.price ?? 0}',
+                                        height: EcTypography.tightHeight,
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            BlocBuilder<
+                              ProductDetailsBloc,
+                              ProductDetailsState
+                            >(
+                              builder: (context, state) {
+                                return EcLabelSmallText(
+                                  state.products?.name ?? '',
+                                  color: ecTheme.colorScheme.surface,
+                                  fontWeight: EcTypography.regular,
+                                );
+                              },
+                            ),
+                            SizedBox(height: spacing.sm),
+                            EcRatingStarsView(rating: 5, totalReviews: 10),
+                            SizedBox(height: spacing.xl),
+                            BlocBuilder<
+                              ProductDetailsBloc,
+                              ProductDetailsState
+                            >(
+                              builder: (context, state) {
+                                return EcBodyMediumText(
+                                  state.products?.description ?? '',
+                                  maxLines: 10,
+                                );
+                              },
+                            ),
+                            SizedBox(height: spacing.xl),
+                            Divider(height: 0, thickness: 0),
+                            ListTile(
+                              title: EcBodyLargeText(l10n.generalShippingInfo),
+                              trailing: EcAssets.arrowRight(),
+                              contentPadding: EdgeInsets.zero,
                               onTap: () {
-                                context.pushNamed(
-                                  AppPaths.productDetails.name,
-                                  queryParameters: {"productId": "${item.id}"},
+                                // TODO: handle shipping info
+                              },
+                            ),
+                            Divider(height: 0, thickness: 0),
+                            ListTile(
+                              title: EcBodyLargeText(l10n.supportTitle),
+                              trailing: EcAssets.arrowRight(),
+                              contentPadding: EdgeInsets.zero,
+                              onTap: () {
+                                // TODO: handle support
+                              },
+                            ),
+                            Divider(height: 0, thickness: 0),
+                            SizedBox(height: spacing.huge),
+                            SizedBox(
+                              width: double.infinity,
+                              child: Wrap(
+                                alignment: WrapAlignment.spaceBetween,
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+                                  EcHeadlineSmallText(
+                                    l10n.generalYouCanAlsoLikeThis,
+                                    height: EcTypography.tightHeight,
+                                  ),
+                                  EcLabelSmallText(
+                                    l10n.generalTotalItem(12),
+                                    fontWeight: EcTypography.regular,
+                                    color: ecTheme.colorScheme.surface,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: spacing.huge),
+                      SizedBox(
+                        height: MediaQuery.of(context).textScaler.scale(269),
+                        child: BlocBuilder<
+                          ProductDetailsBloc,
+                          ProductDetailsState
+                        >(
+                          builder: (context, state) {
+                            return ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: state.relatedProducts.length,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: spacing.xl,
+                              ),
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      SizedBox(width: spacing.md),
+                              itemBuilder: (context, index) {
+                                final item = state.relatedProducts[index];
+
+                                return EcProductCardInMain(
+                                  title: item.name,
+                                  brand: item.brand,
+                                  imageUrl: item.imageUrl.first,
+                                  isSoldOut: item.quantity == 0,
+                                  originalPrice: item.price.priceFormatter(),
+                                  discountedPrice:
+                                      item.finalPrice?.priceFormatter(),
+                                  labelText: item.label,
+                                  onTap: () {
+                                    context.pushNamed(
+                                      AppPaths.productDetails.name,
+                                      queryParameters: {
+                                        "productId": "${item.id}",
+                                      },
+                                    );
+                                  },
                                 );
                               },
                             );
                           },
-                        );
-                      },
-                    ),
+                        ),
+                      ),
+                      SizedBox(height: spacing.massive),
+                    ],
                   ),
-                  SizedBox(height: spacing.massive),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

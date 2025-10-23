@@ -5,7 +5,6 @@ import 'package:e_commerce_app/domain/usecases/product_details_usecase.dart';
 import 'package:e_commerce_app/presentations/product_details/bloc/product_details_bloc.dart';
 import 'package:ec_core/api_client/core/api_client.dart';
 import 'package:ec_core/di/di_initializer.dart';
-import 'package:ec_core/services/ec_local_store/ec_local_database.dart';
 import 'package:get_it/get_it.dart';
 
 class ProductDetailsModule {
@@ -16,8 +15,6 @@ class ProductDetailsModule {
     _getIt.registerLazySingleton<ProductDetailsRepository>(
       () => ProductDetailsRepositoryImpl(
         apiClient: DI.get<ApiClient>(instanceName: 'main'),
-        userSessionBox:
-            DI.get<EcLocalDatabase>(instanceName: 'main').userSessionBox,
       ),
     );
 
