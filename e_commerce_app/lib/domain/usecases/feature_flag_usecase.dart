@@ -16,32 +16,6 @@ class UpdateFeatureFlagUseCase {
   }
 }
 
-/// Use case for logging feature flag changes
-class LogFeatureFlagChangeUseCase {
-  const LogFeatureFlagChangeUseCase({
-    required FeatureFlagRepository featureFlagRepository,
-  }) : _featureFlagRepository = featureFlagRepository;
-
-  final FeatureFlagRepository _featureFlagRepository;
-
-  /// Execute feature flag change logging
-  Future<void> call({
-    required String flagName,
-    required bool? oldValue,
-    required bool? newValue,
-    String? userId,
-    String? sessionId,
-  }) async {
-    return await _featureFlagRepository.logFeatureFlagChange(
-      flagName: flagName,
-      oldValue: oldValue,
-      newValue: newValue,
-      userId: userId,
-      sessionId: sessionId,
-    );
-  }
-}
-
 /// Use case for getting feature flags
 class GetFeatureFlagUseCase {
   const GetFeatureFlagUseCase({

@@ -22,8 +22,4 @@ abstract class FeatureFlagApi {
   Future<List<FeatureFlagDto>> updateFeatureFlags(
     @Body() UpdateFeatureFlagRequestDto request,
   );
-
-  /// Log feature flag change event using RPC
-  @POST('/rest/v1/rpc/log_feature_flag_change')
-  Future<String> logFeatureFlagChange(@Body() FeatureFlagLogRequestDto request);
 }

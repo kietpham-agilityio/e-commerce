@@ -7,13 +7,4 @@ abstract class FeatureFlagRepository {
 
   /// Update feature flags for user
   Future<EcFeatureFlag> updateFeatureFlags(EcFeatureFlag flags);
-
-  /// Log feature flag change event
-  Future<void> logFeatureFlagChange({
-    required String flagName,
-    required bool? oldValue,
-    required bool? newValue,
-    String? userId,
-    String? sessionId,
-  });
 }
