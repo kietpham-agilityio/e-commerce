@@ -454,7 +454,8 @@ class MockBackendInterceptor extends Interceptor {
   ) async {
     await Future.delayed(const Duration(milliseconds: 500));
 
-    if (scenario == ApiProductDetails.mockError.toString()) {
+    if (scenario == ApiProductDetails.mockError.toString() ||
+        scenario == MockFeatureProductDetails.mockError.toString()) {
       handler.reject(
         DioException(
           requestOptions: options,
@@ -475,7 +476,8 @@ class MockBackendInterceptor extends Interceptor {
     }
 
     List<Map<String, dynamic>> data;
-    if (scenario == ApiProductDetails.mockSuccess.toString()) {
+    if (scenario == ApiProductDetails.mockSuccess.toString() ||
+        scenario == MockFeatureProductDetails.mockSuccess.toString()) {
       data = [
         {
           "id": 6,
@@ -517,7 +519,8 @@ class MockBackendInterceptor extends Interceptor {
   ) async {
     await Future.delayed(const Duration(milliseconds: 500));
 
-    if (scenario == ApiRelatedProducts.mockError.toString()) {
+    if (scenario == ApiRelatedProducts.mockError.toString() ||
+        scenario == MockFeatureProductDetails.mockError.toString()) {
       handler.reject(
         DioException(
           requestOptions: options,
@@ -538,7 +541,8 @@ class MockBackendInterceptor extends Interceptor {
     }
 
     Map<String, dynamic> data;
-    if (scenario == ApiRelatedProducts.mockSuccess.toString()) {
+    if (scenario == ApiRelatedProducts.mockSuccess.toString() ||
+        scenario == MockFeatureProductDetails.mockSuccess.toString()) {
       data = {
         "data": {
           "related_products": [
@@ -631,6 +635,8 @@ class MockBackendInterceptor extends Interceptor {
   }
 }
 
+// Legacy enums - kept for backward compatibility
+// These are now replaced by MockScenarioType enum
 enum ApiPosts { real, mockSuccess, mockEmpty, mockError }
 
 enum ApiComments { real, mockSuccess, mockEmpty, mockError }
@@ -642,3 +648,5 @@ enum ApiShop { real, mockSuccess, mockError }
 enum ApiProductDetails { real, mockSuccess, mockError }
 
 enum ApiRelatedProducts { real, mockSuccess, mockError }
+
+enum MockFeatureProductDetails { real, mockSuccess, mockError }

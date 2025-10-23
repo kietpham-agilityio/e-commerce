@@ -40,15 +40,18 @@ class ApiModeService {
 
   /// Set scenario for specific API path
   static void setScenarioForApi(
-    String apiPath,
+    List<String> apiPaths,
     ApiMode mode,
     String? scenarioType,
   ) {
     _currentMode = mode;
-    if (scenarioType != null) {
-      _apiScenarios[apiPath] = scenarioType;
-    } else {
-      _apiScenarios.remove(apiPath);
+
+    for (final path in apiPaths) {
+      if (scenarioType != null) {
+        _apiScenarios[path] = scenarioType;
+      } else {
+        _apiScenarios.remove(path);
+      }
     }
   }
 

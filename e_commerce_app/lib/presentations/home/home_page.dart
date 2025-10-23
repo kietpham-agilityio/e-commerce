@@ -11,6 +11,8 @@ import 'package:e_commerce_app/presentations/pages/api_client_example.dart';
 import 'package:e_commerce_app/presentations/pages/example_pages_navigation.dart';
 import 'package:e_commerce_app/presentations/pages/feature_flag_debug_panel.dart';
 import 'package:ec_core/ec_core.dart';
+import 'package:ec_core/mocked_backend/core/enum_migration_helper.dart';
+import 'package:ec_core/mocked_backend/core/mock_scenario_types.dart';
 import 'package:ec_l10n/generated/l10n.dart';
 import 'package:ec_themes/ec_design.dart';
 import 'package:ec_themes/themes/widgets/card/product_card_in_main.dart';
@@ -211,9 +213,18 @@ class _HomePageState extends State<HomePage> {
                   return EnvConfig.isDebugModeEnabled
                       ? FabDebugButton(
                         onSelectedMockBackend: (scenario) {
-                          if (ApiHome.values.contains(scenario.payload)) {
+                          final unifiedScenario =
+                              EnumMigrationHelper.convertToUnifiedEnum(
+                                scenario.payload,
+                              );
+                          if (ScenarioReloadRegistry.shouldReload(
+                            unifiedScenario,
+                          )) {
                             homeBloc.add(const HomeLoadRequested());
                           }
+                          // if (ApiHome.values.contains(scenario.payload)) {
+                          //   homeBloc.add(const HomeLoadRequested());
+                          // }
                         },
                         debugToolsScenarios: [
                           DebugToolsItem(

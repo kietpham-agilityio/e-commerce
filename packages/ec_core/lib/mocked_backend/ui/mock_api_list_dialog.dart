@@ -39,7 +39,7 @@ class MockApiListDialog<T> extends StatelessWidget {
                     final api = apis[index];
                     return ListTile(
                       title: Text(api.name),
-                      subtitle: Text(api.path),
+                      subtitle: Text(api.description),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: () => Navigator.of(context).pop(api),
                     );
