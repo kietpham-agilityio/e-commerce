@@ -84,8 +84,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               listener: (context, state) {
                 if (state.status == ProductDetailsStatus.loading) {
                   context.loaderOverlay.show();
-                }
-                if (state.status == ProductDetailsStatus.failure) {
+                } else if (state.status == ProductDetailsStatus.failure) {
                   context.loaderOverlay.hide();
                   ScaffoldMessenger.of(
                     context,
