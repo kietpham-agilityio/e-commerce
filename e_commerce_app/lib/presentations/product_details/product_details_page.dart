@@ -246,10 +246,23 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     l10n.generalYouCanAlsoLikeThis,
                                     height: EcTypography.tightHeight,
                                   ),
-                                  EcLabelSmallText(
-                                    l10n.generalTotalItem(12),
-                                    fontWeight: EcTypography.regular,
-                                    color: ecTheme.colorScheme.surface,
+                                  BlocBuilder<
+                                    ProductDetailsBloc,
+                                    ProductDetailsState
+                                  >(
+                                    buildWhen:
+                                        (previous, current) =>
+                                            previous.relatedProducts.length !=
+                                            current.relatedProducts.length,
+                                    builder: (context, state) {
+                                      return EcLabelSmallText(
+                                        l10n.generalTotalItem(
+                                          state.relatedProducts.length,
+                                        ),
+                                        fontWeight: EcTypography.regular,
+                                        color: ecTheme.colorScheme.surface,
+                                      );
+                                    },
                                   ),
                                 ],
                               ),
