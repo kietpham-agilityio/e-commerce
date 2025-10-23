@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:ec_core/api_client/apis/dtos/product_details_dto.dart';
 import 'package:ec_core/api_client/apis/dtos/product_details_request_body.dart';
+import 'package:ec_core/api_client/apis/dtos/related_product_response.dart';
+import 'package:ec_core/api_client/apis/dtos/related_products_request_body.dart';
 import 'package:retrofit/retrofit.dart';
 
 import 'dtos/base_response.dart';
@@ -34,10 +36,8 @@ abstract class ProductApi {
   );
 
   /// Get product by ID
-  @GET('/products/{productId}')
-  Future<BaseResponseDto<ProductDto>> getProductById(
-    @Path('productId') int productId,
-  );
+  @GET('/rest/v1/products')
+  Future<List<ProductDto>> getProductById(@Query('id') String productId);
 
   /// Search products
   @POST('/products/search')
@@ -57,11 +57,10 @@ abstract class ProductApi {
   });
 
   /// Get related products
-  @GET('/products/{productId}/related')
-  Future<BaseResponseDto<List<ProductDto>>> getRelatedProducts(
-    @Path('productId') int productId,
-    @Query('limit') int? limit,
-  );
+  @POST('/rest/v1/rpc/get_related_products')
+  Future<BaseResponseDto<RelatedProductResponseDto>> getRelatedProducts({
+    @Body() required RelatedProductsRequestBodyDto body,
+  });
 
   /// Get product reviews
   @GET('/products/{productId}/reviews')

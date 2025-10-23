@@ -12,6 +12,7 @@ class ProductDto with _$ProductDto {
     required int id,
     required String name,
     String? description,
+    @JsonKey(name: 'category_id')
     required int? categoryId, // References categories.id
     String? brand, // text from Supabase
     required double price, // numeric from Supabase

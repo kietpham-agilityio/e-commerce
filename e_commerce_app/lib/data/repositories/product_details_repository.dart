@@ -1,8 +1,8 @@
 import 'package:e_commerce_app/domain/entities/product_entities.dart';
 import 'package:e_commerce_app/domain/repositories/product_details_repository.dart';
-import 'package:ec_core/api_client/apis/dtos/product_details_request_body.dart';
-import 'package:ec_core/api_client/apis/failure.dart';
-import 'package:ec_core/api_client/core/api_client.dart';
+import 'package:ec_core/api_client/apis/dtos/related_product_response.dart';
+import 'package:ec_core/api_client/apis/dtos/related_products_request_body.dart';
+import 'package:ec_core/ec_core.dart';
 
 class ProductDetailsRepositoryImpl extends ProductDetailsRepository {
   ProductDetailsRepositoryImpl({required ApiClient apiClient})
@@ -11,22 +11,34 @@ class ProductDetailsRepositoryImpl extends ProductDetailsRepository {
   final ApiClient _apiClient;
 
   @override
-  Future<EcProductDetails> fetchProductDetails(String id) async {
+  Future<EcProductDetails> fetchProductDetails({
+    required String productId,
+    required String categoryId,
+  }) async {
     try {
-      final response = await _apiClient.productApi.getProductDetails(
-        body: ProductDetailsRequestBodyDto(id: id),
-      );
+      late List<ProductDto> resProduct;
+      late BaseResponseDto<RelatedProductResponseDto> resRelatedProducts;
 
-      final product = response.data.product.toEcProduct();
+      await Future.wait<void>([
+        (() async =>
+            resProduct = await _apiClient.productApi.getProductById(
+              'eq.$productId',
+            ))(),
+        (() async =>
+            resRelatedProducts = await _apiClient.productApi.getRelatedProducts(
+              body: RelatedProductsRequestBodyDto(id: categoryId),
+            ))(),
+      ]);
+
       final relatedProducts =
-          response.data.relatedProduct
+          resRelatedProducts.data.relatedProduct
               .asMap()
               .entries
               .map((entry) => entry.value.toEcProduct())
               .toList();
 
       return EcProductDetails(
-        product: product,
+        product: resProduct.first.toEcProduct(),
         relatedProducts: relatedProducts,
       );
     } catch (e) {

@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/data/mocks/items_mock.dart';
 import 'package:e_commerce_app/domain/entities/product_entities.dart';
 import 'package:e_commerce_app/domain/usecases/product_details_usecase.dart';
 import 'package:equatable/equatable.dart';
@@ -12,6 +13,7 @@ class ProductDetailsBloc
     : _productDetailsUseCase = productDetailsUseCase,
       super(const ProductDetailsState()) {
     on<ProductDetailsLoadRequested>(_onLoadRequested);
+    on<DebugScenarioRequested>(_onDebugScenarioRequested);
   }
 
   final ProductDetailsUseCase _productDetailsUseCase;
@@ -24,7 +26,8 @@ class ProductDetailsBloc
 
     try {
       final response = await _productDetailsUseCase.fetchProductDetails(
-        event.id,
+        productId: event.productId,
+        categoryId: event.categoryId,
       );
 
       emit(
@@ -42,6 +45,38 @@ class ProductDetailsBloc
           errorMessage: message,
         ),
       );
+    }
+  }
+
+  Future<void> _onDebugScenarioRequested(
+    DebugScenarioRequested event,
+    Emitter<ProductDetailsState> emit,
+  ) async {
+    emit(state.copyWith(status: ProductDetailsStatus.loading));
+
+    switch (event.scenario) {
+      case DebugToolScenarios.success:
+        final mockHomeEntities = EcMockedData.generateHomeData();
+
+        emit(
+          state.copyWith(
+            status: ProductDetailsStatus.success,
+            products: mockHomeEntities.newProducts.first,
+            relatedProducts: mockHomeEntities.discountProducts,
+          ),
+        );
+        break;
+      case DebugToolScenarios.error:
+        emit(
+          state.copyWith(
+            status: ProductDetailsStatus.failure,
+            errorMessage: 'Debug scenario: Simulated error occurred',
+          ),
+        );
+        break;
+      default:
+        // Fallback to normal load
+        add(ProductDetailsLoadRequested(productId: '', categoryId: ''));
     }
   }
 }

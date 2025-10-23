@@ -29,8 +29,12 @@ class AppRouter {
         path: AppPaths.productDetails.path,
         builder: (context, state) {
           final productId = state.uri.queryParameters['productId'];
+          final categoryId = state.uri.queryParameters['categoryId'];
 
-          return ProductDetailsPage(productId: productId ?? '');
+          return ProductDetailsPage(
+            productId: productId ?? '',
+            categoryId: categoryId ?? '',
+          );
         },
       ),
       StatefulShellRoute.indexedStack(
