@@ -6,7 +6,6 @@ class MockApi<T> {
     required this.name,
     required this.path,
     required this.scenarios,
-    this.description = '',
   });
 
   /// Human-readable API name, e.g., "Posts" or "Get Items".
@@ -17,6 +16,4 @@ class MockApi<T> {
 
   /// Available scenarios for this API.
   final List<MockScenario<T>> scenarios;
-
-  final String description;
 }

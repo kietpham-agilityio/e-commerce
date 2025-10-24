@@ -14,9 +14,8 @@ class MockApiService {
 
   static final List<MockApi<dynamic>> _apis = [
     const MockApi<ApiPosts>(
-      name: 'Posts',
+      name: 'Posts Feature',
       path: ['/posts'],
-      description: 'Only Posts Api',
       scenarios: [
         MockScenario<ApiPosts>(
           name: 'Real API',
@@ -45,9 +44,8 @@ class MockApiService {
       ],
     ),
     const MockApi<ApiComments>(
-      name: 'Comments',
+      name: 'Comments Feature',
       path: ['/comments'],
-      description: 'Only Comments Api',
       scenarios: [
         MockScenario<ApiComments>(
           name: 'Real API',
@@ -76,9 +74,12 @@ class MockApiService {
       ],
     ),
     const MockApi<ApiHome>(
-      name: 'Home',
-      path: ['/rest/v1/rpc/get_home_products'],
-      description: 'Only Home Api',
+      name: 'Home Feature',
+      path: [
+        '/rest/v1/rpc/get_home_products',
+        '/rest/v1/products',
+        '/rest/v1/rpc/get_related_products',
+      ],
       scenarios: [
         MockScenario<ApiHome>(
           name: 'Real API',
@@ -101,9 +102,8 @@ class MockApiService {
       ],
     ),
     const MockApi<ApiShop>(
-      name: 'Shop',
+      name: 'Shop Feature',
       path: ['/rest/v1/categories'],
-      description: 'Only Shop Api',
       scenarios: [
         MockScenario<ApiShop>(
           name: 'Real API',
@@ -125,60 +125,9 @@ class MockApiService {
         ),
       ],
     ),
-    const MockApi<ApiProductDetails>(
-      name: 'Products Details',
-      path: ['/rest/v1/products'],
-      description: 'Only Product Details Api',
-      scenarios: [
-        MockScenario<ApiProductDetails>(
-          name: 'Real API',
-          description: 'Use real API endpoint',
-          payload: ApiProductDetails.real,
-          apiMode: ApiMode.real,
-        ),
-        MockScenario<ApiProductDetails>(
-          name: 'Mock Success',
-          description: 'Mock successful response with data',
-          payload: ApiProductDetails.mockSuccess,
-          apiMode: ApiMode.mock,
-        ),
-        MockScenario<ApiProductDetails>(
-          name: 'Mock Error',
-          description: 'Mock error response',
-          payload: ApiProductDetails.mockError,
-          apiMode: ApiMode.mock,
-        ),
-      ],
-    ),
-    const MockApi<ApiRelatedProducts>(
-      name: 'Related Products',
-      path: ['/rest/v1/rpc/get_related_products'],
-      description: 'Only Related Products Api',
-      scenarios: [
-        MockScenario<ApiRelatedProducts>(
-          name: 'Real API',
-          description: 'Use real API endpoint',
-          payload: ApiRelatedProducts.real,
-          apiMode: ApiMode.real,
-        ),
-        MockScenario<ApiRelatedProducts>(
-          name: 'Mock Success',
-          description: 'Mock successful response with data',
-          payload: ApiRelatedProducts.mockSuccess,
-          apiMode: ApiMode.mock,
-        ),
-        MockScenario<ApiRelatedProducts>(
-          name: 'Mock Error',
-          description: 'Mock error response',
-          payload: ApiRelatedProducts.mockError,
-          apiMode: ApiMode.mock,
-        ),
-      ],
-    ),
     const MockApi<MockFeatureProductDetails>(
-      name: 'Related Product Details feature',
+      name: 'Product Details feature',
       path: ['/rest/v1/products', '/rest/v1/rpc/get_related_products'],
-      description: 'All APIs related to the product details feature',
       scenarios: [
         MockScenario<MockFeatureProductDetails>(
           name: 'Real API',

@@ -404,35 +404,40 @@ class MockBackendInterceptor extends Interceptor {
       data = [
         {
           "id": 1,
-          "name": "Category 1",
+          "name": "Category mocked backend success 1",
           "description": "Fashion dresses for women",
           "parent_id": null,
         },
         {
           "id": 2,
-          "name": "Category 2",
+          "name": "Category mocked backend success 2",
           "description": "Footwear for all genders",
           "parent_id": null,
         },
         {
           "id": 3,
-          "name": "Category 3",
+          "name": "Category mocked backend success  3",
           "description": "Handbags and backpacks",
           "parent_id": null,
         },
         {
           "id": 4,
-          "name": "Category 4",
+          "name": "Category mocked backend success  4",
           "description": "Jewelry, belts, hats",
           "parent_id": null,
         },
         {
           "id": 5,
-          "name": "Category 5",
+          "name": "Category mocked backend success  5",
           "description": "Coats and jackets",
           "parent_id": null,
         },
-        {"id": 6, "name": "Category 6", "description": null, "parent_id": null},
+        {
+          "id": 6,
+          "name": "Category mocked backend success  6",
+          "description": null,
+          "parent_id": null,
+        },
       ];
     } else {
       // Real API call
@@ -455,7 +460,8 @@ class MockBackendInterceptor extends Interceptor {
     await Future.delayed(const Duration(milliseconds: 500));
 
     if (scenario == ApiProductDetails.mockError.toString() ||
-        scenario == MockFeatureProductDetails.mockError.toString()) {
+        scenario == MockFeatureProductDetails.mockError.toString() ||
+        scenario == ApiHome.mockError.toString()) {
       handler.reject(
         DioException(
           requestOptions: options,
@@ -477,7 +483,8 @@ class MockBackendInterceptor extends Interceptor {
 
     List<Map<String, dynamic>> data;
     if (scenario == ApiProductDetails.mockSuccess.toString() ||
-        scenario == MockFeatureProductDetails.mockSuccess.toString()) {
+        scenario == MockFeatureProductDetails.mockSuccess.toString() ||
+        scenario == ApiHome.mockSuccess.toString()) {
       data = [
         {
           "id": 6,
@@ -519,8 +526,8 @@ class MockBackendInterceptor extends Interceptor {
   ) async {
     await Future.delayed(const Duration(milliseconds: 500));
 
-    if (scenario == ApiRelatedProducts.mockError.toString() ||
-        scenario == MockFeatureProductDetails.mockError.toString()) {
+    if (scenario == MockFeatureProductDetails.mockError.toString() ||
+        scenario == ApiHome.mockError.toString()) {
       handler.reject(
         DioException(
           requestOptions: options,
@@ -541,8 +548,8 @@ class MockBackendInterceptor extends Interceptor {
     }
 
     Map<String, dynamic> data;
-    if (scenario == ApiRelatedProducts.mockSuccess.toString() ||
-        scenario == MockFeatureProductDetails.mockSuccess.toString()) {
+    if (scenario == MockFeatureProductDetails.mockSuccess.toString() ||
+        scenario == ApiHome.mockSuccess.toString()) {
       data = {
         "data": {
           "related_products": [
