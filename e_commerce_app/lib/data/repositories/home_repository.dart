@@ -1,6 +1,7 @@
 import 'package:e_commerce_app/domain/entities/home_entities.dart';
 import 'package:e_commerce_app/domain/entities/product_entities.dart';
 import 'package:e_commerce_app/domain/repositories/home_repository.dart';
+import 'package:ec_core/api_client/apis/dtos/product_dto.dart';
 import 'package:ec_core/api_client/apis/failure.dart';
 import 'package:ec_core/api_client/core/api_client.dart';
 import 'package:ec_core/api_client/core/fetch_background_utils.dart';
@@ -49,7 +50,22 @@ class HomeRepositoryImpl extends HomeRepository {
   }
 
   /// Fetches shop categories in the background using FetchBackgroundUtils
-  void _fetchShopCategoriesInBackground() {
+  void _fetchShopCategoriesInBackground() async {
+    // First check if we already have cached data
+    try {
+      final cachedData =
+          await ApiCacheHelper.getCachedListResponse<CategoryDto>(
+            'shop_categories',
+            CategoryDto.fromJson,
+            method: 'GET',
+          );
+
+      if (cachedData != null && cachedData.isNotEmpty) {
+        return; // Don't fetch again if we have cached data
+      }
+    } catch (e) {}
+
+    // Only fetch if no cached data exists
     FetchBackgroundUtils.fetchBackground(
           apiCall: () => _apiClient.productApi.getCategories(),
           errorContext: 'fetching shop categories',
@@ -82,16 +98,12 @@ class HomeRepositoryImpl extends HomeRepository {
   /// Get cached shop categories as fallback
   Future<void> _getCachedShopCategories() async {
     try {
-      final cachedData = await ApiCacheHelper.getCachedResponse<List<dynamic>>(
-        'shop_categories',
-        (json) {
-          if (json.containsKey('data') && json['data'] is List) {
-            return List<dynamic>.from(json['data']);
-          }
-          return <dynamic>[];
-        },
-        method: 'GET',
-      );
+      final cachedData =
+          await ApiCacheHelper.getCachedListResponse<CategoryDto>(
+            'shop_categories',
+            CategoryDto.fromJson,
+            method: 'GET',
+          );
 
       if (cachedData != null) {
         print(
