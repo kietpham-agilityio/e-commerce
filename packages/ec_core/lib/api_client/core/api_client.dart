@@ -15,6 +15,9 @@ import '../apis/shipping_address_api.dart';
 import '../apis/user_api.dart';
 import '../apis/wishlist_api.dart';
 
+// Export the fetch background utility
+export 'fetch_background_utils.dart';
+
 /// Basic HTTP API client using Retrofit services
 class ApiClient {
   ApiClient(this.options, {Dio? dio, this.interceptors, Talker? talker}) {
