@@ -102,7 +102,23 @@ class _ShopPageState extends State<ShopPage> {
                       ),
                     ),
                     BlocBuilder<ShopBloc, ShopState>(
+                      buildWhen:
+                          (previous, current) =>
+                              previous.status != current.status ||
+                              previous.categories != current.categories,
                       builder: (context, state) {
+                        if (state.categories.isEmpty &&
+                            state.status == ShopStatus.failure) {
+                          return SliverToBoxAdapter(
+                            child: Center(
+                              child: EcTitleMediumText(
+                                'No categories found',
+                                textAlign: TextAlign.center,
+                                color: ecTheme.colorScheme.surface,
+                              ),
+                            ),
+                          );
+                        }
                         return SliverList.separated(
                           itemCount: state.categories.length,
                           separatorBuilder: (context, index) => Divider(),
@@ -128,7 +144,9 @@ class _ShopPageState extends State<ShopPage> {
                         ? FabDebugButton(
                           onSelectedMockBackend: (scenario) {
                             if (ApiShop.values.contains(scenario.payload)) {
-                              shopBloc.add(ShopFetchCategories());
+                              shopBloc.add(
+                                ShopFetchCategories(isRefetched: true),
+                              );
                             }
                           },
                           debugToolsScenarios: [

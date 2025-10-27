@@ -7,7 +7,9 @@ class ShopUseCase {
 
   final ShopRepository _shopRepository;
 
-  Future<List<EcCategoryEntity>> fetchShopCategories() async {
-    return await _shopRepository.fetchShopCategories();
+  Future<List<EcCategoryEntity>> fetchShopCategories({
+    bool isRefetched = false,
+  }) async {
+    return await _shopRepository.fetchShopCategories(isRefetched: isRefetched);
   }
 }

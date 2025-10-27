@@ -13,27 +13,35 @@ class ShopRepositoryImpl extends ShopRepository {
   final ApiClient _apiClient;
 
   @override
-  Future<List<EcCategoryEntity>> fetchShopCategories() async {
-    // First check if we already have cached data
-    try {
-      final cachedData =
-          await ApiCacheHelper.getCachedListResponse<CategoryDto>(
-            'shop_categories',
-            CategoryDto.fromJson,
-            method: 'GET',
-          );
+  Future<List<EcCategoryEntity>> fetchShopCategories({
+    bool isRefetched = false,
+  }) async {
+    if (!isRefetched) {
+      // First check if we already have cached data
+      try {
+        final cachedData =
+            await ApiCacheHelper.getCachedListResponse<CategoryDto>(
+              'shop_categories',
+              CategoryDto.fromJson,
+              method: 'GET',
+            );
 
-      if (cachedData != null && cachedData.isNotEmpty) {
-        log('✅ Using cached shop categories: ${cachedData.length} categories');
-        // Convert cached CategoryDto to domain entities
-        return cachedData
-            .map((categoryDto) => categoryDto.toEcCategoryEntity())
-            .toList();
-      } else {
-        log('⚠️ Cache returned: ${cachedData == null ? "null" : "empty list"}');
+        if (cachedData != null && cachedData.isNotEmpty) {
+          log(
+            '✅ Using cached shop categories: ${cachedData.length} categories',
+          );
+          // Convert cached CategoryDto to domain entities
+          return cachedData
+              .map((categoryDto) => categoryDto.toEcCategoryEntity())
+              .toList();
+        } else {
+          log(
+            '⚠️ Cache returned: ${cachedData == null ? "null" : "empty list"}',
+          );
+        }
+      } catch (e) {
+        log('❌ Error reading cache: $e');
       }
-    } catch (e) {
-      log('❌ Error reading cache: $e');
     }
 
     // Only fetch from API if no cached data exists
