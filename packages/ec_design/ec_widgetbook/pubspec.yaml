@@ -1,6 +1,6 @@
 name: ec_widgetbook
 description: "Widgetbook"
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -9,7 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
   ec_themes:
     path: ../ec_themes
 
