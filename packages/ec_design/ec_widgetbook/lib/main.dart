@@ -1,3 +1,4 @@
+import 'package:ec_l10n/ec_l10n.dart';
 import 'package:ec_themes/ec_design.dart';
 import 'package:ec_widgetbook/widget/widget.dart';
 import 'package:flutter/material.dart';
@@ -18,12 +19,17 @@ class WidgetbookApp extends StatelessWidget {
         InspectorAddon(),
         GridAddon(100),
         AlignmentAddon(),
-        ZoomAddon(),
+        // ZoomAddon(),
         MaterialThemeAddon(
           themes: [
             WidgetbookTheme(name: 'Light', data: EcDesignTheme.lightTheme),
             WidgetbookTheme(name: 'Dark', data: EcDesignTheme.darkTheme),
           ],
+        ),
+        LocalizationAddon(
+          locales: AppLocale.supportedLocales,
+          localizationsDelegates: AppLocale.localizationsDelegates,
+          initialLocale: AppLocale.supportedLocales.last,
         ),
       ],
       directories: [
@@ -41,7 +47,6 @@ class WidgetbookApp extends StatelessWidget {
             checkboxWidgetBooks(),
             iconsWidgetBooks(),
             dialogWidgetBooks(),
-            snackbarWidgetBooks(),
             listTileWidgetBooks(),
             radioWidgetBooks(),
             switchWidgetBooks(),

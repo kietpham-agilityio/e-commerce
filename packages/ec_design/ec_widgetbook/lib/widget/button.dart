@@ -22,6 +22,25 @@ WidgetbookComponent buttonWidgetBooks() {
             label: 'With Icon',
             initialValue: false,
           );
+          final iconKnobs = context.knobs.object.dropdown(
+            label: 'icon',
+            options: [
+              EcAssets.arrowLeft(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+              EcAssets.arrowRight(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+              EcAssets.bag(color: Theme.of(context).colorScheme.onPrimary),
+              EcAssets.close(color: Theme.of(context).colorScheme.onPrimary),
+              EcAssets.filter(color: Theme.of(context).colorScheme.onPrimary),
+              EcAssets.heart(color: Theme.of(context).colorScheme.onPrimary),
+              EcAssets.heartFilled(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+              EcAssets.home(color: Theme.of(context).colorScheme.onPrimary),
+            ],
+          );
 
           return ECUiWidgetbook(
             backgroundColor: Theme.of(context).colorScheme.surfaceDim,
@@ -42,14 +61,7 @@ EcElevatedButton(
                   Center(
                     child: EcElevatedButton(
                       text: text,
-                      icon:
-                          withIcon
-                              ? Icon(
-                                Icons.add,
-                                size: 20,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              )
-                              : null,
+                      icon: withIcon ? iconKnobs : null,
                       onPressed: enabled ? () {} : null,
                     ),
                   ),
@@ -74,11 +86,7 @@ EcElevatedButton(
                   Center(
                     child: EcElevatedButton(
                       text: 'Add to Cart',
-                      icon: Icon(
-                        Icons.shopping_cart,
-                        size: 20,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
+                      icon: iconKnobs,
                       onPressed: () {},
                     ),
                   ),
@@ -107,21 +115,13 @@ EcElevatedButton(
                     children: [
                       EcElevatedButton(
                         text: 'Save',
-                        icon: Icon(
-                          Icons.save,
-                          size: 20,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
+                        icon: iconKnobs,
                         onPressed: () {},
                       ),
                       EcElevatedButton(text: 'Submit', onPressed: () {}),
                       EcElevatedButton(
                         text: 'Delete',
-                        icon: Icon(
-                          Icons.delete,
-                          size: 20,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
+                        icon: iconKnobs,
                         onPressed: () {},
                       ),
                     ],
@@ -147,6 +147,25 @@ EcElevatedButton(
             label: 'With Icon',
             initialValue: false,
           );
+          final iconKnobs = context.knobs.object.dropdown(
+            label: 'icon',
+            options: [
+              EcAssets.arrowLeft(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+              EcAssets.arrowRight(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+              EcAssets.bag(color: Theme.of(context).colorScheme.secondary),
+              EcAssets.close(color: Theme.of(context).colorScheme.secondary),
+              EcAssets.filter(color: Theme.of(context).colorScheme.secondary),
+              EcAssets.heart(color: Theme.of(context).colorScheme.secondary),
+              EcAssets.heartFilled(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+              EcAssets.home(color: Theme.of(context).colorScheme.secondary),
+            ],
+          );
 
           return ECUiWidgetbook(
             backgroundColor: Theme.of(context).colorScheme.surfaceDim,
@@ -167,14 +186,7 @@ EcOutlinedButton(
                   Center(
                     child: EcOutlinedButton(
                       text: text,
-                      icon:
-                          withIcon
-                              ? Icon(
-                                Icons.add,
-                                size: 20,
-                                color: Theme.of(context).colorScheme.primary,
-                              )
-                              : null,
+                      icon: withIcon ? iconKnobs : null,
                       onPressed: enabled ? () {} : null,
                     ),
                   ),
@@ -199,11 +211,7 @@ EcOutlinedButton(
                   Center(
                     child: EcOutlinedButton(
                       text: 'Add to Wishlist',
-                      icon: Icon(
-                        Icons.favorite_border,
-                        size: 20,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                      icon: iconKnobs,
                       onPressed: () {},
                     ),
                   ),
@@ -233,20 +241,12 @@ EcOutlinedButton(
                       EcOutlinedButton(text: 'Cancel', onPressed: () {}),
                       EcOutlinedButton(
                         text: 'Filter',
-                        icon: Icon(
-                          Icons.filter_list,
-                          size: 20,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
+                        icon: iconKnobs,
                         onPressed: () {},
                       ),
                       EcOutlinedButton(
                         text: 'Share',
-                        icon: Icon(
-                          Icons.share,
-                          size: 20,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
+                        icon: iconKnobs,
                         onPressed: () {},
                       ),
                     ],
@@ -272,6 +272,21 @@ EcOutlinedButton(
             label: 'With Icon',
             initialValue: false,
           );
+          final iconKnobs = context.knobs.object.dropdown(
+            label: 'icon',
+            options: [
+              EcAssets.arrowLeft(color: Theme.of(context).colorScheme.primary),
+              EcAssets.arrowRight(color: Theme.of(context).colorScheme.primary),
+              EcAssets.bag(color: Theme.of(context).colorScheme.primary),
+              EcAssets.close(color: Theme.of(context).colorScheme.primary),
+              EcAssets.filter(color: Theme.of(context).colorScheme.primary),
+              EcAssets.heart(color: Theme.of(context).colorScheme.primary),
+              EcAssets.heartFilled(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              EcAssets.home(color: Theme.of(context).colorScheme.primary),
+            ],
+          );
 
           return ECUiWidgetbook(
             backgroundColor: Theme.of(context).colorScheme.surfaceDim,
@@ -292,14 +307,7 @@ EcTextButton(
                   Center(
                     child: EcTextButton(
                       text: text,
-                      icon:
-                          withIcon
-                              ? Icon(
-                                Icons.add,
-                                size: 20,
-                                color: Theme.of(context).colorScheme.primary,
-                              )
-                              : null,
+                      icon: withIcon ? iconKnobs : null,
                       onPressed: enabled ? () {} : null,
                     ),
                   ),
@@ -321,11 +329,7 @@ EcTextButton(
                   Center(
                     child: EcTextButton(
                       text: 'See All',
-                      icon: Icon(
-                        Icons.arrow_forward,
-                        size: 20,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                      icon: iconKnobs,
                       onPressed: () {},
                     ),
                   ),
@@ -356,15 +360,52 @@ EcTextButton(
                       EcTextButton(text: 'Forgot Password?', onPressed: () {}),
                       EcTextButton(
                         text: 'Edit',
-                        icon: Icon(
-                          Icons.edit,
-                          size: 20,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
+                        icon: iconKnobs,
                         onPressed: () {},
                       ),
                     ],
                   ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+      WidgetbookUseCase(
+        name: 'Icon Button',
+        builder: (context) {
+          // Create appropriate knobs for the current widget
+          final iconKnobs = context.knobs.object.dropdown(
+            label: 'icon',
+            options: [
+              EcAssets.arrowLeft(color: Colors.white),
+              EcAssets.arrowRight(color: Colors.white),
+              EcAssets.bag(color: Colors.white),
+              EcAssets.close(color: Colors.white),
+              EcAssets.filter(color: Colors.white),
+              EcAssets.heart(color: Colors.white),
+              EcAssets.heartFilled(color: Colors.white),
+              EcAssets.home(color: Colors.white),
+            ],
+          );
+
+          return ECUiWidgetbook(
+            copyCode: '''
+            EcIconButton(icon: EcAssets.arrowLeft(), onPressed: () {}),
+            ''',
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  EcTitleMediumText('Enable'),
+                  SizedBox(height: 2),
+                  EcIconButton(icon: iconKnobs, onPressed: () {}),
+
+                  SizedBox(height: 20),
+
+                  EcTitleMediumText('Disable'),
+                  SizedBox(height: 2),
+                  EcIconButton(icon: iconKnobs, enabled: false),
                 ],
               ),
             ),
