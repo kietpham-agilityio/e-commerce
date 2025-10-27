@@ -9,6 +9,25 @@ plugins {
 }
 
 android {
+    flavorDimensions += "env"
+
+    productFlavors {
+        create("admin") {
+            dimension = "env"
+            // uncomment the following line if you want to add a suffix to the applicationId
+            applicationIdSuffix = ".admin"
+            versionNameSuffix = "-admin"
+            resValue("string", "app_name", "E Commerce (Admin)")
+        }
+        create("user") {
+            dimension = "env"
+            // uncomment the following line if you want to add a suffix to the applicationId
+            applicationIdSuffix = ".user"
+            versionNameSuffix = "-user"
+            resValue("string", "app_name", "E Commerce (User)")
+        }
+    }
+
     namespace = "com.example.e_commerce_app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion

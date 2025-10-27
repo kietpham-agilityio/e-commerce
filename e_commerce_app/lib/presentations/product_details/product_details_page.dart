@@ -301,7 +301,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                   labelText: item.label,
                                   onTap: () {
                                     context.pushNamed(
-                                      AppPaths.productDetails.name,
+                                      UserAppPaths.productDetails.name,
                                       queryParameters: {
                                         "productId": "${item.id}",
                                       },
@@ -326,15 +326,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     return EnvConfig.isDebugModeEnabled
                         ? FabDebugButton(
                           onSelectedMockBackend: (scenario) {
-                            if (ApiProductDetails.values.contains(
-                                  scenario.payload,
-                                ) ||
-                                ApiRelatedProducts.values.contains(
-                                  scenario.payload,
-                                ) ||
-                                MockFeatureProductDetails.values.contains(
-                                  scenario.payload,
-                                )) {
+                            if (MockFeatureProductDetails.values.contains(
+                              scenario.payload,
+                            )) {
                               _bloc.add(
                                 ProductDetailsLoadRequested(
                                   productId: widget.productId,

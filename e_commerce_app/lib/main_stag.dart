@@ -72,16 +72,31 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final flavor = EcFlavor.current;
 
+    final routerConfig = switch (flavor.isAdmin) {
+      true => AppRouter.adminRouter,
+      false => AppRouter.router,
+    };
+
+    final theme = switch (flavor.isAdmin) {
+      true => EcDesignTheme.adminLightTheme,
+      false => EcDesignTheme.lightTheme,
+    };
+
+    final darkTheme = switch (flavor.isAdmin) {
+      true => EcDesignTheme.adminDarkTheme,
+      false => EcDesignTheme.darkTheme,
+    };
+
     return BlocProvider(
       create: (context) => BlocModule.appBloc,
       child: MaterialApp.router(
         title: 'E-Commerce Staging - ${flavor.displayName}',
-        theme: EcDesignTheme.lightTheme,
-        darkTheme: EcDesignTheme.darkTheme,
+        theme: theme,
+        darkTheme: darkTheme,
         themeMode: ThemeMode.system,
         supportedLocales: AppLocale.supportedLocales,
         localizationsDelegates: AppLocale.localizationsDelegates,
-        routerConfig: AppRouter.router,
+        routerConfig: routerConfig,
       ),
     );
   }
