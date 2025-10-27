@@ -101,17 +101,13 @@ class _EcSwitchState extends State<EcSwitch>
                   shape: BoxShape.circle,
                   color:
                       widget.value
-                          ? Theme.of(
-                            context,
-                          ).colorScheme.surfaceContainerHighest
+                          ? Theme.of(context).colorScheme.tertiaryContainer
                           : Theme.of(context).colorScheme.onSecondary,
                   boxShadow: [
                     BoxShadow(
                       color:
                           widget.value
-                              ? Theme.of(
-                                context,
-                              ).colorScheme.surfaceContainerHighest
+                              ? Theme.of(context).colorScheme.tertiaryContainer
                               : Colors.transparent,
                       blurRadius: 8,
                     ),

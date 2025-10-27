@@ -9,7 +9,6 @@ export 'icon.dart';
 export 'list_tile.dart';
 export 'popup_menu.dart';
 export 'progress_indicator.dart';
-export 'radio.dart';
 export 'slider.dart';
 export 'snackbar.dart';
 export 'switch.dart';

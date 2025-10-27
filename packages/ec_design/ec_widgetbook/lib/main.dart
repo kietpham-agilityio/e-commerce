@@ -43,7 +43,6 @@ class WidgetbookApp extends StatelessWidget {
             dialogWidgetBooks(),
             snackbarWidgetBooks(),
             listTileWidgetBooks(),
-            radioWidgetBooks(),
             switchWidgetBooks(),
             sliderWidgetBooks(),
             progressIndicatorWidgetBooks(),
