@@ -10,6 +10,7 @@ export 'label.dart';
 export 'rating_star.dart';
 export 'slide_range_filter.dart';
 export 'sliver_appbar.dart';
+export 'switch.dart';
 export 'tab_bar.dart';
 export 'tag.dart';
 export 'text.dart';
