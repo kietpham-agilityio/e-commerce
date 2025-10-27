@@ -1,6 +1,6 @@
+import 'package:e_commerce_app/core/bloc/app_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
-import 'package:e_commerce_app/core/bloc/app_bloc.dart';
 import 'package:ec_themes/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,7 +53,7 @@ class _LoginViewState extends State<LoginView> {
           ).add(const AppFeatureFlagsFetchedFromApi());
 
           // Navigate to home on successful login
-          context.pushReplacementNamed(AppPaths.home.name);
+          context.pushReplacementNamed(UserAppPaths.home.name);
         } else if (state.status == LoginStatus.failure) {
           // Show error message
           if (state.errorMessage != null) {

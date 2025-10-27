@@ -149,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                                           labelText: '-${item.label}',
                                           onTap: () {
                                             context.pushNamed(
-                                              AppPaths.productDetails.name,
+                                              UserAppPaths.productDetails.name,
                                               queryParameters: {
                                                 "productId": "${item.id}",
                                                 "categoryId":
@@ -208,7 +208,7 @@ class _HomePageState extends State<HomePage> {
                                           labelText: item.label,
                                           onTap: () {
                                             context.pushNamed(
-                                              AppPaths.productDetails.name,
+                                              UserAppPaths.productDetails.name,
                                               queryParameters: {
                                                 "productId": "${item.id}",
                                                 "categoryId":

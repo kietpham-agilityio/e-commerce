@@ -233,6 +233,7 @@ class EcDesignTheme {
       useMaterial3: true,
       brightness: Brightness.light,
       fontFamily: EcTypography.fontFamily,
+      scaffoldBackgroundColor: EcColors.light(ECThemeType.user).surfaceDim,
 
       // Color scheme
       colorScheme: EcColors.light(ECThemeType.admin),

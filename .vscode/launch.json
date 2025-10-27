@@ -5,82 +5,160 @@
 
   "version": "0.2.0",
   "configurations": [
+    // MARK: Admin Dev
     {
-      "name": "e-commerce (user flavor)",
-      "cwd": "e_commerce_app",
+      "name": "Run Admin Dev (Debug)",
       "request": "launch",
       "type": "dart",
-      "args": ["--dart-define=FLAVOR=user"],
-      "flutterMode": "debug"
-    },
-    {
-      "name": "e-commerce (admin flavor)",
       "cwd": "e_commerce_app",
-      "request": "launch",
-      "type": "dart",
-      "args": ["--dart-define=FLAVOR=admin"],
-      "flutterMode": "debug"
-    },
-    {
-      "name": "e-commerce (dev environment - user)",
-      "cwd": "e_commerce_app",
-      "request": "launch",
-      "type": "dart",
       "program": "lib/main_dev.dart",
-      "args": ["--dart-define=FLAVOR=user"],
-      "flutterMode": "debug"
+      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"]
     },
     {
-      "name": "e-commerce (dev environment - admin)",
-      "cwd": "e_commerce_app",
+      "name": "Run Admin Dev (Profile)",
       "request": "launch",
       "type": "dart",
+      "flutterMode": "profile",
       "program": "lib/main_dev.dart",
-      "args": ["--dart-define=FLAVOR=admin"],
-      "flutterMode": "debug"
+      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"]
     },
     {
-      "name": "e-commerce (staging environment - user)",
-      "cwd": "e_commerce_app",
+      "name": "Run Admin Dev (Release)",
       "request": "launch",
       "type": "dart",
+      "flutterMode": "release",
+      "program": "lib/main_dev.dart",
+      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"]
+    },
+
+    // MARK: User Dev
+    {
+      "name": "Run User Dev (Debug)",
+      "request": "launch",
+      "type": "dart",
+      "cwd": "e_commerce_app",
+      "program": "lib/main_dev.dart",
+      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"]
+    },
+    {
+      "name": "Run User Dev (Profile)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "program": "lib/main_dev.dart",
+      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"]
+    },
+    {
+      "name": "Run User Dev (Release)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "program": "lib/main_dev.dart",
+      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"]
+    },
+
+    // MARK: Admin Stag
+    {
+      "name": "Run Admin Stag (Debug)",
+      "request": "launch",
+      "type": "dart",
+      "cwd": "e_commerce_app",
       "program": "lib/main_stag.dart",
-      "args": ["--dart-define=FLAVOR=user"],
-      "flutterMode": "debug"
+      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"]
     },
     {
-      "name": "e-commerce (staging environment - admin)",
-      "cwd": "e_commerce_app",
+      "name": "Run Admin Stag (Profile)",
       "request": "launch",
       "type": "dart",
+      "flutterMode": "profile",
       "program": "lib/main_stag.dart",
-      "args": ["--dart-define=FLAVOR=admin"],
-      "flutterMode": "debug"
+      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"]
     },
     {
-      "name": "e-commerce (production environment - user)",
+      "name": "Run Admin Stag (Release)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "program": "lib/main_stag.dart",
+      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"]
+    },
+
+    // MARK: User Stag
+    {
+      "name": "Run User Stag (Debug)",
+      "request": "launch",
+      "type": "dart",
       "cwd": "e_commerce_app",
-      "request": "launch",
-      "type": "dart",
-      "program": "lib/main_prod.dart",
-      "args": ["--dart-define=FLAVOR=user"],
-      "flutterMode": "debug"
+      "program": "lib/main_dev.dart",
+      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"]
     },
     {
-      "name": "e-commerce (production environment - admin)",
+      "name": "Run User Stag (Profile)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "program": "lib/main_dev.dart",
+      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"]
+    },
+    {
+      "name": "Run User Stag (Release)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "program": "lib/main_dev.dart",
+      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"]
+    },
+
+    // MARK: Admin Prod
+    {
+      "name": "Run Admin Prod (Debug)",
+      "request": "launch",
+      "type": "dart",
       "cwd": "e_commerce_app",
-      "request": "launch",
-      "type": "dart",
       "program": "lib/main_prod.dart",
-      "args": ["--dart-define=FLAVOR=admin"],
-      "flutterMode": "debug"
+      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"]
     },
     {
-      "name": "ec_design",
-      "cwd": "packages/ec_design",
+      "name": "Run Admin Prod (Profile)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "debug"
-    }
+      "flutterMode": "profile",
+      "program": "lib/main_prod.dart",
+      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"]
+    },
+    {
+      "name": "Run Admin Prod (Release)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "program": "lib/main_prod.dart",
+      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"]
+    },
+
+    // MARK: User Prod
+    {
+      "name": "Run User Prod (Debug)",
+      "request": "launch",
+      "type": "dart",
+      "cwd": "e_commerce_app",
+      "program": "lib/main_dev.dart",
+      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"]
+    },
+    {
+      "name": "Run User Prod (Profile)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "program": "lib/main_dev.dart",
+      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"]
+    },
+    {
+      "name": "Run User Prod (Release)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "program": "lib/main_dev.dart",
+      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"]
+    },
   ]
 }
