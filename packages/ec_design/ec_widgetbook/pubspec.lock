@@ -194,7 +194,7 @@ packages:
     source: hosted
     version: "1.5.0"
   ec_l10n:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: "../../ec_l10n"
       relative: true

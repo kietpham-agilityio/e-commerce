@@ -12,6 +12,9 @@ dependencies:
   ec_themes:
     path: ../ec_themes
 
+  ec_l10n:
+    path: ../../../packages/ec_l10n
+
   widgetbook: ^3.16.0
   clipboard: ^2.0.2
 
