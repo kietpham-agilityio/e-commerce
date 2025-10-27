@@ -23,7 +23,6 @@ class MockApiPickerPage<T> extends StatelessWidget {
 
           return ListTile(
             title: Text(api.name),
-            subtitle: Text(api.description),
             trailing: const Icon(Icons.chevron_right),
             onTap: () async {
               final scenario = await Navigator.of(
