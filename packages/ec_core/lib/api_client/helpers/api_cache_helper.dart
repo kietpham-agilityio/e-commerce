@@ -65,6 +65,10 @@ class ApiCacheHelper {
 
       // If the response is already a Map, use it directly
       if (responseData is Map<String, dynamic>) {
+        // Check if it has a 'responseData' wrapper and extract it
+        if (responseData.containsKey('responseData')) {
+          return fromJson({'responseData': responseData['responseData']});
+        }
         return fromJson(responseData);
       }
 
@@ -72,6 +76,10 @@ class ApiCacheHelper {
       if (responseData is String) {
         final parsedData = json.decode(responseData);
         if (parsedData is Map<String, dynamic>) {
+          // Check if it has a 'responseData' wrapper and extract it
+          if (parsedData.containsKey('responseData')) {
+            return fromJson({'responseData': parsedData['responseData']});
+          }
           return fromJson(parsedData);
         }
       }
@@ -80,6 +88,78 @@ class ApiCacheHelper {
     } catch (e) {
       // Cache errors should not break the app
       log('Failed to retrieve cached response for key $key: $e');
+      return null;
+    }
+  }
+
+  /// Retrieve cached list response if not expired
+  /// This is a specialized method for list responses that automatically handles
+  /// the responseData extraction and list deserialization
+  static Future<List<T>?> getCachedListResponse<T>(
+    String key,
+    T Function(Map<String, dynamic>) itemFromJson, {
+    String? method,
+    String? requestBody,
+    int? userId,
+  }) async {
+    try {
+      final httpMethod = method ?? _defaultMethod;
+      final cachedQuery = await _cacheBox.getCachedQuery(
+        endpoint: key,
+        method: httpMethod,
+        requestBody: requestBody,
+        userId: userId,
+      );
+
+      if (cachedQuery == null || cachedQuery.responseData == null) {
+        log('📦 Cache miss for $key: cachedQuery is null or has no data');
+        return null;
+      }
+
+      log('📦 Cache hit for $key: Found cached data');
+
+      // Parse the response data
+      final responseData = json.decode(cachedQuery.responseData!);
+
+      // Extract the list from responseData wrapper if it exists
+      List<dynamic> dataList;
+      if (responseData is Map<String, dynamic>) {
+        if (responseData.containsKey('responseData') &&
+            responseData['responseData'] is List) {
+          dataList = responseData['responseData'] as List;
+          log(
+            '📦 Extracted list from "responseData" key: ${dataList.length} items',
+          );
+        } else if (responseData.containsKey('data') &&
+            responseData['data'] is List) {
+          dataList = responseData['data'] as List;
+          log('📦 Extracted list from "data" key: ${dataList.length} items');
+        } else {
+          log('⚠️ Cache data is Map but has no "responseData" or "data" key');
+          return <T>[];
+        }
+      } else if (responseData is List) {
+        dataList = responseData;
+        log('📦 Cache data is direct list: ${dataList.length} items');
+      } else {
+        log(
+          '⚠️ Cache data is neither Map nor List: ${responseData.runtimeType}',
+        );
+        return <T>[];
+      }
+
+      // Convert each item in the list using the provided fromJson function
+      final result =
+          dataList
+              .map((item) => itemFromJson(item as Map<String, dynamic>))
+              .toList();
+      log('✅ Successfully deserialized ${result.length} items from cache');
+      return result;
+    } catch (e, stackTrace) {
+      // Cache errors should not break the app
+      log(
+        '❌ Failed to retrieve cached list response for key $key: $e\n$stackTrace',
+      );
       return null;
     }
   }

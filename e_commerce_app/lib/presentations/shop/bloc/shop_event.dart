@@ -8,10 +8,12 @@ class ShopEvent extends Equatable {
 }
 
 class ShopFetchCategories extends ShopEvent {
-  const ShopFetchCategories();
+  const ShopFetchCategories({this.isRefetched = false});
+
+  final bool isRefetched;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [isRefetched];
 }
 
 class DebugScenarioRequested extends ShopEvent {

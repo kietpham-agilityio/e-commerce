@@ -24,12 +24,20 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
     emit(state.copyWith(status: ShopStatus.loading));
 
     try {
-      final response = await _shopUseCase.fetchShopCategories();
+      final response = await _shopUseCase.fetchShopCategories(
+        isRefetched: event.isRefetched,
+      );
 
       emit(state.copyWith(status: ShopStatus.success, categories: response));
     } catch (e) {
       final String message = e.toString();
-      emit(state.copyWith(status: ShopStatus.failure, errorMessage: message));
+      emit(
+        state.copyWith(
+          status: ShopStatus.failure,
+          errorMessage: message,
+          categories: [],
+        ),
+      );
     }
   }
 
