@@ -37,7 +37,7 @@ class WidgetbookApp extends StatelessWidget {
             buttonWidgetBooks(),
             cardWidgetBooks(),
             textfieldWidgetBooks(),
-            chipWidgetBooks(),
+            labelWidgetBooks(),
             checkboxWidgetBooks(),
             iconsWidgetBooks(),
             dialogWidgetBooks(),
