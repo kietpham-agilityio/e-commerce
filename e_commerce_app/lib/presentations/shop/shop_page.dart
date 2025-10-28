@@ -1,6 +1,7 @@
 import 'package:e_commerce_app/config/env_config.dart';
 import 'package:e_commerce_app/core/bloc/app_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
+import 'package:e_commerce_app/domain/usecases/shop_usecase.dart';
 import 'package:e_commerce_app/presentations/shop/bloc/shop_bloc.dart';
 import 'package:ec_core/debug_tools/ui/debug_tools_picker.dart';
 import 'package:ec_core/fab_debug/ui/fab_debug_button.dart';
@@ -11,21 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
-class ShopPage extends StatefulWidget {
+class ShopPage extends StatelessWidget {
   const ShopPage({super.key});
-
-  @override
-  State<ShopPage> createState() => _ShopPageState();
-}
-
-class _ShopPageState extends State<ShopPage> {
-  late ShopBloc shopBloc;
-
-  @override
-  void initState() {
-    shopBloc = AppModule.getIt<ShopBloc>()..add(ShopFetchCategories());
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +42,10 @@ class _ShopPageState extends State<ShopPage> {
         }
 
         return BlocProvider(
-          create: (context) => shopBloc,
+          create:
+              (context) =>
+                  ShopBloc(shopUseCase: AppModule.getIt<ShopUseCase>())
+                    ..add(const ShopFetchCategories()),
           child: LoaderOverlay(
             child: BlocListener<ShopBloc, ShopState>(
               listener: (context, state) {
@@ -143,9 +134,10 @@ class _ShopPageState extends State<ShopPage> {
                     EnvConfig.isDebugModeEnabled
                         ? FabDebugButton(
                           onSelectedMockBackend: (scenario) {
+                            final bloc = context.read<ShopBloc>();
                             if (ApiShop.values.contains(scenario.payload)) {
-                              shopBloc.add(
-                                ShopFetchCategories(isRefetched: true),
+                              bloc.add(
+                                const ShopFetchCategories(isRefetched: true),
                               );
                             }
                           },
@@ -153,7 +145,7 @@ class _ShopPageState extends State<ShopPage> {
                             DebugToolsItem(
                               name: 'Success Scenario',
                               onTap: () {
-                                shopBloc.add(
+                                context.read<ShopBloc>().add(
                                   const DebugScenarioRequested(
                                     DebugToolScenarios.success,
                                   ),
@@ -163,7 +155,7 @@ class _ShopPageState extends State<ShopPage> {
                             DebugToolsItem(
                               name: 'Error Scenario',
                               onTap: () {
-                                shopBloc.add(
+                                context.read<ShopBloc>().add(
                                   const DebugScenarioRequested(
                                     DebugToolScenarios.error,
                                   ),
@@ -173,7 +165,7 @@ class _ShopPageState extends State<ShopPage> {
                             DebugToolsItem(
                               name: 'Api Scenario',
                               onTap: () {
-                                shopBloc.add(
+                                context.read<ShopBloc>().add(
                                   const DebugScenarioRequested(
                                     DebugToolScenarios.api,
                                   ),

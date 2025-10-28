@@ -1,6 +1,7 @@
 import 'package:e_commerce_app/core/bloc/app_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
+import 'package:e_commerce_app/domain/usecases/login_usecase.dart';
 import 'package:ec_themes/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +16,13 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppModule.getIt<LoginBloc>(),
+      create:
+          (context) => LoginBloc(
+            loginUseCase: AppModule.getIt<LoginUseCase>(),
+            loginWithGoogleUseCase: AppModule.getIt<LoginWithGoogleUseCase>(),
+            loginWithFacebookUseCase:
+                AppModule.getIt<LoginWithFacebookUseCase>(),
+          ),
       child: const LoginView(),
     );
   }

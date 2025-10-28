@@ -1,6 +1,7 @@
 import 'package:e_commerce_app/core/bloc/app_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
+import 'package:e_commerce_app/domain/usecases/login_usecase.dart';
 import 'package:ec_themes/ec_design.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +15,9 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppModule.getIt<ProfileBloc>(),
+      create:
+          (context) =>
+              ProfileBloc(logoutUseCase: AppModule.getIt<LogoutUseCase>()),
       child: Scaffold(
         appBar: EcAppBar(title: const EcHeadlineSmallText('Profile')),
         body: BlocListener<ProfileBloc, ProfileState>(

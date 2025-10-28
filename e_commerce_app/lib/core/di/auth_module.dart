@@ -4,8 +4,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../data/repositories/supabase_auth_repository.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/usecases/login_usecase.dart';
-import '../../presentations/login/bloc/login_bloc.dart';
-import '../../presentations/profile/bloc/profile_bloc.dart';
 
 /// Dependency injection module for authentication-related dependencies
 class AuthModule {
@@ -44,19 +42,6 @@ class AuthModule {
 
     _getIt.registerLazySingleton<LogoutUseCase>(
       () => LogoutUseCase(authRepository: _getIt<AuthRepository>()),
-    );
-
-    // Register BLoCs
-    _getIt.registerFactory<LoginBloc>(
-      () => LoginBloc(
-        loginUseCase: _getIt<LoginUseCase>(),
-        loginWithGoogleUseCase: _getIt<LoginWithGoogleUseCase>(),
-        loginWithFacebookUseCase: _getIt<LoginWithFacebookUseCase>(),
-      ),
-    );
-
-    _getIt.registerFactory<ProfileBloc>(
-      () => ProfileBloc(logoutUseCase: _getIt<LogoutUseCase>()),
     );
   }
 

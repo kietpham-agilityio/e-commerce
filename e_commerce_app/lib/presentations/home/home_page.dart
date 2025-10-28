@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:developer';
 
 import 'package:e_commerce_app/config/env_config.dart';
@@ -6,6 +5,7 @@ import 'package:e_commerce_app/core/bloc/app_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
 import 'package:e_commerce_app/core/utils/price_formatter.dart';
+import 'package:e_commerce_app/domain/usecases/home_usecase.dart';
 import 'package:e_commerce_app/presentations/home/bloc/home_bloc.dart';
 import 'package:e_commerce_app/presentations/pages/api_client_example.dart';
 import 'package:e_commerce_app/presentations/pages/example_pages_navigation.dart';
@@ -27,15 +27,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late HomeBloc homeBloc;
-
-  @override
-  void initState() {
-    homeBloc = AppModule.getIt<HomeBloc>()..add(HomeLoadRequested());
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocale.of(context)!;
@@ -44,7 +35,10 @@ class _HomePageState extends State<HomePage> {
     final spacing = ecThemeExt.spacing;
 
     return BlocProvider(
-      create: (_) => homeBloc,
+      create:
+          (context) =>
+              HomeBloc(homeUseCase: AppModule.getIt<HomeUseCase>())
+                ..add(const HomeLoadRequested()),
       child: LoaderOverlay(
         child: BlocListener<HomeBloc, HomeState>(
           listener: (context, state) {
@@ -69,7 +63,7 @@ class _HomePageState extends State<HomePage> {
               return Scaffold(
                 body: RefreshIndicator(
                   onRefresh: () async {
-                    homeBloc.add(HomeLoadRequested());
+                    context.read<HomeBloc>().add(const HomeLoadRequested());
                   },
                   child: CustomScrollView(
                     slivers: [
@@ -224,15 +218,16 @@ class _HomePageState extends State<HomePage> {
                     return EnvConfig.isDebugModeEnabled
                         ? FabDebugButton(
                           onSelectedMockBackend: (scenario) {
+                            final bloc = context.read<HomeBloc>();
                             if (ApiHome.values.contains(scenario.payload)) {
-                              homeBloc.add(const HomeLoadRequested());
+                              bloc.add(const HomeLoadRequested());
                             }
                           },
                           debugToolsScenarios: [
                             DebugToolsItem(
                               name: 'Success Scenario',
                               onTap: () {
-                                homeBloc.add(
+                                context.read<HomeBloc>().add(
                                   const DebugScenarioRequested(
                                     DebugToolScenarios.success,
                                   ),
@@ -242,7 +237,7 @@ class _HomePageState extends State<HomePage> {
                             DebugToolsItem(
                               name: 'Error Scenario',
                               onTap: () {
-                                homeBloc.add(
+                                context.read<HomeBloc>().add(
                                   const DebugScenarioRequested(
                                     DebugToolScenarios.error,
                                   ),
@@ -252,7 +247,7 @@ class _HomePageState extends State<HomePage> {
                             DebugToolsItem(
                               name: 'Api Scenario',
                               onTap: () {
-                                homeBloc.add(
+                                context.read<HomeBloc>().add(
                                   const DebugScenarioRequested(
                                     DebugToolScenarios.api,
                                   ),
