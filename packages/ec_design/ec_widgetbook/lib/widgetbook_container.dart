@@ -5,7 +5,7 @@ class ECUiWidgetbook extends StatelessWidget {
   const ECUiWidgetbook({
     required this.child,
     required this.copyCode,
-    this.backgroundColor = Colors.white,
+    this.backgroundColor,
     this.sizeHeight,
     this.sizeWith,
     this.boxShadow,
@@ -24,31 +24,12 @@ class ECUiWidgetbook extends StatelessWidget {
     return SafeArea(
       bottom: false,
       child: Scaffold(
-        // backgroundColor: backgroundColor,
+        backgroundColor: backgroundColor,
         bottomNavigationBar: ExpansionBody(code: copyCode),
         body: Container(
           padding: const EdgeInsets.all(10),
           margin: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            boxShadow:
-                boxShadow ??
-                [
-                  BoxShadow(
-                    color: Theme.of(context).colorScheme.shadow,
-                    blurRadius: 2,
-                    offset: const Offset(1, 1), // Shadow position
-                  ),
-                ],
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(height: sizeHeight, width: sizeWith, child: child),
-              ],
-            ),
-          ),
+          child: child,
         ),
       ),
     );

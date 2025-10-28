@@ -1,5 +1,6 @@
 import 'package:ec_l10n/ec_l10n.dart';
 import 'package:ec_themes/ec_design.dart';
+import 'package:ec_widgetbook/widget/color.dart';
 import 'package:ec_widgetbook/widget/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:widgetbook/widgetbook.dart';
@@ -34,11 +35,9 @@ class WidgetbookApp extends StatelessWidget {
       ],
       directories: [
         WidgetbookCategory(
-          name: 'Widget',
+          name: 'Common',
           children: [
             // The example is provided for reference on how to use it
-            exampleWidgetBooks(),
-
             textWidgetBooks(),
             buttonWidgetBooks(),
             cardWidgetBooks(),
@@ -46,14 +45,8 @@ class WidgetbookApp extends StatelessWidget {
             labelWidgetBooks(),
             checkboxWidgetBooks(),
             iconsWidgetBooks(),
-            dialogWidgetBooks(),
-            listTileWidgetBooks(),
             switchWidgetBooks(),
-            sliderWidgetBooks(),
-            progressIndicatorWidgetBooks(),
-            tabBarWidgetBooks(),
-            bottomSheetMenuWidgetBooks(),
-            dividerMenuWidgetBooks(),
+            colorWidgetBooks(),
           ],
         ),
       ],
