@@ -58,3 +58,16 @@ class SendPasswordResetEmailUseCase {
     return await _authRepository.sendPasswordResetEmail(email: email);
   }
 }
+
+/// Use case for user logout
+class LogoutUseCase {
+  const LogoutUseCase({required AuthRepository authRepository})
+    : _authRepository = authRepository;
+
+  final AuthRepository _authRepository;
+
+  /// Execute logout
+  Future<void> call() async {
+    return await _authRepository.logout();
+  }
+}

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:e_commerce_app/data/mocks/items_mock.dart';
 import 'package:e_commerce_app/domain/entities/product_entities.dart';
 import 'package:e_commerce_app/domain/usecases/product_details_usecase.dart';
@@ -78,5 +80,11 @@ class ProductDetailsBloc
         // Fallback to normal load
         add(ProductDetailsLoadRequested(productId: '', categoryId: ''));
     }
+  }
+
+  @override
+  Future<void> close() {
+    log('🔴 ProductDetailsBloc is being disposed');
+    return super.close();
   }
 }

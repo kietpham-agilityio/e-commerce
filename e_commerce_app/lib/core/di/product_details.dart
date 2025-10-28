@@ -26,11 +26,11 @@ class ProductDetailsModule {
     );
 
     // Register BLoC
-    _getIt.registerFactory<ProductDetailsBloc>(
-      () => ProductDetailsBloc(
-        productDetailsUseCase: _getIt<ProductDetailsUseCase>(),
-      ),
-    );
+    // _getIt.registerFactory<ProductDetailsBloc>(
+    //   () => ProductDetailsBloc(
+    //     productDetailsUseCase: _getIt<ProductDetailsUseCase>(),
+    //   ),
+    // );
   }
 
   /// Check if dependencies are registered

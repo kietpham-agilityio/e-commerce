@@ -45,268 +45,253 @@ class _HomePageState extends State<HomePage> {
 
     return BlocProvider(
       create: (_) => homeBloc,
-      child: BlocListener<HomeBloc, HomeState>(
-        listener: (context, state) {
-          if (state.status == HomeStatus.failure) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
-          } else if (state.status == HomeStatus.failure) {
-            context.loaderOverlay.hide();
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
-          } else {
-            context.loaderOverlay.hide();
-          }
-        },
-        child: BlocBuilder<AppBloc, AppState>(
-          builder: (context, appState) {
-            return Scaffold(
-              body: LoaderOverlay(
-                child: BlocListener<HomeBloc, HomeState>(
-                  listener: (context, state) {
-                    if (state.status == HomeStatus.loading) {
-                      context.loaderOverlay.show();
-                    } else if (state.status == HomeStatus.failure) {
-                      context.loaderOverlay.hide();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(state.errorMessage!)),
-                      );
-                    } else {
-                      context.loaderOverlay.hide();
-                    }
+      child: LoaderOverlay(
+        child: BlocListener<HomeBloc, HomeState>(
+          listener: (context, state) {
+            if (state.status == HomeStatus.loading) {
+              context.loaderOverlay.show();
+            } else if (state.status == HomeStatus.failure) {
+              context.loaderOverlay.hide();
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+            } else if (state.status == HomeStatus.failure) {
+              context.loaderOverlay.hide();
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+            } else {
+              context.loaderOverlay.hide();
+            }
+          },
+          child: BlocBuilder<AppBloc, AppState>(
+            builder: (context, appState) {
+              return Scaffold(
+                body: RefreshIndicator(
+                  onRefresh: () async {
+                    homeBloc.add(HomeLoadRequested());
                   },
-                  child: RefreshIndicator(
-                    onRefresh: () async {
-                      final completer = Completer<void>();
-                      homeBloc.add(HomeRefreshRequested(completer));
-                      return completer.future;
-                    },
-                    child: CustomScrollView(
-                      slivers: [
-                        EcSliverAppBar(
-                          title: l10n.homeTitle,
-                          maxHeight: 196,
-                          expandedPaddingBottom: 26,
-                          background: EcCachedNetworkImage(
-                            url:
-                                'https://i.guim.co.uk/img/media/1cc4877b9591dd8b9cc783722fd97b00b87ee162/0_143_6016_3610/master/6016.jpg?width=465&dpr=1&s=none&crop=none',
-                            width: double.infinity,
-                            boxFit: BoxFit.cover,
-                            height: 250,
-                          ),
+                  child: CustomScrollView(
+                    slivers: [
+                      EcSliverAppBar(
+                        title: l10n.homeTitle,
+                        maxHeight: 196,
+                        expandedPaddingBottom: 26,
+                        background: EcCachedNetworkImage(
+                          url:
+                              'https://i.guim.co.uk/img/media/1cc4877b9591dd8b9cc783722fd97b00b87ee162/0_143_6016_3610/master/6016.jpg?width=465&dpr=1&s=none&crop=none',
+                          width: double.infinity,
+                          boxFit: BoxFit.cover,
+                          height: 250,
                         ),
-                        SliverSafeArea(
-                          top: false,
-                          sliver: SliverList(
-                            delegate: SliverChildListDelegate([
-                              SizedBox(height: spacing.huge),
-                              _CategoryHeader(
-                                title: l10n.generalSale,
-                                onViewall: () {
-                                  // TODO: handle redirect sale page
-                                  log('onViewall sale');
+                      ),
+                      SliverSafeArea(
+                        top: false,
+                        sliver: SliverList(
+                          delegate: SliverChildListDelegate([
+                            SizedBox(height: spacing.huge),
+                            _CategoryHeader(
+                              title: l10n.generalSale,
+                              onViewall: () {
+                                // TODO: handle redirect sale page
+                                log('onViewall sale');
+                              },
+                            ),
+                            SizedBox(height: spacing.xxl),
+                            SizedBox(
+                              height: MediaQuery.of(
+                                context,
+                              ).textScaler.scale(269),
+                              child: BlocBuilder<HomeBloc, HomeState>(
+                                buildWhen:
+                                    (previous, current) =>
+                                        previous.discountProducts !=
+                                        current.discountProducts,
+                                builder: (context, state) {
+                                  if (state.status != HomeStatus.success) {
+                                    return SizedBox();
+                                  }
+
+                                  return ListView.separated(
+                                    scrollDirection: Axis.horizontal,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: spacing.xl,
+                                    ),
+                                    itemCount: state.discountProducts.length,
+                                    separatorBuilder:
+                                        (_, __) => SizedBox(width: spacing.xl),
+                                    itemBuilder: (context, index) {
+                                      final item =
+                                          state.discountProducts[index];
+
+                                      return EcProductCardInMain(
+                                        title: item.name,
+                                        brand: item.brand,
+                                        imageUrl: item.imageUrl.first,
+                                        isSoldOut: item.quantity == 0,
+                                        originalPrice:
+                                            item.price.priceFormatter(),
+                                        discountedPrice:
+                                            item.finalPrice?.priceFormatter(),
+                                        labelText: '-${item.label}',
+                                        onTap: () {
+                                          context.pushNamed(
+                                            UserAppPaths.productDetails.name,
+                                            queryParameters: {
+                                              "productId": "${item.id}",
+                                              "categoryId":
+                                                  "${item.categoryId}",
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                  );
                                 },
                               ),
-                              SizedBox(height: spacing.xxl),
-                              SizedBox(
-                                height: MediaQuery.of(
-                                  context,
-                                ).textScaler.scale(269),
-                                child: BlocBuilder<HomeBloc, HomeState>(
-                                  buildWhen:
-                                      (previous, current) =>
-                                          previous.discountProducts !=
-                                          current.discountProducts,
-                                  builder: (context, state) {
-                                    if (state.status != HomeStatus.success) {
-                                      return SizedBox();
-                                    }
+                            ),
+                            SizedBox(height: spacing.giant),
+                            _CategoryHeader(
+                              title: l10n.generalNew,
+                              onViewall: () {
+                                // TODO: handle redirect sale page
+                                log('onViewall New');
+                              },
+                            ),
+                            SizedBox(height: spacing.xxl),
+                            SizedBox(
+                              height: MediaQuery.of(
+                                context,
+                              ).textScaler.scale(269),
+                              child: BlocBuilder<HomeBloc, HomeState>(
+                                buildWhen:
+                                    (previous, current) =>
+                                        previous.newProducts !=
+                                        current.newProducts,
+                                builder: (context, state) {
+                                  if (state.status == HomeStatus.initial) {
+                                    return SizedBox();
+                                  }
 
-                                    return ListView.separated(
-                                      scrollDirection: Axis.horizontal,
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: spacing.xl,
-                                      ),
-                                      itemCount: state.discountProducts.length,
-                                      separatorBuilder:
-                                          (_, __) =>
-                                              SizedBox(width: spacing.xl),
-                                      itemBuilder: (context, index) {
-                                        final item =
-                                            state.discountProducts[index];
+                                  return ListView.separated(
+                                    scrollDirection: Axis.horizontal,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: spacing.xl,
+                                    ),
+                                    itemCount: state.newProducts.length,
+                                    separatorBuilder:
+                                        (_, __) => SizedBox(width: spacing.xl),
+                                    itemBuilder: (context, index) {
+                                      final item = state.newProducts[index];
 
-                                        return EcProductCardInMain(
-                                          title: item.name,
-                                          brand: item.brand,
-                                          imageUrl: item.imageUrl.first,
-                                          isSoldOut: item.quantity == 0,
-                                          originalPrice:
-                                              item.price.priceFormatter(),
-                                          discountedPrice:
-                                              item.finalPrice?.priceFormatter(),
-                                          labelText: '-${item.label}',
-                                          onTap: () {
-                                            context.pushNamed(
-                                              UserAppPaths.productDetails.name,
-                                              queryParameters: {
-                                                "productId": "${item.id}",
-                                                "categoryId":
-                                                    "${item.categoryId}",
-                                              },
-                                            );
-                                          },
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
-                              SizedBox(height: spacing.giant),
-                              _CategoryHeader(
-                                title: l10n.generalNew,
-                                onViewall: () {
-                                  // TODO: handle redirect sale page
-                                  log('onViewall New');
+                                      return EcProductCardInMain(
+                                        title: item.name,
+                                        brand: item.brand,
+                                        imageUrl: item.imageUrl.first,
+                                        isSoldOut: item.quantity == 0,
+                                        originalPrice:
+                                            item.price.priceFormatter(),
+                                        labelText: item.label,
+                                        onTap: () {
+                                          context.pushNamed(
+                                            UserAppPaths.productDetails.name,
+                                            queryParameters: {
+                                              "productId": "${item.id}",
+                                              "categoryId":
+                                                  "${item.categoryId}",
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                  );
                                 },
                               ),
-                              SizedBox(height: spacing.xxl),
-                              SizedBox(
-                                height: MediaQuery.of(
-                                  context,
-                                ).textScaler.scale(269),
-                                child: BlocBuilder<HomeBloc, HomeState>(
-                                  buildWhen:
-                                      (previous, current) =>
-                                          previous.newProducts !=
-                                          current.newProducts,
-                                  builder: (context, state) {
-                                    if (state.status == HomeStatus.initial) {
-                                      return SizedBox();
-                                    }
-
-                                    return ListView.separated(
-                                      scrollDirection: Axis.horizontal,
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: spacing.xl,
-                                      ),
-                                      itemCount: state.newProducts.length,
-                                      separatorBuilder:
-                                          (_, __) =>
-                                              SizedBox(width: spacing.xl),
-                                      itemBuilder: (context, index) {
-                                        final item = state.newProducts[index];
-
-                                        return EcProductCardInMain(
-                                          title: item.name,
-                                          brand: item.brand,
-                                          imageUrl: item.imageUrl.first,
-                                          isSoldOut: item.quantity == 0,
-                                          originalPrice:
-                                              item.price.priceFormatter(),
-                                          labelText: item.label,
-                                          onTap: () {
-                                            context.pushNamed(
-                                              UserAppPaths.productDetails.name,
-                                              queryParameters: {
-                                                "productId": "${item.id}",
-                                                "categoryId":
-                                                    "${item.categoryId}",
-                                              },
-                                            );
-                                          },
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
-                              SizedBox(height: spacing.huge),
-                            ]),
-                          ),
+                            ),
+                            SizedBox(height: spacing.huge),
+                          ]),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              floatingActionButton: BlocConsumer<AppBloc, AppState>(
-                listener: (context, state) {
-                  // Navigate back to first route when Database Inspector is turned off
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                },
-                builder: (context, state) {
-                  return EnvConfig.isDebugModeEnabled
-                      ? FabDebugButton(
-                        onSelectedMockBackend: (scenario) {
-                          if (ApiHome.values.contains(scenario.payload)) {
-                            homeBloc.add(const HomeLoadRequested());
-                          }
-                        },
-                        debugToolsScenarios: [
-                          DebugToolsItem(
-                            name: 'Success Scenario',
-                            onTap: () {
-                              homeBloc.add(
-                                const DebugScenarioRequested(
-                                  DebugToolScenarios.success,
-                                ),
-                              );
-                            },
-                          ),
-                          DebugToolsItem(
-                            name: 'Error Scenario',
-                            onTap: () {
-                              homeBloc.add(
-                                const DebugScenarioRequested(
-                                  DebugToolScenarios.error,
-                                ),
-                              );
-                            },
-                          ),
-                          DebugToolsItem(
-                            name: 'Api Scenario',
-                            onTap: () {
-                              homeBloc.add(
-                                const DebugScenarioRequested(
-                                  DebugToolScenarios.api,
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                        onFeatureFlags: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder:
-                                  (context) => const FeatureFlagDebugPanel(),
+                floatingActionButton: BlocConsumer<AppBloc, AppState>(
+                  listener: (context, state) {
+                    // Navigate back to first route when Database Inspector is turned off
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                  },
+                  builder: (context, state) {
+                    return EnvConfig.isDebugModeEnabled
+                        ? FabDebugButton(
+                          onSelectedMockBackend: (scenario) {
+                            if (ApiHome.values.contains(scenario.payload)) {
+                              homeBloc.add(const HomeLoadRequested());
+                            }
+                          },
+                          debugToolsScenarios: [
+                            DebugToolsItem(
+                              name: 'Success Scenario',
+                              onTap: () {
+                                homeBloc.add(
+                                  const DebugScenarioRequested(
+                                    DebugToolScenarios.success,
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                        onApiClientExample: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const ApiClientExample(),
+                            DebugToolsItem(
+                              name: 'Error Scenario',
+                              onTap: () {
+                                homeBloc.add(
+                                  const DebugScenarioRequested(
+                                    DebugToolScenarios.error,
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                        onExamplePages: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder:
-                                  (context) => const ExamplePagesNavigation(),
+                            DebugToolsItem(
+                              name: 'Api Scenario',
+                              onTap: () {
+                                homeBloc.add(
+                                  const DebugScenarioRequested(
+                                    DebugToolScenarios.api,
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
+                          ],
+                          onFeatureFlags: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder:
+                                    (context) => const FeatureFlagDebugPanel(),
+                              ),
+                            );
+                          },
+                          onApiClientExample: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const ApiClientExample(),
+                              ),
+                            );
+                          },
+                          onExamplePages: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder:
+                                    (context) => const ExamplePagesNavigation(),
+                              ),
+                            );
+                          },
 
-                        enableMockBackend: true,
-                      )
-                      : SizedBox.shrink();
-                },
-              ),
-            );
-          },
+                          enableMockBackend: true,
+                        )
+                        : SizedBox.shrink();
+                  },
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

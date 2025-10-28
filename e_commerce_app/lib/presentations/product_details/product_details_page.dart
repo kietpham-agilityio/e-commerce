@@ -5,6 +5,7 @@ import 'package:e_commerce_app/core/bloc/app_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
 import 'package:e_commerce_app/core/utils/price_formatter.dart';
+import 'package:e_commerce_app/domain/usecases/product_details_usecase.dart';
 import 'package:e_commerce_app/presentations/product_details/bloc/product_details_bloc.dart';
 import 'package:ec_core/debug_tools/ui/debug_tools_picker.dart';
 import 'package:ec_core/fab_debug/ui/fab_debug_button.dart';
@@ -34,18 +35,22 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
-  late ProductDetailsBloc _bloc;
-
   @override
   void initState() {
-    _bloc =
-        AppModule.getIt<ProductDetailsBloc>()..add(
-          ProductDetailsLoadRequested(
-            productId: widget.productId,
-            categoryId: widget.categoryId,
-          ),
-        );
+    // AppModule.getIt<ProductDetailsBloc>()..add(
+    //   ProductDetailsLoadRequested(
+    //     productId: widget.productId,
+    //     categoryId: widget.categoryId,
+    //   ),
+    // );
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    log('🔴 ProductDetailsPage is being disposed');
+    // _bloc.close();
+    super.dispose();
   }
 
   @override
@@ -56,7 +61,15 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     final l10n = AppLocale.of(context)!;
 
     return BlocProvider(
-      create: (context) => _bloc,
+      create:
+          (context) => ProductDetailsBloc(
+            productDetailsUseCase: AppModule.getIt<ProductDetailsUseCase>(),
+          )..add(
+            ProductDetailsLoadRequested(
+              productId: widget.productId,
+              categoryId: widget.categoryId,
+            ),
+          ),
       child: BlocBuilder<AppBloc, AppState>(
         builder: (context, appState) {
           final isProductDetailsEnabled =
@@ -329,7 +342,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             if (MockFeatureProductDetails.values.contains(
                               scenario.payload,
                             )) {
-                              _bloc.add(
+                              context.read<ProductDetailsBloc>().add(
                                 ProductDetailsLoadRequested(
                                   productId: widget.productId,
                                   categoryId: widget.categoryId,
@@ -341,7 +354,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             DebugToolsItem(
                               name: 'Success Scenario',
                               onTap: () {
-                                _bloc.add(
+                                context.read<ProductDetailsBloc>().add(
                                   const DebugScenarioRequested(
                                     scenario: DebugToolScenarios.success,
                                   ),
@@ -351,7 +364,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             DebugToolsItem(
                               name: 'Error Scenario',
                               onTap: () {
-                                _bloc.add(
+                                context.read<ProductDetailsBloc>().add(
                                   const DebugScenarioRequested(
                                     scenario: DebugToolScenarios.error,
                                   ),
@@ -361,7 +374,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             DebugToolsItem(
                               name: 'Api Scenario',
                               onTap: () {
-                                _bloc.add(
+                                context.read<ProductDetailsBloc>().add(
                                   DebugScenarioRequested(
                                     scenario: DebugToolScenarios.api,
                                     productId: widget.productId,
