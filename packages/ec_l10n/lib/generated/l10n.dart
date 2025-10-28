@@ -609,6 +609,42 @@ abstract class AppLocale {
   /// **'Login'**
   String get loginBtn;
 
+  /// No description provided for @loginEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'muffin.sweet@gmail.com'**
+  String get loginEmailHint;
+
+  /// No description provided for @loginPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get loginPasswordHint;
+
+  /// No description provided for @loginForgotPasswordText.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot your password?'**
+  String get loginForgotPasswordText;
+
+  /// No description provided for @loginSocialAccountSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Or login with social account'**
+  String get loginSocialAccountSubtitle;
+
+  /// No description provided for @semanticEmailInputField.
+  ///
+  /// In en, this message translates to:
+  /// **'Email input field'**
+  String get semanticEmailInputField;
+
+  /// No description provided for @semanticPasswordInputField.
+  ///
+  /// In en, this message translates to:
+  /// **'Password input field'**
+  String get semanticPasswordInputField;
+
   /// No description provided for @loginForgotPasswordBtn.
   ///
   /// In en, this message translates to:
