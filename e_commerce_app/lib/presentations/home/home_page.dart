@@ -46,14 +46,11 @@ class _HomePageState extends State<HomePage> {
               context.loaderOverlay.show();
             } else if (state.status == HomeStatus.failure) {
               context.loaderOverlay.hide();
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
-            } else if (state.status == HomeStatus.failure) {
-              context.loaderOverlay.hide();
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+              if (state.errorMessage != null) {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+              }
             } else {
               context.loaderOverlay.hide();
             }
@@ -96,14 +93,18 @@ class _HomePageState extends State<HomePage> {
                               height: MediaQuery.of(
                                 context,
                               ).textScaler.scale(269),
-                              child: BlocBuilder<HomeBloc, HomeState>(
-                                buildWhen:
-                                    (previous, current) =>
-                                        previous.discountProducts !=
-                                        current.discountProducts,
-                                builder: (context, state) {
-                                  if (state.status != HomeStatus.success) {
-                                    return SizedBox();
+                              child: Builder(
+                                builder: (context) {
+                                  final discountProducts = context.select(
+                                    (HomeBloc bloc) =>
+                                        bloc.state.discountProducts,
+                                  );
+                                  final status = context.select(
+                                    (HomeBloc bloc) => bloc.state.status,
+                                  );
+
+                                  if (status != HomeStatus.success) {
+                                    return const SizedBox.shrink();
                                   }
 
                                   return ListView.separated(
@@ -111,12 +112,11 @@ class _HomePageState extends State<HomePage> {
                                     padding: EdgeInsets.symmetric(
                                       horizontal: spacing.xl,
                                     ),
-                                    itemCount: state.discountProducts.length,
+                                    itemCount: discountProducts.length,
                                     separatorBuilder:
                                         (_, __) => SizedBox(width: spacing.xl),
                                     itemBuilder: (context, index) {
-                                      final item =
-                                          state.discountProducts[index];
+                                      final item = discountProducts[index];
 
                                       return EcProductCardInMain(
                                         title: item.name,
@@ -157,14 +157,17 @@ class _HomePageState extends State<HomePage> {
                               height: MediaQuery.of(
                                 context,
                               ).textScaler.scale(269),
-                              child: BlocBuilder<HomeBloc, HomeState>(
-                                buildWhen:
-                                    (previous, current) =>
-                                        previous.newProducts !=
-                                        current.newProducts,
-                                builder: (context, state) {
-                                  if (state.status == HomeStatus.initial) {
-                                    return SizedBox();
+                              child: Builder(
+                                builder: (context) {
+                                  final newProducts = context.select(
+                                    (HomeBloc bloc) => bloc.state.newProducts,
+                                  );
+                                  final status = context.select(
+                                    (HomeBloc bloc) => bloc.state.status,
+                                  );
+
+                                  if (status == HomeStatus.initial) {
+                                    return const SizedBox.shrink();
                                   }
 
                                   return ListView.separated(
@@ -172,11 +175,11 @@ class _HomePageState extends State<HomePage> {
                                     padding: EdgeInsets.symmetric(
                                       horizontal: spacing.xl,
                                     ),
-                                    itemCount: state.newProducts.length,
+                                    itemCount: newProducts.length,
                                     separatorBuilder:
                                         (_, __) => SizedBox(width: spacing.xl),
                                     itemBuilder: (context, index) {
-                                      final item = state.newProducts[index];
+                                      final item = newProducts[index];
 
                                       return EcProductCardInMain(
                                         title: item.name,
@@ -278,10 +281,9 @@ class _HomePageState extends State<HomePage> {
                               ),
                             );
                           },
-
                           enableMockBackend: true,
                         )
-                        : SizedBox.shrink();
+                        : const SizedBox.shrink();
                   },
                 ),
               );
