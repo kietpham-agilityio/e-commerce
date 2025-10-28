@@ -90,6 +90,8 @@ dev_dependencies:
   freezed: ^2.4.7
   json_serializable: ^6.7.1
 
+  bloc_lint: ^0.3.3
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
