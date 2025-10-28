@@ -160,5 +160,82 @@
       "program": "lib/main_dev.dart",
       "args": ["--flavor", "user", "--dart-define=FLAVOR=user"]
     },
+    {
+      "name": "e-commerce (user flavor)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--dart-define=FLAVOR=user"],
+      "flutterMode": "debug"
+    },
+    {
+      "name": "e-commerce (admin flavor)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--dart-define=FLAVOR=admin"],
+      "flutterMode": "debug"
+    },
+    {
+      "name": "e-commerce (dev environment - user)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_dev.dart",
+      "args": ["--dart-define=FLAVOR=user"],
+      "flutterMode": "debug"
+    },
+    {
+      "name": "e-commerce (dev environment - admin)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_dev.dart",
+      "args": ["--dart-define=FLAVOR=admin"],
+      "flutterMode": "debug"
+    },
+    {
+      "name": "e-commerce (staging environment - user)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_stag.dart",
+      "args": ["--dart-define=FLAVOR=user"],
+      "flutterMode": "debug"
+    },
+    {
+      "name": "e-commerce (staging environment - admin)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_stag.dart",
+      "args": ["--dart-define=FLAVOR=admin"],
+      "flutterMode": "debug"
+    },
+    {
+      "name": "e-commerce (production environment - user)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_prod.dart",
+      "args": ["--dart-define=FLAVOR=user"],
+      "flutterMode": "debug"
+    },
+    {
+      "name": "e-commerce (production environment - admin)",
+      "cwd": "e_commerce_app",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_prod.dart",
+      "args": ["--dart-define=FLAVOR=admin"],
+      "flutterMode": "debug"
+    },
+    {
+      "name": "ec_design",
+      "cwd": "packages/ec_design",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug"
+    }
   ]
 }
