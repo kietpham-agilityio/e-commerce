@@ -59,9 +59,6 @@ class _LoginViewState extends State<LoginView> {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state.status == LoginStatus.success) {
-          // Fetch feature flags from API after successful login
-          context.read<DebugBloc>().add(const AppFeatureFlagsFetchedFromApi());
-
           // Navigate to home on successful login
           context.pushReplacementNamed(UserAppPaths.home.name);
         } else if (state.status == LoginStatus.failure) {

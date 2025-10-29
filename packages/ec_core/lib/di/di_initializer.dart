@@ -1,12 +1,10 @@
 import 'dart:developer' show log;
 
 import 'package:get_it/get_it.dart';
-import 'package:dio/dio.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 import '../ec_flavor.dart';
 import '../api_client/core/api_client.dart';
-import '../services/core/base_service.dart';
 import '../services/ec_local_store/ec_local_store.dart';
 import '../feature_flags/feature_flag_service.dart';
 import 'services/api_client_di.dart';
@@ -15,79 +13,111 @@ import 'services/environment_di.dart';
 import 'services/local_storage_di.dart';
 
 /// Unified Dependency Injection system for the E-Commerce application
-/// Combines container management and initialization in a single, clean interface
 class DependencyInjection {
-  static final GetIt _getIt = GetIt.instance;
+  DependencyInjection._();
 
-  // ============================================================================
-  // CORE DI FUNCTIONALITY
-  // ============================================================================
+  static final GetIt _getIt = GetIt.instance;
 
   /// Get the GetIt instance for advanced usage
   static GetIt get instance => _getIt;
 
-  /// Initialize all dependencies with a single method
-  static Future<void> initialize({
+  /// Unified initialization method for all environments
+  static Future<void> initializeWithEnvironment({
+    required String environment,
     EcFlavor? flavor,
-    String environment = 'development',
-    bool enableLogging = true,
-    bool enableFileLogging = true,
-    bool enableCrashReporting = false,
     Map<String, String>? customHeaders,
+    String? databaseName,
+    bool? enableDatabaseInspector,
+    bool? enableLogging,
+    bool? enableFileLogging,
+    bool? enableCrashReporting,
+    bool? enableDebugMode,
     Duration? connectTimeout,
     Duration? receiveTimeout,
-    Duration? sendTimeout,
-    List<Interceptor>? customInterceptors,
-    String? databaseName,
-    bool enableDatabaseInspector = false,
   }) async {
+    // Set current environment for EcFlavor
+    final envLower = environment.toLowerCase();
+    EcFlavor.setEnvironment(envLower);
+
+    // Environment-specific defaults
+    final isDev = envLower == 'dev' || envLower == 'development';
+    final isStaging = envLower == 'stag' || envLower == 'staging';
+    final isProd = envLower == 'prod' || envLower == 'production';
+
+    // Apply environment-specific defaults
+    final logging = enableLogging ?? (isProd ? false : true);
+    final fileLogging = enableFileLogging ?? true;
+    final crashReporting = enableCrashReporting ?? (isDev ? false : true);
+    final dbInspector = enableDatabaseInspector ?? (isProd ? false : isDev);
+    final debugMode = enableDebugMode ?? isDev;
+
+    // Environment-specific timeouts
+    const defaultConnectTimeout = Duration(seconds: 60);
+    const defaultReceiveTimeout = Duration(seconds: 60);
+
     final currentFlavor = flavor ?? EcFlavor.current;
+    final normalizedEnvironment =
+        isDev ? 'development' : (isStaging ? 'staging' : 'production');
 
     try {
       // Reset container to avoid conflicts
       await _getIt.reset();
 
-      // Register core services first (including flavor)
-      _registerCoreServices(
-        flavor: currentFlavor,
-        enableLogging: enableLogging,
-      );
+      // Register core services
+      _getIt.registerSingleton<EcFlavor>(currentFlavor);
+      registerFeatureFlagService();
 
-      // Register logger services early to avoid circular dependency
-      if (enableLogging) {
-        _registerEarlyLoggerServices(
+      // Register logger services early
+      if (logging) {
+        _registerLoggerServices(
           flavor: currentFlavor,
-          enableFileLogging: enableFileLogging,
-          enableCrashReporting: enableCrashReporting,
+          enableFileLogging: fileLogging,
+          enableCrashReporting: crashReporting,
         );
       }
 
-      // Register environment-specific services (this includes API clients and loggers)
+      // Register environment-specific services
       await _registerEnvironmentServices(
         flavor: currentFlavor,
-        environment: environment,
-        enableLogging: enableLogging,
-        enableFileLogging: enableFileLogging,
-        enableCrashReporting: enableCrashReporting,
-        customHeaders: customHeaders,
-        connectTimeout: connectTimeout,
-        receiveTimeout: receiveTimeout,
-        sendTimeout: sendTimeout,
-        customInterceptors: customInterceptors,
+        environment: normalizedEnvironment,
+        enableLogging: logging,
+        enableFileLogging: fileLogging,
+        enableCrashReporting: crashReporting,
+        customHeaders: {
+          ...?customHeaders,
+          'X-Environment': normalizedEnvironment,
+          'X-Debug': debugMode.toString(),
+        },
+        connectTimeout: connectTimeout ?? defaultConnectTimeout,
+        receiveTimeout: receiveTimeout ?? defaultReceiveTimeout,
       );
 
       // Initialize local database
       await LocalStorageDI.initializeLocalDatabase(
         dbName: databaseName ?? 'ec_commerce.db',
-        enableInspector: enableDatabaseInspector,
+        enableInspector: dbInspector,
       );
 
-      // Initialize all registered services
-      await _initializeAllServices();
+      // Initialize feature flag service
+      try {
+        final featureFlagService = getFeatureFlagService();
+        await featureFlagService.initialize();
+      } catch (e, stackTrace) {
+        _logError(
+          'Failed to initialize feature flag service',
+          exception: e,
+          stackTrace: stackTrace,
+        );
+      }
 
+      // Log completion
       _logInfo(
-        'DI initialization completed successfully for ${currentFlavor.displayName} flavor in $environment environment',
+        'DI initialization completed for ${currentFlavor.displayName} in $normalizedEnvironment',
       );
+
+      if (debugMode) {
+        _logInfo('Debug mode is ENABLED for $environment environment');
+      }
     } catch (e, stackTrace) {
       _logError(
         'Failed to initialize DI',
@@ -98,92 +128,43 @@ class DependencyInjection {
     }
   }
 
-  /// Register core services that are common across all flavors
-  static void _registerCoreServices({
-    required EcFlavor flavor,
-    required bool enableLogging,
-  }) {
-    // Register flavor as singleton
-    _getIt.registerSingleton<EcFlavor>(flavor);
-
-    // Register feature flag service
-    registerFeatureFlagService();
-  }
-
-  /// Register logger services early to avoid circular dependency
-  static void _registerEarlyLoggerServices({
+  /// Register logger services
+  static void _registerLoggerServices({
     required EcFlavor flavor,
     required bool enableFileLogging,
     required bool enableCrashReporting,
   }) {
-    // Register main Talker instance early
-    // Note: UI theme colors are handled by TalkerScreen widget via talkerTheme
-    // Console colors (AnsiPen) are handled by custom log classes (SuccessLog, ErrorLog, etc.)
-    final settings = TalkerSettings(
-      useConsoleLogs: true,
-      useHistory: true,
-      maxHistoryItems: 200,
-      enabled: true,
+    final mainTalker = TalkerFlutter.init(
+      settings: TalkerSettings(
+        useConsoleLogs: true,
+        useHistory: true,
+        maxHistoryItems: 200,
+        enabled: true,
+      ),
     );
-
-    final talker = TalkerFlutter.init(settings: settings);
-    _getIt.registerSingleton<Talker>(talker, instanceName: 'main');
+    _getIt.registerSingleton<Talker>(mainTalker, instanceName: 'main');
 
     // Register flavor-specific Talker instance
     if (flavor.isAdmin) {
-      final adminSettings = TalkerSettings(
-        useConsoleLogs: true,
-        useHistory: true,
-        maxHistoryItems: 500,
-        enabled: true,
+      final adminTalker = TalkerFlutter.init(
+        settings: TalkerSettings(
+          useConsoleLogs: true,
+          useHistory: true,
+          maxHistoryItems: 500,
+          enabled: true,
+        ),
       );
-      final adminTalker = TalkerFlutter.init(settings: adminSettings);
       _getIt.registerSingleton<Talker>(adminTalker, instanceName: 'admin');
     } else {
-      final userSettings = TalkerSettings(
-        useConsoleLogs: false,
-        useHistory: true,
-        maxHistoryItems: 50,
-        enabled: true,
+      final userTalker = TalkerFlutter.init(
+        settings: TalkerSettings(
+          useConsoleLogs: false,
+          useHistory: true,
+          maxHistoryItems: 50,
+          enabled: true,
+        ),
       );
-      final userTalker = TalkerFlutter.init(settings: userSettings);
       _getIt.registerSingleton<Talker>(userTalker, instanceName: 'user');
-    }
-  }
-
-  /// Fallback logging method when LoggerDI is not available
-  static void _logInfo(String message) {
-    try {
-      if (_getIt.isRegistered<Talker>(instanceName: 'main')) {
-        final talker = _getIt.get<Talker>(instanceName: 'main');
-        talker.info(message);
-      } else {
-        log('[INFO] $message');
-      }
-    } catch (e) {
-      log('[INFO] $message');
-    }
-  }
-
-  /// Fallback logging method when LoggerDI is not available
-  static void _logError(
-    String message, {
-    Object? exception,
-    StackTrace? stackTrace,
-  }) {
-    try {
-      if (_getIt.isRegistered<Talker>(instanceName: 'main')) {
-        final talker = _getIt.get<Talker>(instanceName: 'main');
-        talker.error(message, exception, stackTrace);
-      } else {
-        log('[ERROR] $message');
-        if (exception != null) log('[ERROR] Exception: $exception');
-        if (stackTrace != null) log('[ERROR] StackTrace: $stackTrace');
-      }
-    } catch (e) {
-      log('[ERROR] $message');
-      if (exception != null) log('[ERROR] Exception: $exception');
-      if (stackTrace != null) log('[ERROR] StackTrace: $stackTrace');
     }
   }
 
@@ -194,13 +175,11 @@ class DependencyInjection {
     required bool enableLogging,
     required bool enableFileLogging,
     required bool enableCrashReporting,
-    Map<String, String>? customHeaders,
-    Duration? connectTimeout,
-    Duration? receiveTimeout,
-    Duration? sendTimeout,
-    List<Interceptor>? customInterceptors,
+    required Map<String, String> customHeaders,
+    required Duration connectTimeout,
+    required Duration receiveTimeout,
   }) async {
-    switch (environment.toLowerCase()) {
+    switch (environment) {
       case 'development':
         await EnvironmentDI.initializeDevelopment(
           flavor: flavor,
@@ -231,147 +210,44 @@ class DependencyInjection {
     }
   }
 
-  /// Initialize all registered services
-  static Future<void> _initializeAllServices() async {
-    // Initialize feature flag service
+  /// Fallback logging method
+  static void _logInfo(String message) {
     try {
-      final featureFlagService = getFeatureFlagService();
-      await featureFlagService.initialize();
-    } catch (e, stackTrace) {
-      _logError(
-        'Failed to initialize feature flag service',
-        exception: e,
-        stackTrace: stackTrace,
-      );
-    }
-
-    // Get all registered services and initialize them
-    final services = <BaseService>[];
-
-    // Collect all registered services from environment DI
-    // Services are registered by EnvironmentDI based on flavor and environment
-
-    // Initialize all services
-    for (final service in services) {
-      try {
-        await service.initialize();
-      } catch (e, stackTrace) {
-        _logError(
-          'Failed to initialize service: ${service.runtimeType}',
-          exception: e,
-          stackTrace: stackTrace,
-        );
+      if (_getIt.isRegistered<Talker>(instanceName: 'main')) {
+        _getIt.get<Talker>(instanceName: 'main').info(message);
+      } else {
+        log('[INFO] $message');
       }
+    } catch (e) {
+      log('[INFO] $message');
+    }
+  }
+
+  /// Fallback error logging method
+  static void _logError(
+    String message, {
+    Object? exception,
+    StackTrace? stackTrace,
+  }) {
+    try {
+      if (_getIt.isRegistered<Talker>(instanceName: 'main')) {
+        _getIt
+            .get<Talker>(instanceName: 'main')
+            .error(message, exception, stackTrace);
+      } else {
+        log('[ERROR] $message');
+        if (exception != null) log('[ERROR] Exception: $exception');
+        if (stackTrace != null) log('[ERROR] StackTrace: $stackTrace');
+      }
+    } catch (e) {
+      log('[ERROR] $message');
+      if (exception != null) log('[ERROR] Exception: $exception');
+      if (stackTrace != null) log('[ERROR] StackTrace: $stackTrace');
     }
   }
 
   // ============================================================================
-  // CONVENIENCE INITIALIZATION METHODS
-  // ============================================================================
-
-  /// Unified initialization method for all environments
-  /// Automatically configures based on environment parameter
-  static Future<void> initializeWithEnvironment({
-    required String environment,
-    EcFlavor? flavor,
-    Map<String, String>? customHeaders,
-    String? databaseName,
-    bool? enableDatabaseInspector,
-    bool? enableLogging,
-    bool? enableFileLogging,
-    bool? enableCrashReporting,
-    bool? enableDebugMode,
-    Duration? connectTimeout,
-    Duration? receiveTimeout,
-  }) async {
-    // Set current environment for EcFlavor
-    final envLower = environment.toLowerCase();
-    EcFlavor.setEnvironment(envLower);
-
-    // Environment-specific defaults
-    final isDev = envLower == 'dev' || envLower == 'development';
-    final isStaging = envLower == 'stag' || envLower == 'staging';
-    final isProd = envLower == 'prod' || envLower == 'production';
-
-    // Apply environment-specific defaults if not explicitly provided
-    final logging = enableLogging ?? (isProd ? false : true);
-    final fileLogging = enableFileLogging ?? true;
-    final crashReporting = enableCrashReporting ?? (isDev ? false : true);
-    final dbInspector = enableDatabaseInspector ?? (isProd ? false : isDev);
-    final debugMode = enableDebugMode ?? isDev;
-
-    // Environment-specific timeouts
-    const defaultConnectTimeout = Duration(seconds: 60);
-
-    const defaultReceiveTimeout = Duration(seconds: 60);
-
-    await initialize(
-      flavor: flavor,
-      environment:
-          isDev ? 'development' : (isStaging ? 'staging' : 'production'),
-      enableLogging: logging,
-      enableFileLogging: fileLogging,
-      enableCrashReporting: crashReporting,
-      customHeaders: {
-        ...?customHeaders,
-        'X-Environment':
-            isDev ? 'development' : (isStaging ? 'staging' : 'production'),
-        'X-Debug': debugMode.toString(),
-      },
-      connectTimeout: connectTimeout ?? defaultConnectTimeout,
-      receiveTimeout: receiveTimeout ?? defaultReceiveTimeout,
-      databaseName: databaseName,
-      enableDatabaseInspector: dbInspector,
-    );
-
-    // Log debug mode status
-    if (debugMode) {
-      _logInfo('Debug mode is ENABLED for $environment environment');
-    }
-  }
-
-  /// Initialize with admin flavor
-  static Future<void> initializeAdmin({
-    String environment = 'development',
-    bool enableLogging = true,
-    Map<String, String>? customHeaders,
-    String? databaseName,
-    bool enableDatabaseInspector = true,
-  }) async {
-    await initialize(
-      flavor: EcFlavor.admin,
-      environment: environment,
-      enableLogging: enableLogging,
-      enableFileLogging: true,
-      enableCrashReporting: true,
-      customHeaders: {...?customHeaders, 'X-Flavor': 'admin'},
-      databaseName: databaseName,
-      enableDatabaseInspector: enableDatabaseInspector,
-    );
-  }
-
-  /// Initialize with user flavor
-  static Future<void> initializeUser({
-    String environment = 'production',
-    bool enableLogging = false,
-    Map<String, String>? customHeaders,
-    String? databaseName,
-    bool enableDatabaseInspector = false,
-  }) async {
-    await initialize(
-      flavor: EcFlavor.user,
-      environment: environment,
-      enableLogging: enableLogging,
-      enableFileLogging: true,
-      enableCrashReporting: true,
-      customHeaders: {...?customHeaders, 'X-Flavor': 'user'},
-      databaseName: databaseName,
-      enableDatabaseInspector: enableDatabaseInspector,
-    );
-  }
-
-  // ============================================================================
-  // SERVICE REGISTRATION METHODS
+  // SERVICE REGISTRATION & RETRIEVAL
   // ============================================================================
 
   /// Register custom service
@@ -383,39 +259,8 @@ class DependencyInjection {
     if (override && _getIt.isRegistered<T>(instanceName: instanceName)) {
       _getIt.unregister<T>(instanceName: instanceName);
     }
-
     _getIt.registerSingleton<T>(service, instanceName: instanceName);
   }
-
-  /// Register factory for service
-  static void registerFactory<T extends Object>(
-    T Function() factory, {
-    String? instanceName,
-    bool override = false,
-  }) {
-    if (override && _getIt.isRegistered<T>(instanceName: instanceName)) {
-      _getIt.unregister<T>(instanceName: instanceName);
-    }
-
-    _getIt.registerFactory<T>(factory, instanceName: instanceName);
-  }
-
-  /// Register lazy singleton
-  static void registerLazySingleton<T extends Object>(
-    T Function() factory, {
-    String? instanceName,
-    bool override = false,
-  }) {
-    if (override && _getIt.isRegistered<T>(instanceName: instanceName)) {
-      _getIt.unregister<T>(instanceName: instanceName);
-    }
-
-    _getIt.registerLazySingleton<T>(factory, instanceName: instanceName);
-  }
-
-  // ============================================================================
-  // SERVICE RETRIEVAL METHODS
-  // ============================================================================
 
   /// Get service by type
   static T get<T extends Object>({String? instanceName}) {
@@ -434,47 +279,11 @@ class DependencyInjection {
     }
   }
 
-  // ============================================================================
-  // CONVENIENCE GETTERS
-  // ============================================================================
-
   /// Check if DI is initialized
   static bool get isInitialized {
     return _getIt.isRegistered<EcFlavor>() &&
         _getIt.isRegistered<ApiClient>(instanceName: 'main') &&
         _getIt.isRegistered<EcLocalDatabase>(instanceName: 'main');
-  }
-
-  /// Get current flavor
-  static EcFlavor get currentFlavor {
-    if (!isInitialized) {
-      throw Exception('DI not initialized. Call DI.initialize() first.');
-    }
-    return _getIt.get<EcFlavor>();
-  }
-
-  /// Get main API client
-  static ApiClient get apiClient {
-    if (!isInitialized) {
-      throw Exception('DI not initialized. Call DI.initialize() first.');
-    }
-    return ApiClientDI.mainApiClient;
-  }
-
-  /// Get main logger
-  static Talker get logger {
-    if (!isInitialized) {
-      throw Exception('DI not initialized. Call DI.initialize() first.');
-    }
-    return LoggerDI.mainTalker;
-  }
-
-  /// Get local database
-  static EcLocalDatabase get localDatabase {
-    if (!isInitialized) {
-      throw Exception('DI not initialized. Call DI.initialize() first.');
-    }
-    return LocalStorageDI.mainDatabase;
   }
 
   // ============================================================================
@@ -484,24 +293,6 @@ class DependencyInjection {
   /// Dispose all dependencies
   static Future<void> dispose() async {
     try {
-      // Dispose all services
-      final services = <BaseService>[];
-
-      // Services are managed by EnvironmentDI
-
-      // Dispose all services
-      for (final service in services) {
-        try {
-          await service.dispose();
-        } catch (e, stackTrace) {
-          _logError(
-            'Failed to dispose service: ${service.runtimeType}',
-            exception: e,
-            stackTrace: stackTrace,
-          );
-        }
-      }
-
       // Dispose API clients
       await ApiClientDI.disposeAllApiClients();
 

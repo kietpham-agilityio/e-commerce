@@ -4,7 +4,6 @@ import 'package:e_commerce_app/domain/repositories/home_repository.dart';
 import 'package:ec_core/api_client/apis/dtos/product_dto.dart';
 import 'package:ec_core/api_client/apis/failure.dart';
 import 'package:ec_core/api_client/core/api_client.dart';
-import 'package:ec_core/api_client/core/fetch_background_utils.dart';
 import 'package:ec_core/api_client/helpers/api_cache_helper.dart';
 import 'package:ec_core/services/ec_local_store/boxes/user_session_box.dart';
 
