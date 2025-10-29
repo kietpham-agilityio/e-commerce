@@ -1,6 +1,6 @@
 import 'package:e_commerce_app/config/env_config.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
-import 'package:e_commerce_app/presentations/shared/error_app.dart';
+import 'package:e_commerce_app/presentations/user/shared/error_app.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_l10n/ec_l10n.dart';
 import 'package:ec_themes/themes/themes.dart';

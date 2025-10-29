@@ -14,7 +14,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     : _homeUseCase = homeUseCase,
       super(const HomeState()) {
     on<HomeLoadRequested>(_onLoadRequested);
-    on<HomeRefreshRequested>(_onRefreshRequested);
     on<DebugScenarioRequested>(_onDebugScenarioRequested);
   }
 
@@ -39,17 +38,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } catch (e) {
       final String message = e.toString();
       emit(state.copyWith(status: HomeStatus.failure, errorMessage: message));
-    }
-  }
-
-  Future<void> _onRefreshRequested(
-    HomeRefreshRequested event,
-    Emitter<HomeState> emit,
-  ) async {
-    try {
-      add(const HomeLoadRequested());
-    } finally {
-      event.completer.complete();
     }
   }
 

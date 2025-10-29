@@ -3,7 +3,7 @@ import 'package:ec_themes/themes/widgets/textfield/form_input.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../domain/usecases/login_usecase.dart';
+import '../../../../domain/usecases/login_usecase.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';

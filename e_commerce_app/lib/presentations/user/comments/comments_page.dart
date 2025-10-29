@@ -4,7 +4,7 @@ import 'package:ec_themes/ec_design.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/di/api_client_module.dart';
+import '../../../core/di/api_client_module.dart';
 import 'bloc/comments_bloc.dart';
 
 class CommentsPage extends StatelessWidget {
