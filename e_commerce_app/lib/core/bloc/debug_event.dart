@@ -1,17 +1,17 @@
-part of 'app_bloc.dart';
+part of 'debug_bloc.dart';
 
 /// Base class for App events
-abstract class AppEvent {
-  const AppEvent();
+abstract class DebugEvent {
+  const DebugEvent();
 }
 
 /// Event to load initial feature flags
-class AppFeatureFlagsLoaded extends AppEvent {
+class AppFeatureFlagsLoaded extends DebugEvent {
   const AppFeatureFlagsLoaded();
 }
 
 /// Event to update feature flags
-class AppFeatureFlagsUpdated extends AppEvent {
+class AppFeatureFlagsUpdated extends DebugEvent {
   final EcFeatureFlag flags;
   final String? flagName;
   final bool? oldValue;
@@ -26,11 +26,11 @@ class AppFeatureFlagsUpdated extends AppEvent {
 }
 
 /// Event to refresh feature flags from service
-class AppFeatureFlagsRefreshed extends AppEvent {
+class AppFeatureFlagsRefreshed extends DebugEvent {
   const AppFeatureFlagsRefreshed();
 }
 
 /// Event to fetch feature flags from API after login
-class AppFeatureFlagsFetchedFromApi extends AppEvent {
+class AppFeatureFlagsFetchedFromApi extends DebugEvent {
   const AppFeatureFlagsFetchedFromApi();
 }

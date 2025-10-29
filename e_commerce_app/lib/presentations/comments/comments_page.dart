@@ -1,4 +1,4 @@
-import 'package:e_commerce_app/core/bloc/app_bloc.dart';
+import 'package:e_commerce_app/core/bloc/debug_bloc.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_themes/ec_design.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +31,7 @@ class _CommentsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppBloc, AppState>(
+    return BlocBuilder<DebugBloc, DebugState>(
       builder: (context, appState) {
         final isCommentsEnabled = appState.flags.enableCommentsPage ?? false;
 

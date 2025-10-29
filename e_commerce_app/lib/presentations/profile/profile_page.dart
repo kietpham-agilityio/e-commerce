@@ -1,4 +1,4 @@
-import 'package:e_commerce_app/core/bloc/app_bloc.dart';
+import 'package:e_commerce_app/core/bloc/debug_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
 import 'package:e_commerce_app/domain/usecases/login_usecase.dart';
@@ -34,7 +34,7 @@ class ProfilePage extends StatelessWidget {
               }
             }
           },
-          child: BlocBuilder<AppBloc, AppState>(
+          child: BlocBuilder<DebugBloc, DebugState>(
             builder: (context, appState) {
               final isProfileEnabled =
                   appState.flags.enableProfilePage ?? false;

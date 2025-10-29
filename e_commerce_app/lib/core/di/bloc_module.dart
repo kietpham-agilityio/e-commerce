@@ -1,7 +1,7 @@
 import 'package:ec_core/ec_core.dart';
 
 import '../../domain/usecases/feature_flag_usecase.dart';
-import '../bloc/app_bloc.dart';
+import '../bloc/debug_bloc.dart';
 
 /// BLoC module for registering application BLoCs
 class BlocModule {
@@ -16,8 +16,8 @@ class BlocModule {
 
     // Register AppBloc as factory (new instance each time)
     // This allows multiple BlocProvider to create their own instances
-    _getIt.registerFactory<AppBloc>(
-      () => AppBloc(
+    _getIt.registerFactory<DebugBloc>(
+      () => DebugBloc(
         featureFlagService: _getIt<FeatureFlagService>(),
         getFeatureFlagUseCase: _getIt<GetFeatureFlagUseCase>(),
         updateFeatureFlagUseCase: _getIt<UpdateFeatureFlagUseCase>(),
@@ -26,19 +26,19 @@ class BlocModule {
   }
 
   /// Get AppBloc instance
-  static AppBloc get appBloc => _getIt<AppBloc>();
+  static DebugBloc get appBloc => _getIt<DebugBloc>();
 
   /// Get FeatureFlagService instance
   static FeatureFlagService get featureFlagService =>
       _getIt<FeatureFlagService>();
 
   /// Check if BLoCs are registered
-  static bool get isRegistered => _getIt.isRegistered<AppBloc>();
+  static bool get isRegistered => _getIt.isRegistered<DebugBloc>();
 
   /// Reset all BLoCs (useful for testing)
   static void reset() {
-    if (_getIt.isRegistered<AppBloc>()) {
-      _getIt.unregister<AppBloc>();
+    if (_getIt.isRegistered<DebugBloc>()) {
+      _getIt.unregister<DebugBloc>();
     }
     if (_getIt.isRegistered<FeatureFlagService>()) {
       _getIt.unregister<FeatureFlagService>();

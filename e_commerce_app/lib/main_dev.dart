@@ -11,34 +11,31 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/di/di.dart';
+import 'presentations/shared/error_app.dart';
 
 void main() async {
   // Ensure Flutter binding is initialized
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Load environment variables
-  await EnvConfig.load('.env.dev');
-
-  // Initialize Supabase
-  if (EnvConfig.hasSupabaseCredentials) {
-    await Supabase.initialize(
-      url: EnvConfig.supabaseUrl!,
-      anonKey: EnvConfig.supabaseAnonKey!,
-    );
-  }
-
-  await Firebase.initializeApp();
-
   try {
+    // Load environment variables
+    await EnvConfig.load('.env.dev');
+
+    // Initialize Supabase
+    if (EnvConfig.hasSupabaseCredentials) {
+      await Supabase.initialize(
+        url: EnvConfig.supabaseUrl!,
+        anonKey: EnvConfig.supabaseAnonKey!,
+      );
+    }
+
+    await Firebase.initializeApp();
+
     // Initialize dependency injection using ec_core DI system
     await DI.initializeWithEnvironment(
       environment: 'dev',
       flavor: EcFlavor.user, // or EcFlavor.admin for admin flavor
-      customHeaders: EnvConfig.customHeaders(),
       databaseName: EnvConfig.databaseName('dev'),
-      enableDatabaseInspector: EnvConfig.enableDatabaseInspector('dev'),
-      enableLogging: EnvConfig.enableApiLogging('dev'),
-      enableDebugMode: EnvConfig.enableDebugMode('dev'),
     );
 
     // Initialize app-specific dependencies (this will override the API client)
@@ -65,7 +62,14 @@ void main() async {
     debugPrint('Stack trace: $stackTrace');
 
     // Run app anyway with error handling
-    runApp(ErrorApp(error: e));
+
+    runApp(
+      ErrorApp(
+        error: e,
+        onRetry: () => main(),
+        title: 'E-Commerce Dev - Error',
+      ),
+    );
   }
 }
 
@@ -100,65 +104,6 @@ class MyApp extends StatelessWidget {
         supportedLocales: AppLocale.supportedLocales,
         localizationsDelegates: AppLocale.localizationsDelegates,
         routerConfig: routerConfig,
-      ),
-    );
-  }
-}
-
-/// Error app widget to display initialization errors
-class ErrorApp extends StatelessWidget {
-  final Object error;
-
-  const ErrorApp({super.key, required this.error});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'E-Commerce Dev - Error',
-      theme: EcDesignTheme.lightTheme,
-      darkTheme: EcDesignTheme.darkTheme,
-      themeMode: ThemeMode.system,
-      supportedLocales: AppLocale.supportedLocales,
-      localizationsDelegates: AppLocale.localizationsDelegates,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            AppLocale.of(context)?.errorRegistrationFailed ??
-                'Initialization Error',
-          ),
-          backgroundColor: Colors.red,
-          foregroundColor: Colors.white,
-        ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.error_outline, size: 64, color: Colors.red),
-                const SizedBox(height: 16),
-                Text(
-                  AppLocale.of(context)?.errorServer ??
-                      'Failed to initialize the application',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 8),
-                Text('Error: $error', textAlign: TextAlign.center),
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: () {
-                    // Restart the app
-                    main();
-                  },
-                  child: Text(
-                    AppLocale.of(context)?.generalRetryBtn ?? 'Retry',
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }

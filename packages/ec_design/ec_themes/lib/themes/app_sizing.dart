@@ -24,6 +24,76 @@ class AppSizing {
   /// The current theme type (admin or user).
   final ECThemeType type;
 
+  double get xxxs => switch (type) {
+    ECThemeType.admin => AdminSizing.xxxs,
+    ECThemeType.user => UserSizing.xxxs,
+  };
+
+  double get xxs => switch (type) {
+    ECThemeType.admin => AdminSizing.xxs,
+    ECThemeType.user => UserSizing.xxs,
+  };
+
+  double get xs => switch (type) {
+    ECThemeType.admin => AdminSizing.xs,
+    ECThemeType.user => UserSizing.xs,
+  };
+
+  double get sm => switch (type) {
+    ECThemeType.admin => AdminSizing.sm,
+    ECThemeType.user => UserSizing.sm,
+  };
+
+  double get md => switch (type) {
+    ECThemeType.admin => AdminSizing.md,
+    ECThemeType.user => UserSizing.md,
+  };
+
+  double get lg => switch (type) {
+    ECThemeType.admin => AdminSizing.lg,
+    ECThemeType.user => UserSizing.lg,
+  };
+
+  double get xl => switch (type) {
+    ECThemeType.admin => AdminSizing.xl,
+    ECThemeType.user => UserSizing.xl,
+  };
+
+  double get xxl => switch (type) {
+    ECThemeType.admin => AdminSizing.xxl,
+    ECThemeType.user => UserSizing.xxl,
+  };
+
+  double get xxxl => switch (type) {
+    ECThemeType.admin => AdminSizing.xxxl,
+    ECThemeType.user => UserSizing.xxxl,
+  };
+
+  double get huge => switch (type) {
+    ECThemeType.admin => AdminSizing.huge,
+    ECThemeType.user => UserSizing.huge,
+  };
+
+  double get xHuge => switch (type) {
+    ECThemeType.admin => AdminSizing.xHuge,
+    ECThemeType.user => UserSizing.xHuge,
+  };
+
+  double get massive => switch (type) {
+    ECThemeType.admin => AdminSizing.massive,
+    ECThemeType.user => UserSizing.massive,
+  };
+
+  double get xMassive => switch (type) {
+    ECThemeType.admin => AdminSizing.xMassive,
+    ECThemeType.user => UserSizing.xMassive,
+  };
+
+  double get giant => switch (type) {
+    ECThemeType.admin => AdminSizing.giant,
+    ECThemeType.user => UserSizing.giant,
+  };
+
   /// Height of a small icon.
   double get smallIcon => switch (type) {
     ECThemeType.admin => AdminSizing.smallIcon,

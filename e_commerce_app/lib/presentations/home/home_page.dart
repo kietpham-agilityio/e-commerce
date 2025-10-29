@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:e_commerce_app/config/env_config.dart';
-import 'package:e_commerce_app/core/bloc/app_bloc.dart';
+import 'package:e_commerce_app/core/bloc/debug_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
 import 'package:e_commerce_app/core/utils/price_formatter.dart';
@@ -228,7 +228,7 @@ class _DebugButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppBloc, AppState>(
+    return BlocConsumer<DebugBloc, DebugState>(
       listener: (context, state) {
         // Navigate back to first route when Database Inspector is turned off
         Navigator.of(context).popUntil((route) => route.isFirst);

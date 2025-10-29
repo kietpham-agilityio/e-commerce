@@ -1,4 +1,4 @@
-import 'package:e_commerce_app/core/bloc/app_bloc.dart';
+import 'package:e_commerce_app/core/bloc/debug_bloc.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_themes/ec_design.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +30,7 @@ class _ItemsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return BlocBuilder<AppBloc, AppState>(
+    return BlocBuilder<DebugBloc, DebugState>(
       builder: (context, appState) {
         final flags = appState.flags;
         final isItemsEnabled = flags.enableItemsPage ?? false;

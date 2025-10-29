@@ -1,5 +1,5 @@
 import 'package:e_commerce_app/config/env_config.dart';
-import 'package:e_commerce_app/core/bloc/app_bloc.dart';
+import 'package:e_commerce_app/core/bloc/debug_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/domain/usecases/shop_usecase.dart';
 import 'package:e_commerce_app/presentations/shop/bloc/shop_bloc.dart';
@@ -22,7 +22,7 @@ class ShopPage extends StatelessWidget {
     final ecThemeExt = ecTheme.extension<EcThemeExtension>()!;
     final spacing = ecThemeExt.spacing;
 
-    return BlocBuilder<AppBloc, AppState>(
+    return BlocBuilder<DebugBloc, DebugState>(
       builder: (context, appState) {
         final isShopEnabled = appState.flags.enableShopPage ?? false;
 
