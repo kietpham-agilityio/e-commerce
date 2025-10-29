@@ -81,6 +81,10 @@ class ApiInternalErrorCode with _$ApiInternalErrorCode {
   factory ApiInternalErrorCode.authDoNotHavePermissions() =
       _ApiInternalErrorCodeAuthDoNotHavePermissions;
   factory ApiInternalErrorCode.authFailed() = _ApiInternalErrorCodeAuthFailed;
+
+  // Admin Access Errors (403)
+  factory ApiInternalErrorCode.adminAccessDenied() = _AdminAccessDenied;
+
   factory ApiInternalErrorCode.unsupported() = _ApiInternalErrorCodeUnSupported;
 
   /// Get HTTP status code for this error
@@ -117,6 +121,7 @@ class ApiInternalErrorCode with _$ApiInternalErrorCode {
       signatureDoesNotMatch: () => 403,
       invalidUploadSignature: () => 403,
       s3InvalidAccessKeyId: () => 403,
+      adminAccessDenied: () => 403,
 
       // 413 Payload Too Large
       entityTooLarge: () => 413,
@@ -198,6 +203,7 @@ class ApiInternalErrorCode with _$ApiInternalErrorCode {
       authNonActiveUserError: () => 'AuthNonActiveUserError',
       authDoNotHavePermissions: () => 'AuthDoNotHavePermissions',
       authFailed: () => 'AuthFailed',
+      adminAccessDenied: () => 'AdminAccessDenied',
       unsupported: () => 'Unsupported',
     );
   }
@@ -249,6 +255,8 @@ class ApiInternalErrorCode with _$ApiInternalErrorCode {
       authDoNotHavePermissions:
           () => 'User does not have required permissions.',
       authFailed: () => 'Authentication failed.',
+      adminAccessDenied:
+          () => 'Access denied. This account is not authorized as admin.',
       unsupported: () => 'Unsupported error type.',
     );
   }
@@ -291,6 +299,7 @@ class ApiInternalErrorCode with _$ApiInternalErrorCode {
       'S3Error': ApiInternalErrorCode.s3Error(),
       'S3MaximumCredentialsLimit':
           ApiInternalErrorCode.s3MaximumCredentialsLimit(),
+      'AdminAccessDenied': ApiInternalErrorCode.adminAccessDenied(),
     };
 
     return codes[code];

@@ -1,3 +1,4 @@
+import 'package:ec_core/api_client/apis/api_internal_error_code.dart';
 import 'package:ec_core/api_client/apis/failure.dart';
 import 'package:ec_themes/themes/widgets/textfield/form_input.dart';
 import 'package:equatable/equatable.dart';
@@ -108,11 +109,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     // Check if email is in admin list before attempting login
     if (!AdminConfig.isAdminEmail(email.value)) {
+      final failure = Failure(
+        'Access denied',
+        internalErrorCode: ApiInternalErrorCode.adminAccessDenied(),
+      );
       emit(
         state.copyWith(
           status: LoginStatus.failure,
-          errorMessage:
-              'Access denied. This account is not authorized as admin.',
+          errorMessage: failure.detailedDescription,
         ),
       );
       return;
@@ -128,11 +132,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       // Double-check that the logged-in user is an admin
       if (!AdminConfig.isAdminEmail(user.email)) {
+        final failure = Failure(
+          'Access denied',
+          internalErrorCode: ApiInternalErrorCode.adminAccessDenied(),
+        );
         emit(
           state.copyWith(
             status: LoginStatus.failure,
-            errorMessage:
-                'Access denied. This account is not authorized as admin.',
+            errorMessage: failure.detailedDescription,
           ),
         );
         return;
@@ -140,27 +147,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       emit(state.copyWith(status: LoginStatus.success));
     } on Failure catch (failure) {
-      // Handle different error types based on use case requirements
-      String errorMessage = 'Login failed. Please try again.';
-
-      if (failure.isAuthError) {
-        errorMessage = 'Invalid email or password.';
-      } else if (failure.isNetworkError) {
-        errorMessage =
-            'Unable to connect. Please check your internet connection.';
-      } else if (failure.isServerError) {
-        errorMessage =
-            'Login service is temporarily unavailable. Try again later.';
-      }
-
-      emit(
-        state.copyWith(status: LoginStatus.failure, errorMessage: errorMessage),
-      );
-    } catch (e) {
       emit(
         state.copyWith(
           status: LoginStatus.failure,
-          errorMessage: 'An unexpected error occurred. Please try again.',
+          errorMessage: failure.detailedDescription,
+        ),
+      );
+    } catch (e) {
+      final failure = Failure.fromException(
+        e is Exception ? e : Exception(e.toString()),
+      );
+      emit(
+        state.copyWith(
+          status: LoginStatus.failure,
+          errorMessage: failure.detailedDescription,
         ),
       );
     }
@@ -178,11 +178,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       // Check if the user from Google login is an admin
       if (!AdminConfig.isAdminEmail(user.email)) {
+        final failure = Failure(
+          'Access denied',
+          internalErrorCode: ApiInternalErrorCode.adminAccessDenied(),
+        );
         emit(
           state.copyWith(
             status: LoginStatus.failure,
-            errorMessage:
-                'Access denied. This account is not authorized as admin.',
+            errorMessage: failure.detailedDescription,
           ),
         );
         return;
@@ -193,17 +196,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(
         state.copyWith(
           status: LoginStatus.failure,
-          errorMessage:
-              failure.isNetworkError
-                  ? 'Unable to connect. Please check your internet connection.'
-                  : 'Login with Google failed. Please try again.',
+          errorMessage: failure.detailedDescription,
         ),
       );
     } catch (e) {
+      final failure = Failure.fromException(
+        e is Exception ? e : Exception(e.toString()),
+      );
       emit(
         state.copyWith(
           status: LoginStatus.failure,
-          errorMessage: 'Login with Google failed. Please try again.',
+          errorMessage: failure.detailedDescription,
         ),
       );
     }
@@ -221,11 +224,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       // Check if the user from Facebook login is an admin
       if (!AdminConfig.isAdminEmail(user.email)) {
+        final failure = Failure(
+          'Access denied',
+          internalErrorCode: ApiInternalErrorCode.adminAccessDenied(),
+        );
         emit(
           state.copyWith(
             status: LoginStatus.failure,
-            errorMessage:
-                'Access denied. This account is not authorized as admin.',
+            errorMessage: failure.detailedDescription,
           ),
         );
         return;
@@ -236,17 +242,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(
         state.copyWith(
           status: LoginStatus.failure,
-          errorMessage:
-              failure.isNetworkError
-                  ? 'Unable to connect. Please check your internet connection.'
-                  : 'Login with Facebook failed. Please try again.',
+          errorMessage: failure.detailedDescription,
         ),
       );
     } catch (e) {
+      final failure = Failure.fromException(
+        e is Exception ? e : Exception(e.toString()),
+      );
       emit(
         state.copyWith(
           status: LoginStatus.failure,
-          errorMessage: 'Login with Facebook failed. Please try again.',
+          errorMessage: failure.detailedDescription,
         ),
       );
     }

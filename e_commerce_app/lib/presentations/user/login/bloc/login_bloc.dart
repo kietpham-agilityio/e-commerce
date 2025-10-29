@@ -115,27 +115,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       emit(state.copyWith(status: LoginStatus.success));
     } on Failure catch (failure) {
-      // Handle different error types based on use case requirements
-      String errorMessage = 'Login failed. Please try again.';
-
-      if (failure.isAuthError) {
-        errorMessage = 'Invalid email or password.';
-      } else if (failure.isNetworkError) {
-        errorMessage =
-            'Unable to connect. Please check your internet connection.';
-      } else if (failure.isServerError) {
-        errorMessage =
-            'Login service is temporarily unavailable. Try again later.';
-      }
-
-      emit(
-        state.copyWith(status: LoginStatus.failure, errorMessage: errorMessage),
-      );
-    } catch (e) {
       emit(
         state.copyWith(
           status: LoginStatus.failure,
-          errorMessage: 'An unexpected error occurred. Please try again.',
+          errorMessage: failure.detailedDescription,
+        ),
+      );
+    } catch (e) {
+      final failure = Failure.fromException(
+        e is Exception ? e : Exception(e.toString()),
+      );
+      emit(
+        state.copyWith(
+          status: LoginStatus.failure,
+          errorMessage: failure.detailedDescription,
         ),
       );
     }
@@ -155,17 +148,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(
         state.copyWith(
           status: LoginStatus.failure,
-          errorMessage:
-              failure.isNetworkError
-                  ? 'Unable to connect. Please check your internet connection.'
-                  : 'Login with Google failed. Please try again.',
+          errorMessage: failure.detailedDescription,
         ),
       );
     } catch (e) {
+      final failure = Failure.fromException(
+        e is Exception ? e : Exception(e.toString()),
+      );
       emit(
         state.copyWith(
           status: LoginStatus.failure,
-          errorMessage: 'Login with Google failed. Please try again.',
+          errorMessage: failure.detailedDescription,
         ),
       );
     }
@@ -185,17 +178,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(
         state.copyWith(
           status: LoginStatus.failure,
-          errorMessage:
-              failure.isNetworkError
-                  ? 'Unable to connect. Please check your internet connection.'
-                  : 'Login with Facebook failed. Please try again.',
+          errorMessage: failure.detailedDescription,
         ),
       );
     } catch (e) {
+      final failure = Failure.fromException(
+        e is Exception ? e : Exception(e.toString()),
+      );
       emit(
         state.copyWith(
           status: LoginStatus.failure,
-          errorMessage: 'Login with Facebook failed. Please try again.',
+          errorMessage: failure.detailedDescription,
         ),
       );
     }
