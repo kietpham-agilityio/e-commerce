@@ -1,14 +1,16 @@
+import 'package:ec_core/api_client/apis/api_internal_error_code.dart';
 import 'package:ec_core/api_client/apis/failure.dart';
 import 'package:ec_themes/themes/widgets/textfield/form_input.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../config/admin_config.dart';
 import '../../../../domain/usecases/login_usecase.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
-/// BLoC for managing login page state and business logic
+/// BLoC for managing admin login page state and business logic
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({
     required LoginUseCase loginUseCase,
@@ -84,7 +86,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
   }
 
-  /// Handle login form submission
+  /// Handle login form submission with admin validation
   Future<void> _onSubmitted(
     LoginSubmitted event,
     Emitter<LoginState> emit,
@@ -105,13 +107,43 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       return;
     }
 
+    // Check if email is in admin list before attempting login
+    if (!AdminConfig.isAdminEmail(email.value)) {
+      final failure = Failure(
+        'Access denied',
+        internalErrorCode: ApiInternalErrorCode.adminAccessDenied(),
+      );
+      emit(
+        state.copyWith(
+          status: LoginStatus.failure,
+          errorMessage: failure.detailedDescription,
+        ),
+      );
+      return;
+    }
+
     emit(state.copyWith(status: LoginStatus.loading, errorMessage: null));
 
     try {
-      await _loginUseCase(
+      final user = await _loginUseCase(
         email: state.email.value,
         password: state.password.value,
       );
+
+      // Double-check that the logged-in user is an admin
+      if (!AdminConfig.isAdminEmail(user.email)) {
+        final failure = Failure(
+          'Access denied',
+          internalErrorCode: ApiInternalErrorCode.adminAccessDenied(),
+        );
+        emit(
+          state.copyWith(
+            status: LoginStatus.failure,
+            errorMessage: failure.detailedDescription,
+          ),
+        );
+        return;
+      }
 
       emit(state.copyWith(status: LoginStatus.success));
     } on Failure catch (failure) {
@@ -134,7 +166,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  /// Handle Google login
+  /// Handle Google login with admin validation
   Future<void> _onGoogleLoginPressed(
     LoginWithGooglePressed event,
     Emitter<LoginState> emit,
@@ -142,7 +174,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(state.copyWith(status: LoginStatus.loading, errorMessage: null));
 
     try {
-      await _loginWithGoogleUseCase();
+      final user = await _loginWithGoogleUseCase();
+
+      // Check if the user from Google login is an admin
+      if (!AdminConfig.isAdminEmail(user.email)) {
+        final failure = Failure(
+          'Access denied',
+          internalErrorCode: ApiInternalErrorCode.adminAccessDenied(),
+        );
+        emit(
+          state.copyWith(
+            status: LoginStatus.failure,
+            errorMessage: failure.detailedDescription,
+          ),
+        );
+        return;
+      }
+
       emit(state.copyWith(status: LoginStatus.success));
     } on Failure catch (failure) {
       emit(
@@ -164,7 +212,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  /// Handle Facebook login
+  /// Handle Facebook login with admin validation
   Future<void> _onFacebookLoginPressed(
     LoginWithFacebookPressed event,
     Emitter<LoginState> emit,
@@ -172,7 +220,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(state.copyWith(status: LoginStatus.loading, errorMessage: null));
 
     try {
-      await _loginWithFacebookUseCase();
+      final user = await _loginWithFacebookUseCase();
+
+      // Check if the user from Facebook login is an admin
+      if (!AdminConfig.isAdminEmail(user.email)) {
+        final failure = Failure(
+          'Access denied',
+          internalErrorCode: ApiInternalErrorCode.adminAccessDenied(),
+        );
+        emit(
+          state.copyWith(
+            status: LoginStatus.failure,
+            errorMessage: failure.detailedDescription,
+          ),
+        );
+        return;
+      }
+
       emit(state.copyWith(status: LoginStatus.success));
     } on Failure catch (failure) {
       emit(

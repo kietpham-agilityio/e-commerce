@@ -110,6 +110,11 @@ class AppRouter {
         path: AdminAppPaths.login.path,
         builder: (context, state) => const AdminLoginPage(),
       ),
+      GoRoute(
+        name: AdminAppPaths.home.name,
+        path: AdminAppPaths.home.path,
+        builder: (context, state) => const AdminPage(),
+      ),
     ],
     errorBuilder:
         (context, state) =>
@@ -148,7 +153,8 @@ enum UserAppPaths {
 }
 
 enum AdminAppPaths {
-  login(name: 'login', path: '/login');
+  login(name: 'login', path: '/login'),
+  home(name: 'home', path: '/home');
 
   const AdminAppPaths({required this.name, required this.path});
 
