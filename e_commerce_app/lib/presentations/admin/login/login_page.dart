@@ -1,60 +1,119 @@
+import 'package:e_commerce_app/core/di/app_module.dart';
+import 'package:e_commerce_app/core/routes/app_router.dart';
+import 'package:e_commerce_app/domain/usecases/login_usecase.dart';
+import 'package:ec_l10n/generated/l10n.dart';
 import 'package:ec_themes/ec_design.dart';
+import 'package:ec_themes/themes/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
+import 'bloc/login_bloc.dart';
+
+/// Admin login page with email/password and social login options
 class AdminLoginPage extends StatelessWidget {
   const AdminLoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    return BlocProvider(
+      create:
+          (context) => LoginBloc(
+            loginUseCase: AppModule.getIt<LoginUseCase>(),
+            loginWithGoogleUseCase: AppModule.getIt<LoginWithGoogleUseCase>(),
+            loginWithFacebookUseCase:
+                AppModule.getIt<LoginWithFacebookUseCase>(),
+          ),
+      child: const AdminLoginView(),
+    );
+  }
+}
 
-    return Scaffold(
-      backgroundColor: colorScheme.surfaceDim,
-      appBar: EcAppBar(
-        automaticallyImplyLeading: false,
+/// Admin login view with form and UI
+class AdminLoginView extends StatefulWidget {
+  const AdminLoginView({super.key});
+
+  @override
+  State<AdminLoginView> createState() => _AdminLoginViewState();
+}
+
+class _AdminLoginViewState extends State<AdminLoginView> {
+  final _emailFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocale.of(context)!;
+    final ecTheme = Theme.of(context);
+    final colorScheme = ecTheme.colorScheme;
+    final ecThemeExt = ecTheme.extension<EcThemeExtension>()!;
+    final spacing = ecThemeExt.spacing;
+
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (context, state) {
+        if (state.status == LoginStatus.success) {
+          // Navigate to admin home on successful login
+          context.pushReplacementNamed(AdminAppPaths.home.name);
+        } else if (state.status == LoginStatus.failure) {
+          // Show error message
+          if (state.errorMessage != null) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+          }
+        }
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: colorScheme.surfaceDim,
-        elevation: 0,
-
-        title: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: EcHeadlineLargeText('Login', fontWeight: FontWeight.bold),
+        appBar: EcAppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: colorScheme.surfaceDim,
+          elevation: 0,
+          title: Padding(
+            padding: EdgeInsets.symmetric(horizontal: spacing.md),
+            child: EcHeadlineLargeText(
+              l10n.loginTitle,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          centerTitle: false,
         ),
-        centerTitle: false,
-      ),
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          // Unfocus all text fields when tapping outside
-          FocusScope.of(context).unfocus();
-        },
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // const SizedBox(height: 40),
-                Spacer(),
+        body: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: spacing.xHuge),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Spacer(),
 
-                // Email and password form
-                const _EmailInput(),
-                // const SizedBox(height: 20),
-                const _PasswordInput(),
-                const SizedBox(height: 16),
+                  _EmailInput(emailFocusNode: _emailFocusNode),
+                  _PasswordInput(passwordFocusNode: _passwordFocusNode),
+                  SizedBox(height: spacing.xl),
 
-                // Forgot password link
-                const _ForgotPasswordButton(),
-                const SizedBox(height: 32),
+                  const _ForgotPasswordButton(),
+                  SizedBox(height: spacing.xMassive),
 
-                // Login button
-                const _LoginButton(),
-                Spacer(),
+                  const _LoginButton(),
+                  const Spacer(),
 
-                // Social login section
-                const _SocialLoginSection(),
-                const SizedBox(height: 20),
-              ],
+                  const _SocialLoginSection(),
+                  SizedBox(height: spacing.xxxl),
+                ],
+              ),
             ),
           ),
         ),
@@ -63,66 +122,86 @@ class AdminLoginPage extends StatelessWidget {
   }
 }
 
-class _EmailInput extends StatefulWidget {
-  const _EmailInput();
+/// Email input field with validation
+class _EmailInput extends StatelessWidget {
+  const _EmailInput({required this.emailFocusNode});
 
-  @override
-  State<_EmailInput> createState() => __EmailInputState();
-}
+  final FocusNode emailFocusNode;
 
-class __EmailInputState extends State<_EmailInput> {
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocale.of(context)!;
+    final email = context.select((LoginBloc bloc) => bloc.state.email);
+
     return EcEmailField(
-      focusNode: FocusNode(),
-      hintText: 'muffin.sweet@gmail.com',
-      labelText: '', // No label for clean design
-      semanticsLabel: 'Email input field',
-      onChanged: (email) {},
-      onValidation: () {},
+      focusNode: emailFocusNode,
+      hintText: l10n.loginEmailHint,
+      semanticsLabel: l10n.semanticEmailInputField,
+      errorMessage: email.displayError?.getEmailMessage(),
+      onChanged: (email) {
+        context.read<LoginBloc>().add(LoginEmailChanged(email));
+      },
+      onValidation: () {
+        context.read<LoginBloc>().add(const LoginEmailUnfocused());
+      },
       textInputAction: TextInputAction.next,
     );
   }
 }
 
+/// Password input field with validation
 class _PasswordInput extends StatelessWidget {
-  const _PasswordInput();
+  const _PasswordInput({required this.passwordFocusNode});
+
+  final FocusNode passwordFocusNode;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocale.of(context)!;
+    final password = context.select((LoginBloc bloc) => bloc.state.password);
+
     return EcPasswordField(
-      focusNode: FocusNode(),
-      hintText: 'Password',
-      labelText: '', // No label for clean design
-      semanticsLabel: 'Password input field',
-      onChanged: (password) {},
-      onValidation: () {},
+      focusNode: passwordFocusNode,
+      hintText: l10n.loginPasswordHint,
+      semanticsLabel: l10n.semanticPasswordInputField,
+      errorMessage: password.displayError?.getPasswordMessage(),
+      onChanged: (password) {
+        context.read<LoginBloc>().add(LoginPasswordChanged(password));
+      },
+      onValidation: () {
+        context.read<LoginBloc>().add(const LoginPasswordUnfocused());
+      },
       textInputAction: TextInputAction.done,
     );
   }
 }
 
+/// Forgot password button
 class _ForgotPasswordButton extends StatelessWidget {
   const _ForgotPasswordButton();
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocale.of(context)!;
+    final ecTheme = Theme.of(context);
+    final colorScheme = ecTheme.colorScheme;
+    final ecThemeExt = ecTheme.extension<EcThemeExtension>()!;
+    final spacing = ecThemeExt.spacing;
 
     return Align(
       alignment: Alignment.centerRight,
       child: GestureDetector(
         onTap: () {
-          // TODO: Navigate to forgot password page
+          context.read<LoginBloc>().add(const LoginForgotPasswordPressed());
         },
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             EcBodySmallText(
-              'Forgot your password?',
+              l10n.loginForgotPasswordText,
               color: colorScheme.secondary,
             ),
-            const SizedBox(width: 4),
+            SizedBox(width: spacing.xxs),
             EcAssets.arrowRightFilled(color: colorScheme.primary),
           ],
         ),
@@ -137,7 +216,36 @@ class _LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return EcElevatedButton(text: 'LOGIN', onPressed: () {});
+    final l10n = AppLocale.of(context)!;
+    final ecTheme = Theme.of(context);
+    final colorScheme = ecTheme.colorScheme;
+    final ecThemeExt = ecTheme.extension<EcThemeExtension>()!;
+    final sizing = ecThemeExt.sizing;
+    final isLoading = context.select(
+      (LoginBloc bloc) => bloc.state.status == LoginStatus.loading,
+    );
+    final isValid = context.select((LoginBloc bloc) => bloc.state.isValid);
+
+    return EcElevatedButton(
+      text: l10n.loginBtn.toUpperCase(),
+      onPressed:
+          isValid && !isLoading
+              ? () => context.read<LoginBloc>().add(const LoginSubmitted())
+              : null,
+      child:
+          isLoading
+              ? SizedBox(
+                height: sizing.xxxl,
+                width: sizing.xxxl,
+                child: CircularProgressIndicator(
+                  strokeWidth: sizing.xxxs,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    colorScheme.onPrimary,
+                  ),
+                ),
+              )
+              : null,
+    );
   }
 }
 
@@ -147,38 +255,76 @@ class _SocialLoginSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocale.of(context)!;
+    final ecTheme = Theme.of(context);
+    final colorScheme = ecTheme.colorScheme;
+    final ecThemeExt = ecTheme.extension<EcThemeExtension>()!;
+    final spacing = ecThemeExt.spacing;
+    final isLoading = context.select(
+      (LoginBloc bloc) => bloc.state.status == LoginStatus.loading,
+    );
 
     return Column(
       children: [
-        EcBodyMediumText('Or login with social account'),
-        const SizedBox(height: 24),
+        EcBodyMediumText(l10n.loginSocialAccountSubtitle),
+        SizedBox(height: spacing.xHuge),
 
-        // Social login buttons
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            EcIconButton(
+            _SocialLoginButton(
               icon: EcAssets.google(),
-              onPressed: () {},
-              width: 92,
-              height: 64,
-              borderRadius: 24,
-              backgroundColor: colorScheme.onPrimary,
+              onPressed:
+                  !isLoading
+                      ? () {
+                        context.read<LoginBloc>().add(
+                          const LoginWithGooglePressed(),
+                        );
+                      }
+                      : null,
+              colorScheme: colorScheme,
             ),
-            const SizedBox(width: 16),
-            EcIconButton(
+            SizedBox(width: spacing.xl),
+            _SocialLoginButton(
               icon: EcAssets.facebook(),
-              onPressed: () {},
-              // size: 56,
-              borderRadius: 24,
-              backgroundColor: colorScheme.onPrimary,
-              width: 92,
-              height: 64,
+              onPressed:
+                  !isLoading
+                      ? () {
+                        context.read<LoginBloc>().add(
+                          const LoginWithFacebookPressed(),
+                        );
+                      }
+                      : null,
+              colorScheme: colorScheme,
             ),
           ],
         ),
       ],
+    );
+  }
+}
+
+/// Social login button
+class _SocialLoginButton extends StatelessWidget {
+  const _SocialLoginButton({
+    required this.icon,
+    required this.onPressed,
+    required this.colorScheme,
+  });
+
+  final Widget icon;
+  final VoidCallback? onPressed;
+  final ColorScheme colorScheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return EcIconButton(
+      icon: icon,
+      onPressed: onPressed,
+      width: 92,
+      height: 64,
+      borderRadius: 24,
+      backgroundColor: colorScheme.onPrimary,
     );
   }
 }
