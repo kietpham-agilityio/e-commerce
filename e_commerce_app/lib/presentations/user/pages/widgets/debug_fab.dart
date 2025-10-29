@@ -1,4 +1,4 @@
-import 'package:e_commerce_app/presentations/pages/feature_flag_debug_panel.dart';
+import 'package:e_commerce_app/presentations/user/pages/feature_flag_debug_panel.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_themes/ec_design.dart';
 import 'package:flutter/material.dart';

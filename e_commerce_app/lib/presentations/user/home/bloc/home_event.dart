@@ -11,15 +11,6 @@ class HomeLoadRequested extends HomeEvent {
   const HomeLoadRequested();
 }
 
-class HomeRefreshRequested extends HomeEvent {
-  const HomeRefreshRequested(this.completer);
-
-  final Completer<void> completer;
-
-  @override
-  List<Object?> get props => const [];
-}
-
 class DebugScenarioRequested extends HomeEvent {
   const DebugScenarioRequested(this.scenario);
 

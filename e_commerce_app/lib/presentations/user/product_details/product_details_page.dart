@@ -6,7 +6,7 @@ import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
 import 'package:e_commerce_app/core/utils/price_formatter.dart';
 import 'package:e_commerce_app/domain/usecases/product_details_usecase.dart';
-import 'package:e_commerce_app/presentations/product_details/bloc/product_details_bloc.dart';
+import 'package:e_commerce_app/presentations/user/product_details/bloc/product_details_bloc.dart';
 import 'package:ec_core/debug_tools/ui/debug_tools_picker.dart';
 import 'package:ec_core/fab_debug/ui/fab_debug_button.dart';
 import 'package:ec_core/mocked_backend/interceptors/mock_backend_interceptor.dart';

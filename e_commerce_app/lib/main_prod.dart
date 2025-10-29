@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/di/di.dart';
-import 'presentations/shared/error_app.dart';
+import 'presentations/user/shared/error_app.dart';
 
 void main() async {
   // Ensure Flutter binding is initialized

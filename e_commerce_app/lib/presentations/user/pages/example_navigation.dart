@@ -1,5 +1,5 @@
-import 'package:e_commerce_app/presentations/comments/comments_page.dart';
-import 'package:e_commerce_app/presentations/pages/api_client_example.dart';
+import 'package:e_commerce_app/presentations/user/comments/comments_page.dart';
+import 'package:e_commerce_app/presentations/user/pages/api_client_example.dart';
 import 'package:ec_themes/themes/themes.dart';
 import 'package:flutter/material.dart';
 

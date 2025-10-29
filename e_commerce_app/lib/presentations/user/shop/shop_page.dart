@@ -2,7 +2,7 @@ import 'package:e_commerce_app/config/env_config.dart';
 import 'package:e_commerce_app/core/bloc/debug_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/domain/usecases/shop_usecase.dart';
-import 'package:e_commerce_app/presentations/shop/bloc/shop_bloc.dart';
+import 'package:e_commerce_app/presentations/user/shop/bloc/shop_bloc.dart';
 import 'package:ec_core/debug_tools/ui/debug_tools_picker.dart';
 import 'package:ec_core/fab_debug/ui/fab_debug_button.dart';
 import 'package:ec_core/mocked_backend/interceptors/mock_backend_interceptor.dart';
