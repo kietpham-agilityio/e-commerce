@@ -19,8 +19,15 @@ class FeatureFlagRepositoryImpl extends FeatureFlagRepository {
         // Return default flags if no data
         return EcFeatureFlag.withEnvironment();
       }
+    } on Failure {
+      // Re-throw Failure objects as-is
+      rethrow;
     } catch (e) {
-      throw Failure('Failed to fetch feature flags: ${e.toString()}');
+      // Convert other exceptions to Failure
+      final failure = Failure.fromException(
+        e is Exception ? e : Exception(e.toString()),
+      );
+      throw failure;
     }
   }
 
@@ -47,8 +54,15 @@ class FeatureFlagRepositoryImpl extends FeatureFlagRepository {
         // Return the original flags if no response
         return flags;
       }
+    } on Failure {
+      // Re-throw Failure objects as-is
+      rethrow;
     } catch (e) {
-      throw Failure('Failed to update feature flags: ${e.toString()}');
+      // Convert other exceptions to Failure
+      final failure = Failure.fromException(
+        e is Exception ? e : Exception(e.toString()),
+      );
+      throw failure;
     }
   }
 

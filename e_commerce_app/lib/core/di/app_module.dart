@@ -24,7 +24,7 @@ class AppModule {
     // Register authentication dependencies with Supabase
     AuthModule.registerDependencies();
 
-    // Register BLoC dependencies (including AppBloc and FeatureFlagService)
+    // Register BLoC dependencies (including DebugBloc and FeatureFlagService)
     BlocModule.registerBlocs();
 
     // Register feature flag dependencies
