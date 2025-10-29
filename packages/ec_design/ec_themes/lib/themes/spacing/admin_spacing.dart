@@ -9,6 +9,8 @@ class AdminSpacing {
   static const double xxl = 18;
   static const double xxxl = 20;
   static const double huge = 22;
+  static const double xHuge = 24;
   static const double massive = 28;
+  static const double xMassive = 32;
   static const double giant = 40;
 }

@@ -4,23 +4,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/usecases/feature_flag_usecase.dart';
 
-part 'app_event.dart';
-part 'app_state.dart';
+part 'debug_event.dart';
+part 'debug_state.dart';
 
-/// AppBloc manages global app state including feature flags
-class AppBloc extends Bloc<AppEvent, AppState> {
+/// AppDebugBloc manages global app state including feature flags
+class DebugBloc extends Bloc<DebugEvent, DebugState> {
   final FeatureFlagService _featureFlagService;
   final GetFeatureFlagUseCase _getFeatureFlagUseCase;
   final UpdateFeatureFlagUseCase _updateFeatureFlagUseCase;
 
-  AppBloc({
+  DebugBloc({
     required FeatureFlagService featureFlagService,
     required GetFeatureFlagUseCase getFeatureFlagUseCase,
     required UpdateFeatureFlagUseCase updateFeatureFlagUseCase,
   }) : _featureFlagService = featureFlagService,
        _getFeatureFlagUseCase = getFeatureFlagUseCase,
        _updateFeatureFlagUseCase = updateFeatureFlagUseCase,
-       super(AppState.initial()) {
+       super(DebugState.initial()) {
     on<AppFeatureFlagsLoaded>(_onFeatureFlagsLoaded);
     on<AppFeatureFlagsFetchedFromApi>(_onFeatureFlagsFetchedFromApi);
     on<AppFeatureFlagsUpdated>(_onFeatureFlagsUpdated);
@@ -32,7 +32,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   void _onFeatureFlagsLoaded(
     AppFeatureFlagsLoaded event,
-    Emitter<AppState> emit,
+    Emitter<DebugState> emit,
   ) {
     final flags = _featureFlagService.flags;
     emit(state.copyWith(flags: flags));
@@ -40,7 +40,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   void _onFeatureFlagsFetchedFromApi(
     AppFeatureFlagsFetchedFromApi event,
-    Emitter<AppState> emit,
+    Emitter<DebugState> emit,
   ) async {
     try {
       // Set loading state
@@ -67,7 +67,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   void _onFeatureFlagsUpdated(
     AppFeatureFlagsUpdated event,
-    Emitter<AppState> emit,
+    Emitter<DebugState> emit,
   ) async {
     try {
       // Update the service first
@@ -92,7 +92,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   void _onFeatureFlagsRefreshed(
     AppFeatureFlagsRefreshed event,
-    Emitter<AppState> emit,
+    Emitter<DebugState> emit,
   ) {
     // Get latest flags from service
     final flags = _featureFlagService.flags;

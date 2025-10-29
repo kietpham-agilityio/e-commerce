@@ -31,106 +31,116 @@ class AppSpacing {
   /// - Admin: [AdminSpacing.xxxs]
   /// - User: [UserSpacing.xxxs]
   double get xxxs => switch (type) {
-        ECThemeType.admin => AdminSpacing.xxxs,
-        ECThemeType.user => UserSpacing.xxxs,
-      };
+    ECThemeType.admin => AdminSpacing.xxxs,
+    ECThemeType.user => UserSpacing.xxxs,
+  };
 
   /// Extra extra small spacing.
   ///
   /// - Admin: [AdminSpacing.xxs]
   /// - User: [UserSpacing.xxs]
   double get xxs => switch (type) {
-        ECThemeType.admin => AdminSpacing.xxs,
-        ECThemeType.user => UserSpacing.xxs,
-      };
+    ECThemeType.admin => AdminSpacing.xxs,
+    ECThemeType.user => UserSpacing.xxs,
+  };
 
   /// Extra small spacing.
   ///
   /// - Admin: [AdminSpacing.xs]
   /// - User: [UserSpacing.xs]
   double get xs => switch (type) {
-        ECThemeType.admin => AdminSpacing.xs,
-        ECThemeType.user => UserSpacing.xs,
-      };
+    ECThemeType.admin => AdminSpacing.xs,
+    ECThemeType.user => UserSpacing.xs,
+  };
 
   /// Small spacing.
   ///
   /// - Admin: [AdminSpacing.sm]
   /// - User: [UserSpacing.sm]
   double get sm => switch (type) {
-        ECThemeType.admin => AdminSpacing.sm,
-        ECThemeType.user => UserSpacing.sm,
-      };
+    ECThemeType.admin => AdminSpacing.sm,
+    ECThemeType.user => UserSpacing.sm,
+  };
 
   /// Medium spacing.
   ///
   /// - Admin: [AdminSpacing.md]
   /// - User: [UserSpacing.md]
   double get md => switch (type) {
-        ECThemeType.admin => AdminSpacing.md,
-        ECThemeType.user => UserSpacing.md,
-      };
+    ECThemeType.admin => AdminSpacing.md,
+    ECThemeType.user => UserSpacing.md,
+  };
 
   /// Large spacing.
   ///
   /// - Admin: [AdminSpacing.lg]
   /// - User: [UserSpacing.lg]
   double get lg => switch (type) {
-        ECThemeType.admin => AdminSpacing.lg,
-        ECThemeType.user => UserSpacing.lg,
-      };
+    ECThemeType.admin => AdminSpacing.lg,
+    ECThemeType.user => UserSpacing.lg,
+  };
 
   /// Extra large spacing.
   ///
   /// - Admin: [AdminSpacing.xl]
   /// - User: [UserSpacing.xl]
   double get xl => switch (type) {
-        ECThemeType.admin => AdminSpacing.xl,
-        ECThemeType.user => UserSpacing.xl,
-      };
+    ECThemeType.admin => AdminSpacing.xl,
+    ECThemeType.user => UserSpacing.xl,
+  };
 
   /// Extra extra large spacing.
   ///
   /// - Admin: [AdminSpacing.xxl]
   /// - User: [UserSpacing.xxl]
   double get xxl => switch (type) {
-        ECThemeType.admin => AdminSpacing.xxl,
-        ECThemeType.user => UserSpacing.xxl,
-      };
+    ECThemeType.admin => AdminSpacing.xxl,
+    ECThemeType.user => UserSpacing.xxl,
+  };
 
   /// Extra extra extra large spacing.
   ///
   /// - Admin: [AdminSpacing.xxxl]
   /// - User: [UserSpacing.xxxl]
   double get xxxl => switch (type) {
-        ECThemeType.admin => AdminSpacing.xxxl,
-        ECThemeType.user => UserSpacing.xxxl,
-      };
+    ECThemeType.admin => AdminSpacing.xxxl,
+    ECThemeType.user => UserSpacing.xxxl,
+  };
 
   /// Huge spacing.
   ///
   /// - Admin: [AdminSpacing.huge]
   /// - User: [UserSpacing.huge]
   double get huge => switch (type) {
-        ECThemeType.admin => AdminSpacing.huge,
-        ECThemeType.user => UserSpacing.huge,
-      };
+    ECThemeType.admin => AdminSpacing.huge,
+    ECThemeType.user => UserSpacing.huge,
+  };
+
+  double get xHuge => switch (type) {
+    ECThemeType.admin => AdminSpacing.xHuge,
+    ECThemeType.user => UserSpacing.xHuge,
+  };
 
   /// Massive spacing.
   ///
   /// - Admin: [AdminSpacing.massive]
   /// - User: [UserSpacing.massive]
   double get massive => switch (type) {
-        ECThemeType.admin => AdminSpacing.massive,
-        ECThemeType.user => UserSpacing.massive,
-      };
+    ECThemeType.admin => AdminSpacing.massive,
+    ECThemeType.user => UserSpacing.massive,
+  };
+
+  double get xMassive => switch (type) {
+    ECThemeType.admin => AdminSpacing.xMassive,
+    ECThemeType.user => UserSpacing.xMassive,
+  };
 
   /// Giant spacing.
   ///
   /// - Admin: [AdminSpacing.giant]
   /// - User: [UserSpacing.giant]
   double get giant => switch (type) {
-        ECThemeType.admin => AdminSpacing.giant,
-        ECThemeType.user => UserSpacing.giant,
-      };
+    ECThemeType.admin => AdminSpacing.giant,
+    ECThemeType.user => UserSpacing.giant,
+  };
 }

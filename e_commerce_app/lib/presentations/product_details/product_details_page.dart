@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:e_commerce_app/config/env_config.dart';
-import 'package:e_commerce_app/core/bloc/app_bloc.dart';
+import 'package:e_commerce_app/core/bloc/debug_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
 import 'package:e_commerce_app/core/utils/price_formatter.dart';
@@ -70,7 +70,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               categoryId: widget.categoryId,
             ),
           ),
-      child: BlocBuilder<AppBloc, AppState>(
+      child: BlocBuilder<DebugBloc, DebugState>(
         builder: (context, appState) {
           final isProductDetailsEnabled =
               appState.flags.enableProductDetailsPage ?? false;
@@ -330,7 +330,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ],
                   ),
                 ),
-                floatingActionButton: BlocConsumer<AppBloc, AppState>(
+                floatingActionButton: BlocConsumer<DebugBloc, DebugState>(
                   listener: (context, state) {
                     // Navigate back to first route when Database Inspector is turned off
                     Navigator.of(context).popUntil((route) => route.isFirst);

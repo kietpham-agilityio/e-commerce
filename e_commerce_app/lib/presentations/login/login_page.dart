@@ -1,4 +1,4 @@
-import 'package:e_commerce_app/core/bloc/app_bloc.dart';
+import 'package:e_commerce_app/core/bloc/debug_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
 import 'package:e_commerce_app/domain/usecases/login_usecase.dart';
@@ -51,13 +51,16 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocale.of(context)!;
-    final colorScheme = Theme.of(context).colorScheme;
+    final ecTheme = Theme.of(context);
+    final colorScheme = ecTheme.colorScheme;
+    final ecThemeExt = ecTheme.extension<EcThemeExtension>()!;
+    final spacing = ecThemeExt.spacing;
 
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state.status == LoginStatus.success) {
           // Fetch feature flags from API after successful login
-          context.read<AppBloc>().add(const AppFeatureFlagsFetchedFromApi());
+          context.read<DebugBloc>().add(const AppFeatureFlagsFetchedFromApi());
 
           // Navigate to home on successful login
           context.pushReplacementNamed(UserAppPaths.home.name);
@@ -78,7 +81,7 @@ class _LoginViewState extends State<LoginView> {
           elevation: 0,
 
           title: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+            padding: EdgeInsets.symmetric(horizontal: spacing.md),
             child: EcHeadlineLargeText(
               l10n.loginTitle,
               fontWeight: FontWeight.bold,
@@ -93,7 +96,7 @@ class _LoginViewState extends State<LoginView> {
           },
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: EdgeInsets.symmetric(horizontal: spacing.xHuge),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -102,16 +105,16 @@ class _LoginViewState extends State<LoginView> {
 
                   _EmailInput(emailFocusNode: _emailFocusNode),
                   _PasswordInput(passwordFocusNode: _passwordFocusNode),
-                  const SizedBox(height: 16),
+                  SizedBox(height: spacing.xl),
 
                   const _ForgotPasswordButton(),
-                  const SizedBox(height: 32),
+                  SizedBox(height: spacing.xMassive),
 
                   const _LoginButton(),
                   const Spacer(),
 
                   const _SocialLoginSection(),
-                  const SizedBox(height: 20),
+                  SizedBox(height: spacing.xxxl),
                 ],
               ),
             ),
@@ -183,7 +186,10 @@ class _ForgotPasswordButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocale.of(context)!;
-    final colorScheme = Theme.of(context).colorScheme;
+    final ecTheme = Theme.of(context);
+    final colorScheme = ecTheme.colorScheme;
+    final ecThemeExt = ecTheme.extension<EcThemeExtension>()!;
+    final spacing = ecThemeExt.spacing;
 
     return Align(
       alignment: Alignment.centerRight,
@@ -198,7 +204,7 @@ class _ForgotPasswordButton extends StatelessWidget {
               l10n.loginForgotPasswordText,
               color: colorScheme.secondary,
             ),
-            const SizedBox(width: 4),
+            SizedBox(width: spacing.xxs),
             EcAssets.arrowRightFilled(color: colorScheme.primary),
           ],
         ),
@@ -214,6 +220,10 @@ class _LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocale.of(context)!;
+    final ecTheme = Theme.of(context);
+    final colorScheme = ecTheme.colorScheme;
+    final ecThemeExt = ecTheme.extension<EcThemeExtension>()!;
+    final sizing = ecThemeExt.sizing;
     final isLoading = context.select(
       (LoginBloc bloc) => bloc.state.status == LoginStatus.loading,
     );
@@ -227,12 +237,14 @@ class _LoginButton extends StatelessWidget {
               : null,
       child:
           isLoading
-              ? const SizedBox(
-                height: 20,
-                width: 20,
+              ? SizedBox(
+                height: sizing.xxxl,
+                width: sizing.xxxl,
                 child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  strokeWidth: sizing.xxxs,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    colorScheme.onPrimary,
+                  ),
                 ),
               )
               : null,
@@ -247,7 +259,10 @@ class _SocialLoginSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocale.of(context)!;
-    final colorScheme = Theme.of(context).colorScheme;
+    final ecTheme = Theme.of(context);
+    final colorScheme = ecTheme.colorScheme;
+    final ecThemeExt = ecTheme.extension<EcThemeExtension>()!;
+    final spacing = ecThemeExt.spacing;
     final isLoading = context.select(
       (LoginBloc bloc) => bloc.state.status == LoginStatus.loading,
     );
@@ -255,7 +270,7 @@ class _SocialLoginSection extends StatelessWidget {
     return Column(
       children: [
         EcBodyMediumText(l10n.loginSocialAccountSubtitle),
-        const SizedBox(height: 24),
+        SizedBox(height: spacing.xHuge),
 
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -272,7 +287,7 @@ class _SocialLoginSection extends StatelessWidget {
                       : null,
               colorScheme: colorScheme,
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: spacing.xl),
             _SocialLoginButton(
               icon: EcAssets.facebook(),
               onPressed:

@@ -1,4 +1,4 @@
-import 'package:e_commerce_app/core/bloc/app_bloc.dart';
+import 'package:e_commerce_app/core/bloc/debug_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_themes/themes/themes.dart';
@@ -20,7 +20,7 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
     bool? flagValue,
   }) {
     // Dispatch event to AppBloc to update global state
-    BlocProvider.of<AppBloc>(context).add(
+    BlocProvider.of<DebugBloc>(context).add(
       AppFeatureFlagsUpdated(
         newFlags,
         flagName: flagName,
@@ -63,7 +63,7 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
       appBar: EcAppBar(
         title: const EcTitleMediumText('🛠️ Feature Flag Debug Panel'),
       ),
-      body: BlocBuilder<AppBloc, AppState>(
+      body: BlocBuilder<DebugBloc, DebugState>(
         builder: (context, appState) {
           final currentFlags = appState.flags;
 
