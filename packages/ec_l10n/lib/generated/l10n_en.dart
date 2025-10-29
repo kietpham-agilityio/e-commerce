@@ -282,6 +282,24 @@ class AppLocaleEn extends AppLocale {
   String get loginBtn => 'Login';
 
   @override
+  String get loginEmailHint => 'muffin.sweet@gmail.com';
+
+  @override
+  String get loginPasswordHint => 'Password';
+
+  @override
+  String get loginForgotPasswordText => 'Forgot your password?';
+
+  @override
+  String get loginSocialAccountSubtitle => 'Or login with social account';
+
+  @override
+  String get semanticEmailInputField => 'Email input field';
+
+  @override
+  String get semanticPasswordInputField => 'Password input field';
+
+  @override
   String get loginForgotPasswordBtn => 'Forgot Password?';
 
   @override

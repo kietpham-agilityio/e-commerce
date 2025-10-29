@@ -2,7 +2,6 @@ import 'package:e_commerce_app/data/repositories/shop_repository.dart';
 import 'package:e_commerce_app/domain/repositories/home_repository.dart';
 import 'package:e_commerce_app/domain/repositories/shop_repository.dart';
 import 'package:e_commerce_app/domain/usecases/shop_usecase.dart';
-import 'package:e_commerce_app/presentations/shop/bloc/shop_bloc.dart';
 import 'package:ec_core/api_client/core/api_client.dart';
 import 'package:ec_core/di/di_initializer.dart';
 import 'package:get_it/get_it.dart';
@@ -21,11 +20,6 @@ class ShopModule {
     // Register use cases
     _getIt.registerLazySingleton<ShopUseCase>(
       () => ShopUseCase(shopRepository: _getIt<ShopRepository>()),
-    );
-
-    // Register BLoC
-    _getIt.registerFactory<ShopBloc>(
-      () => ShopBloc(shopUseCase: _getIt<ShopUseCase>()),
     );
   }
 

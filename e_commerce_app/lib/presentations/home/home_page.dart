@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:developer';
 
 import 'package:e_commerce_app/config/env_config.dart';
@@ -6,6 +5,7 @@ import 'package:e_commerce_app/core/bloc/app_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
 import 'package:e_commerce_app/core/utils/price_formatter.dart';
+import 'package:e_commerce_app/domain/usecases/home_usecase.dart';
 import 'package:e_commerce_app/presentations/home/bloc/home_bloc.dart';
 import 'package:e_commerce_app/presentations/pages/api_client_example.dart';
 import 'package:e_commerce_app/presentations/pages/example_pages_navigation.dart';
@@ -27,15 +27,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late HomeBloc homeBloc;
-
-  @override
-  void initState() {
-    homeBloc = AppModule.getIt<HomeBloc>()..add(HomeLoadRequested());
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocale.of(context)!;
@@ -44,269 +35,260 @@ class _HomePageState extends State<HomePage> {
     final spacing = ecThemeExt.spacing;
 
     return BlocProvider(
-      create: (_) => homeBloc,
-      child: BlocListener<HomeBloc, HomeState>(
-        listener: (context, state) {
-          if (state.status == HomeStatus.failure) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
-          } else if (state.status == HomeStatus.failure) {
-            context.loaderOverlay.hide();
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
-          } else {
-            context.loaderOverlay.hide();
-          }
-        },
-        child: BlocBuilder<AppBloc, AppState>(
-          builder: (context, appState) {
-            return Scaffold(
-              body: LoaderOverlay(
-                child: BlocListener<HomeBloc, HomeState>(
-                  listener: (context, state) {
-                    if (state.status == HomeStatus.loading) {
-                      context.loaderOverlay.show();
-                    } else if (state.status == HomeStatus.failure) {
-                      context.loaderOverlay.hide();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(state.errorMessage!)),
-                      );
-                    } else {
-                      context.loaderOverlay.hide();
-                    }
+      create:
+          (context) =>
+              HomeBloc(homeUseCase: AppModule.getIt<HomeUseCase>())
+                ..add(const HomeLoadRequested()),
+      child: LoaderOverlay(
+        child: BlocListener<HomeBloc, HomeState>(
+          listener: (context, state) {
+            if (state.status == HomeStatus.loading) {
+              context.loaderOverlay.show();
+            } else if (state.status == HomeStatus.failure) {
+              context.loaderOverlay.hide();
+              if (state.errorMessage != null) {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+              }
+            } else {
+              context.loaderOverlay.hide();
+            }
+          },
+          child: BlocBuilder<AppBloc, AppState>(
+            builder: (context, appState) {
+              return Scaffold(
+                body: RefreshIndicator(
+                  onRefresh: () async {
+                    context.read<HomeBloc>().add(const HomeLoadRequested());
                   },
-                  child: RefreshIndicator(
-                    onRefresh: () async {
-                      final completer = Completer<void>();
-                      homeBloc.add(HomeRefreshRequested(completer));
-                      return completer.future;
-                    },
-                    child: CustomScrollView(
-                      slivers: [
-                        EcSliverAppBar(
-                          title: l10n.homeTitle,
-                          maxHeight: 196,
-                          expandedPaddingBottom: 26,
-                          background: EcCachedNetworkImage(
-                            url:
-                                'https://i.guim.co.uk/img/media/1cc4877b9591dd8b9cc783722fd97b00b87ee162/0_143_6016_3610/master/6016.jpg?width=465&dpr=1&s=none&crop=none',
-                            width: double.infinity,
-                            boxFit: BoxFit.cover,
-                            height: 250,
-                          ),
+                  child: CustomScrollView(
+                    slivers: [
+                      EcSliverAppBar(
+                        title: l10n.homeTitle,
+                        maxHeight: 196,
+                        expandedPaddingBottom: 26,
+                        background: EcCachedNetworkImage(
+                          url:
+                              'https://i.guim.co.uk/img/media/1cc4877b9591dd8b9cc783722fd97b00b87ee162/0_143_6016_3610/master/6016.jpg?width=465&dpr=1&s=none&crop=none',
+                          width: double.infinity,
+                          boxFit: BoxFit.cover,
+                          height: 250,
                         ),
-                        SliverSafeArea(
-                          top: false,
-                          sliver: SliverList(
-                            delegate: SliverChildListDelegate([
-                              SizedBox(height: spacing.huge),
-                              _CategoryHeader(
-                                title: l10n.generalSale,
-                                onViewall: () {
-                                  // TODO: handle redirect sale page
-                                  log('onViewall sale');
+                      ),
+                      SliverSafeArea(
+                        top: false,
+                        sliver: SliverList(
+                          delegate: SliverChildListDelegate([
+                            SizedBox(height: spacing.huge),
+                            _CategoryHeader(
+                              title: l10n.generalSale,
+                              onViewall: () {
+                                // TODO: handle redirect sale page
+                                log('onViewall sale');
+                              },
+                            ),
+                            SizedBox(height: spacing.xxl),
+                            SizedBox(
+                              height: MediaQuery.of(
+                                context,
+                              ).textScaler.scale(269),
+                              child: Builder(
+                                builder: (context) {
+                                  final discountProducts = context.select(
+                                    (HomeBloc bloc) =>
+                                        bloc.state.discountProducts,
+                                  );
+                                  final status = context.select(
+                                    (HomeBloc bloc) => bloc.state.status,
+                                  );
+
+                                  if (status != HomeStatus.success) {
+                                    return const SizedBox.shrink();
+                                  }
+
+                                  return ListView.separated(
+                                    scrollDirection: Axis.horizontal,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: spacing.xl,
+                                    ),
+                                    itemCount: discountProducts.length,
+                                    separatorBuilder:
+                                        (_, __) => SizedBox(width: spacing.xl),
+                                    itemBuilder: (context, index) {
+                                      final item = discountProducts[index];
+
+                                      return EcProductCardInMain(
+                                        title: item.name,
+                                        brand: item.brand,
+                                        imageUrl: item.imageUrl.first,
+                                        isSoldOut: item.quantity == 0,
+                                        originalPrice:
+                                            item.price.priceFormatter(),
+                                        discountedPrice:
+                                            item.finalPrice?.priceFormatter(),
+                                        labelText: '-${item.label}',
+                                        onTap: () {
+                                          context.pushNamed(
+                                            UserAppPaths.productDetails.name,
+                                            queryParameters: {
+                                              "productId": "${item.id}",
+                                              "categoryId":
+                                                  "${item.categoryId}",
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                  );
                                 },
                               ),
-                              SizedBox(height: spacing.xxl),
-                              SizedBox(
-                                height: MediaQuery.of(
-                                  context,
-                                ).textScaler.scale(269),
-                                child: BlocBuilder<HomeBloc, HomeState>(
-                                  buildWhen:
-                                      (previous, current) =>
-                                          previous.discountProducts !=
-                                          current.discountProducts,
-                                  builder: (context, state) {
-                                    if (state.status != HomeStatus.success) {
-                                      return SizedBox();
-                                    }
+                            ),
+                            SizedBox(height: spacing.giant),
+                            _CategoryHeader(
+                              title: l10n.generalNew,
+                              onViewall: () {
+                                // TODO: handle redirect sale page
+                                log('onViewall New');
+                              },
+                            ),
+                            SizedBox(height: spacing.xxl),
+                            SizedBox(
+                              height: MediaQuery.of(
+                                context,
+                              ).textScaler.scale(269),
+                              child: Builder(
+                                builder: (context) {
+                                  final newProducts = context.select(
+                                    (HomeBloc bloc) => bloc.state.newProducts,
+                                  );
+                                  final status = context.select(
+                                    (HomeBloc bloc) => bloc.state.status,
+                                  );
 
-                                    return ListView.separated(
-                                      scrollDirection: Axis.horizontal,
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: spacing.xl,
-                                      ),
-                                      itemCount: state.discountProducts.length,
-                                      separatorBuilder:
-                                          (_, __) =>
-                                              SizedBox(width: spacing.xl),
-                                      itemBuilder: (context, index) {
-                                        final item =
-                                            state.discountProducts[index];
+                                  if (status == HomeStatus.initial) {
+                                    return const SizedBox.shrink();
+                                  }
 
-                                        return EcProductCardInMain(
-                                          title: item.name,
-                                          brand: item.brand,
-                                          imageUrl: item.imageUrl.first,
-                                          isSoldOut: item.quantity == 0,
-                                          originalPrice:
-                                              item.price.priceFormatter(),
-                                          discountedPrice:
-                                              item.finalPrice?.priceFormatter(),
-                                          labelText: '-${item.label}',
-                                          onTap: () {
-                                            context.pushNamed(
-                                              UserAppPaths.productDetails.name,
-                                              queryParameters: {
-                                                "productId": "${item.id}",
-                                                "categoryId":
-                                                    "${item.categoryId}",
-                                              },
-                                            );
-                                          },
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
-                              SizedBox(height: spacing.giant),
-                              _CategoryHeader(
-                                title: l10n.generalNew,
-                                onViewall: () {
-                                  // TODO: handle redirect sale page
-                                  log('onViewall New');
+                                  return ListView.separated(
+                                    scrollDirection: Axis.horizontal,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: spacing.xl,
+                                    ),
+                                    itemCount: newProducts.length,
+                                    separatorBuilder:
+                                        (_, __) => SizedBox(width: spacing.xl),
+                                    itemBuilder: (context, index) {
+                                      final item = newProducts[index];
+
+                                      return EcProductCardInMain(
+                                        title: item.name,
+                                        brand: item.brand,
+                                        imageUrl: item.imageUrl.first,
+                                        isSoldOut: item.quantity == 0,
+                                        originalPrice:
+                                            item.price.priceFormatter(),
+                                        labelText: item.label,
+                                        onTap: () {
+                                          context.pushNamed(
+                                            UserAppPaths.productDetails.name,
+                                            queryParameters: {
+                                              "productId": "${item.id}",
+                                              "categoryId":
+                                                  "${item.categoryId}",
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                  );
                                 },
                               ),
-                              SizedBox(height: spacing.xxl),
-                              SizedBox(
-                                height: MediaQuery.of(
-                                  context,
-                                ).textScaler.scale(269),
-                                child: BlocBuilder<HomeBloc, HomeState>(
-                                  buildWhen:
-                                      (previous, current) =>
-                                          previous.newProducts !=
-                                          current.newProducts,
-                                  builder: (context, state) {
-                                    if (state.status == HomeStatus.initial) {
-                                      return SizedBox();
-                                    }
-
-                                    return ListView.separated(
-                                      scrollDirection: Axis.horizontal,
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: spacing.xl,
-                                      ),
-                                      itemCount: state.newProducts.length,
-                                      separatorBuilder:
-                                          (_, __) =>
-                                              SizedBox(width: spacing.xl),
-                                      itemBuilder: (context, index) {
-                                        final item = state.newProducts[index];
-
-                                        return EcProductCardInMain(
-                                          title: item.name,
-                                          brand: item.brand,
-                                          imageUrl: item.imageUrl.first,
-                                          isSoldOut: item.quantity == 0,
-                                          originalPrice:
-                                              item.price.priceFormatter(),
-                                          labelText: item.label,
-                                          onTap: () {
-                                            context.pushNamed(
-                                              UserAppPaths.productDetails.name,
-                                              queryParameters: {
-                                                "productId": "${item.id}",
-                                                "categoryId":
-                                                    "${item.categoryId}",
-                                              },
-                                            );
-                                          },
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
-                              SizedBox(height: spacing.huge),
-                            ]),
-                          ),
+                            ),
+                            SizedBox(height: spacing.huge),
+                          ]),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              floatingActionButton: BlocConsumer<AppBloc, AppState>(
-                listener: (context, state) {
-                  // Navigate back to first route when Database Inspector is turned off
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                },
-                builder: (context, state) {
-                  return EnvConfig.isDebugModeEnabled
-                      ? FabDebugButton(
-                        onSelectedMockBackend: (scenario) {
-                          if (ApiHome.values.contains(scenario.payload)) {
-                            homeBloc.add(const HomeLoadRequested());
-                          }
-                        },
-                        debugToolsScenarios: [
-                          DebugToolsItem(
-                            name: 'Success Scenario',
-                            onTap: () {
-                              homeBloc.add(
-                                const DebugScenarioRequested(
-                                  DebugToolScenarios.success,
-                                ),
-                              );
-                            },
-                          ),
-                          DebugToolsItem(
-                            name: 'Error Scenario',
-                            onTap: () {
-                              homeBloc.add(
-                                const DebugScenarioRequested(
-                                  DebugToolScenarios.error,
-                                ),
-                              );
-                            },
-                          ),
-                          DebugToolsItem(
-                            name: 'Api Scenario',
-                            onTap: () {
-                              homeBloc.add(
-                                const DebugScenarioRequested(
-                                  DebugToolScenarios.api,
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                        onFeatureFlags: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder:
-                                  (context) => const FeatureFlagDebugPanel(),
+                floatingActionButton: BlocConsumer<AppBloc, AppState>(
+                  listener: (context, state) {
+                    // Navigate back to first route when Database Inspector is turned off
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                  },
+                  builder: (context, state) {
+                    return EnvConfig.isDebugModeEnabled
+                        ? FabDebugButton(
+                          onSelectedMockBackend: (scenario) {
+                            final bloc = context.read<HomeBloc>();
+                            if (ApiHome.values.contains(scenario.payload)) {
+                              bloc.add(const HomeLoadRequested());
+                            }
+                          },
+                          debugToolsScenarios: [
+                            DebugToolsItem(
+                              name: 'Success Scenario',
+                              onTap: () {
+                                context.read<HomeBloc>().add(
+                                  const DebugScenarioRequested(
+                                    DebugToolScenarios.success,
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                        onApiClientExample: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const ApiClientExample(),
+                            DebugToolsItem(
+                              name: 'Error Scenario',
+                              onTap: () {
+                                context.read<HomeBloc>().add(
+                                  const DebugScenarioRequested(
+                                    DebugToolScenarios.error,
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                        onExamplePages: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder:
-                                  (context) => const ExamplePagesNavigation(),
+                            DebugToolsItem(
+                              name: 'Api Scenario',
+                              onTap: () {
+                                context.read<HomeBloc>().add(
+                                  const DebugScenarioRequested(
+                                    DebugToolScenarios.api,
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
-
-                        enableMockBackend: true,
-                      )
-                      : SizedBox.shrink();
-                },
-              ),
-            );
-          },
+                          ],
+                          onFeatureFlags: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder:
+                                    (context) => const FeatureFlagDebugPanel(),
+                              ),
+                            );
+                          },
+                          onApiClientExample: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const ApiClientExample(),
+                              ),
+                            );
+                          },
+                          onExamplePages: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder:
+                                    (context) => const ExamplePagesNavigation(),
+                              ),
+                            );
+                          },
+                          enableMockBackend: true,
+                        )
+                        : const SizedBox.shrink();
+                  },
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
