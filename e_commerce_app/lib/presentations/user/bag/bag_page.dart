@@ -8,13 +8,13 @@ class BagPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isBagEnabled = context.select(
+      (DebugBloc bloc) => bloc.state.flags.enableBagPage ?? false,
+    );
     return Scaffold(
       appBar: EcAppBar(title: const EcHeadlineSmallText('Bag')),
-      body: BlocBuilder<DebugBloc, DebugState>(
-        builder: (context, state) {
-          final isBagEnabled = state.flags.enableBagPage ?? false;
-
-          return isBagEnabled
+      body:
+          isBagEnabled
               ? const Center(
                 child: EcBodyLargeText('Bag content will be displayed here'),
               )
@@ -26,9 +26,7 @@ class BagPage extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-              );
-        },
-      ),
+              ),
     );
   }
 }

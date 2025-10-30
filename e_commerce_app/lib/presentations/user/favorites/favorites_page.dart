@@ -8,13 +8,13 @@ class FavoritesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isFavoritesEnabled = context.select(
+      (DebugBloc bloc) => bloc.state.flags.enableFavoritesPage ?? false,
+    );
     return Scaffold(
       appBar: EcAppBar(title: const EcHeadlineSmallText('Favorites')),
-      body: BlocBuilder<DebugBloc, DebugState>(
-        builder: (context, state) {
-          final isFavoritesEnabled = state.flags.enableFavoritesPage ?? false;
-
-          return isFavoritesEnabled
+      body:
+          isFavoritesEnabled
               ? const Center(
                 child: EcBodyLargeText(
                   'Favorites content will be displayed here',
@@ -28,9 +28,7 @@ class FavoritesPage extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-              );
-        },
-      ),
+              ),
     );
   }
 }
