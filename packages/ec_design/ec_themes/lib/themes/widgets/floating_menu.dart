@@ -43,7 +43,6 @@ class EcFloatingMenu extends StatelessWidget {
             child: EcLabelSmallText(
               l10n.generalAddToFavorites,
               textAlign: TextAlign.center,
-              fontWeight: EcTypography.regular,
             ),
           ),
         ),
@@ -55,7 +54,6 @@ class EcFloatingMenu extends StatelessWidget {
             child: EcLabelSmallText(
               l10n.generalDeleteFromTheList,
               textAlign: TextAlign.center,
-              fontWeight: EcTypography.regular,
             ),
           ),
         ),

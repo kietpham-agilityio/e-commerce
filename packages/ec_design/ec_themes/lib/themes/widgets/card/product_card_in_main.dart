@@ -107,7 +107,7 @@ class EcProductCardInMain extends StatelessWidget {
           right: 0,
           child: EcIconButton(
             size: 36,
-            icon: EcAssets.heart(color: colorScheme.surface),
+            icon: EcAssets.heart(color: colorScheme.outline),
             backgroundColor: colorScheme.primaryContainer,
             showShadow: true,
             onPressed: onFavorite,
@@ -120,11 +120,7 @@ class EcProductCardInMain extends StatelessWidget {
         children: [
           EcRatingStarsView(rating: rating, totalReviews: totalReviews),
           SizedBox(height: spacing.xs),
-          EcLabelSmallText(
-            brand,
-            fontWeight: EcTypography.regular,
-            color: colorScheme.surface,
-          ),
+          EcLabelSmallText(brand, color: colorScheme.outline),
           SizedBox(height: spacing.xs),
           EcTitleLargeText(title, fontWeight: EcTypography.bold),
           SizedBox(height: spacing.xxs),
@@ -145,9 +141,9 @@ class EcProductCardInMain extends StatelessWidget {
                     text: '$originalPrice\$',
                     style: ecTheme.textTheme.titleMedium?.copyWith(
                       height: EcTypography.normalHeight,
-                      color: colorScheme.surface,
+                      color: colorScheme.outline,
                       decoration: TextDecoration.lineThrough,
-                      decorationColor: colorScheme.surface,
+                      decorationColor: colorScheme.outline,
                     ),
                   ),
                   WidgetSpan(child: SizedBox(width: spacing.xxs)),

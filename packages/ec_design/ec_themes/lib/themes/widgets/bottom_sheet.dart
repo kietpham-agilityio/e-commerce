@@ -38,7 +38,7 @@ class EcBottomSheet {
                   height: 6,
                   width: 60,
                   decoration: BoxDecoration(
-                    color: ecTheme.colorScheme.surface,
+                    color: ecTheme.colorScheme.outline,
                     borderRadius: BorderRadius.circular(3),
                   ),
                 ),

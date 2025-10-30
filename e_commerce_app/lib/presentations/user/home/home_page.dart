@@ -4,6 +4,7 @@ import 'package:e_commerce_app/config/env_config.dart';
 import 'package:e_commerce_app/core/bloc/debug_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
+import 'package:e_commerce_app/core/utils/context_extension.dart';
 import 'package:e_commerce_app/core/utils/price_formatter.dart';
 import 'package:e_commerce_app/domain/usecases/home_usecase.dart';
 import 'package:e_commerce_app/presentations/user/home/bloc/home_bloc.dart';
@@ -30,9 +31,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocale.of(context)!;
-    final ecTheme = Theme.of(context);
-    final ecThemeExt = ecTheme.extension<EcThemeExtension>()!;
+    final l10n = context.l10n;
+    final ecThemeExt = context.ecThemeExt;
     final spacing = ecThemeExt.spacing;
 
     return BlocProvider(
@@ -97,7 +97,7 @@ class _HomeBody extends StatelessWidget {
                   SizedBox(height: spacing.huge),
                   _CategoryHeader(
                     title: l10n.generalSale,
-                    onViewall: () {
+                    onViewAll: () {
                       // TODO: handle redirect sale page
                       log('onViewall sale');
                     },
@@ -111,7 +111,7 @@ class _HomeBody extends StatelessWidget {
                   SizedBox(height: spacing.giant),
                   _CategoryHeader(
                     title: l10n.generalNew,
-                    onViewall: () {
+                    onViewAll: () {
                       // TODO: handle redirect sale page
                       log('onViewall New');
                     },
@@ -135,17 +135,15 @@ class _HomeBody extends StatelessWidget {
 }
 
 class _CategoryHeader extends StatelessWidget {
-  const _CategoryHeader({required this.title, this.onViewall});
+  const _CategoryHeader({required this.title, this.onViewAll});
 
   final String title;
-  final VoidCallback? onViewall;
+  final VoidCallback? onViewAll;
 
   @override
   Widget build(BuildContext context) {
-    final ecTheme = Theme.of(context);
-    final colorScheme = ecTheme.colorScheme;
-    final l10n = AppLocale.of(context)!;
-    final ecThemeExt = ecTheme.extension<EcThemeExtension>()!;
+    final l10n = context.l10n;
+    final ecThemeExt = context.ecThemeExt;
     final spacing = ecThemeExt.spacing;
 
     return Padding(
@@ -157,12 +155,8 @@ class _CategoryHeader extends StatelessWidget {
           children: [
             EcDisplayMediumText(title),
             GestureDetector(
-              onTap: onViewall,
-              child: EcLabelSmallText(
-                l10n.generalViewAll,
-                fontWeight: EcTypography.regular,
-                color: colorScheme.secondary,
-              ),
+              onTap: onViewAll,
+              child: EcLabelSmallText(l10n.generalViewAll),
             ),
           ],
         ),

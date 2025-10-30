@@ -52,7 +52,7 @@ class EcOrderCard extends StatelessWidget {
                   EcTitleLargeText(orderNumber),
                   EcTitleMediumText(
                     datetime,
-                    color: ecTheme.colorScheme.surface,
+                    color: ecTheme.colorScheme.outline,
                   ),
                 ],
               ),
@@ -65,7 +65,7 @@ class EcOrderCard extends StatelessWidget {
                   EcTitleLargeText(
                     l10n.generalTrackingNumber,
                     fontWeight: EcTypography.regular,
-                    color: ecTheme.colorScheme.surface,
+                    color: ecTheme.colorScheme.outline,
                     height: EcTypography.tightHeight,
                   ),
                   SizedBox(width: spacing.sm),
@@ -88,7 +88,7 @@ class EcOrderCard extends StatelessWidget {
                       EcTitleLargeText(
                         '${l10n.generalQuantity}:',
                         fontWeight: EcTypography.regular,
-                        color: ecTheme.colorScheme.surface,
+                        color: ecTheme.colorScheme.outline,
                         height: EcTypography.tightHeight,
                       ),
                       SizedBox(width: spacing.md),
@@ -103,7 +103,7 @@ class EcOrderCard extends StatelessWidget {
                       EcTitleLargeText(
                         l10n.generalTotalAmount,
                         fontWeight: EcTypography.regular,
-                        color: ecTheme.colorScheme.surface,
+                        color: ecTheme.colorScheme.outline,
                         height: EcTypography.tightHeight,
                       ),
                       SizedBox(width: spacing.md),

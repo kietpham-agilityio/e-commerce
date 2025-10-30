@@ -77,7 +77,7 @@ class _DatabaseInspectorPageState extends State<DatabaseInspectorPage> {
           // Quick Actions
           Container(
             padding: const EdgeInsets.all(16),
-            color: colorScheme.surface,
+            color: colorScheme.outline,
             child: Row(
               children: [
                 Expanded(
@@ -107,7 +107,7 @@ class _DatabaseInspectorPageState extends State<DatabaseInspectorPage> {
           // Table Selector
           Container(
             padding: const EdgeInsets.all(16),
-            color: colorScheme.surface,
+            color: colorScheme.outline,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

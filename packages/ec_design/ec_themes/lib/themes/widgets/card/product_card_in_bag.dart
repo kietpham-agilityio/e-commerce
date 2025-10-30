@@ -110,7 +110,7 @@ class EcProductCardInBag extends StatelessWidget {
                       // FIXME: use l10n
                       text: 'Color: ',
                       style: ecTheme.textTheme.labelSmall?.copyWith(
-                        color: colorScheme.surface,
+                        color: colorScheme.outline,
                       ),
                     ),
                     TextSpan(text: color),
@@ -119,7 +119,7 @@ class EcProductCardInBag extends StatelessWidget {
                       // FIXME: use l10n
                       text: 'Size: ',
                       style: ecTheme.textTheme.labelSmall?.copyWith(
-                        color: colorScheme.surface,
+                        color: colorScheme.outline,
                       ),
                     ),
                     TextSpan(text: size),
@@ -135,7 +135,7 @@ class EcProductCardInBag extends StatelessWidget {
                     icon: EcAssets.minor(),
                     onPressed: onMinor,
                     backgroundColor: colorScheme.onSurface,
-                    iconColor: colorScheme.surface,
+                    iconColor: colorScheme.outline,
                   ),
                   EcBodyMediumText(
                     '$quantity',
@@ -146,7 +146,7 @@ class EcProductCardInBag extends StatelessWidget {
                     icon: EcAssets.plus(),
                     onPressed: onPlus,
                     backgroundColor: colorScheme.onSurface,
-                    iconColor: colorScheme.surface,
+                    iconColor: colorScheme.outline,
                   ),
                 ],
               ),

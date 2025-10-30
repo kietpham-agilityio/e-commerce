@@ -116,7 +116,7 @@ class _ItemsView extends StatelessWidget {
                                         padding: const EdgeInsets.only(top: 6),
                                         child: EcBodyMediumText(
                                           subtitle,
-                                          color: colorScheme.surface,
+                                          color: colorScheme.outline,
                                         ),
                                       )
                                       : null,

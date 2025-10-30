@@ -71,7 +71,7 @@ class ShopPage extends StatelessWidget {
                   slivers: [
                     PinnedHeaderSliver(
                       child: Container(
-                        color: ecTheme.colorScheme.surfaceDim,
+                        color: ecTheme.colorScheme.surface,
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: spacing.xl),
                           child: Column(
@@ -84,7 +84,7 @@ class ShopPage extends StatelessWidget {
                               SizedBox(height: spacing.xl),
                               EcTitleMediumText(
                                 l10n.shopSubtitle,
-                                color: ecTheme.colorScheme.surface,
+                                color: ecTheme.colorScheme.outline,
                               ),
                               SizedBox(height: spacing.xl),
                             ],
@@ -105,7 +105,7 @@ class ShopPage extends StatelessWidget {
                               child: EcTitleMediumText(
                                 'No categories found',
                                 textAlign: TextAlign.center,
-                                color: ecTheme.colorScheme.surface,
+                                color: ecTheme.colorScheme.outline,
                               ),
                             ),
                           );

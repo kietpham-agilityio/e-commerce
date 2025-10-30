@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../app_bar.dart';
 import '../slide_range_filter.dart';
 import '../text.dart';
@@ -57,7 +58,7 @@ class _EcSlideRangeFilterExampleState extends State<EcSlideRangeFilterExample> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
+                    color: Theme.of(context).colorScheme.outline,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: Theme.of(context).colorScheme.outline,
@@ -98,7 +99,7 @@ class _EcSlideRangeFilterExampleState extends State<EcSlideRangeFilterExample> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
+                    color: Theme.of(context).colorScheme.outline,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: Theme.of(context).colorScheme.outline,
@@ -138,7 +139,7 @@ class _EcSlideRangeFilterExampleState extends State<EcSlideRangeFilterExample> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
+                    color: Theme.of(context).colorScheme.outline,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: Theme.of(context).colorScheme.outline,
@@ -181,7 +182,7 @@ class _EcSlideRangeFilterExampleState extends State<EcSlideRangeFilterExample> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
+                    color: Theme.of(context).colorScheme.outline,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: Theme.of(context).colorScheme.outline,
@@ -257,7 +258,7 @@ class _EcSlideRangeFilterExampleState extends State<EcSlideRangeFilterExample> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
+                    color: Theme.of(context).colorScheme.outline,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: Theme.of(context).colorScheme.outline,
@@ -317,7 +318,7 @@ class _EcSlideRangeFilterExampleState extends State<EcSlideRangeFilterExample> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: Theme.of(context).colorScheme.outline,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
           color: Theme.of(context).colorScheme.outline,

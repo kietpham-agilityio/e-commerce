@@ -1,6 +1,7 @@
 import 'package:e_commerce_app/core/bloc/debug_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
+import 'package:e_commerce_app/core/utils/context_extension.dart';
 import 'package:e_commerce_app/domain/usecases/login_usecase.dart';
 import 'package:ec_l10n/generated/l10n.dart';
 import 'package:ec_themes/themes/themes.dart';
@@ -50,10 +51,8 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocale.of(context)!;
-    final ecTheme = Theme.of(context);
-    final colorScheme = ecTheme.colorScheme;
-    final ecThemeExt = ecTheme.extension<EcThemeExtension>()!;
+    final l10n = context.l10n;
+    final ecThemeExt = context.ecThemeExt;
     final spacing = ecThemeExt.spacing;
 
     return BlocListener<LoginBloc, LoginState>(
@@ -71,10 +70,8 @@ class _LoginViewState extends State<LoginView> {
         }
       },
       child: Scaffold(
-        backgroundColor: colorScheme.surfaceDim,
         appBar: EcAppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: colorScheme.surfaceDim,
           elevation: 0,
 
           title: Padding(
@@ -130,7 +127,7 @@ class _EmailInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocale.of(context)!;
+    final l10n = context.l10n;
     final email = context.select((LoginBloc bloc) => bloc.state.email);
 
     return EcEmailField(
@@ -182,10 +179,9 @@ class _ForgotPasswordButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocale.of(context)!;
-    final ecTheme = Theme.of(context);
-    final colorScheme = ecTheme.colorScheme;
-    final ecThemeExt = ecTheme.extension<EcThemeExtension>()!;
+    final l10n = context.l10n;
+    final colorScheme = context.colorScheme;
+    final ecThemeExt = context.ecThemeExt;
     final spacing = ecThemeExt.spacing;
 
     return Align(
@@ -216,10 +212,9 @@ class _LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocale.of(context)!;
-    final ecTheme = Theme.of(context);
-    final colorScheme = ecTheme.colorScheme;
-    final ecThemeExt = ecTheme.extension<EcThemeExtension>()!;
+    final l10n = context.l10n;
+    final colorScheme = context.colorScheme;
+    final ecThemeExt = context.ecThemeExt;
     final sizing = ecThemeExt.sizing;
     final isLoading = context.select(
       (LoginBloc bloc) => bloc.state.status == LoginStatus.loading,
@@ -255,10 +250,9 @@ class _SocialLoginSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocale.of(context)!;
-    final ecTheme = Theme.of(context);
-    final colorScheme = ecTheme.colorScheme;
-    final ecThemeExt = ecTheme.extension<EcThemeExtension>()!;
+    final l10n = context.l10n;
+    final colorScheme = context.colorScheme;
+    final ecThemeExt = context.ecThemeExt;
     final spacing = ecThemeExt.spacing;
     final isLoading = context.select(
       (LoginBloc bloc) => bloc.state.status == LoginStatus.loading,

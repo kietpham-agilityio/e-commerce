@@ -85,7 +85,7 @@ class _EcSwitchState extends State<EcSwitch>
               borderRadius: BorderRadius.circular(20),
               color: Theme.of(
                 context,
-              ).colorScheme.surface.withValues(alpha: 0.1),
+              ).colorScheme.outline.withValues(alpha: 0.1),
             ),
             child: Align(
               alignment:

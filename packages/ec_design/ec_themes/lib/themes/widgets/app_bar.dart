@@ -1,6 +1,7 @@
 import 'package:ec_themes/themes/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../ec_theme_extension.dart';
 
 /// Common app bar widget with consistent styling across the app
@@ -106,7 +107,7 @@ class EcAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: actions,
       leading: leading,
       automaticallyImplyLeading: automaticallyImplyLeading,
-      backgroundColor: backgroundColor ?? colors.surfaceDim,
+      backgroundColor: backgroundColor ?? colors.surface,
       foregroundColor: foregroundColor ?? colors.secondary,
       elevation: elevation ?? 0,
       shadowColor: shadowColor ?? colors.shadow,

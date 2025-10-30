@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'light_palette.dart';
+
 import 'dark_palette.dart';
+import 'light_palette.dart';
 
 /// Common shadows for the e-commerce app design system
 /// Note: Behind transparent areas == BTA (Behind Transparent Areas)
@@ -62,8 +63,8 @@ class EcShadows {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final color =
         isDark
-            ? EcDarkPalette.ecBlack[0]!.withValues(alpha: 0.12)
-            : EcLightPalette.ecBlack[0]!.withValues(alpha: 0.12);
+            ? EcDarkPalette.ecBlack[50]!.withValues(alpha: 0.12)
+            : EcLightPalette.ecBlack[50]!.withValues(alpha: 0.12);
 
     return BoxShadow(
       offset: const Offset(0, 4),
@@ -137,8 +138,8 @@ class EcShadows {
     final shadowColor =
         color ??
         (isDark
-            ? EcDarkPalette.ecBlack[0]!.withValues(alpha: opacity)
-            : EcLightPalette.ecBlack[0]!.withValues(alpha: opacity));
+            ? EcDarkPalette.ecBlack[50]!.withValues(alpha: opacity)
+            : EcLightPalette.ecBlack[50]!.withValues(alpha: opacity));
 
     return BoxShadow(
       offset: offset,

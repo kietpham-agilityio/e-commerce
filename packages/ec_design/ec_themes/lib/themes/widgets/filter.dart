@@ -80,10 +80,7 @@ class EcFilter extends StatelessWidget {
               children: [
                 EcAssets.filter(),
                 SizedBox(width: spacing.xs),
-                EcLabelSmallText(
-                  l10n.generalFiltersBtn,
-                  fontWeight: EcTypography.regular,
-                ),
+                EcLabelSmallText(l10n.generalFiltersBtn),
               ],
             ),
           ),
@@ -94,7 +91,7 @@ class EcFilter extends StatelessWidget {
               children: [
                 EcAssets.swap(),
                 SizedBox(width: spacing.xs),
-                EcLabelSmallText(sortBy, fontWeight: EcTypography.regular),
+                EcLabelSmallText(sortBy, fontWeight: EcTypography.semiBold),
               ],
             ),
           ),

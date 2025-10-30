@@ -72,10 +72,8 @@ class _AdminLoginViewState extends State<AdminLoginView> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        backgroundColor: colorScheme.surfaceDim,
         appBar: EcAppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: colorScheme.surfaceDim,
           elevation: 0,
           title: Padding(
             padding: EdgeInsets.symmetric(horizontal: spacing.md),

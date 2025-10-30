@@ -4,6 +4,7 @@ import 'package:e_commerce_app/config/env_config.dart';
 import 'package:e_commerce_app/core/bloc/debug_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
 import 'package:e_commerce_app/core/routes/app_router.dart';
+import 'package:e_commerce_app/core/utils/context_extension.dart';
 import 'package:e_commerce_app/core/utils/price_formatter.dart';
 import 'package:e_commerce_app/domain/entities/product_entities.dart';
 import 'package:e_commerce_app/domain/usecases/product_details_usecase.dart';
@@ -45,10 +46,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ecTheme = Theme.of(context);
-    final ecThemeExt = ecTheme.extension<EcThemeExtension>()!;
+    final l10n = context.l10n;
+    final ecTheme = context.ecTheme;
+    final ecThemeExt = context.ecThemeExt;
     final spacing = ecThemeExt.spacing;
-    final l10n = AppLocale.of(context)!;
 
     return BlocProvider(
       create:

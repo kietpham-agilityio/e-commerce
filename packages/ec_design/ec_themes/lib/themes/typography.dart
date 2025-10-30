@@ -250,7 +250,7 @@ class EcTypography {
     return TextStyle(
       fontFamily: fontFamily,
       fontSize: xs,
-      fontWeight: semiBold,
+      fontWeight: regular,
       height: baseHeight,
       letterSpacing: wideSpacing,
       color: colors.secondary,
@@ -284,7 +284,7 @@ class EcTypography {
       fontWeight: bold,
       height: baseHeight,
       letterSpacing: -0.8,
-      color: colors.primary,
+      color: colors.secondary,
     );
   }
 
@@ -475,28 +475,28 @@ class EcTypography {
 
   /// Legacy method - returns user typography by default
   static TextStyle get displayLarge =>
-      getUserDisplayLarge(ECThemeType.user, false);
+      getUserDisplayLarge(ECThemeType.user, true);
   static TextStyle get displayMedium =>
-      getUserDisplayMedium(ECThemeType.user, false);
+      getUserDisplayMedium(ECThemeType.user, true);
   static TextStyle get displaySmall =>
-      getUserDisplaySmall(ECThemeType.user, false);
+      getUserDisplaySmall(ECThemeType.user, true);
   static TextStyle get headlineLarge =>
-      getUserHeadlineLarge(ECThemeType.user, false);
+      getUserHeadlineLarge(ECThemeType.user, true);
   static TextStyle get headlineMedium =>
-      getUserHeadlineMedium(ECThemeType.user, false);
+      getUserHeadlineMedium(ECThemeType.user, true);
   static TextStyle get headlineSmall =>
-      getUserHeadlineSmall(ECThemeType.user, false);
-  static TextStyle get titleLarge => getUserTitleLarge(ECThemeType.user, false);
+      getUserHeadlineSmall(ECThemeType.user, true);
+  static TextStyle get titleLarge => getUserTitleLarge(ECThemeType.user, true);
   static TextStyle get titleMedium =>
-      getUserTitleMedium(ECThemeType.user, false);
-  static TextStyle get titleSmall => getUserTitleSmall(ECThemeType.user, false);
-  static TextStyle get bodyLarge => getUserBodyLarge(ECThemeType.user, false);
-  static TextStyle get bodyMedium => getUserBodyMedium(ECThemeType.user, false);
-  static TextStyle get bodySmall => getUserBodySmall(ECThemeType.user, false);
-  static TextStyle get labelLarge => getUserLabelLarge(ECThemeType.user, false);
+      getUserTitleMedium(ECThemeType.user, true);
+  static TextStyle get titleSmall => getUserTitleSmall(ECThemeType.user, true);
+  static TextStyle get bodyLarge => getUserBodyLarge(ECThemeType.user, true);
+  static TextStyle get bodyMedium => getUserBodyMedium(ECThemeType.user, true);
+  static TextStyle get bodySmall => getUserBodySmall(ECThemeType.user, true);
+  static TextStyle get labelLarge => getUserLabelLarge(ECThemeType.user, true);
   static TextStyle get labelMedium =>
-      getUserLabelMedium(ECThemeType.user, false);
-  static TextStyle get labelSmall => getUserLabelSmall(ECThemeType.user, false);
+      getUserLabelMedium(ECThemeType.user, true);
+  static TextStyle get labelSmall => getUserLabelSmall(ECThemeType.user, true);
 
   // ===== UTILITY METHODS =====
 

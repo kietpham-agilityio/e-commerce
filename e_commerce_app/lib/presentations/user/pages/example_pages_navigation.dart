@@ -90,11 +90,11 @@ class _ExamplePageCard extends StatelessWidget {
                   children: [
                     EcTitleMediumText(title),
                     const SizedBox(height: 4),
-                    EcBodySmallText(description, color: colorScheme.surface),
+                    EcBodySmallText(description, color: colorScheme.outline),
                   ],
                 ),
               ),
-              Icon(Icons.chevron_right, color: colorScheme.surface),
+              Icon(Icons.chevron_right, color: colorScheme.outline),
             ],
           ),
         ),

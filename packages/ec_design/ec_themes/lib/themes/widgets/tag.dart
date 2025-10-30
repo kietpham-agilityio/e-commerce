@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../ec_theme_extension.dart';
 import '../typography.dart';
 
@@ -162,7 +163,7 @@ class EcTag extends StatelessWidget {
           width: 100,
           height: 30,
           borderRadius: 29,
-          backgroundColor: colors.surface,
+          backgroundColor: colors.outline,
           textColor: colors.onSurface,
           borderColor: Colors.transparent,
           borderWidth: 0,

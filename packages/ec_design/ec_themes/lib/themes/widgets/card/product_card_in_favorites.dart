@@ -250,11 +250,7 @@ class _GridView extends StatelessWidget {
         children: [
           EcRatingStarsView(rating: rating, totalReviews: totalReviews),
           SizedBox(height: spacing.xs),
-          EcLabelSmallText(
-            brand,
-            fontWeight: EcTypography.regular,
-            color: colorScheme.surface,
-          ),
+          EcLabelSmallText(brand, color: colorScheme.outline),
           SizedBox(height: spacing.xxxs),
           EcTitleLargeText(title, fontWeight: EcTypography.bold),
           SizedBox(height: spacing.xxs),
@@ -269,7 +265,7 @@ class _GridView extends StatelessWidget {
                   // FIXME: use l10n
                   text: 'Color: ',
                   style: ecTheme.textTheme.labelSmall?.copyWith(
-                    color: colorScheme.surface,
+                    color: colorScheme.outline,
                   ),
                 ),
                 TextSpan(text: color),
@@ -278,7 +274,7 @@ class _GridView extends StatelessWidget {
                   // FIXME: use l10n
                   text: 'Size: ',
                   style: ecTheme.textTheme.labelSmall?.copyWith(
-                    color: colorScheme.surface,
+                    color: colorScheme.outline,
                   ),
                 ),
                 TextSpan(text: size),
@@ -303,9 +299,9 @@ class _GridView extends StatelessWidget {
                     text: '$originalPrice\$',
                     style: ecTheme.textTheme.titleMedium?.copyWith(
                       height: EcTypography.normalHeight,
-                      color: colorScheme.surface,
+                      color: colorScheme.outline,
                       decoration: TextDecoration.lineThrough,
-                      decorationColor: colorScheme.surface,
+                      decorationColor: colorScheme.outline,
                     ),
                   ),
                   WidgetSpan(child: SizedBox(width: spacing.xxs)),
@@ -422,11 +418,7 @@ class _ListView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: spacing.lg),
-          EcLabelSmallText(
-            brand,
-            fontWeight: EcTypography.regular,
-            color: colorScheme.surface,
-          ),
+          EcLabelSmallText(brand, color: colorScheme.outline),
           SizedBox(height: spacing.xxxs),
           EcTitleLargeText(title, fontWeight: EcTypography.bold),
           SizedBox(height: spacing.xs),
@@ -441,7 +433,7 @@ class _ListView extends StatelessWidget {
                   // FIXME: use l10n
                   text: 'Color: ',
                   style: ecTheme.textTheme.labelSmall?.copyWith(
-                    color: colorScheme.surface,
+                    color: colorScheme.outline,
                   ),
                 ),
                 TextSpan(text: color),
@@ -450,7 +442,7 @@ class _ListView extends StatelessWidget {
                   // FIXME: use l10n
                   text: 'Size: ',
                   style: ecTheme.textTheme.labelSmall?.copyWith(
-                    color: colorScheme.surface,
+                    color: colorScheme.outline,
                   ),
                 ),
                 TextSpan(text: size),
@@ -477,9 +469,9 @@ class _ListView extends StatelessWidget {
                         text: '$originalPrice\$',
                         style: ecTheme.textTheme.titleMedium?.copyWith(
                           height: EcTypography.normalHeight,
-                          color: colorScheme.surface,
+                          color: colorScheme.outline,
                           decoration: TextDecoration.lineThrough,
-                          decorationColor: colorScheme.surface,
+                          decorationColor: colorScheme.outline,
                         ),
                       ),
                       WidgetSpan(child: SizedBox(width: spacing.xxs)),
