@@ -1,4 +1,4 @@
-import 'package:e_commerce_app/core/initialization/app_config.dart';
+import 'package:e_commerce_app/config/app_config.dart';
 import 'package:e_commerce_app/core/initialization/app_initializer.dart';
 import 'package:e_commerce_app/core/di/di.dart';
 import 'package:ec_core/ec_core.dart';

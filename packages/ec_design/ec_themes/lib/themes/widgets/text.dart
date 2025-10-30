@@ -1,4 +1,5 @@
 import 'package:ec_themes/themes/typography.dart';
+import 'package:ec_themes/themes/ec_theme_extension.dart';
 import 'package:flutter/material.dart';
 
 /// Base class for all text widgets with common functionality
@@ -47,13 +48,13 @@ abstract class BaseEcText extends StatelessWidget {
   /// Custom letter spacing override
   final double? letterSpacing;
 
-  /// Get the base text style for this widget
-  TextStyle get baseStyle;
+  /// Get the base text style for this widget based on theme/flavor
+  TextStyle baseStyleFor(BuildContext context);
 
   @override
   Widget build(BuildContext context) {
     // Build the base style
-    TextStyle finalStyle = baseStyle;
+    TextStyle finalStyle = baseStyleFor(context);
 
     // Apply custom overrides
     finalStyle = finalStyle.copyWith(
@@ -92,7 +93,10 @@ class EcDisplayLargeText extends BaseEcText {
   });
 
   @override
-  TextStyle get baseStyle => EcTypography.displayLarge;
+  TextStyle baseStyleFor(BuildContext context) {
+    final ext = Theme.of(context).extension<EcThemeExtension>()!;
+    return EcTypography.getDisplayLarge(ext.themeType, ext.isDark);
+  }
 }
 
 /// Display medium text widget - for section headers
@@ -112,7 +116,10 @@ class EcDisplayMediumText extends BaseEcText {
   });
 
   @override
-  TextStyle get baseStyle => EcTypography.displayMedium;
+  TextStyle baseStyleFor(BuildContext context) {
+    final ext = Theme.of(context).extension<EcThemeExtension>()!;
+    return EcTypography.getDisplayMedium(ext.themeType, ext.isDark);
+  }
 }
 
 /// Display small text widget - for subsection headers
@@ -132,7 +139,10 @@ class EcDisplaySmallText extends BaseEcText {
   });
 
   @override
-  TextStyle get baseStyle => EcTypography.displaySmall;
+  TextStyle baseStyleFor(BuildContext context) {
+    final ext = Theme.of(context).extension<EcThemeExtension>()!;
+    return EcTypography.getDisplaySmall(ext.themeType, ext.isDark);
+  }
 }
 
 /// Headline large text widget - for main page titles
@@ -152,7 +162,10 @@ class EcHeadlineLargeText extends BaseEcText {
   });
 
   @override
-  TextStyle get baseStyle => EcTypography.headlineLarge;
+  TextStyle baseStyleFor(BuildContext context) {
+    final ext = Theme.of(context).extension<EcThemeExtension>()!;
+    return EcTypography.getHeadlineLarge(ext.themeType, ext.isDark);
+  }
 }
 
 /// Headline medium text widget - for page titles
@@ -172,7 +185,10 @@ class EcHeadlineMediumText extends BaseEcText {
   });
 
   @override
-  TextStyle get baseStyle => EcTypography.headlineMedium;
+  TextStyle baseStyleFor(BuildContext context) {
+    final ext = Theme.of(context).extension<EcThemeExtension>()!;
+    return EcTypography.getHeadlineMedium(ext.themeType, ext.isDark);
+  }
 }
 
 /// Headline small text widget - for section titles
@@ -192,7 +208,10 @@ class EcHeadlineSmallText extends BaseEcText {
   });
 
   @override
-  TextStyle get baseStyle => EcTypography.headlineSmall;
+  TextStyle baseStyleFor(BuildContext context) {
+    final ext = Theme.of(context).extension<EcThemeExtension>()!;
+    return EcTypography.getHeadlineSmall(ext.themeType, ext.isDark);
+  }
 }
 
 /// Title large text widget - for card titles
@@ -212,7 +231,10 @@ class EcTitleLargeText extends BaseEcText {
   });
 
   @override
-  TextStyle get baseStyle => EcTypography.titleLarge;
+  TextStyle baseStyleFor(BuildContext context) {
+    final ext = Theme.of(context).extension<EcThemeExtension>()!;
+    return EcTypography.getTitleLarge(ext.themeType, ext.isDark);
+  }
 }
 
 /// Title medium text widget - for list item titles
@@ -232,7 +254,10 @@ class EcTitleMediumText extends BaseEcText {
   });
 
   @override
-  TextStyle get baseStyle => EcTypography.titleMedium;
+  TextStyle baseStyleFor(BuildContext context) {
+    final ext = Theme.of(context).extension<EcThemeExtension>()!;
+    return EcTypography.getTitleMedium(ext.themeType, ext.isDark);
+  }
 }
 
 /// Title small text widget - for small titles
@@ -252,7 +277,10 @@ class EcTitleSmallText extends BaseEcText {
   });
 
   @override
-  TextStyle get baseStyle => EcTypography.titleSmall;
+  TextStyle baseStyleFor(BuildContext context) {
+    final ext = Theme.of(context).extension<EcThemeExtension>()!;
+    return EcTypography.getTitleSmall(ext.themeType, ext.isDark);
+  }
 }
 
 /// Body large text widget - for main content
@@ -272,7 +300,10 @@ class EcBodyLargeText extends BaseEcText {
   });
 
   @override
-  TextStyle get baseStyle => EcTypography.bodyLarge;
+  TextStyle baseStyleFor(BuildContext context) {
+    final ext = Theme.of(context).extension<EcThemeExtension>()!;
+    return EcTypography.getBodyLarge(ext.themeType, ext.isDark);
+  }
 }
 
 /// Body medium text widget - for regular content
@@ -292,7 +323,10 @@ class EcBodyMediumText extends BaseEcText {
   });
 
   @override
-  TextStyle get baseStyle => EcTypography.bodyMedium;
+  TextStyle baseStyleFor(BuildContext context) {
+    final ext = Theme.of(context).extension<EcThemeExtension>()!;
+    return EcTypography.getBodyMedium(ext.themeType, ext.isDark);
+  }
 }
 
 /// Body small text widget - for secondary content
@@ -312,7 +346,10 @@ class EcBodySmallText extends BaseEcText {
   });
 
   @override
-  TextStyle get baseStyle => EcTypography.bodySmall;
+  TextStyle baseStyleFor(BuildContext context) {
+    final ext = Theme.of(context).extension<EcThemeExtension>()!;
+    return EcTypography.getBodySmall(ext.themeType, ext.isDark);
+  }
 }
 
 /// Label large text widget - for form labels
@@ -332,7 +369,10 @@ class EcLabelLargeText extends BaseEcText {
   });
 
   @override
-  TextStyle get baseStyle => EcTypography.labelLarge;
+  TextStyle baseStyleFor(BuildContext context) {
+    final ext = Theme.of(context).extension<EcThemeExtension>()!;
+    return EcTypography.getLabelLarge(ext.themeType, ext.isDark);
+  }
 }
 
 /// Label medium text widget - for small labels
@@ -352,7 +392,10 @@ class EcLabelMediumText extends BaseEcText {
   });
 
   @override
-  TextStyle get baseStyle => EcTypography.labelMedium;
+  TextStyle baseStyleFor(BuildContext context) {
+    final ext = Theme.of(context).extension<EcThemeExtension>()!;
+    return EcTypography.getLabelMedium(ext.themeType, ext.isDark);
+  }
 }
 
 /// Label small text widget - for tiny labels
@@ -372,7 +415,10 @@ class EcLabelSmallText extends BaseEcText {
   });
 
   @override
-  TextStyle get baseStyle => EcTypography.labelSmall;
+  TextStyle baseStyleFor(BuildContext context) {
+    final ext = Theme.of(context).extension<EcThemeExtension>()!;
+    return EcTypography.getLabelSmall(ext.themeType, ext.isDark);
+  }
 }
 
 /// Legacy EcText class for backward compatibility
