@@ -176,7 +176,7 @@ class _ApiClientExampleState extends State<ApiClientExample> {
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: colorScheme.surface,
+                color: colorScheme.outline,
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: colorScheme.outline.withValues(alpha: 0.2),

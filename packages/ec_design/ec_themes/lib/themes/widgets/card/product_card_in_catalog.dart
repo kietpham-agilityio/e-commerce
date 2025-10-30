@@ -181,7 +181,7 @@ class _GridView extends StatelessWidget {
           right: 0,
           child: EcIconButton(
             size: 36,
-            icon: EcAssets.heart(color: colorScheme.surface),
+            icon: EcAssets.heart(color: colorScheme.outline),
             backgroundColor: colorScheme.primaryContainer,
             showShadow: true,
             onPressed: onFavorite,
@@ -194,11 +194,7 @@ class _GridView extends StatelessWidget {
         children: [
           EcRatingStarsView(rating: rating, totalReviews: totalReviews),
           SizedBox(height: spacing.xs),
-          EcLabelSmallText(
-            brand,
-            fontWeight: EcTypography.regular,
-            color: colorScheme.surface,
-          ),
+          EcLabelSmallText(brand, color: colorScheme.outline),
           SizedBox(height: spacing.xs),
           EcTitleLargeText(title, fontWeight: EcTypography.bold),
           SizedBox(height: spacing.xxs),
@@ -219,9 +215,9 @@ class _GridView extends StatelessWidget {
                     text: '$originalPrice\$',
                     style: ecTheme.textTheme.titleMedium?.copyWith(
                       height: EcTypography.normalHeight,
-                      color: colorScheme.surface,
+                      color: colorScheme.outline,
                       decoration: TextDecoration.lineThrough,
-                      decorationColor: colorScheme.surface,
+                      decorationColor: colorScheme.outline,
                     ),
                   ),
                   WidgetSpan(child: SizedBox(width: spacing.xxs)),
@@ -292,7 +288,7 @@ class _ListView extends StatelessWidget {
           bottom: -10,
           right: 0,
           child: EcIconButton(
-            icon: EcAssets.heart(color: colorScheme.surface),
+            icon: EcAssets.heart(color: colorScheme.outline),
             backgroundColor: colorScheme.primaryContainer,
             showShadow: true,
             onPressed: onFavorite,
@@ -305,11 +301,7 @@ class _ListView extends StatelessWidget {
           SizedBox(height: spacing.md),
           EcTitleLargeText(title, fontWeight: EcTypography.bold),
           SizedBox(height: spacing.xxs),
-          EcLabelSmallText(
-            brand,
-            fontWeight: EcTypography.regular,
-            color: colorScheme.surface,
-          ),
+          EcLabelSmallText(brand, color: colorScheme.outline),
           SizedBox(height: spacing.sm),
           EcRatingStarsView(rating: rating, totalReviews: totalReviews),
           SizedBox(height: spacing.sm),
@@ -330,9 +322,9 @@ class _ListView extends StatelessWidget {
                     text: '$originalPrice\$',
                     style: ecTheme.textTheme.titleMedium?.copyWith(
                       height: EcTypography.normalHeight,
-                      color: colorScheme.surface,
+                      color: colorScheme.outline,
                       decoration: TextDecoration.lineThrough,
-                      decorationColor: colorScheme.surface,
+                      decorationColor: colorScheme.outline,
                     ),
                   ),
                   WidgetSpan(child: SizedBox(width: spacing.xxs)),

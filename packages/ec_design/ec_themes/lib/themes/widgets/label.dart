@@ -75,7 +75,11 @@ class EcLabel extends StatelessWidget {
         color: effectiveBackgroundColor,
         borderRadius: BorderRadius.circular(effectiveBorderRadius),
       ),
-      child: EcLabelSmallText(text, color: effectiveTextColor),
+      child: EcLabelSmallText(
+        text,
+        color: effectiveTextColor,
+        fontWeight: EcTypography.semiBold,
+      ),
     );
   }
 

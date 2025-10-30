@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../typography.dart';
+
 import '../../app_colors.dart';
 import '../../ec_theme_extension.dart';
+import '../../typography.dart';
 
 /// Ordinary text field widget with 22px vertical padding
 class EcOrdinaryTextField extends StatefulWidget {
@@ -286,7 +287,7 @@ class _EcOrdinaryTextFieldState extends State<EcOrdinaryTextField> {
                     ecTheme.isDark,
                   ).copyWith(color: colors.error),
                   filled: true,
-                  fillColor: colors.primaryContainer,
+                  fillColor: colors.onSecondary,
                   border: _buildBorder(borderRadius: 4),
                   enabledBorder: _buildBorder(borderRadius: 4),
                   focusedBorder: _buildBorder(borderRadius: 4),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../app_bar.dart';
 import '../checkbox.dart';
 import '../text.dart';
@@ -101,7 +102,7 @@ class _EcCheckboxExampleState extends State<EcCheckboxExample> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
+                    color: Theme.of(context).colorScheme.outline,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: Theme.of(context).colorScheme.outline,

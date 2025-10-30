@@ -113,7 +113,7 @@ class EcCardInList extends StatelessWidget {
                   top: 0,
                   right: 0,
                   child: EcIconButton(
-                    icon: EcAssets.close(color: colorScheme.surface),
+                    icon: EcAssets.close(color: colorScheme.outline),
                     size: 40,
                     backgroundColor: Colors.transparent,
                     onPressed: onClose,
@@ -127,8 +127,7 @@ class EcCardInList extends StatelessWidget {
             // FIXME: use l10n
             'Sorry, this item is currently sold out',
             letterSpacing: 0,
-            fontWeight: FontWeight.w400,
-            color: colorScheme.surface,
+            color: colorScheme.outline,
           )
         else
           SizedBox(height: 11),
@@ -227,6 +226,7 @@ class EcCardInGrid extends StatelessWidget {
         child: Stack(
           children: [
             Card(
+              color: colorScheme.surface,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(8),
@@ -299,7 +299,6 @@ class EcCardInGrid extends StatelessWidget {
                       'Sorry, this item is currently sold out',
                       height: 1.2,
                       letterSpacing: 0,
-                      fontWeight: FontWeight.w400,
                       color: colorScheme.secondary,
                     ),
                   ),
@@ -310,7 +309,7 @@ class EcCardInGrid extends StatelessWidget {
                 top: 0,
                 right: 0,
                 child: EcIconButton(
-                  icon: EcAssets.close(color: colorScheme.surface),
+                  icon: EcAssets.close(color: colorScheme.outline),
                   size: 40,
                   backgroundColor: Colors.transparent,
                   onPressed: onClose,

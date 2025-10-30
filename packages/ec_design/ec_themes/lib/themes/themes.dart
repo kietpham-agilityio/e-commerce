@@ -136,6 +136,7 @@ class EcDesignTheme {
       useMaterial3: true,
       brightness: Brightness.dark,
       fontFamily: EcTypography.fontFamily,
+      scaffoldBackgroundColor: EcColors.dark(ECThemeType.user).surface,
 
       // Color scheme
       colorScheme: EcColors.dark(ECThemeType.user),
@@ -233,7 +234,7 @@ class EcDesignTheme {
       useMaterial3: true,
       brightness: Brightness.light,
       fontFamily: EcTypography.fontFamily,
-      scaffoldBackgroundColor: EcColors.light(ECThemeType.user).surfaceDim,
+      scaffoldBackgroundColor: EcColors.light(ECThemeType.admin).surface,
 
       // Color scheme
       colorScheme: EcColors.light(ECThemeType.admin),
@@ -294,6 +295,7 @@ class EcDesignTheme {
       useMaterial3: true,
       brightness: Brightness.dark,
       fontFamily: EcTypography.fontFamily,
+      scaffoldBackgroundColor: EcColors.dark(ECThemeType.admin).surface,
 
       // Color scheme
       colorScheme: EcColors.dark(ECThemeType.admin),
@@ -566,7 +568,7 @@ class EcDesignTheme {
         isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
 
     return BottomNavigationBarThemeData(
-      backgroundColor: colorScheme.onPrimary,
+      backgroundColor: colorScheme.surface,
       type: BottomNavigationBarType.fixed,
       selectedLabelStyle: _buildTextTheme(
         themeType,
@@ -622,7 +624,7 @@ class EcDesignTheme {
     final colorScheme =
         isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
 
-    return DividerThemeData(color: colorScheme.surface, thickness: 0, space: 0);
+    return DividerThemeData(color: colorScheme.outline, thickness: 0, space: 0);
   }
 
   /// TBD: Build icon theme
@@ -639,7 +641,7 @@ class EcDesignTheme {
         isDark ? EcColors.dark(themeType) : EcColors.light(themeType);
 
     return ListTileThemeData(
-      tileColor: colorScheme.surfaceDim,
+      tileColor: colorScheme.surface,
       iconColor: colorScheme.secondary,
       titleTextStyle: EcTypography.getTitleLarge(themeType, isDark),
       subtitleTextStyle: EcTypography.getAdminBodyMedium(themeType, isDark),

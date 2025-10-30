@@ -53,8 +53,7 @@ class EcRatingStarsView extends StatelessWidget {
         SizedBox(width: spacing.xxxs),
         EcLabelSmallText(
           '($totalReviews)',
-          fontWeight: EcTypography.regular,
-          color: Theme.of(context).colorScheme.surface,
+          color: Theme.of(context).colorScheme.outline,
         ),
       ],
     );

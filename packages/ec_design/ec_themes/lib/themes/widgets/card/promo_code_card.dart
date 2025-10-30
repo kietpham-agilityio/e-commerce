@@ -77,10 +77,7 @@ class EcPromoCodeCard extends StatelessWidget {
                       height: EcTypography.tightHeight,
                     ),
                     SizedBox(height: spacing.xxs),
-                    EcLabelSmallText(
-                      discountCode,
-                      fontWeight: EcTypography.regular,
-                    ),
+                    EcLabelSmallText(discountCode),
                   ],
                 ),
               ),
@@ -94,7 +91,8 @@ class EcPromoCodeCard extends StatelessWidget {
                     children: [
                       EcLabelSmallText(
                         l10n.generalDaysRemaining(remainingDays),
-                        color: colorScheme.surface,
+                        color: colorScheme.outline,
+                        fontWeight: EcTypography.semiBold,
                       ),
                       SizedBox(height: spacing.md),
                       SizedBox(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../app_bar.dart';
 import '../tag.dart';
 import '../text.dart';
@@ -201,7 +202,7 @@ class _EcTagExampleState extends State<EcTagExample> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
+                    color: Theme.of(context).colorScheme.outline,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: Theme.of(context).colorScheme.outline,

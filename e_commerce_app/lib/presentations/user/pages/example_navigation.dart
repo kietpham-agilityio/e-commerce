@@ -125,7 +125,7 @@ class ExamplePage extends StatelessWidget {
           padding: const EdgeInsets.only(top: 6),
           child: EcBodyMediumText(
             description,
-            color: Theme.of(context).colorScheme.surface,
+            color: Theme.of(context).colorScheme.outline,
           ),
         ),
         trailing: const Icon(Icons.chevron_right),
