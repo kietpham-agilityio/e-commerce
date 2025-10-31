@@ -129,7 +129,7 @@ class _ApiClientExampleState extends State<ApiClientExample> {
 
     return Scaffold(
       backgroundColor: colorScheme.surfaceDim,
-      appBar: EcAppBar(title: const EcTitleMediumText('🔌 API Client Example')),
+      appBar: EcAppBar(title: const EcTitleMediumText('🔌 Network Logs')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

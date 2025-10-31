@@ -74,8 +74,11 @@ class _LoginViewState extends State<LoginView> {
           elevation: 0,
 
           title: Padding(
-            padding: EdgeInsets.symmetric(horizontal: spacing.md),
-            child: EcHeadlineLargeText(
+            padding: EdgeInsets.symmetric(
+              horizontal: spacing.md,
+              vertical: spacing.xxl,
+            ),
+            child: EcDisplayLargeText(
               l10n.loginTitle,
               fontWeight: FontWeight.bold,
             ),
@@ -98,7 +101,6 @@ class _LoginViewState extends State<LoginView> {
 
                   _EmailInput(emailFocusNode: _emailFocusNode),
                   _PasswordInput(passwordFocusNode: _passwordFocusNode),
-                  SizedBox(height: spacing.xl),
 
                   const _ForgotPasswordButton(),
                   SizedBox(height: spacing.xMassive),
