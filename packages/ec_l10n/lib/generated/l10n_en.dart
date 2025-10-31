@@ -180,8 +180,7 @@ class AppLocaleEn extends AppLocale {
   String get generalTrackingNumber => 'Tracking number:';
 
   @override
-  String generalFullAddress(
-      String city, String state, String zipcode, String country) {
+  String generalFullAddress(String city, String state, String zipcode, String country) {
     return '$city, $state $zipcode, $country';
   }
 
@@ -367,8 +366,7 @@ class AppLocaleEn extends AppLocale {
   String get favoritesItemAddedSuccessMessage => 'Item added to favorites';
 
   @override
-  String get favoritesItemRemovedSuccessMessage =>
-      'Item removed from favorites';
+  String get favoritesItemRemovedSuccessMessage => 'Item removed from favorites';
 
   @override
   String get myAccountPersonalInfoTitle => 'Personal Information';

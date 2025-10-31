@@ -1,0 +1,8 @@
+flutter_launcher_icons:
+  android: true
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "../packages/ec_design/ec_themes/assets/icons/android_admin_prod.png"
+  
+  ios: true
+  image_path_ios: "../packages/ec_design/ec_themes/assets/icons/admin_prod.png"
+  image_path: "../packages/ec_design/ec_themes/assets/icons/admin_prod.png"

@@ -12,7 +12,7 @@
       "type": "dart",
       "cwd": "e_commerce_app",
       "program": "lib/main_dev.dart",
-      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"]
+      "args": ["--flavor", "adminDev", "--dart-define=FLAVOR=admin"]
     },
     {
       "name": "Run Admin Dev (Profile)",
@@ -20,7 +20,7 @@
       "type": "dart",
       "flutterMode": "profile",
       "program": "lib/main_dev.dart",
-      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"]
+      "args": ["--flavor", "adminDev", "--dart-define=FLAVOR=admin"]
     },
     {
       "name": "Run Admin Dev (Release)",
@@ -28,7 +28,7 @@
       "type": "dart",
       "flutterMode": "release",
       "program": "lib/main_dev.dart",
-      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"]
+      "args": ["--flavor", "adminDev", "--dart-define=FLAVOR=admin"]
     },
 
     // MARK: User Dev
@@ -38,7 +38,7 @@
       "type": "dart",
       "cwd": "e_commerce_app",
       "program": "lib/main_dev.dart",
-      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"]
+      "args": ["--flavor", "userDev", "--dart-define=FLAVOR=user"]
     },
     {
       "name": "Run User Dev (Profile)",
@@ -46,7 +46,7 @@
       "type": "dart",
       "flutterMode": "profile",
       "program": "lib/main_dev.dart",
-      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"]
+      "args": ["--flavor", "userDev", "--dart-define=FLAVOR=user"]
     },
     {
       "name": "Run User Dev (Release)",
@@ -54,7 +54,7 @@
       "type": "dart",
       "flutterMode": "release",
       "program": "lib/main_dev.dart",
-      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"]
+      "args": ["--flavor", "userDev", "--dart-define=FLAVOR=user"]
     },
 
     // MARK: Admin Stag
@@ -64,7 +64,7 @@
       "type": "dart",
       "cwd": "e_commerce_app",
       "program": "lib/main_stag.dart",
-      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"]
+      "args": ["--flavor", "adminStag", "--dart-define=FLAVOR=admin"]
     },
     {
       "name": "Run Admin Stag (Profile)",
@@ -72,7 +72,7 @@
       "type": "dart",
       "flutterMode": "profile",
       "program": "lib/main_stag.dart",
-      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"]
+      "args": ["--flavor", "adminStag", "--dart-define=FLAVOR=admin"]
     },
     {
       "name": "Run Admin Stag (Release)",
@@ -80,7 +80,7 @@
       "type": "dart",
       "flutterMode": "release",
       "program": "lib/main_stag.dart",
-      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"]
+      "args": ["--flavor", "adminStag", "--dart-define=FLAVOR=admin"]
     },
 
     // MARK: User Stag
@@ -90,7 +90,7 @@
       "type": "dart",
       "cwd": "e_commerce_app",
       "program": "lib/main_dev.dart",
-      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"]
+      "args": ["--flavor", "userStag", "--dart-define=FLAVOR=user"]
     },
     {
       "name": "Run User Stag (Profile)",
@@ -98,7 +98,7 @@
       "type": "dart",
       "flutterMode": "profile",
       "program": "lib/main_dev.dart",
-      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"]
+      "args": ["--flavor", "userStag", "--dart-define=FLAVOR=user"]
     },
     {
       "name": "Run User Stag (Release)",
@@ -106,7 +106,7 @@
       "type": "dart",
       "flutterMode": "release",
       "program": "lib/main_dev.dart",
-      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"]
+      "args": ["--flavor", "userStag", "--dart-define=FLAVOR=user"]
     },
 
     // MARK: Admin Prod
@@ -116,7 +116,7 @@
       "type": "dart",
       "cwd": "e_commerce_app",
       "program": "lib/main_prod.dart",
-      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"]
+      "args": ["--flavor", "adminProd", "--dart-define=FLAVOR=admin"]
     },
     {
       "name": "Run Admin Prod (Profile)",
@@ -124,7 +124,7 @@
       "type": "dart",
       "flutterMode": "profile",
       "program": "lib/main_prod.dart",
-      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"]
+      "args": ["--flavor", "adminProd", "--dart-define=FLAVOR=admin"]
     },
     {
       "name": "Run Admin Prod (Release)",
@@ -132,7 +132,7 @@
       "type": "dart",
       "flutterMode": "release",
       "program": "lib/main_prod.dart",
-      "args": ["--flavor", "admin", "--dart-define=FLAVOR=admin"]
+      "args": ["--flavor", "adminProd", "--dart-define=FLAVOR=admin"]
     },
 
     // MARK: User Prod
@@ -142,7 +142,7 @@
       "type": "dart",
       "cwd": "e_commerce_app",
       "program": "lib/main_dev.dart",
-      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"]
+      "args": ["--flavor", "userProd", "--dart-define=FLAVOR=user"]
     },
     {
       "name": "Run User Prod (Profile)",
@@ -150,7 +150,7 @@
       "type": "dart",
       "flutterMode": "profile",
       "program": "lib/main_dev.dart",
-      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"]
+      "args": ["--flavor", "userProd", "--dart-define=FLAVOR=user"]
     },
     {
       "name": "Run User Prod (Release)",
@@ -158,8 +158,10 @@
       "type": "dart",
       "flutterMode": "release",
       "program": "lib/main_dev.dart",
-      "args": ["--flavor", "user", "--dart-define=FLAVOR=user"]
+      "args": ["--flavor", "userProd", "--dart-define=FLAVOR=user"]
     },
+
+    // MARK: ios
     {
       "name": "e-commerce (user flavor)",
       "cwd": "e_commerce_app",
