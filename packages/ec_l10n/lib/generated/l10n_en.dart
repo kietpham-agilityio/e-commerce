@@ -102,6 +102,12 @@ class AppLocaleEn extends AppLocale {
   String get generalQuantity => 'Quantity';
 
   @override
+  String get generalColor => 'Color';
+
+  @override
+  String get generalSize => 'Size';
+
+  @override
   String get generalTotal => 'Total';
 
   @override
@@ -174,7 +180,8 @@ class AppLocaleEn extends AppLocale {
   String get generalTrackingNumber => 'Tracking number:';
 
   @override
-  String generalFullAddress(String city, String state, String zipcode, String country) {
+  String generalFullAddress(
+      String city, String state, String zipcode, String country) {
     return '$city, $state $zipcode, $country';
   }
 
@@ -220,6 +227,9 @@ class AppLocaleEn extends AppLocale {
   String generalTotalItem(int total) {
     return '$total items';
   }
+
+  @override
+  String get generalSoldOutMessage => 'Sorry, this item is currently sold out';
 
   @override
   String get semanticGoBack => 'Go Back';
@@ -357,7 +367,8 @@ class AppLocaleEn extends AppLocale {
   String get favoritesItemAddedSuccessMessage => 'Item added to favorites';
 
   @override
-  String get favoritesItemRemovedSuccessMessage => 'Item removed from favorites';
+  String get favoritesItemRemovedSuccessMessage =>
+      'Item removed from favorites';
 
   @override
   String get myAccountPersonalInfoTitle => 'Personal Information';

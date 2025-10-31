@@ -1,3 +1,4 @@
+import 'package:ec_l10n/generated/l10n.dart';
 import 'package:ec_themes/ec_design.dart';
 import 'package:flutter/material.dart';
 
@@ -68,6 +69,7 @@ class EcCardInList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocale.of(context)!;
 
     return Column(
       spacing: 7,
@@ -124,8 +126,7 @@ class EcCardInList extends StatelessWidget {
         ),
         if (isSoldOut)
           EcLabelSmallText(
-            // FIXME: use l10n
-            'Sorry, this item is currently sold out',
+            l10n.generalSoldOutMessage,
             letterSpacing: 0,
             color: colorScheme.outline,
           )
@@ -218,6 +219,7 @@ class EcCardInGrid extends StatelessWidget {
     final themeExtension = Theme.of(context).extension<EcThemeExtension>()!;
     final spacing = themeExtension.spacing;
     final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocale.of(context)!;
 
     return GestureDetector(
       onTap: isSoldOut ? null : onTap,
@@ -295,8 +297,7 @@ class EcCardInGrid extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: EcLabelSmallText(
-                      // FIXME: use l10n
-                      'Sorry, this item is currently sold out',
+                      l10n.generalSoldOutMessage,
                       height: 1.2,
                       letterSpacing: 0,
                       color: colorScheme.secondary,

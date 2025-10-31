@@ -1,11 +1,10 @@
-import 'dart:developer';
-
 import 'package:e_commerce_app/domain/entities/category_entity.dart';
 import 'package:e_commerce_app/domain/repositories/shop_repository.dart';
 import 'package:ec_core/api_client/apis/dtos/product_dto.dart';
 import 'package:ec_core/api_client/apis/failure.dart';
 import 'package:ec_core/api_client/core/api_client.dart';
 import 'package:ec_core/api_client/helpers/api_cache_helper.dart';
+import 'package:ec_core/di/services/logger_di.dart';
 
 class ShopRepositoryImpl extends ShopRepository {
   ShopRepositoryImpl({required ApiClient apiClient}) : _apiClient = apiClient;
@@ -27,20 +26,20 @@ class ShopRepositoryImpl extends ShopRepository {
             );
 
         if (cachedData != null && cachedData.isNotEmpty) {
-          log(
-            '✅ Using cached shop categories: ${cachedData.length} categories',
+          LoggerDI.success(
+            'Using cached shop categories: ${cachedData.length} categories',
           );
           // Convert cached CategoryDto to domain entities
           return cachedData
               .map((categoryDto) => categoryDto.toEcCategoryEntity())
               .toList();
         } else {
-          log(
-            '⚠️ Cache returned: ${cachedData == null ? "null" : "empty list"}',
+          LoggerDI.warning(
+            'Cache returned: ${cachedData == null ? "null" : "empty list"}',
           );
         }
       } catch (e) {
-        log('❌ Error reading cache: $e');
+        LoggerDI.error('Error reading cache: $e');
       }
     }
 

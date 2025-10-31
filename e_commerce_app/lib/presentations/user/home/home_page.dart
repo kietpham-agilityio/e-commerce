@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:e_commerce_app/config/env_config.dart';
 import 'package:e_commerce_app/core/bloc/debug_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
@@ -98,7 +96,7 @@ class _HomeBody extends StatelessWidget {
                     title: l10n.generalSale,
                     onViewAll: () {
                       // TODO: handle redirect sale page
-                      log('onViewall sale');
+                      LoggerDI.debug('onViewall sale');
                     },
                   ),
                   SizedBox(height: spacing.xxl),
@@ -112,7 +110,7 @@ class _HomeBody extends StatelessWidget {
                     title: l10n.generalNew,
                     onViewAll: () {
                       // TODO: handle redirect sale page
-                      log('onViewall New');
+                      LoggerDI.debug('onViewall New');
                     },
                   ),
                   SizedBox(height: spacing.xxl),

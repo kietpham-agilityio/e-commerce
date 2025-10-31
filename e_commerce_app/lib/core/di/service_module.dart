@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:ec_core/di/services/logger_di.dart';
 import 'package:ec_core/services/ec_notifications/ec_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -30,7 +29,9 @@ class ServiceModule {
                   notification: value,
                   onOrderDetailsTap: (notifsRes) {
                     // TODO: Handle the notification tap after setup go_router
-                    log('Handle the notification tap after setup go_router');
+                    LoggerDI.debug(
+                      'Handle the notification tap after setup go_router',
+                    );
                   },
                 );
               },

@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../enums/supabase_enums.dart';
 
 part 'wishlist_dto.freezed.dart';
 part 'wishlist_dto.g.dart';

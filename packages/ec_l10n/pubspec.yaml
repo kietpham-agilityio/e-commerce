@@ -3,6 +3,8 @@ description: Localization package for E-commerce app using flutter_localization
 version: 1.0.0
 homepage: https://github.com/your-org/e-commerce
 
+publish_to: "none"
+
 environment:
   sdk: ">=3.0.0 <4.0.0"
   flutter: ">=3.10.0"

@@ -31,6 +31,8 @@
   "generalProducts": "Products",
   "generalPrice": "Price",
   "generalQuantity": "Quantity",
+  "generalColor": "Color",
+  "generalSize": "Size",
   "generalTotal": "Total",
   "generalSubtotal": "Subtotal",
   "generalTax": "Tax",
@@ -108,6 +110,7 @@
       }
     }
   },
+  "generalSoldOutMessage": "Sorry, this item is currently sold out",
   "semanticGoBack": "Go Back",
   "homeTitle": "Home",
   "bagTitle": "Bag",
