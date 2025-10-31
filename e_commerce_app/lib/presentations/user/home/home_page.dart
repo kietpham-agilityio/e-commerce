@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:e_commerce_app/config/env_config.dart';
 import 'package:e_commerce_app/core/bloc/debug_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
@@ -9,7 +7,6 @@ import 'package:e_commerce_app/core/utils/price_formatter.dart';
 import 'package:e_commerce_app/domain/usecases/home_usecase.dart';
 import 'package:e_commerce_app/presentations/user/home/bloc/home_bloc.dart';
 import 'package:e_commerce_app/presentations/user/pages/api_client_example.dart';
-import 'package:e_commerce_app/presentations/user/pages/example_pages_navigation.dart';
 import 'package:e_commerce_app/presentations/user/pages/feature_flag_debug_panel.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_l10n/generated/l10n.dart';
@@ -99,7 +96,7 @@ class _HomeBody extends StatelessWidget {
                     title: l10n.generalSale,
                     onViewAll: () {
                       // TODO: handle redirect sale page
-                      log('onViewall sale');
+                      LoggerDI.debug('onViewall sale');
                     },
                   ),
                   SizedBox(height: spacing.xxl),
@@ -113,7 +110,7 @@ class _HomeBody extends StatelessWidget {
                     title: l10n.generalNew,
                     onViewAll: () {
                       // TODO: handle redirect sale page
-                      log('onViewall New');
+                      LoggerDI.debug('onViewall New');
                     },
                   ),
                   SizedBox(height: spacing.xxl),
@@ -276,13 +273,7 @@ class _DebugButton extends StatelessWidget {
                   ),
                 );
               },
-              onExamplePages: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const ExamplePagesNavigation(),
-                  ),
-                );
-              },
+
               enableMockBackend: true,
             )
             : const SizedBox.shrink();

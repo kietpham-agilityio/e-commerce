@@ -34,57 +34,57 @@ class ProfilePage extends StatelessWidget {
               }
             }
           },
-          child: BlocBuilder<DebugBloc, DebugState>(
-            builder: (context, appState) {
+          child: Builder(
+            builder: (context) {
+              final appState = context.watch<DebugBloc>().state;
               final isProfileEnabled =
                   appState.flags.enableProfilePage ?? false;
 
-              return isProfileEnabled
-                  ? BlocBuilder<ProfileBloc, ProfileState>(
-                    builder: (context, profileState) {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const EcBodyLargeText(
-                              'Profile content will be displayed here',
-                            ),
-                            const SizedBox(height: 24),
-                            EcElevatedButton(
-                              text: 'Logout',
-                              onPressed:
-                                  profileState.status == ProfileStatus.loading
-                                      ? null
-                                      : () {
-                                        BlocProvider.of<ProfileBloc>(
-                                          context,
-                                        ).add(const OnLogoutButtonPressed());
-                                      },
-                              child:
-                                  profileState.status == ProfileStatus.loading
-                                      ? const SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                        ),
-                                      )
-                                      : null,
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  )
-                  : const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(24),
-                      child: EcBodyLargeText(
-                        'The Profile feature is not available for now',
-                        textAlign: TextAlign.center,
-                      ),
+              if (!isProfileEnabled) {
+                return const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(24),
+                    child: EcBodyLargeText(
+                      'The Profile feature is not available for now',
+                      textAlign: TextAlign.center,
                     ),
-                  );
+                  ),
+                );
+              }
+
+              final profileState = context.watch<ProfileBloc>().state;
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const EcBodyLargeText(
+                      'Profile content will be displayed here',
+                    ),
+                    const SizedBox(height: 24),
+                    EcElevatedButton(
+                      text: 'Logout',
+                      onPressed:
+                          profileState.status == ProfileStatus.loading
+                              ? null
+                              : () {
+                                context.read<ProfileBloc>().add(
+                                  const OnLogoutButtonPressed(),
+                                );
+                              },
+                      child:
+                          profileState.status == ProfileStatus.loading
+                              ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                              : null,
+                    ),
+                  ],
+                ),
+              );
             },
           ),
         ),

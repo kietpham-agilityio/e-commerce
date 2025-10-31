@@ -20,7 +20,7 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
     bool? flagValue,
   }) {
     // Dispatch event to AppBloc to update global state
-    BlocProvider.of<DebugBloc>(context).add(
+    context.read<DebugBloc>().add(
       AppFeatureFlagsUpdated(
         newFlags,
         flagName: flagName,
@@ -58,30 +58,27 @@ class _FeatureFlagDebugPanelState extends State<FeatureFlagDebugPanel> {
 
   @override
   Widget build(BuildContext context) {
+    final appState = context.watch<DebugBloc>().state;
+    final currentFlags = appState.flags;
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceDim,
       appBar: EcAppBar(
         title: const EcTitleMediumText('🛠️ Feature Flag Debug Panel'),
       ),
-      body: BlocBuilder<DebugBloc, DebugState>(
-        builder: (context, appState) {
-          final currentFlags = appState.flags;
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Debug & Development Features
 
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Debug & Development Features
+            // Page Scenarios for Demo
+            _buildPageScenariosSection(context, currentFlags),
 
-                // Page Scenarios for Demo
-                _buildPageScenariosSection(context, currentFlags),
-
-                const SizedBox(height: 24),
-              ],
-            ),
-          );
-        },
+            const SizedBox(height: 24),
+          ],
+        ),
       ),
     );
   }

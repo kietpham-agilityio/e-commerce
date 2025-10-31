@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:e_commerce_app/config/env_config.dart';
 import 'package:e_commerce_app/core/bloc/debug_bloc.dart';
 import 'package:e_commerce_app/core/di/app_module.dart';
@@ -10,6 +8,7 @@ import 'package:e_commerce_app/domain/entities/product_entities.dart';
 import 'package:e_commerce_app/domain/usecases/product_details_usecase.dart';
 import 'package:e_commerce_app/presentations/user/product_details/bloc/product_details_bloc.dart';
 import 'package:ec_core/debug_tools/ui/debug_tools_picker.dart';
+import 'package:ec_core/di/services/logger_di.dart';
 import 'package:ec_core/fab_debug/ui/fab_debug_button.dart';
 import 'package:ec_core/mocked_backend/interceptors/mock_backend_interceptor.dart';
 import 'package:ec_l10n/generated/l10n.dart';
@@ -40,7 +39,7 @@ class ProductDetailsPage extends StatefulWidget {
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   void dispose() {
-    log('🔴 ProductDetailsPage is being disposed');
+    LoggerDI.debug('ProductDetailsPage is being disposed');
     super.dispose();
   }
 
@@ -125,7 +124,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         text: l10n.productDetailsAddToCartBtn,
                         onPressed: () {
                           // TODO: handle add to cart
-                          log('ADD ITEM TO CART');
+                          LoggerDI.debug('ADD ITEM TO CART');
                         },
                       ),
                       SizedBox(height: spacing.massive),

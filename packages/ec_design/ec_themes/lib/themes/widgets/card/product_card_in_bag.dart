@@ -1,3 +1,4 @@
+import 'package:ec_l10n/generated/l10n.dart';
 import 'package:ec_themes/ec_design.dart';
 import 'package:ec_themes/themes/widgets/floating_menu.dart';
 import 'package:flutter/material.dart';
@@ -88,6 +89,7 @@ class EcProductCardInBag extends StatelessWidget {
     final colorScheme = ecTheme.colorScheme;
     final themeExtension = Theme.of(context).extension<EcThemeExtension>()!;
     final spacing = themeExtension.spacing;
+    final l10n = AppLocale.of(context)!;
 
     return EcCardInList(
       url: imageUrl,
@@ -107,8 +109,7 @@ class EcProductCardInBag extends StatelessWidget {
                   ),
                   children: [
                     TextSpan(
-                      // FIXME: use l10n
-                      text: 'Color: ',
+                      text: '${l10n.generalColor}: ',
                       style: ecTheme.textTheme.labelSmall?.copyWith(
                         color: colorScheme.outline,
                       ),
@@ -116,8 +117,7 @@ class EcProductCardInBag extends StatelessWidget {
                     TextSpan(text: color),
                     WidgetSpan(child: SizedBox(width: spacing.md)),
                     TextSpan(
-                      // FIXME: use l10n
-                      text: 'Size: ',
+                      text: '${l10n.generalSize}: ',
                       style: ecTheme.textTheme.labelSmall?.copyWith(
                         color: colorScheme.outline,
                       ),

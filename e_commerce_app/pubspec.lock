@@ -1432,7 +1432,7 @@ packages:
     source: hosted
     version: "5.0.0"
   talker_flutter:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: talker_flutter
       sha256: d249fa16936a08fe5c4fb9e2b9b122fdcbaef6be9c4dcf61e448d0b76f3179f1

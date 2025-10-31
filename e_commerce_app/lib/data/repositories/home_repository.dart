@@ -5,6 +5,7 @@ import 'package:ec_core/api_client/apis/dtos/product_dto.dart';
 import 'package:ec_core/api_client/apis/failure.dart';
 import 'package:ec_core/api_client/core/api_client.dart';
 import 'package:ec_core/api_client/helpers/api_cache_helper.dart';
+import 'package:ec_core/di/services/logger_di.dart';
 import 'package:ec_core/services/ec_local_store/boxes/user_session_box.dart';
 
 class HomeRepositoryImpl extends HomeRepository {
@@ -62,7 +63,9 @@ class HomeRepositoryImpl extends HomeRepository {
       if (cachedData != null && cachedData.isNotEmpty) {
         return; // Don't fetch again if we have cached data
       }
-    } catch (e) {}
+    } catch (e) {
+      // Silently ignore cache errors and proceed to fetch from API
+    }
 
     // Only fetch if no cached data exists
     FetchBackgroundUtils.fetchBackground(
@@ -73,8 +76,8 @@ class HomeRepositoryImpl extends HomeRepository {
         )
         .then((categories) {
           // Handle successful fetch - cache the results
-          print(
-            '✅ Shop categories fetched successfully in background: ${categories.length} categories',
+          LoggerDI.success(
+            'Shop categories fetched successfully in background: ${categories.length} categories',
           );
 
           // Cache the categories for future use (cache for 1 hour)
@@ -87,7 +90,9 @@ class HomeRepositoryImpl extends HomeRepository {
         })
         .catchError((error) {
           // Handle error - log it but don't affect the main flow
-          print('❌ Failed to fetch shop categories in background: $error');
+          LoggerDI.error(
+            'Failed to fetch shop categories in background: $error',
+          );
 
           // Try to get cached categories as fallback
           _getCachedShopCategories();
@@ -105,12 +110,12 @@ class HomeRepositoryImpl extends HomeRepository {
           );
 
       if (cachedData != null) {
-        print(
-          '📦 Using cached shop categories: ${cachedData.length} categories',
+        LoggerDI.info(
+          'Using cached shop categories: ${cachedData.length} categories',
         );
       }
     } catch (e) {
-      print('❌ Failed to get cached shop categories: $e');
+      LoggerDI.error('Failed to get cached shop categories: $e');
     }
   }
 }

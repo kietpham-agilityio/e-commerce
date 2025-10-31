@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:e_commerce_app/data/mocks/items_mock.dart';
+import 'package:ec_core/di/services/logger_di.dart';
 import 'package:e_commerce_app/domain/entities/product_entities.dart';
 import 'package:e_commerce_app/domain/usecases/product_details_usecase.dart';
 import 'package:equatable/equatable.dart';
@@ -84,7 +83,7 @@ class ProductDetailsBloc
 
   @override
   Future<void> close() {
-    log('🔴 ProductDetailsBloc is being disposed');
+    LoggerDI.debug('ProductDetailsBloc is being disposed');
     return super.close();
   }
 }

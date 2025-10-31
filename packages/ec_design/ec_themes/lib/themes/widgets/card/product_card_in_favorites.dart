@@ -1,3 +1,4 @@
+import 'package:ec_l10n/generated/l10n.dart';
 import 'package:ec_themes/ec_design.dart';
 import 'package:ec_themes/themes/app_spacing.dart';
 import 'package:flutter/material.dart';
@@ -218,6 +219,7 @@ class _GridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ecTheme = Theme.of(context);
+    final l10n = AppLocale.of(context)!;
 
     return EcCardInGrid(
       url: imageUrl,
@@ -262,8 +264,7 @@ class _GridView extends StatelessWidget {
               ),
               children: [
                 TextSpan(
-                  // FIXME: use l10n
-                  text: 'Color: ',
+                  text: '${l10n.generalColor}: ',
                   style: ecTheme.textTheme.labelSmall?.copyWith(
                     color: colorScheme.outline,
                   ),
@@ -271,8 +272,7 @@ class _GridView extends StatelessWidget {
                 TextSpan(text: color),
                 WidgetSpan(child: SizedBox(width: spacing.md)),
                 TextSpan(
-                  // FIXME: use l10n
-                  text: 'Size: ',
+                  text: '${l10n.generalSize}: ',
                   style: ecTheme.textTheme.labelSmall?.copyWith(
                     color: colorScheme.outline,
                   ),
@@ -389,6 +389,7 @@ class _ListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ecTheme = Theme.of(context);
+    final l10n = AppLocale.of(context)!;
 
     return EcCardInList(
       url: imageUrl,
@@ -430,8 +431,7 @@ class _ListView extends StatelessWidget {
               ),
               children: [
                 TextSpan(
-                  // FIXME: use l10n
-                  text: 'Color: ',
+                  text: '${l10n.generalColor}: ',
                   style: ecTheme.textTheme.labelSmall?.copyWith(
                     color: colorScheme.outline,
                   ),
@@ -439,8 +439,7 @@ class _ListView extends StatelessWidget {
                 TextSpan(text: color),
                 WidgetSpan(child: SizedBox(width: spacing.md)),
                 TextSpan(
-                  // FIXME: use l10n
-                  text: 'Size: ',
+                  text: '${l10n.generalSize}: ',
                   style: ecTheme.textTheme.labelSmall?.copyWith(
                     color: colorScheme.outline,
                   ),

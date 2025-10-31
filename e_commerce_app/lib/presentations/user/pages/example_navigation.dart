@@ -1,9 +1,6 @@
-import 'package:e_commerce_app/presentations/user/comments/comments_page.dart';
 import 'package:e_commerce_app/presentations/user/pages/api_client_example.dart';
 import 'package:ec_themes/themes/themes.dart';
 import 'package:flutter/material.dart';
-
-import '../items/items_page.dart';
 
 /// Simple navigation widget for testing features
 class ExamplePage extends StatelessWidget {
@@ -25,36 +22,6 @@ class ExamplePage extends StatelessWidget {
         children: [
           const EcHeadlineSmallText('Navigation Examples'),
           const SizedBox(height: 16),
-
-          _buildNavigationCard(
-            context,
-            title: 'Items Page',
-            description: 'View items with API integration',
-            icon: Icons.inventory,
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const ItemsPage()),
-              );
-            },
-          ),
-
-          const SizedBox(height: 12),
-
-          _buildNavigationCard(
-            context,
-            title: 'Comments Page',
-            description: 'View comments with BLoC pattern',
-            icon: Icons.comment,
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const CommentsPage(postId: 1),
-                ),
-              );
-            },
-          ),
-
-          const SizedBox(height: 12),
 
           _buildNavigationCard(
             context,

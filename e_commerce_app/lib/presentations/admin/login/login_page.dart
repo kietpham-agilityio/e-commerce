@@ -52,7 +52,6 @@ class _AdminLoginViewState extends State<AdminLoginView> {
   Widget build(BuildContext context) {
     final l10n = AppLocale.of(context)!;
     final ecTheme = Theme.of(context);
-    final colorScheme = ecTheme.colorScheme;
     final ecThemeExt = ecTheme.extension<EcThemeExtension>()!;
     final spacing = ecThemeExt.spacing;
 
