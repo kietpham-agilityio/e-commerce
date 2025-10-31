@@ -12,27 +12,27 @@ class AppConfig {
   /// Get router configuration based on flavor
   static GoRouter getRouter() {
     final flavor = EcFlavor.current;
-    return switch (flavor.isAdmin) {
-      true => AppRouter.adminRouter,
-      false => AppRouter.router,
+    return switch (flavor) {
+      EcFlavor.admin => AppRouter.adminRouter,
+      EcFlavor.user => AppRouter.router,
     };
   }
 
   /// Get light theme based on flavor
   static ThemeData getTheme() {
     final flavor = EcFlavor.current;
-    return switch (flavor.isAdmin) {
-      true => EcDesignTheme.adminLightTheme,
-      false => EcDesignTheme.lightTheme,
+    return switch (flavor) {
+      EcFlavor.admin => EcDesignTheme.adminLightTheme,
+      EcFlavor.user => EcDesignTheme.lightTheme,
     };
   }
 
   /// Get dark theme based on flavor
   static ThemeData getDarkTheme() {
     final flavor = EcFlavor.current;
-    return switch (flavor.isAdmin) {
-      true => EcDesignTheme.adminDarkTheme,
-      false => EcDesignTheme.darkTheme,
+    return switch (flavor) {
+      EcFlavor.admin => EcDesignTheme.adminDarkTheme,
+      EcFlavor.user => EcDesignTheme.darkTheme,
     };
   }
 
