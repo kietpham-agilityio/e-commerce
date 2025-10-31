@@ -42,6 +42,7 @@ class EcAddressCard extends StatelessWidget {
     this.state,
     this.country,
     this.onEdit,
+    this.onChanged,
     super.key,
   });
 
@@ -71,6 +72,8 @@ class EcAddressCard extends StatelessWidget {
 
   /// Callback when the edit button is pressed.
   final VoidCallback? onEdit;
+
+  final ValueChanged<bool?>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -133,6 +136,7 @@ class EcAddressCard extends StatelessWidget {
                   EcCheckbox(
                     value: isShippingAddress,
                     fillColor: ecTheme.colorScheme.secondary,
+                    onChanged: onChanged,
                   ),
                   SizedBox(width: spacing.sm),
                   EcBodyMediumText(
