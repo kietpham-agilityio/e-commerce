@@ -9,7 +9,6 @@ import 'package:e_commerce_app/core/utils/price_formatter.dart';
 import 'package:e_commerce_app/domain/usecases/home_usecase.dart';
 import 'package:e_commerce_app/presentations/user/home/bloc/home_bloc.dart';
 import 'package:e_commerce_app/presentations/user/pages/api_client_example.dart';
-import 'package:e_commerce_app/presentations/user/pages/example_pages_navigation.dart';
 import 'package:e_commerce_app/presentations/user/pages/feature_flag_debug_panel.dart';
 import 'package:ec_core/ec_core.dart';
 import 'package:ec_l10n/generated/l10n.dart';
@@ -276,13 +275,7 @@ class _DebugButton extends StatelessWidget {
                   ),
                 );
               },
-              onExamplePages: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const ExamplePagesNavigation(),
-                  ),
-                );
-              },
+
               enableMockBackend: true,
             )
             : const SizedBox.shrink();
