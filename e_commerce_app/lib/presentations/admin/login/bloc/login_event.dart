@@ -29,13 +29,13 @@ class LoginPasswordChanged extends LoginEvent {
 }
 
 /// Event when email field loses focus (for validation)
-class LoginEmailUnfocused extends LoginEvent {
-  const LoginEmailUnfocused();
+class LoginEmailValidated extends LoginEvent {
+  const LoginEmailValidated();
 }
 
 /// Event when password field loses focus (for validation)
-class LoginPasswordUnfocused extends LoginEvent {
-  const LoginPasswordUnfocused();
+class LoginPasswordValidated extends LoginEvent {
+  const LoginPasswordValidated();
 }
 
 /// Event when login form is submitted

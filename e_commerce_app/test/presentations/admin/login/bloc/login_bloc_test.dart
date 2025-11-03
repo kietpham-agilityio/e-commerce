@@ -173,7 +173,7 @@ void main() {
               isValid: false,
             ),
         build: () => loginBloc,
-        act: (bloc) => bloc.add(LoginEmailUnfocused()),
+        act: (bloc) => bloc.add(LoginEmailValidated()),
         verify: (bloc) {
           expect(bloc.state.email.value, isEmpty);
           expect(bloc.state.password.value, isEmpty);
@@ -194,7 +194,7 @@ void main() {
           loginBloc.add(const LoginEmailChanged(adminEmail));
           return loginBloc;
         },
-        act: (bloc) => bloc.add(LoginEmailUnfocused()),
+        act: (bloc) => bloc.add(LoginEmailValidated()),
         skip: 1, // Skip the email changed event
         verify: (bloc) {
           expect(bloc.state.email.value, adminEmail);
@@ -214,7 +214,7 @@ void main() {
               isValid: false,
             ),
         build: () => loginBloc,
-        act: (bloc) => bloc.add(LoginPasswordUnfocused()),
+        act: (bloc) => bloc.add(LoginPasswordValidated()),
         verify: (bloc) {
           expect(bloc.state.email.value, isEmpty);
           expect(bloc.state.password.value, isEmpty);
@@ -235,7 +235,7 @@ void main() {
           loginBloc.add(const LoginPasswordChanged(validPassword));
           return loginBloc;
         },
-        act: (bloc) => bloc.add(LoginPasswordUnfocused()),
+        act: (bloc) => bloc.add(LoginPasswordValidated()),
         skip: 1, // Skip the password changed event
         verify: (bloc) {
           expect(bloc.state.email.value, adminEmail);

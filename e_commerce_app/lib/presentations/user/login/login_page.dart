@@ -69,48 +69,38 @@ class _LoginViewState extends State<LoginView> {
         }
       },
       child: Scaffold(
-        appBar: EcAppBar(
-          automaticallyImplyLeading: false,
-          elevation: 0,
+        body: SingleChildScrollView(
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: spacing.xHuge),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(height: spacing.xHuge),
+                    EcDisplayLargeText(
+                      l10n.loginTitle,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    SizedBox(height: 112),
+                    _EmailInput(emailFocusNode: _emailFocusNode),
+                    _PasswordInput(passwordFocusNode: _passwordFocusNode),
 
-          title: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: spacing.md,
-              vertical: spacing.xxl,
-            ),
-            child: EcDisplayLargeText(
-              l10n.loginTitle,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          centerTitle: false,
-        ),
-        body: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: spacing.xHuge),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const Spacer(),
+                    const _ForgotPasswordButton(),
+                    SizedBox(height: spacing.xHuge),
 
-                  _EmailInput(emailFocusNode: _emailFocusNode),
-                  _PasswordInput(passwordFocusNode: _passwordFocusNode),
+                    const _LoginButton(),
 
-                  const _ForgotPasswordButton(),
-                  SizedBox(height: spacing.xMassive),
-
-                  const _LoginButton(),
-                  const Spacer(),
-
-                  const _SocialLoginSection(),
-                  SizedBox(height: spacing.xxxl),
-                ],
+                    SizedBox(height: 178),
+                    const _SocialLoginSection(),
+                    SizedBox(height: spacing.xxxl),
+                  ],
+                ),
               ),
             ),
           ),

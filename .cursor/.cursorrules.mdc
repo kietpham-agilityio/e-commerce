@@ -34,9 +34,10 @@ const codingGuidelines = `
 5. Implement proper routing using GoRouter
 6. Use proper form validation
 7. Follow proper state management with BLoC
-8. Implement proper dependency injection using GetIt
-9. Use proper asset management
-10. Follow proper testing practices
+8. Use patchValue method instead of copyWith when setting nullable fields to null
+9. Implement proper dependency injection using GetIt
+10. Use proper asset management
+11. Follow proper testing practices
     `;
 
 // Widget Guidelines
@@ -93,7 +94,12 @@ const blocStateManagementGuidelines = `
    - Use sealed classes or abstract classes for state hierarchies
    - Include all necessary data for UI rendering
    - Use copyWith methods for state updates
+   - Implement patchValue method for setting nullable fields to null using functions
+   - Use patchValue instead of copyWith when explicitly setting nullable fields to null
    - Example: class LoginState extends Equatable { final bool isLoading; }
+   - Example patchValue: LoginState patchValue({ String? Function()? errorMessageFn, ... })
+   - Example usage: state.patchValue(status: LoginStatus.loading, errorMessageFn: () => null)
+   - Avoid: state.copyWith(status: LoginStatus.loading, errorMessage: null)
 
 4. **BLoC Implementation**
 
@@ -166,8 +172,19 @@ const blocStateManagementGuidelines = `
     - Use meaningful file names: login_bloc.dart, login_event.dart, login_state.dart
     - Example: lib/presentations/login/bloc/login_bloc.dart
 
-13. **Best Practices** - Always dispose BLoCs properly - Use close() method for cleanup - Avoid memory leaks with proper subscription management - Use sealed classes for type safety - Follow single responsibility principle - Example: @override void close() { \_subscription?.cancel(); super.close(); }
-    `;
+13. **Best Practices**
+    - Always dispose BLoCs properly
+    - Use close() method for cleanup
+    - Avoid memory leaks with proper subscription management
+    - Use sealed classes for type safety
+    - Follow single responsibility principle
+    - Use patchValue for setting nullable fields to null instead of copyWith with explicit null
+    - Example: @override void close() { \_subscription?.cancel(); super.close(); }
+    - Example patchValue pattern:
+      - State class: LoginState patchValue({ String? Function()? errorMessageFn, ... })
+      - Usage: emit(state.patchValue(status: LoginStatus.loading, errorMessageFn: () => null))
+      - Avoid: emit(state.copyWith(status: LoginStatus.loading, errorMessage: null))
+        `;
 
 // Testing Guidelines
 

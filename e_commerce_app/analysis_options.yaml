@@ -38,7 +38,3 @@ analyzer:
 custom_lint:
   rules:
     - min_variable_name_length
-
-bloc:
-  rules:
-    - prefer_build_context_extensions

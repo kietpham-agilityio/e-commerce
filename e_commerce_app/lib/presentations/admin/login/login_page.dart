@@ -71,45 +71,40 @@ class _AdminLoginViewState extends State<AdminLoginView> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: EcAppBar(
-          automaticallyImplyLeading: false,
-          elevation: 0,
-          title: Padding(
-            padding: EdgeInsets.symmetric(horizontal: spacing.md),
-            child: EcHeadlineLargeText(
-              l10n.loginTitle,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          centerTitle: false,
-        ),
-        body: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: spacing.xHuge),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const Spacer(),
 
-                  _EmailInput(emailFocusNode: _emailFocusNode),
-                  _PasswordInput(passwordFocusNode: _passwordFocusNode),
-                  SizedBox(height: spacing.xl),
+        body: SingleChildScrollView(
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: spacing.xHuge),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(height: spacing.xHuge),
+                    EcDisplayLargeText(
+                      l10n.loginTitle,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    SizedBox(height: 112),
 
-                  const _ForgotPasswordButton(),
-                  SizedBox(height: spacing.xMassive),
+                    _EmailInput(emailFocusNode: _emailFocusNode),
+                    _PasswordInput(passwordFocusNode: _passwordFocusNode),
 
-                  const _LoginButton(),
-                  const Spacer(),
+                    const _ForgotPasswordButton(),
+                    SizedBox(height: spacing.xHuge),
 
-                  const _SocialLoginSection(),
-                  SizedBox(height: spacing.xxxl),
-                ],
+                    const _LoginButton(),
+                    SizedBox(height: 178),
+
+                    const _SocialLoginSection(),
+                    SizedBox(height: spacing.xxxl),
+                  ],
+                ),
               ),
             ),
           ),
@@ -139,7 +134,7 @@ class _EmailInput extends StatelessWidget {
         context.read<LoginBloc>().add(LoginEmailChanged(email));
       },
       onValidation: () {
-        context.read<LoginBloc>().add(const LoginEmailUnfocused());
+        context.read<LoginBloc>().add(const LoginEmailValidated());
       },
       textInputAction: TextInputAction.next,
     );
@@ -166,7 +161,7 @@ class _PasswordInput extends StatelessWidget {
         context.read<LoginBloc>().add(LoginPasswordChanged(password));
       },
       onValidation: () {
-        context.read<LoginBloc>().add(const LoginPasswordUnfocused());
+        context.read<LoginBloc>().add(const LoginPasswordValidated());
       },
       textInputAction: TextInputAction.done,
     );

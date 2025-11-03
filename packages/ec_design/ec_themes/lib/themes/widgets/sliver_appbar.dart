@@ -114,7 +114,7 @@ class EcSliverAppBar extends StatelessWidget {
                         fontSize: fontSize,
                         color:
                             background != null
-                                ? ecTheme.colorScheme.onSecondary
+                                ? ecTheme.colorScheme.onPrimary
                                 : null,
                       ),
                     ),
