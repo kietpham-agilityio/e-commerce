@@ -12,14 +12,42 @@ android {
     flavorDimensions += "env"
 
     productFlavors {
-        create("admin") {
+        create("adminProd") {
             dimension = "env"
             // uncomment the following line if you want to add a suffix to the applicationId
             applicationIdSuffix = ".admin"
             versionNameSuffix = "-admin"
             resValue("string", "app_name", "E Commerce (Admin)")
         }
-        create("user") {
+        create("adminStag") {
+            dimension = "env"
+            // uncomment the following line if you want to add a suffix to the applicationId
+            applicationIdSuffix = ".admin"
+            versionNameSuffix = "-admin"
+            resValue("string", "app_name", "E Commerce (Admin)")
+        }
+        create("adminDev") {
+            dimension = "env"
+            // uncomment the following line if you want to add a suffix to the applicationId
+            applicationIdSuffix = ".admin"
+            versionNameSuffix = "-admin"
+            resValue("string", "app_name", "E Commerce (Admin)")
+        }
+        create("userProd") {
+            dimension = "env"
+            // uncomment the following line if you want to add a suffix to the applicationId
+            applicationIdSuffix = ".user"
+            versionNameSuffix = "-user"
+            resValue("string", "app_name", "E Commerce (User)")
+        }
+        create("userStag") {
+            dimension = "env"
+            // uncomment the following line if you want to add a suffix to the applicationId
+            applicationIdSuffix = ".user"
+            versionNameSuffix = "-user"
+            resValue("string", "app_name", "E Commerce (User)")
+        }
+        create("userDev") {
             dimension = "env"
             // uncomment the following line if you want to add a suffix to the applicationId
             applicationIdSuffix = ".user"
