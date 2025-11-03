@@ -17,7 +17,20 @@ class DebugState extends Equatable {
   DebugState copyWith({EcFeatureFlag? flags, String? error, bool? isLoading}) {
     return DebugState(
       flags: flags ?? this.flags,
-      error: error,
+      error: error ?? this.error,
+      isLoading: isLoading ?? this.isLoading,
+    );
+  }
+
+  /// Patch values
+  DebugState patchValue({
+    EcFeatureFlag? flags,
+    String? Function()? errorFn,
+    bool? isLoading,
+  }) {
+    return DebugState(
+      flags: flags ?? this.flags,
+      error: errorFn != null ? errorFn() : error,
       isLoading: isLoading ?? this.isLoading,
     );
   }

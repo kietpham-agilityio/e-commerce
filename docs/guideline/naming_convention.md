@@ -9,8 +9,8 @@ Consistent naming improves readability, maintainability, and team collaboration.
 | Type      | Rule         | Examples                               |
 | --------- | ------------ | -------------------------------------- |
 | File      | `snake_case` | `login_screen.dart`, `auth_cubit.dart` |
-| Folder    | `snake_case` | `user_profile/`, `home_screen/`         |
-| Test file | + `_test`    | `login_bloc_test.dart`                  |
+| Folder    | `snake_case` | `user_profile/`, `home_screen/`        |
+| Test file | + `_test`    | `login_bloc_test.dart`                 |
 
 ---
 
@@ -36,6 +36,12 @@ Consistent naming improves readability, maintainability, and team collaboration.
 
 ## 🧪 4. Cubit / Bloc
 
+Refer from BLoC official naming convention: [BLoC Naming Conventions](https://bloclibrary.dev/naming-conventions/)
+Anatomy
+BlocSubject + Noun (optional) + Verb (event)
+
+Initial load events should follow the convention: BlocSubject + Started
+
 | Type             | Rule                        | Examples                    |
 | ---------------- | --------------------------- | --------------------------- |
 | Cubit/Bloc class | `PascalCase` + `Cubit/Bloc` | `LoginCubit`, `SignUpBloc`  |
@@ -59,7 +65,7 @@ Consistent naming improves readability, maintainability, and team collaboration.
 | Type            | Rule                      | Examples                        |
 | --------------- | ------------------------- | ------------------------------- |
 | JSON/String key | `camelCase`               | `userId`, `accessToken`         |
-| Route name      | `snake_case` + `/` prefix | `/login_screen`, `/home_screen`  |
+| Route name      | `snake_case` + `/` prefix | `/login_screen`, `/home_screen` |
 
 ---
 
@@ -68,7 +74,7 @@ Consistent naming improves readability, maintainability, and team collaboration.
 | Type   | Rule         | Examples                             |
 | ------ | ------------ | ------------------------------------ |
 | Images | `snake_case` | `login_banner.png`, `icon_send.svg`  |
-| JSON   | `snake_case` | `dummy_data.json`, `config_dev.json`  |
+| JSON   | `snake_case` | `dummy_data.json`, `config_dev.json` |
 
 > Suggested folders: `assets/images/`, `assets/icons/`, `assets/data/`
 
@@ -88,12 +94,12 @@ Consistent naming improves readability, maintainability, and team collaboration.
 
 | Type               | Rule                        | Examples                                         |
 | ------------------ | --------------------------- | ------------------------------------------------ |
-| Test file           | `snake_case` + `_test.dart` | `login_screen_test.dart`, `auth_cubit_test.dart` |
+| Test file          | `snake_case` + `_test.dart` | `login_screen_test.dart`, `auth_cubit_test.dart` |
 | Test class         | `PascalCase` + `Test`       | `LoginScreenTest`, `AuthCubitTest`               |
 | Test method        | `test_` + `description`     | `test_should_show_error_when_login_fails()`      |
 | Group description  | `camelCase`                 | `group('LoginScreen', () { ... })`               |
 | Mock class         | `Mock` + `PascalCase`       | `MockUserRepository`, `MockApiClient`            |
-| Test data/fixtures  | `snake_case` + `_fixture`    | `user_fixture.dart`, `product_fixture.dart`        |
+| Test data/fixtures | `snake_case` + `_fixture`   | `user_fixture.dart`, `product_fixture.dart`      |
 | Test helper        | `snake_case` + `_helper`    | `test_helper.dart`, `mock_helper.dart`           |
 
 > Suggested folders: `test/`, `test/fixtures/`, `test/helpers/`, `test/mocks/`
@@ -104,8 +110,8 @@ Consistent naming improves readability, maintainability, and team collaboration.
 
 | Don't                                | Do                                                         |
 | ------------------------------------ | ---------------------------------------------------------- |
-| `login_screen.dart` with `LoginPage` | Rename class to `LoginScreen` or file to `login_page.dart`  |
-| `MyWidget`                           | Use specific name: `UserAvatar`, `ChatCard`                 |
+| `login_screen.dart` with `LoginPage` | Rename class to `LoginScreen` or file to `login_page.dart` |
+| `MyWidget`                           | Use specific name: `UserAvatar`, `ChatCard`                |
 | `Utils.dart`                         | Split into `date_utils.dart`, `string_utils.dart`          |
 | `test.dart`                          | Use descriptive name: `login_screen_test.dart`             |
 | `testLogin()`                        | Use descriptive name: `test_should_login_successfully()`   |
@@ -119,7 +125,7 @@ Consistent naming improves readability, maintainability, and team collaboration.
 | Error messages      | `error` + `Description`          | `errorUnknown`, `errorUserNotFound`              |
 | General UI elements | `general` + `ElementName`        | `generalEmailAddress`, `generalPassword`         |
 | Semantic labels     | `semantic` + `Action`            | `semanticShowPassword`, `semanticGoBack`         |
-| Screen titles       | `screenName` + `Title`           | `loginTitle`, `homeTitle`, `profileTitle`         |
+| Screen titles       | `screenName` + `Title`           | `loginTitle`, `homeTitle`, `profileTitle`        |
 | Screen subtitles    | `screenName` + `SubTitle`        | `createAccountSubTitle`, `homeSubTitle`          |
 | Button labels       | `screenName` + `Btn`             | `loginBtn`, `createAccountBtn`                   |
 | Input hints         | `screenName` + `Hint`            | `searchHint`, `chatMessageTextFieldHint`         |
@@ -128,15 +134,17 @@ Consistent naming improves readability, maintainability, and team collaboration.
 | Success messages    | `screenName` + `Success`         | `myAccountUpdateSuccess`                         |
 | Action descriptions | `screenName` + `Action`          | `myAccountChoosePhoto`, `myAccountTakeAPhotoBtn` |
 
-### L10n Key Structure Rules:
+### L10n Key Structure Rules
 
 1. **Prefix Categories:**
+
    - `error*` - Error messages and exceptions
    - `general*` - Common UI elements used across screens
    - `semantic*` - Accessibility and semantic labels
    - `{screenName}*` - Screen-specific content
 
 2. **Suffix Types:**
+
    - `Title` - Screen or section titles
    - `SubTitle` - Secondary titles or descriptions
    - `Btn` - Button labels
@@ -147,6 +155,7 @@ Consistent naming improves readability, maintainability, and team collaboration.
    - `Description` - Explanatory text
 
 3. **Placeholder Variables:**
+
    - Use `{variableName}` for dynamic content
    - Add `@keyName` metadata for placeholder definitions
    - Example: `"chatWith": "Chat with {name}"`
@@ -157,7 +166,8 @@ Consistent naming improves readability, maintainability, and team collaboration.
    - Group related keys with consistent prefixes
    - Avoid abbreviations unless commonly understood
 
-### Example Structure:
+### Example Structure
+
 ```json
 {
   "errorUserNotFound": "User not found. Please try again.",
@@ -165,7 +175,7 @@ Consistent naming improves readability, maintainability, and team collaboration.
   "semanticShowPassword": "Show Password",
   "loginTitle": "Welcome to App",
   "loginBtn": "Login",
-  "settingsDialogLogOutTitle": "Log Out",
+  "settingsDialogLogOutTitle": "Log Out"
 }
 ```
 

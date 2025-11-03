@@ -57,6 +57,23 @@ class LoginState extends Equatable {
     );
   }
 
+  /// Patch values
+  LoginState patchValue({
+    LoginStatus? status,
+    EcEmailInput? email,
+    EcPasswordInput? password,
+    String? Function()? errorMessageFn,
+    bool? isValid,
+  }) {
+    return LoginState(
+      status: status ?? this.status,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      errorMessage: errorMessageFn != null ? errorMessageFn() : errorMessage,
+      isValid: isValid ?? this.isValid,
+    );
+  }
+
   @override
   List<Object?> get props => [status, email, password, errorMessage, isValid];
 }

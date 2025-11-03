@@ -4,7 +4,7 @@ import 'package:ec_themes/themes/widgets/textfield/form_input.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../config/admin_config.dart';
+import '../../../../core/utils/admin_helpers.dart';
 import '../../../../domain/usecases/login_usecase.dart';
 
 part 'login_event.dart';
@@ -22,8 +22,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
        super(const LoginState()) {
     on<LoginEmailChanged>(_onEmailChanged);
     on<LoginPasswordChanged>(_onPasswordChanged);
-    on<LoginEmailUnfocused>(_onEmailUnfocused);
-    on<LoginPasswordUnfocused>(_onPasswordUnfocused);
+    on<LoginEmailValidated>(_onEmailValidated);
+    on<LoginPasswordValidated>(_onPasswordValidated);
     on<LoginSubmitted>(_onSubmitted);
     on<LoginWithGooglePressed>(_onGoogleLoginPressed);
     on<LoginWithFacebookPressed>(_onFacebookLoginPressed);
@@ -38,10 +38,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   void _onEmailChanged(LoginEmailChanged event, Emitter<LoginState> emit) {
     final email = EcEmailInput.dirty(event.email);
     emit(
-      state.copyWith(
+      state.patchValue(
         email: email,
         isValid: _isFormValid(email, state.password),
-        errorMessage: null,
+        errorMessageFn: () => null,
       ),
     );
   }
@@ -53,16 +53,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) {
     final password = EcPasswordInput.dirty(event.password);
     emit(
-      state.copyWith(
+      state.patchValue(
         password: password,
         isValid: _isFormValid(state.email, password),
-        errorMessage: null,
+        errorMessageFn: () => null,
       ),
     );
   }
 
   /// Handle email field losing focus
-  void _onEmailUnfocused(LoginEmailUnfocused event, Emitter<LoginState> emit) {
+  void _onEmailValidated(LoginEmailValidated event, Emitter<LoginState> emit) {
     final email = EcEmailInput.dirty(state.email.value);
     emit(
       state.copyWith(
@@ -73,8 +73,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   /// Handle password field losing focus
-  void _onPasswordUnfocused(
-    LoginPasswordUnfocused event,
+  void _onPasswordValidated(
+    LoginPasswordValidated event,
     Emitter<LoginState> emit,
   ) {
     final password = EcPasswordInput.dirty(state.password.value);
@@ -108,7 +108,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
 
     // Check if email is in admin list before attempting login
-    if (!AdminConfig.isAdminEmail(email.value)) {
+    if (!AdminHelpers.isAdminEmail(email.value)) {
       final failure = Failure(
         'Access denied',
         internalErrorCode: ApiInternalErrorCode.adminAccessDenied(),
@@ -122,7 +122,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       return;
     }
 
-    emit(state.copyWith(status: LoginStatus.loading, errorMessage: null));
+    emit(
+      state.patchValue(status: LoginStatus.loading, errorMessageFn: () => null),
+    );
 
     try {
       final user = await _loginUseCase(
@@ -131,7 +133,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       );
 
       // Double-check that the logged-in user is an admin
-      if (!AdminConfig.isAdminEmail(user.email)) {
+      if (!AdminHelpers.isAdminEmail(user.email)) {
         final failure = Failure(
           'Access denied',
           internalErrorCode: ApiInternalErrorCode.adminAccessDenied(),
@@ -171,13 +173,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginWithGooglePressed event,
     Emitter<LoginState> emit,
   ) async {
-    emit(state.copyWith(status: LoginStatus.loading, errorMessage: null));
+    emit(
+      state.patchValue(status: LoginStatus.loading, errorMessageFn: () => null),
+    );
 
     try {
       final user = await _loginWithGoogleUseCase();
 
       // Check if the user from Google login is an admin
-      if (!AdminConfig.isAdminEmail(user.email)) {
+      if (!AdminHelpers.isAdminEmail(user.email)) {
         final failure = Failure(
           'Access denied',
           internalErrorCode: ApiInternalErrorCode.adminAccessDenied(),
@@ -217,13 +221,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginWithFacebookPressed event,
     Emitter<LoginState> emit,
   ) async {
-    emit(state.copyWith(status: LoginStatus.loading, errorMessage: null));
+    emit(
+      state.patchValue(status: LoginStatus.loading, errorMessageFn: () => null),
+    );
 
     try {
       final user = await _loginWithFacebookUseCase();
 
       // Check if the user from Facebook login is an admin
-      if (!AdminConfig.isAdminEmail(user.email)) {
+      if (!AdminHelpers.isAdminEmail(user.email)) {
         final failure = Failure(
           'Access denied',
           internalErrorCode: ApiInternalErrorCode.adminAccessDenied(),

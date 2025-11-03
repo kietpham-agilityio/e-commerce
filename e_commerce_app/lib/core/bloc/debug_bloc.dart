@@ -44,7 +44,7 @@ class DebugBloc extends Bloc<DebugEvent, DebugState> {
   ) async {
     try {
       // Set loading state
-      emit(state.copyWith(isLoading: true, error: null));
+      emit(state.patchValue(isLoading: true, errorFn: () => null));
 
       // Fetch feature flags from API
       final flags = await _getFeatureFlagUseCase();
@@ -53,7 +53,9 @@ class DebugBloc extends Bloc<DebugEvent, DebugState> {
       _featureFlagService.updateFlags(flags);
 
       // Emit success state
-      emit(state.copyWith(flags: flags, isLoading: false, error: null));
+      emit(
+        state.patchValue(flags: flags, isLoading: false, errorFn: () => null),
+      );
     } catch (e) {
       // Emit error state
       emit(

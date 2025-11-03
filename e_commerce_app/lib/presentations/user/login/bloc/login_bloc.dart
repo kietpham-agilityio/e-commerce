@@ -20,8 +20,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
        super(const LoginState()) {
     on<LoginEmailChanged>(_onEmailChanged);
     on<LoginPasswordChanged>(_onPasswordChanged);
-    on<LoginEmailUnfocused>(_onEmailUnfocused);
-    on<LoginPasswordUnfocused>(_onPasswordUnfocused);
+    on<LoginEmailUnfocused>(_onEmailValidated);
+    on<LoginPasswordUnfocused>(_onPasswordValidated);
     on<LoginSubmitted>(_onSubmitted);
     on<LoginWithGooglePressed>(_onGoogleLoginPressed);
     on<LoginWithFacebookPressed>(_onFacebookLoginPressed);
@@ -36,10 +36,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   void _onEmailChanged(LoginEmailChanged event, Emitter<LoginState> emit) {
     final email = EcEmailInput.dirty(event.email);
     emit(
-      state.copyWith(
+      state.patchValue(
         email: email,
         isValid: _isFormValid(email, state.password),
-        errorMessage: null,
+        errorMessageFn: () => null,
       ),
     );
   }
@@ -51,16 +51,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) {
     final password = EcPasswordInput.dirty(event.password);
     emit(
-      state.copyWith(
+      state.patchValue(
         password: password,
         isValid: _isFormValid(state.email, password),
-        errorMessage: null,
+        errorMessageFn: () => null,
       ),
     );
   }
 
   /// Handle email field losing focus
-  void _onEmailUnfocused(LoginEmailUnfocused event, Emitter<LoginState> emit) {
+  void _onEmailValidated(LoginEmailUnfocused event, Emitter<LoginState> emit) {
     final email = EcEmailInput.dirty(state.email.value);
     emit(
       state.copyWith(
@@ -71,7 +71,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   /// Handle password field losing focus
-  void _onPasswordUnfocused(
+  void _onPasswordValidated(
     LoginPasswordUnfocused event,
     Emitter<LoginState> emit,
   ) {
@@ -105,7 +105,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       return;
     }
 
-    emit(state.copyWith(status: LoginStatus.loading, errorMessage: null));
+    emit(
+      state.patchValue(status: LoginStatus.loading, errorMessageFn: () => null),
+    );
 
     try {
       await _loginUseCase(
@@ -139,7 +141,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginWithGooglePressed event,
     Emitter<LoginState> emit,
   ) async {
-    emit(state.copyWith(status: LoginStatus.loading, errorMessage: null));
+    emit(
+      state.patchValue(status: LoginStatus.loading, errorMessageFn: () => null),
+    );
 
     try {
       await _loginWithGoogleUseCase();
@@ -169,7 +173,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginWithFacebookPressed event,
     Emitter<LoginState> emit,
   ) async {
-    emit(state.copyWith(status: LoginStatus.loading, errorMessage: null));
+    emit(
+      state.patchValue(status: LoginStatus.loading, errorMessageFn: () => null),
+    );
 
     try {
       await _loginWithFacebookUseCase();
